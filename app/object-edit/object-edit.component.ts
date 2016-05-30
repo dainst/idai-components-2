@@ -163,7 +163,7 @@ export class ObjectEditComponent implements OnChanges,OnInit {
         this.persistenceManager.persist().then(
             () => {
                 this.persistenceManager.setOldVersion(this.object);
-                this.messages.add(M.OBJLIST_SAVE_SUCCESS);
+                this.messages.add(MD.OBJLIST_SAVE_SUCCESS);
             },
             errors => {
                 if (errors) {

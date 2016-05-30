@@ -1,4 +1,4 @@
-System.register(["@angular/core"], function(exports_1, context_1) {
+System.register(["@angular/core", "../md"], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,12 +10,15 @@ System.register(["@angular/core"], function(exports_1, context_1) {
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1;
+    var core_1, md_1;
     var ProjectConfiguration;
     return {
         setters:[
             function (core_1_1) {
                 core_1 = core_1_1;
+            },
+            function (md_1_1) {
+                md_1 = md_1_1;
             }],
         execute: function() {
             /**
@@ -89,7 +92,7 @@ System.register(["@angular/core"], function(exports_1, context_1) {
                 ProjectConfiguration.prototype.prependFieldsOfParentType = function (type) {
                     var fields = [];
                     if (this.fieldMap[type.parent] == undefined) {
-                        throw M.PC_GENERIC_ERROR;
+                        throw md_1.MD.PC_GENERIC_ERROR;
                     }
                     else
                         fields = this.fieldMap[type.parent];
@@ -105,4 +108,3 @@ System.register(["@angular/core"], function(exports_1, context_1) {
         }
     }
 });
-//# sourceMappingURL=project-configuration.js.map

@@ -1,4 +1,4 @@
-System.register(['@angular/core', "../core-services/persistence-manager", "@angular/common", "../core-services/project-configuration", "./relation-picker-group.component", "./valuelist.component", "../core-services/messages", "./relations-provider"], function(exports_1, context_1) {
+System.register(['@angular/core', "../core-services/persistence-manager", "@angular/common", "../core-services/project-configuration", "./relation-picker-group.component", "./valuelist.component", "../core-services/messages", "./relations-provider", "../md"], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', "../core-services/persistence-manager", "@angu
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, persistence_manager_1, common_1, project_configuration_1, relation_picker_group_component_1, valuelist_component_1, messages_1, relations_provider_1;
+    var core_1, persistence_manager_1, common_1, project_configuration_1, relation_picker_group_component_1, valuelist_component_1, messages_1, relations_provider_1, md_1;
     var ObjectEditComponent;
     return {
         setters:[
@@ -37,6 +37,9 @@ System.register(['@angular/core', "../core-services/persistence-manager", "@angu
             },
             function (relations_provider_1_1) {
                 relations_provider_1 = relations_provider_1_1;
+            },
+            function (md_1_1) {
+                md_1 = md_1_1;
             }],
         execute: function() {
             /**
@@ -81,7 +84,7 @@ System.register(['@angular/core', "../core-services/persistence-manager", "@angu
                     this.persistenceManager.load(this.object);
                     this.persistenceManager.persist().then(function () {
                         _this.persistenceManager.setOldVersion(_this.object);
-                        _this.messages.add(M.OBJLIST_SAVE_SUCCESS);
+                        _this.messages.add(md_1.MD.OBJLIST_SAVE_SUCCESS);
                     }, function (errors) {
                         if (errors) {
                             for (var i in errors) {
@@ -115,4 +118,3 @@ System.register(['@angular/core', "../core-services/persistence-manager", "@angu
         }
     }
 });
-//# sourceMappingURL=object-edit.component.js.map

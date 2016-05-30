@@ -1,8 +1,8 @@
 import {Injectable} from "@angular/core";
-import {IdaiFieldObject} from "../model/idai-field-object";
 import {Datastore} from "../datastore/datastore";
 import {RelationsProvider} from "../object-edit/relations-provider";
 import {MD} from "../md";
+import {Entity} from "./entity";
 
 /**
  * @author Daniel de Oliveira
@@ -14,8 +14,8 @@ import {MD} from "../md";
         private relationsProvider: RelationsProvider
     ) {}
 
-    private object: IdaiFieldObject = undefined;
-    private oldVersion : IdaiFieldObject = undefined;
+    private object: Entity = undefined;
+    private oldVersion : Entity = undefined;
 
     public setOldVersion(oldVersion) {
         this.oldVersion=JSON.parse(JSON.stringify(oldVersion));
@@ -123,7 +123,7 @@ import {MD} from "../md";
     }
 
 
-    private extractRelatedObjectIDs(object:IdaiFieldObject) : Array<string> {
+    private extractRelatedObjectIDs(object:Entity) : Array<string> {
         var relatedObjectIDs = new Array();
 
         for (var prop in object) {
@@ -142,14 +142,14 @@ import {MD} from "../md";
      * Saves the object to the local datastore.
      * @param object
      */
-    private persistIt(object: IdaiFieldObject): Promise<any> {
+    private persistIt(object: Entity): Promise<any> {
 
         // Replace with proper validation
         if (!object.identifier || object.identifier.length == 0) {
-            return new Promise((resolve, reject) => { reject(M.OBJLIST_IDMISSING); });
+            return new Promise((resolve, reject) => { reject(MD.OBJLIST_IDMISSING); });
         }
 
-        object.synced = 0;
+        object['synced'] = 0; // TODO this must go out of the library
 
         if (object.id) {
             return this.datastore.update(object);

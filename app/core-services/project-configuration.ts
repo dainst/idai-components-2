@@ -86,7 +86,7 @@ export class ProjectConfiguration {
         var fields=[];
 
         if (this.fieldMap[type.parent]==undefined) {
-            throw M.PC_GENERIC_ERROR
+            throw MD.PC_GENERIC_ERROR
         } else
             fields=this.fieldMap[type.parent]
 

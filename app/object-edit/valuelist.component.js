@@ -66,4 +66,3 @@ System.register(['@angular/core', "@angular/common", "../core-services/persisten
         }
     }
 });
-//# sourceMappingURL=valuelist.component.js.map

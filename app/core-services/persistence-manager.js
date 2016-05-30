@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../datastore/datastore", "../object-edit/relations-provider"], function(exports_1, context_1) {
+System.register(["@angular/core", "../datastore/datastore", "../object-edit/relations-provider", "../md"], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(["@angular/core", "../datastore/datastore", "../object-edit/rela
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, datastore_1, relations_provider_1;
+    var core_1, datastore_1, relations_provider_1, md_1;
     var PersistenceManager;
     return {
         setters:[
@@ -22,6 +22,9 @@ System.register(["@angular/core", "../datastore/datastore", "../object-edit/rela
             },
             function (relations_provider_1_1) {
                 relations_provider_1 = relations_provider_1_1;
+            },
+            function (md_1_1) {
+                md_1 = md_1_1;
             }],
         execute: function() {
             /**
@@ -149,9 +152,9 @@ System.register(["@angular/core", "../datastore/datastore", "../object-edit/rela
                 PersistenceManager.prototype.persistIt = function (object) {
                     // Replace with proper validation
                     if (!object.identifier || object.identifier.length == 0) {
-                        return new Promise(function (resolve, reject) { reject(M.OBJLIST_IDMISSING); });
+                        return new Promise(function (resolve, reject) { reject(md_1.MD.OBJLIST_IDMISSING); });
                     }
-                    object.synced = 0;
+                    object['synced'] = 0; // TODO this must go out of the library
                     if (object.id) {
                         return this.datastore.update(object);
                     }
@@ -178,4 +181,3 @@ System.register(["@angular/core", "../datastore/datastore", "../object-edit/rela
         }
     }
 });
-//# sourceMappingURL=persistence-manager.js.map

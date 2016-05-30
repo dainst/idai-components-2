@@ -1,4 +1,4 @@
-import {IdaiFieldObject} from "../model/idai-field-object";
+import {Entity} from "../core-services/entity";
 
 /**
  * @author Sebastian Cuy
@@ -6,7 +6,7 @@ import {IdaiFieldObject} from "../model/idai-field-object";
  */
 export class SearchTermExtractor {
 
-    public extractTerms(object:IdaiFieldObject):string[] {
+    public extractTerms(object:Entity):string[] {
 
         var terms = [];
         for (var property in object) {
