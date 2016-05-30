@@ -1,8 +1,8 @@
 import {Injectable} from "@angular/core";
 import {IdaiFieldObject} from "../model/idai-field-object";
-import {Datastore} from "./datastore";
+import {Datastore} from "../datastore/datastore";
 import {RelationsProvider} from "../object-edit/relations-provider";
-import {M} from "../m";
+import {MD} from "../md";
 
 /**
  * @author Daniel de Oliveira

@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../m"], function(exports_1, context_1) {
+System.register(["@angular/core", "../md"], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,15 +10,15 @@ System.register(["@angular/core", "../m"], function(exports_1, context_1) {
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, m_1;
+    var core_1, md_1;
     var Messages;
     return {
         setters:[
             function (core_1_1) {
                 core_1 = core_1_1;
             },
-            function (m_1_1) {
-                m_1 = m_1_1;
+            function (md_1_1) {
+                md_1 = md_1_1;
             }],
         execute: function() {
             /**
@@ -89,7 +89,7 @@ System.register(["@angular/core", "../m"], function(exports_1, context_1) {
                 };
                 Messages = __decorate([
                     core_1.Injectable(), 
-                    __metadata('design:paramtypes', [m_1.M])
+                    __metadata('design:paramtypes', [md_1.MD])
                 ], Messages);
                 return Messages;
             }());

@@ -11,7 +11,7 @@ System.register(["@angular/core"], function(exports_1, context_1) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var core_1;
-    var M;
+    var MD;
     return {
         setters:[
             function (core_1_1) {
@@ -27,48 +27,48 @@ System.register(["@angular/core"], function(exports_1, context_1) {
              * @author Daniel M. de Oliveira
              * @author Jan G. Wieners
              */
-            M = (function () {
-                function M() {
+            MD = (function () {
+                function MD() {
                     this.msgs = {};
-                    this.msgs[M.OBJLIST_IDEXISTS] = {
+                    this.msgs[MD.OBJLIST_IDEXISTS] = {
                         content: 'Objekt-Identifier existiert bereits.',
                         level: 'danger',
                     };
-                    this.msgs[M.OBJLIST_IDMISSING] = {
+                    this.msgs[MD.OBJLIST_IDMISSING] = {
                         content: 'Objekt-Identifier fehlt.',
                         level: 'danger'
                     };
-                    this.msgs[M.OBJLIST_SAVE_SUCCESS] = {
+                    this.msgs[MD.OBJLIST_SAVE_SUCCESS] = {
                         content: 'Das Objekt wurde erfolgreich gespeichert.',
                         level: 'success'
                     };
-                    this.msgs[M.MESSAGES_NOBODY] = {
+                    this.msgs[MD.MESSAGES_NOBODY] = {
                         content: "Keine Message gefunden für Schlüssel 'id'.",
                         level: 'danger'
                     };
-                    this.msgs[M.PC_GENERIC_ERROR] = {
+                    this.msgs[MD.PC_GENERIC_ERROR] = {
                         content: "Fehler beim Auswerten eines Konfigurationsobjektes.",
                         level: 'danger'
                     };
-                    this.msgs[M.PARSE_GENERIC_ERROR] = {
+                    this.msgs[MD.PARSE_GENERIC_ERROR] = {
                         content: "Fehler beim Parsen einer Konfigurationsdatei.",
                         level: 'danger'
                     };
                 }
-                M.OBJLIST_IDEXISTS = 'objectlist/idexists';
-                M.OBJLIST_IDMISSING = 'objectlist/idmissing';
-                M.OBJLIST_SAVE_SUCCESS = 'objectlist/savesuccess';
-                M.MESSAGES_NOBODY = 'messages/nobody';
-                M.PC_GENERIC_ERROR = 'pmc/generic';
-                M.PARSE_GENERIC_ERROR = 'parse/generic';
-                M = __decorate([
+                MD.OBJLIST_IDEXISTS = 'objectlist/idexists';
+                MD.OBJLIST_IDMISSING = 'objectlist/idmissing';
+                MD.OBJLIST_SAVE_SUCCESS = 'objectlist/savesuccess';
+                MD.MESSAGES_NOBODY = 'messages/nobody';
+                MD.PC_GENERIC_ERROR = 'pmc/generic';
+                MD.PARSE_GENERIC_ERROR = 'parse/generic';
+                MD = __decorate([
                     core_1.Injectable(), 
                     __metadata('design:paramtypes', [])
-                ], M);
-                return M;
+                ], MD);
+                return MD;
             }());
-            exports_1("M", M);
+            exports_1("MD", MD);
         }
     }
 });
-//# sourceMappingURL=m.js.map
+//# sourceMappingURL=md.js.map

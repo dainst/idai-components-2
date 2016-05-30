@@ -6,14 +6,13 @@ import {bootstrap}    from '@angular/platform-browser-dynamic'
 import {AppComponent} from './app.component'
 import {HTTP_PROVIDERS} from '@angular/http';
 import {provide, enableProdMode} from '@angular/core';
-import {Datastore} from "./core-services/datastore";
+import {Datastore} from "./datastore/datastore";
 import {Messages} from "./core-services/messages";
-import {MemoryDatastore} from "./datastore/indexeddb-datastore";
+import {MemoryDatastore} from "./datastore/memory-datastore";
 import {ConfigLoader} from "./core-services/config-loader";
 import {RelationsProvider} from "./object-edit/relations-provider";
 import {PersistenceManager} from "./core-services/persistence-manager";
-import {M} from "./m";
-import {ReadDatastore} from "./core-services/read-datastore";
+import {MD} from "./md";
 import {ROUTER_PROVIDERS} from '@angular/router-deprecated';
 import {LocationStrategy, HashLocationStrategy} from '@angular/common';
 
@@ -27,5 +26,5 @@ bootstrap(AppComponent, [
     provide(RelationsProvider, {useClass: RelationsProvider}),
     provide(PersistenceManager, {useClass: PersistenceManager}),
     provide(ConfigLoader, {useClass: ConfigLoader}),
-    provide(M, {useClass: M})
+    provide(MD, {useClass: MD})
 ]);

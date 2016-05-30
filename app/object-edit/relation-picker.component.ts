@@ -2,7 +2,7 @@ import {Component, Input, OnChanges, ElementRef} from '@angular/core';
 import {CORE_DIRECTIVES,COMMON_DIRECTIVES,FORM_DIRECTIVES} from "@angular/common";
 import {Entity} from "../core-services/entity";
 import {PersistenceManager} from "../core-services/persistence-manager";
-import {Datastore} from "../core-services/datastore";
+import {Datastore} from "../datastore/datastore";
 
 
 /**

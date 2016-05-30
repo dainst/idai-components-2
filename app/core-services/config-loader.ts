@@ -2,7 +2,7 @@ import {Injectable} from "@angular/core";
 import {ProjectConfiguration} from "./project-configuration";
 import {Messages} from "./messages";
 import {Http} from "@angular/http";
-import {M} from "../m";
+import {MD} from "../md";
 
 
 /**
@@ -28,14 +28,14 @@ export class ConfigLoader {
                 try {
                     data=JSON.parse(data_['_body'])
                 } catch (e) {
-                    this.messages.add(M.PARSE_GENERIC_ERROR)
+                    this.messages.add(MD.PARSE_GENERIC_ERROR)
                     reject(e.message);
                 }
 
                 try {
                     resolve(new ProjectConfiguration(data))
                 } catch (e) {
-                    this.messages.add(e)
+                    this.messages.add(e);
                     reject(e)
                 }
             });

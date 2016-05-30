@@ -1,6 +1,7 @@
 import {Entity} from "../core-services/entity";
-import {Datastore} from "../core-services/datastore";
+import {Datastore} from "./datastore";
 import {Injectable} from "@angular/core";
+import {Observable} from "rxjs/Observable";
 
 /**
  * @author Daniel de Oliveira
@@ -14,6 +15,10 @@ export class MemoryDatastore implements Datastore {
     private db: Promise<any>;
     private observers = [];
     private objectCache: { [id: string]: Entity } = {};
+
+    public getUnsyncedObjects(): Observable<Entity> {
+        return undefined;
+    }
     
     constructor(){};
 

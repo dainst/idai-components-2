@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/router-deprecated', './object-edit/object-edit.component', './core-services/config-loader', './core-services/datastore', "./datastore/sample-objects"], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/router-deprecated', './object-edit/object-edit.component', './core-services/config-loader', './datastore/datastore', "./datastore/sample-objects"], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {

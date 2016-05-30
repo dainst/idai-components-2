@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {Message} from "./message";
-import {M} from "../m";
+import {MD} from "../md";
 
 /**
  * Maintains a collection of currently active messages the
@@ -13,7 +13,7 @@ import {M} from "../m";
 @Injectable()
 export class Messages {
 
-    constructor(private messagesDictionary:M){ }
+    constructor(private messagesDictionary:MD){ }
 
     private messageMap: { [id: string]: Message } = {};
 

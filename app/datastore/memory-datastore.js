@@ -26,6 +26,9 @@ System.register(["@angular/core"], function(exports_1, context_1) {
                     this.observers = [];
                     this.objectCache = {};
                 }
+                MemoryDatastore.prototype.getUnsyncedObjects = function () {
+                    return undefined;
+                };
                 ;
                 MemoryDatastore.prototype.create = function (object) {
                     return new Promise(function (resolve, reject) {
@@ -103,4 +106,4 @@ System.register(["@angular/core"], function(exports_1, context_1) {
         }
     }
 });
-//# sourceMappingURL=indexeddb-datastore.js.map
+//# sourceMappingURL=memory-datastore.js.map

@@ -1,4 +1,4 @@
-System.register(["@angular/core", "./datastore", "../object-edit/relations-provider", "../m"], function(exports_1, context_1) {
+System.register(["@angular/core", "../datastore/datastore", "../object-edit/relations-provider"], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(["@angular/core", "./datastore", "../object-edit/relations-provi
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, datastore_1, relations_provider_1, m_1;
+    var core_1, datastore_1, relations_provider_1;
     var PersistenceManager;
     return {
         setters:[
@@ -22,9 +22,6 @@ System.register(["@angular/core", "./datastore", "../object-edit/relations-provi
             },
             function (relations_provider_1_1) {
                 relations_provider_1 = relations_provider_1_1;
-            },
-            function (m_1_1) {
-                m_1 = m_1_1;
             }],
         execute: function() {
             /**
@@ -152,7 +149,7 @@ System.register(["@angular/core", "./datastore", "../object-edit/relations-provi
                 PersistenceManager.prototype.persistIt = function (object) {
                     // Replace with proper validation
                     if (!object.identifier || object.identifier.length == 0) {
-                        return new Promise(function (resolve, reject) { reject(m_1.M.OBJLIST_IDMISSING); });
+                        return new Promise(function (resolve, reject) { reject(M.OBJLIST_IDMISSING); });
                     }
                     object.synced = 0;
                     if (object.id) {

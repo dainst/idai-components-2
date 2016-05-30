@@ -11,7 +11,7 @@ import {Message} from "./core-services/message"
  * @author Jan G. Wieners
  */
 @Injectable()
-export class M { // = Messages Dictionary. For reasons of brevity of calls to it just "M".
+export class MD { // = Messages Dictionary. For reasons of brevity of calls to it just "M".
 
     public static OBJLIST_IDEXISTS : string = 'objectlist/idexists';
     public static OBJLIST_IDMISSING : string = 'objectlist/idmissing';
@@ -23,27 +23,27 @@ export class M { // = Messages Dictionary. For reasons of brevity of calls to it
     public msgs : { [id: string]: Message } = {};
 
     constructor() {
-        this.msgs[M.OBJLIST_IDEXISTS]={
+        this.msgs[MD.OBJLIST_IDEXISTS]={
             content: 'Objekt-Identifier existiert bereits.',
             level: 'danger',
         };
-        this.msgs[M.OBJLIST_IDMISSING]={
+        this.msgs[MD.OBJLIST_IDMISSING]={
             content: 'Objekt-Identifier fehlt.',
             level: 'danger'
         };
-        this.msgs[M.OBJLIST_SAVE_SUCCESS]={
+        this.msgs[MD.OBJLIST_SAVE_SUCCESS]={
             content: 'Das Objekt wurde erfolgreich gespeichert.',
             level: 'success'
         };
-        this.msgs[M.MESSAGES_NOBODY]={
+        this.msgs[MD.MESSAGES_NOBODY]={
             content: "Keine Message gefunden für Schlüssel 'id'.",
             level: 'danger'
         };
-        this.msgs[M.PC_GENERIC_ERROR]={
+        this.msgs[MD.PC_GENERIC_ERROR]={
             content: "Fehler beim Auswerten eines Konfigurationsobjektes.",
             level: 'danger'
         };
-        this.msgs[M.PARSE_GENERIC_ERROR]={
+        this.msgs[MD.PARSE_GENERIC_ERROR]={
             content: "Fehler beim Parsen einer Konfigurationsdatei.",
             level: 'danger'
         };

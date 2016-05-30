@@ -1,5 +1,6 @@
 import {Entity} from "../core-services/entity";
 import {ReadDatastore} from "./read-datastore";
+import {Observable} from "rxjs/Observable";
 
 export abstract class Datastore extends ReadDatastore {
 

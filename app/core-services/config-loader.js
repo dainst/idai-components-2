@@ -1,4 +1,4 @@
-System.register(["@angular/core", "./project-configuration", "./messages", "@angular/http", "../m"], function(exports_1, context_1) {
+System.register(["@angular/core", "./project-configuration", "./messages", "@angular/http", "../md"], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(["@angular/core", "./project-configuration", "./messages", "@ang
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, project_configuration_1, messages_1, http_1, m_1;
+    var core_1, project_configuration_1, messages_1, http_1, md_1;
     var ConfigLoader;
     return {
         setters:[
@@ -26,8 +26,8 @@ System.register(["@angular/core", "./project-configuration", "./messages", "@ang
             function (http_1_1) {
                 http_1 = http_1_1;
             },
-            function (m_1_1) {
-                m_1 = m_1_1;
+            function (md_1_1) {
+                md_1 = md_1_1;
             }],
         execute: function() {
             /**
@@ -48,7 +48,7 @@ System.register(["@angular/core", "./project-configuration", "./messages", "@ang
                                 data = JSON.parse(data_['_body']);
                             }
                             catch (e) {
-                                _this.messages.add(m_1.M.PARSE_GENERIC_ERROR);
+                                _this.messages.add(md_1.MD.PARSE_GENERIC_ERROR);
                                 reject(e.message);
                             }
                             try {

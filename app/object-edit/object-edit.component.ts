@@ -8,7 +8,7 @@ import {ValuelistComponent} from "./valuelist.component";
 import {OnChanges} from "@angular/core";
 import {Messages} from "../core-services/messages";
 import {RelationsProvider} from "./relations-provider";
-import {M} from "../m";
+import {MD} from "../md";
 
 /**
  * @author Jan G. Wieners

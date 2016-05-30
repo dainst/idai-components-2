@@ -2,7 +2,7 @@ import {Component, OnInit, Inject} from '@angular/core';
 import {ROUTER_DIRECTIVES} from '@angular/router-deprecated';
 import {ObjectEditComponent} from './object-edit/object-edit.component';
 import {ConfigLoader} from './core-services/config-loader'
-import {Datastore} from './core-services/datastore'
+import {Datastore} from './datastore/datastore'
 import {OBJECTS} from "./datastore/sample-objects";
 
 @Component({

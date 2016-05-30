@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {M} from "../m";
+import {MD} from "../md";
 
 /**
  * ProjectConfiguration maintains the current projects properties.
