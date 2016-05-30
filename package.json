@@ -1,0 +1,60 @@
+{
+  "name": "idai-components-2",
+  "description": "iDAI.components2",
+  "main": "main.js",
+  "version": "0.0.1",
+  "license": "Apache-2.0",
+  "scripts": {
+    "prebuild": "rimraf css/* && rimraf lib/* && rimraf fonts/*",
+    "build": "gulp compile",
+    "start": "gulp run",
+    "test:loop": "karma start karma.conf",
+    "test": "karma start karma.conf.js --single-run",
+    "e2e": "webdriver-manager update && protractor protractor.conf.js",
+    "server": "gulp webserver-watch",
+    "make-dist": "rimraf dist/* && gulp make-dist",
+    "package": "rimraf release/* && gulp package",
+    "postinstall": "typings install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/codarchlab/idai-field-client.git"
+  },
+  "dependencies": {
+    "@angular/common": "^2.0.0-rc.1",
+    "@angular/compiler": "^2.0.0-rc.1",
+    "@angular/core": "^2.0.0-rc.1",
+    "@angular/http": "^2.0.0-rc.1",
+    "@angular/platform-browser": "^2.0.0-rc.1",
+    "@angular/platform-browser-dynamic": "^2.0.0-rc.1",
+    "@angular/router": "^2.0.0-rc.1",
+    "@angular/router-deprecated": "^2.0.0-rc.1",
+    "angular2-uuid": "^1.0.6",
+    "bootstrap": "3.3.6",
+    "es6-promise": "^3.1.2",
+    "es6-shim": "^0.35.0",
+    "reflect-metadata": "0.1.2",
+    "rxjs": "5.0.0-beta.6",
+    "systemjs": "^0.19.26",
+    "zone.js": "^0.6.12"
+  },
+  "devDependencies": {
+    "archiver": "^1.0.0",
+    "bootstrap-sass": "^3.3.6",
+    "gulp": "^3.9.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-minify-css": "^1.2.3",
+    "gulp-sass": "^2.1.1",
+    "gulp-typescript": "^2.10.0",
+    "gulp-uglify": "^1.5.1",
+    "gulp-webserver": "^0.9.1",
+    "jasmine-core": "^2.4.1",
+    "karma": "^0.13.21",
+    "karma-chrome-launcher": "^0.2.2",
+    "karma-jasmine": "^0.3.7",
+    "mdi": "^1.5.54",
+    "protractor": "^3.1.1",
+    "rimraf": "^2.5.2",
+    "typescript": "^1.8.10"
+  }
+}
