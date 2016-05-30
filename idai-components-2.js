@@ -1,4 +1,4 @@
-System.register(['./app/core-services/config-loader', './app/core-services/persistence-manager', './app/core-services/project-configuration', './app/object-edit/object-edit.component', './app/core-services/messages.component', './app/core-services/messages', './app/md'], function(exports_1, context_1) {
+System.register(['./app/core-services/config-loader', './app/core-services/persistence-manager', './app/datastore/datastore', './app/datastore/read-datastore', './app/core-services/project-configuration', './app/object-edit/object-edit.component', './app/core-services/messages.component', './app/core-services/messages', './app/md'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     return {
@@ -11,6 +11,16 @@ System.register(['./app/core-services/config-loader', './app/core-services/persi
             function (persistence_manager_1_1) {
                 exports_1({
                     "PersistenceManager": persistence_manager_1_1["PersistenceManager"]
+                });
+            },
+            function (datastore_1_1) {
+                exports_1({
+                    "Datastore": datastore_1_1["Datastore"]
+                });
+            },
+            function (read_datastore_1_1) {
+                exports_1({
+                    "ReadDatastore": read_datastore_1_1["ReadDatastore"]
                 });
             },
             function (project_configuration_1_1) {

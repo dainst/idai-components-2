@@ -181,3 +181,4 @@ System.register(["@angular/core", "../datastore/datastore", "../object-edit/rela
         }
     }
 });
+//# sourceMappingURL=persistence-manager.js.map

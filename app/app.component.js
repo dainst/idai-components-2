@@ -64,3 +64,4 @@ System.register(['@angular/core', '@angular/router-deprecated', './object-edit/o
         }
     }
 });
+//# sourceMappingURL=app.component.js.map

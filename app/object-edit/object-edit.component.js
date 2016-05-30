@@ -118,3 +118,4 @@ System.register(['@angular/core', "../core-services/persistence-manager", "@angu
         }
     }
 });
+//# sourceMappingURL=object-edit.component.js.map
