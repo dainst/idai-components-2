@@ -5,6 +5,7 @@ export {Datastore} from './app/datastore/datastore';
 export {ReadDatastore} from './app/datastore/read-datastore';
 export {ProjectConfiguration} from './app/core-services/project-configuration';
 export {ObjectEditComponent} from './app/object-edit/object-edit.component';
+export {RelationsProvider} from './app/object-edit/relations-provider';
 export {MessagesComponent} from './app/core-services/messages.component';
 export {Messages} from './app/core-services/messages';
 export {Message} from './app/core-services/message';

@@ -1,4 +1,4 @@
-System.register(['./app/core-services/config-loader', './app/core-services/persistence-manager', './app/datastore/datastore', './app/datastore/read-datastore', './app/core-services/project-configuration', './app/object-edit/object-edit.component', './app/core-services/messages.component', './app/core-services/messages', './app/md'], function(exports_1, context_1) {
+System.register(['./app/core-services/config-loader', './app/core-services/persistence-manager', './app/datastore/datastore', './app/datastore/read-datastore', './app/core-services/project-configuration', './app/object-edit/object-edit.component', './app/object-edit/relations-provider', './app/core-services/messages.component', './app/core-services/messages', './app/md'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     return {
@@ -31,6 +31,11 @@ System.register(['./app/core-services/config-loader', './app/core-services/persi
             function (object_edit_component_1_1) {
                 exports_1({
                     "ObjectEditComponent": object_edit_component_1_1["ObjectEditComponent"]
+                });
+            },
+            function (relations_provider_1_1) {
+                exports_1({
+                    "RelationsProvider": relations_provider_1_1["RelationsProvider"]
                 });
             },
             function (messages_component_1_1) {
