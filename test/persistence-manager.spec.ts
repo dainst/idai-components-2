@@ -1,10 +1,10 @@
 import {fdescribe,describe,expect,fit,it,xit, inject, beforeEach,beforeEachProviders} from '@angular/core/testing';
 import {provide} from "@angular/core";
-import {Entity} from "../app/core-services/entity";
-import {PersistenceManager} from "../app/core-services/persistence-manager";
-import {Datastore} from "../app/datastore/datastore";
-import {Messages} from "../app/core-services/messages";
-import {MD} from "../app/md";
+import {Entity} from "../lib/core-services/entity";
+import {PersistenceManager} from "../lib/core-services/persistence-manager";
+import {Datastore} from "../lib/datastore/datastore";
+import {Messages} from "../lib/core-services/messages";
+import {MD} from "../lib/md";
 
 /**
  * @author Daniel M. de Oliveira

@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/router-deprecated', './object-edit/object-edit.component', './core-services/config-loader', './datastore/datastore', "./datastore/sample-objects"], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/router-deprecated', '../lib/object-edit/object-edit.component', '../lib/core-services/config-loader', '../lib/datastore/datastore', "./sample-objects"], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -53,7 +53,7 @@ System.register(['@angular/core', '@angular/router-deprecated', './object-edit/o
                 AppComponent = __decorate([
                     core_1.Component({
                         selector: 'idai-field-app',
-                        templateUrl: 'templates/app.html',
+                        template: "<div class=\"container-fluid\" id=\"app\">\n\n    <div class=\"row\">\n        <div class=\"col-md-12\">\n            <object-edit [(object)]=\"e\" [(projectConfiguration)]=\"projectConfiguration\"></object-edit>\n        </div>\n    </div>\n</div>",
                         directives: [router_deprecated_1.ROUTER_DIRECTIVES, object_edit_component_1.ObjectEditComponent]
                     }), 
                     __metadata('design:paramtypes', [config_loader_1.ConfigLoader, datastore_1.Datastore])

@@ -1,4 +1,4 @@
-System.register(['@angular/core/testing', '@angular/compiler/testing', '../app/object-edit/object-edit.component', "@angular/core", "../app/core-services/persistence-manager", "../app/datastore/datastore", "../app/core-services/messages", "../app/object-edit/relations-provider"], function(exports_1, context_1) {
+System.register(['@angular/core/testing', '@angular/compiler/testing', '../lib/object-edit/object-edit.component', "@angular/core", "../lib/core-services/persistence-manager", "../lib/datastore/datastore", "../lib/core-services/messages", "../lib/object-edit/relations-provider"], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {

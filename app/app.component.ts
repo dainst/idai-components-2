@@ -1,13 +1,22 @@
 import {Component, OnInit, Inject} from '@angular/core';
 import {ROUTER_DIRECTIVES} from '@angular/router-deprecated';
-import {ObjectEditComponent} from './object-edit/object-edit.component';
-import {ConfigLoader} from './core-services/config-loader'
-import {Datastore} from './datastore/datastore'
-import {OBJECTS} from "./datastore/sample-objects";
+import {ObjectEditComponent} from '../lib/object-edit/object-edit.component';
+import {ConfigLoader} from '../lib/core-services/config-loader'
+import {Datastore} from '../lib/datastore/datastore'
+import {OBJECTS} from "./sample-objects";
 
 @Component({
     selector: 'idai-field-app',
-    templateUrl: 'templates/app.html',
+
+    template: `<div class="container-fluid" id="app">
+
+    <div class="row">
+        <div class="col-md-12">
+            <object-edit [(object)]="e" [(projectConfiguration)]="projectConfiguration"></object-edit>
+        </div>
+    </div>
+</div>`,
+
     directives: [ ROUTER_DIRECTIVES, ObjectEditComponent ]
 })
 export class AppComponent implements OnInit {

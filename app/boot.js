@@ -1,7 +1,6 @@
 /// <reference path="../typings/browser/ambient/es6-shim/index.d.ts" />
 /// <reference path="../typings/browser/ambient/node/index.d.ts" />
-/// <reference path="../typings/browser/ambient/github-electron/index.d.ts" />
-System.register(['@angular/platform-browser-dynamic', './app.component', '@angular/http', '@angular/core', "./datastore/datastore", "./core-services/messages", "./datastore/memory-datastore", "./core-services/config-loader", "./object-edit/relations-provider", "./core-services/persistence-manager", "./md", '@angular/router-deprecated', '@angular/common'], function(exports_1, context_1) {
+System.register(['@angular/platform-browser-dynamic', './app.component', '@angular/http', '@angular/core', "../lib/datastore/datastore", "../lib/core-services/messages", "./memory-datastore", "../lib/core-services/config-loader", "../lib/object-edit/relations-provider", "../lib/core-services/persistence-manager", "../lib/md", '@angular/router-deprecated', '@angular/common'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var platform_browser_dynamic_1, app_component_1, http_1, core_1, datastore_1, messages_1, memory_datastore_1, config_loader_1, relations_provider_1, persistence_manager_1, md_1, router_deprecated_1, common_1;

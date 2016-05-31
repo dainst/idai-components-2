@@ -1,4 +1,4 @@
-System.register(['@angular/core/testing', "@angular/core", "../app/core-services/persistence-manager", "../app/core-services/messages", "../app/md"], function(exports_1, context_1) {
+System.register(['@angular/core/testing', "@angular/core", "../lib/core-services/persistence-manager", "../lib/core-services/messages", "../lib/md"], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var testing_1, core_1, persistence_manager_1, messages_1, md_1;

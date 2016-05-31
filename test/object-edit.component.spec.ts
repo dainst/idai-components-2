@@ -1,12 +1,12 @@
 import {fdescribe, describe, xdescribe,expect, it, fit, xit,inject, async, beforeEachProviders,
         } from '@angular/core/testing';
 import {TestComponentBuilder} from '@angular/compiler/testing';
-import {ObjectEditComponent} from '../app/object-edit/object-edit.component'
+import {ObjectEditComponent} from '../lib/object-edit/object-edit.component'
 import {provide, Component} from "@angular/core";
-import {PersistenceManager} from "../app/core-services/persistence-manager";
-import {Datastore} from "../app/datastore/datastore";
-import {Messages} from "../app/core-services/messages";
-import {RelationsProvider} from "../app/object-edit/relations-provider";
+import {PersistenceManager} from "../lib/core-services/persistence-manager";
+import {Datastore} from "../lib/datastore/datastore";
+import {Messages} from "../lib/core-services/messages";
+import {RelationsProvider} from "../lib/object-edit/relations-provider";
 
 
 /**

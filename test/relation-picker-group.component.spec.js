@@ -1,4 +1,4 @@
-System.register(['@angular/core/testing', "../app/object-edit/relation-picker-group.component"], function(exports_1, context_1) {
+System.register(['@angular/core/testing', "../lib/object-edit/relation-picker-group.component"], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var testing_1, relation_picker_group_component_1;
