@@ -1,4 +1,4 @@
-import {Entity} from '../lib/core-services/entity';
+import {Entity} from '../lib/ts/core-services/entity';
 
 export var OBJECTS: Entity[] = [
     { "identifier": "ob1", "title": "Obi One Kenobi", "type": "Object" },

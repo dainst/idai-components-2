@@ -1,4 +1,4 @@
-System.register(['./lib/core-services/config-loader', './lib/core-services/persistence-manager', './lib/datastore/datastore', './lib/datastore/read-datastore', './lib/core-services/project-configuration', './lib/object-edit/object-edit.component', './lib/object-edit/relations-provider', './lib/core-services/messages.component', './lib/core-services/messages', './lib/md'], function(exports_1, context_1) {
+System.register(['./lib/ts/core-services/config-loader', './lib/ts/core-services/persistence-manager', './lib/ts/datastore/datastore', './lib/ts/datastore/read-datastore', './lib/ts/core-services/project-configuration', './lib/ts/object-edit/object-edit.component', './lib/ts/object-edit/relations-provider', './lib/ts/core-services/messages.component', './lib/ts/core-services/messages', './lib/ts/md'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     return {

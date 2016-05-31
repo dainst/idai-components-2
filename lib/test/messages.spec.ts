@@ -1,6 +1,6 @@
 import {fdescribe,describe,xdescribe,expect,fit,it,xit, inject,beforeEach, beforeEachProviders} from '@angular/core/testing';
-import {Messages} from "../lib/core-services/messages";
-import {MD} from "../lib/md";
+import {Messages} from "../ts/core-services/messages";
+import {MD} from "../ts/md";
 
 /**
  * @author Daniel M. de Oliveira

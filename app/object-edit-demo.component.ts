@@ -1,25 +1,14 @@
 import {Component, OnInit, Inject} from '@angular/core';
 import {ROUTER_DIRECTIVES} from '@angular/router-deprecated';
-import {ObjectEditComponent} from '../lib/object-edit/object-edit.component';
-import {ConfigLoader} from '../lib/core-services/config-loader'
-import {Datastore} from '../lib/datastore/datastore'
+import {ObjectEditComponent} from '../lib/ts/object-edit/object-edit.component';
+import {ConfigLoader} from '../lib/ts/core-services/config-loader'
+import {Datastore} from '../lib/ts/datastore/datastore'
 import {OBJECTS} from "./sample-objects";
 
 @Component({
     selector: 'idai-field-app',
 
-    template: `<div class="container-fluid" id="app">
-
-    <ul>
-        <li *ngFor="let item of objects; let i=index"><button (click)="clicked(i)">{{item.identifier}}</button></li>
-    </ul>
-
-    <div class="row">
-        <div class="col-md-12">
-            <object-edit [(object)]="selectedObject" [(projectConfiguration)]="projectConfiguration"></object-edit>
-        </div>
-    </div>
-</div>`,
+    templateUrl: 'templates/object-edit-demo.html',
 
     directives: [ ROUTER_DIRECTIVES, ObjectEditComponent ]
 })

@@ -1,5 +1,5 @@
-import {Entity} from "../lib/core-services/entity";
-import {Datastore} from "../lib/datastore/datastore";
+import {Entity} from "../lib/ts/core-services/entity";
+import {Datastore} from "../lib/ts/datastore/datastore";
 import {Injectable} from "@angular/core";
 import {Observable} from "rxjs/Observable";
 

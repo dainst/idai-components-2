@@ -12,7 +12,7 @@ var webserver = require('gulp-webserver');
 // compile sass and concatenate to single css file in build dir
 gulp.task('convert-sass', function() {
 
-	return gulp.src('scss/app.scss')
+	return gulp.src('lib/scss/app.scss')
 	  	.pipe(sass({includePaths: [
 			'node_modules/bootstrap-sass/assets/stylesheets/',
 			'node_modules/mdi/scss/'

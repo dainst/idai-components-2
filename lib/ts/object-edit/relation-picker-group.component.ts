@@ -10,18 +10,7 @@ import {RelationPickerComponent} from "./relation-picker.component";
 @Component({
 
     selector: 'relation-picker-group',
-    template: `<div *ngFor="let relation of object[field.field]; let i = index">
-    <relation-picker [(object)]="object" [field]="field" [relationIndex]="i"></relation-picker>
-</div>
-<div class="circular-button add-relation"
-     *ngIf="!object[field.field] || object[field.field].length == 0 || validateNewest()"
-     type="button"
-     (click)="createRelation()">+</div>
-
-<!-- Button disabled when waiting for input -->
-<div class="circular-button add-relation-disabled"
-     *ngIf="object[field.field] && object[field.field].length > 0 && !validateNewest()"
-     type="button">+</div>`,
+    templateUrl: 'lib/templates/relation-picker-group.html',
     directives: [CORE_DIRECTIVES, COMMON_DIRECTIVES, FORM_DIRECTIVES, RelationPickerComponent]
 })
 
