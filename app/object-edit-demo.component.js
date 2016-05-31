@@ -11,7 +11,7 @@ System.register(['@angular/core', '@angular/router-deprecated', '../lib/object-e
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var core_1, router_deprecated_1, object_edit_component_1, config_loader_1, datastore_1, sample_objects_1;
-    var AppComponent;
+    var ObjectEditDemoComponent;
     return {
         setters:[
             function (core_1_1) {
@@ -33,34 +33,40 @@ System.register(['@angular/core', '@angular/router-deprecated', '../lib/object-e
                 sample_objects_1 = sample_objects_1_1;
             }],
         execute: function() {
-            AppComponent = (function () {
-                function AppComponent(configLoader, datastore) {
+            ObjectEditDemoComponent = (function () {
+                function ObjectEditDemoComponent(configLoader, datastore) {
                     this.configLoader = configLoader;
                     this.datastore = datastore;
-                    this.e = {};
+                    this.objects = new Array();
                 }
-                AppComponent.prototype.ngOnInit = function () {
+                ObjectEditDemoComponent.prototype.clicked = function (nr) {
+                    this.selectedObject = this.objects[nr];
+                };
+                ObjectEditDemoComponent.prototype.ngOnInit = function () {
                     var _this = this;
                     this.loadSampleData();
                     this.configLoader.getProjectConfiguration().then(function (pc) {
                         _this.projectConfiguration = pc;
                     });
                 };
-                AppComponent.prototype.loadSampleData = function () {
-                    var promises = [];
-                    this.e = sample_objects_1.OBJECTS[0];
+                ObjectEditDemoComponent.prototype.loadSampleData = function () {
+                    for (var _i = 0, OBJECTS_1 = sample_objects_1.OBJECTS; _i < OBJECTS_1.length; _i++) {
+                        var item = OBJECTS_1[_i];
+                        this.objects.push(item);
+                    }
                 };
-                AppComponent = __decorate([
+                ObjectEditDemoComponent = __decorate([
                     core_1.Component({
                         selector: 'idai-field-app',
-                        template: "<div class=\"container-fluid\" id=\"app\">\n\n    <div class=\"row\">\n        <div class=\"col-md-12\">\n            <object-edit [(object)]=\"e\" [(projectConfiguration)]=\"projectConfiguration\"></object-edit>\n        </div>\n    </div>\n</div>",
+                        template: "<div class=\"container-fluid\" id=\"app\">\n\n    <ul>\n        <li *ngFor=\"let item of objects; let i=index\"><button (click)=\"clicked(i)\">{{item.identifier}}</button></li>\n    </ul>\n\n    <div class=\"row\">\n        <div class=\"col-md-12\">\n            <object-edit [(object)]=\"selectedObject\" [(projectConfiguration)]=\"projectConfiguration\"></object-edit>\n        </div>\n    </div>\n</div>",
                         directives: [router_deprecated_1.ROUTER_DIRECTIVES, object_edit_component_1.ObjectEditComponent]
                     }), 
                     __metadata('design:paramtypes', [config_loader_1.ConfigLoader, datastore_1.Datastore])
-                ], AppComponent);
-                return AppComponent;
+                ], ObjectEditDemoComponent);
+                return ObjectEditDemoComponent;
             }());
-            exports_1("AppComponent", AppComponent);
+            exports_1("ObjectEditDemoComponent", ObjectEditDemoComponent);
         }
     }
 });
+//# sourceMappingURL=object-edit-demo.component.js.map

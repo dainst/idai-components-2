@@ -10,24 +10,33 @@ import {OBJECTS} from "./sample-objects";
 
     template: `<div class="container-fluid" id="app">
 
+    <ul>
+        <li *ngFor="let item of objects; let i=index"><button (click)="clicked(i)">{{item.identifier}}</button></li>
+    </ul>
+
     <div class="row">
         <div class="col-md-12">
-            <object-edit [(object)]="e" [(projectConfiguration)]="projectConfiguration"></object-edit>
+            <object-edit [(object)]="selectedObject" [(projectConfiguration)]="projectConfiguration"></object-edit>
         </div>
     </div>
 </div>`,
 
     directives: [ ROUTER_DIRECTIVES, ObjectEditComponent ]
 })
-export class AppComponent implements OnInit {
+export class ObjectEditDemoComponent implements OnInit {
 
 
-    private e = {};
+    private objects = new Array();
+    private selectedObject;
     private projectConfiguration;
 
     constructor(
         private configLoader:ConfigLoader,
         private datastore: Datastore) {
+    }
+
+    public clicked(nr) {
+        this.selectedObject=this.objects[nr];
     }
 
     ngOnInit() {
@@ -39,7 +48,7 @@ export class AppComponent implements OnInit {
     }
 
     loadSampleData(): void {
-        var promises = [];
-        this.e=OBJECTS[0];
+        for (var item of OBJECTS)
+            this.objects.push(item);
     }
 }
