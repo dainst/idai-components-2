@@ -26,7 +26,7 @@ lib - the library files
 
 Edit the exports in [idai-components-2.ts](idai-components-2.ts).
 
-Create js files by
+Create js and css files by
 
 ```
 npm run build
@@ -38,5 +38,12 @@ Test the library files with
 npm test
 ```
 
-Commit all files including the js files and push them to github and release
+Commit all files including the js and css files and push them to github and release
 a new version.
+
+## Using the library
+
+```
+idai-comp`onents-2.ts
+css/idai-components-2.css
+``

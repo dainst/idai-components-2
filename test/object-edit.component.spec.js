@@ -139,4 +139,3 @@ System.register(['@angular/core/testing', '@angular/compiler/testing', '../lib/o
         }
     }
 });
-//# sourceMappingURL=object-edit.component.spec.js.map

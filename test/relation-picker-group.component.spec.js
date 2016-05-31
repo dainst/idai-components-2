@@ -35,4 +35,3 @@ System.register(['@angular/core/testing', "../lib/object-edit/relation-picker-gr
         }
     }
 });
-//# sourceMappingURL=relation-picker-group.component.spec.js.map
