@@ -57,7 +57,7 @@ System.register(['@angular/core', '@angular/router-deprecated', '../lib/ts/objec
                 };
                 ObjectEditDemoComponent = __decorate([
                     core_1.Component({
-                        selector: 'idai-field-app',
+                        selector: 'object-edit-demo',
                         templateUrl: 'templates/object-edit-demo.html',
                         directives: [router_deprecated_1.ROUTER_DIRECTIVES, object_edit_component_1.ObjectEditComponent]
                     }), 

@@ -2,7 +2,7 @@
 /// <reference path="../typings/browser/ambient/node/index.d.ts" />
 
 import {bootstrap}    from '@angular/platform-browser-dynamic'
-import {ObjectEditDemoComponent} from './object-edit-demo.component'
+import {AppComponent} from './app.component'
 import {HTTP_PROVIDERS} from '@angular/http';
 import {provide, enableProdMode} from '@angular/core';
 import {Datastore} from "../lib/ts/datastore/datastore";
@@ -12,10 +12,10 @@ import {ConfigLoader} from "../lib/ts/core-services/config-loader";
 import {RelationsProvider} from "../lib/ts/object-edit/relations-provider";
 import {PersistenceManager} from "../lib/ts/core-services/persistence-manager";
 import {MD} from "../lib/ts/md";
-import {ROUTER_PROVIDERS} from '@angular/router-deprecated';
+import { ROUTER_PROVIDERS } from '@angular/router';
 import {LocationStrategy, HashLocationStrategy} from '@angular/common';
 
-bootstrap(ObjectEditDemoComponent, [
+bootstrap(AppComponent, [
     ROUTER_PROVIDERS,
     HTTP_PROVIDERS,
     provide(LocationStrategy, { useClass: HashLocationStrategy }),

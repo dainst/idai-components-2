@@ -1,16 +1,16 @@
 /// <reference path="../typings/browser/ambient/es6-shim/index.d.ts" />
 /// <reference path="../typings/browser/ambient/node/index.d.ts" />
-System.register(['@angular/platform-browser-dynamic', './object-edit-demo.component', '@angular/http', '@angular/core', "../lib/ts/datastore/datastore", "../lib/ts/core-services/messages", "./memory-datastore", "../lib/ts/core-services/config-loader", "../lib/ts/object-edit/relations-provider", "../lib/ts/core-services/persistence-manager", "../lib/ts/md", '@angular/router-deprecated', '@angular/common'], function(exports_1, context_1) {
+System.register(['@angular/platform-browser-dynamic', './app.component', '@angular/http', '@angular/core', "../lib/ts/datastore/datastore", "../lib/ts/core-services/messages", "./memory-datastore", "../lib/ts/core-services/config-loader", "../lib/ts/object-edit/relations-provider", "../lib/ts/core-services/persistence-manager", "../lib/ts/md", '@angular/router', '@angular/common'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
-    var platform_browser_dynamic_1, object_edit_demo_component_1, http_1, core_1, datastore_1, messages_1, memory_datastore_1, config_loader_1, relations_provider_1, persistence_manager_1, md_1, router_deprecated_1, common_1;
+    var platform_browser_dynamic_1, app_component_1, http_1, core_1, datastore_1, messages_1, memory_datastore_1, config_loader_1, relations_provider_1, persistence_manager_1, md_1, router_1, common_1;
     return {
         setters:[
             function (platform_browser_dynamic_1_1) {
                 platform_browser_dynamic_1 = platform_browser_dynamic_1_1;
             },
-            function (object_edit_demo_component_1_1) {
-                object_edit_demo_component_1 = object_edit_demo_component_1_1;
+            function (app_component_1_1) {
+                app_component_1 = app_component_1_1;
             },
             function (http_1_1) {
                 http_1 = http_1_1;
@@ -39,15 +39,15 @@ System.register(['@angular/platform-browser-dynamic', './object-edit-demo.compon
             function (md_1_1) {
                 md_1 = md_1_1;
             },
-            function (router_deprecated_1_1) {
-                router_deprecated_1 = router_deprecated_1_1;
+            function (router_1_1) {
+                router_1 = router_1_1;
             },
             function (common_1_1) {
                 common_1 = common_1_1;
             }],
         execute: function() {
-            platform_browser_dynamic_1.bootstrap(object_edit_demo_component_1.ObjectEditDemoComponent, [
-                router_deprecated_1.ROUTER_PROVIDERS,
+            platform_browser_dynamic_1.bootstrap(app_component_1.AppComponent, [
+                router_1.ROUTER_PROVIDERS,
                 http_1.HTTP_PROVIDERS,
                 core_1.provide(common_1.LocationStrategy, { useClass: common_1.HashLocationStrategy }),
                 core_1.provide(datastore_1.Datastore, { useClass: memory_datastore_1.MemoryDatastore }),

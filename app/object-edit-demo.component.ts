@@ -6,7 +6,7 @@ import {Datastore} from '../lib/ts/datastore/datastore'
 import {OBJECTS} from "./sample-objects";
 
 @Component({
-    selector: 'idai-field-app',
+    selector: 'object-edit-demo',
 
     templateUrl: 'templates/object-edit-demo.html',
 
