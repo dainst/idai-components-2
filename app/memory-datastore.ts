@@ -29,8 +29,8 @@ export class MemoryDatastore implements Datastore {
         });
     }
 
-    public update(object:Entity):Promise<any> {
-
+    public update(entity:Entity):Promise<any> {
+        this.objectCache[entity.id]=entity;
         return new Promise((resolve, reject) => {
             resolve();
         });
@@ -71,8 +71,14 @@ export class MemoryDatastore implements Datastore {
 
         query = query.toLowerCase();
 
+        var results : Entity[] = [];
+        for (var i in this.objectCache) {
+            if (this.objectCache[i].identifier.indexOf(query)!=-1) results.push(this.objectCache[i]);
+        }
+        console.log("results ",results)
+
         return new Promise((resolve, reject) => {
-            resolve();
+            resolve(results);
         });
     }
 

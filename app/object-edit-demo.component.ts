@@ -24,8 +24,10 @@ export class ObjectEditDemoComponent implements OnInit {
         private datastore: Datastore) {
     }
 
-    public clicked(nr) {
-        this.selectedObject=this.objects[nr];
+    public clicked(id) {
+        this.datastore.get(id).then((entity)=> {
+            this.selectedObject = JSON.parse(JSON.stringify(entity));
+        });
     }
 
     ngOnInit() {
@@ -37,7 +39,9 @@ export class ObjectEditDemoComponent implements OnInit {
     }
 
     loadSampleData(): void {
-        for (var item of OBJECTS)
+        for (var item of OBJECTS) {
             this.objects.push(item);
+            this.datastore.update(item);
+        }
     }
 }

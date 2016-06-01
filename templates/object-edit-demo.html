@@ -1,7 +1,23 @@
 <div class="container-fluid" id="app">
 
+    <p>
+        Click on the button to select an item. Make your changes and click "Speichern".
+    </p>
+
+    <p>
+        Click on the button to select another item. Click back on the original item. The changes should have been
+        persisted.
+    </p>
+
+    <p>
+        Try out setting relations. In the appropriate search fields, you can search by entity identifier.
+    </p>
+
+    <p>
+        -
+    </p>
     <ul>
-        <li *ngFor="let item of objects; let i=index"><button (click)="clicked(i)">{{item.identifier}}</button></li>
+        <li *ngFor="let item of objects; let i=index"><button (click)="clicked(item.id)">Item nr. {{i}}</button></li>
     </ul>
 
     <div class="row">

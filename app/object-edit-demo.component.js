@@ -39,8 +39,11 @@ System.register(['@angular/core', '@angular/router-deprecated', '../lib/ts/objec
                     this.datastore = datastore;
                     this.objects = new Array();
                 }
-                ObjectEditDemoComponent.prototype.clicked = function (nr) {
-                    this.selectedObject = this.objects[nr];
+                ObjectEditDemoComponent.prototype.clicked = function (id) {
+                    var _this = this;
+                    this.datastore.get(id).then(function (entity) {
+                        _this.selectedObject = JSON.parse(JSON.stringify(entity));
+                    });
                 };
                 ObjectEditDemoComponent.prototype.ngOnInit = function () {
                     var _this = this;
@@ -53,6 +56,7 @@ System.register(['@angular/core', '@angular/router-deprecated', '../lib/ts/objec
                     for (var _i = 0, OBJECTS_1 = sample_objects_1.OBJECTS; _i < OBJECTS_1.length; _i++) {
                         var item = OBJECTS_1[_i];
                         this.objects.push(item);
+                        this.datastore.update(item);
                     }
                 };
                 ObjectEditDemoComponent = __decorate([

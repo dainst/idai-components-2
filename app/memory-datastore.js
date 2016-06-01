@@ -35,7 +35,8 @@ System.register(["@angular/core"], function(exports_1, context_1) {
                         resolve();
                     });
                 };
-                MemoryDatastore.prototype.update = function (object) {
+                MemoryDatastore.prototype.update = function (entity) {
+                    this.objectCache[entity.id] = entity;
                     return new Promise(function (resolve, reject) {
                         resolve();
                     });
@@ -70,8 +71,14 @@ System.register(["@angular/core"], function(exports_1, context_1) {
                 };
                 MemoryDatastore.prototype.find = function (query) {
                     query = query.toLowerCase();
+                    var results = [];
+                    for (var i in this.objectCache) {
+                        if (this.objectCache[i].identifier.indexOf(query) != -1)
+                            results.push(this.objectCache[i]);
+                    }
+                    console.log("results ", results);
                     return new Promise(function (resolve, reject) {
-                        resolve();
+                        resolve(results);
                     });
                 };
                 MemoryDatastore.prototype.all = function () {
