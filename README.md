@@ -22,6 +22,9 @@ app - the demo application
 lib - the library files
 ```
 
+When opening http://localhost:8083 in a browser, you will see a link
+to the object edit demo. Click it to open the demo.
+
 ## Publishing
 
 Edit the exports in [idai-components-2.ts](idai-components-2.ts).
