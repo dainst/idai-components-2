@@ -1,8 +1,8 @@
 {
   "name": "idai-components-2",
-  "description": "iDAI.components2",
+  "description": "iDAI.components 2",
   "main": "main.js",
-  "version": "0.0.1",
+  "version": "0.3.0",
   "license": "Apache-2.0",
   "scripts": {
     "prebuild": "rimraf css/* && rimraf fonts/*",
@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/codarchlab/idai-field-client.git"
+    "url": "https://github.com/dainst/idai-components-2.git"
   },
   "dependencies": {
     "@angular/common": "^2.0.0-rc.1",

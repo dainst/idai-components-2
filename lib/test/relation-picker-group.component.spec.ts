@@ -1,6 +1,6 @@
 import {describe,xdescribe, expect, fit, it, xit, beforeEach} from '@angular/core/testing';
-import {Entity} from "../ts/core-services/entity";
-import {RelationPickerGroupComponent} from "../ts/object-edit/relation-picker-group.component";
+import {Entity} from "../app/core-services/entity";
+import {RelationPickerGroupComponent} from "../app/object-edit/relation-picker-group.component";
 
 /**
  * @author Thomas Kleinke

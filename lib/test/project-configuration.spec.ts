@@ -1,6 +1,6 @@
 import {fdescribe, xdescribe,describe, expect, fit, it, xit, inject, beforeEach, beforeEachProviders} from '@angular/core/testing';
-import {ProjectConfiguration} from "../ts/object-edit/project-configuration";
-import {MD} from "../ts/md";
+import {ProjectConfiguration} from "../app/object-edit/project-configuration";
+import {MD} from "../app/core-services/md";
 
 /**
  * @author Daniel de Oliveira

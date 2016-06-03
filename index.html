@@ -11,7 +11,7 @@
     <meta name="author" content="DAINST DEVS">
 
     <link rel="icon" href="img/favicon.png" type="image/png">
-    <link rel="stylesheet" type="text/css" href="css/idai-components-2.css">
+    <link rel="stylesheet" type="text/css" href="lib/css/idai-components-2.css">
 
     <script src="node_modules/reflect-metadata/Reflect.js"></script>
     <script src="node_modules/zone.js/dist/zone.js"></script>
@@ -37,18 +37,18 @@
                 'rxjs': 'node_modules/rxjs'
             },
             packages: {
-                'lib/ts': {
+                'lib/app': {
                     format: 'register',
                     defaultExtension: 'js'
                 },
-                'app': {
+                'demo/app': {
                     format: 'register',
                     defaultExtension: 'js'
                 },
                 node_modules: {
                     defaultExtension: 'js'
                 },
-                config: {
+                'demo/config' : {
                     defaultExtension: false,
                     meta: {
                         '*.json': {
@@ -67,7 +67,7 @@
                 'rxjs'                             : {main: 'index.js'}
             }
         });
-        System.import('app/boot')
+        System.import('demo/app/boot')
                 .then(null, console.error.bind(console));
     </script>
 

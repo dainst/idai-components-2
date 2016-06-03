@@ -18,7 +18,7 @@ gulp.task('convert-sass', function() {
 			'node_modules/mdi/scss/'
 		], precision: 8}))
 	  	.pipe(concat(pkg.name + '.css'))
-	    .pipe(gulp.dest('css'));
+	    .pipe(gulp.dest('lib/css'));
 });
 
 function watch() {
@@ -47,14 +47,20 @@ gulp.task('compile',['convert-sass'], function () {
         .pipe(gulp.dest('fonts'));
 	// sources
     gulp
-		.src('app/**/*.ts')
+		.src('demo/app/**/*.ts')
 		.pipe(typescript(tscConfig.compilerOptions))
-		.pipe(gulp.dest('app/'));
+		.pipe(gulp.dest('demo/app/'));
+
+    gulp
+        .src('lib/app/**/*.ts')
+        .pipe(typescript(tscConfig.compilerOptions))
+        .pipe(gulp.dest('lib/app/'));
+
 	// test sources
     return gulp
-		.src('test/**/*.ts')
+		.src('lib/test/**/*.ts')
 		.pipe(typescript(tscConfig.compilerOptions))
-		.pipe(gulp.dest('test/'));
+		.pipe(gulp.dest('lib/test/'));
 });
 
 

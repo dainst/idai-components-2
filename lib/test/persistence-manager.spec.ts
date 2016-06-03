@@ -1,10 +1,10 @@
 import {fdescribe,describe,expect,fit,it,xit, inject, beforeEach,beforeEachProviders} from '@angular/core/testing';
 import {provide} from "@angular/core";
-import {Entity} from "../ts/core-services/entity";
-import {PersistenceManager} from "../ts/core-services/persistence-manager";
-import {Datastore} from "../ts/datastore/datastore";
-import {Messages} from "../ts/core-services/messages";
-import {MD} from "../ts/md";
+import {Entity} from "../app/core-services/entity";
+import {PersistenceManager} from "../app/object-edit/persistence-manager";
+import {Datastore} from "../app/datastore/datastore";
+import {Messages} from "../app/core-services/messages";
+import {MD} from "../app/core-services/md";
 
 /**
  * @author Daniel M. de Oliveira
@@ -65,7 +65,7 @@ export function main() {
 
             mockRelationsProvider = jasmine.createSpyObj('mockRelationsProvider',['isRelationProperty','getInverse'])
             mockDatastore = jasmine.createSpyObj('mockDatastore', ['get', 'create', 'update', 'refresh']);
-            persistenceManager = new PersistenceManager(mockDatastore,mockRelationsProvider);
+            persistenceManager = new PersistenceManager(mockDatastore);
             mockRelationsProvider.isRelationProperty.and.callFake(relF);
             mockRelationsProvider.getInverse.and.returnValue("Contains");
             mockDatastore.get.and.callFake(getFunction);
