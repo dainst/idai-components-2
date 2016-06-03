@@ -2,12 +2,12 @@ import {fdescribe,describe,expect,fit,it,xit, inject, beforeEach,beforeEachProvi
 import {provide} from "@angular/core";
 import {Entity} from "../app/core-services/entity";
 import {PersistenceManager} from "../app/object-edit/persistence-manager";
-import {Datastore} from "../app/datastore/datastore";
+import {RelationsConfiguration} from "../app/object-edit/relations-configuration";
 import {Messages} from "../app/core-services/messages";
 import {MD} from "../app/core-services/md";
 
 /**
- * @author Daniel M. de Oliveira
+ * @author Daniel de Oliveira
  * @author Thomas Kleinke
  */
 export function main() {
@@ -19,7 +19,6 @@ export function main() {
         ]);
 
         var mockDatastore;
-        var mockRelationsProvider;
         var persistenceManager;
         var id = "abc";
 
@@ -54,20 +53,23 @@ export function main() {
             });
         };
 
-        var relF = function(n) {
-            if (n=="BelongsTo") return true;
-            if (n=="Contains") return true;
-            return false;
-        }
-
-
         beforeEach(function () {
 
-            mockRelationsProvider = jasmine.createSpyObj('mockRelationsProvider',['isRelationProperty','getInverse'])
             mockDatastore = jasmine.createSpyObj('mockDatastore', ['get', 'create', 'update', 'refresh']);
             persistenceManager = new PersistenceManager(mockDatastore);
-            mockRelationsProvider.isRelationProperty.and.callFake(relF);
-            mockRelationsProvider.getInverse.and.returnValue("Contains");
+            persistenceManager.setRelationsConfiguration(new RelationsConfiguration(
+                [
+                    {
+                        "field":"BelongsTo",
+                        "inverse":"Contains",
+                        "label":"Enthalten in"
+                    },
+                    {
+                        "field":"Contains",
+                        "inverse":"BelongsTo",
+                        "label":"Enthält"
+                    }
+                ]));
             mockDatastore.get.and.callFake(getFunction);
             mockDatastore.update.and.callFake(successFunction);
             mockDatastore.create.and.callFake(successFunction);
