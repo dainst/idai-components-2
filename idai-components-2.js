@@ -1,4 +1,4 @@
-System.register(['./lib/app/object-edit/config-loader', './lib/app/object-edit/persistence-manager', './lib/app/datastore/datastore', './lib/app/datastore/read-datastore', './lib/app/object-edit/project-configuration', './lib/app/object-edit/object-edit.component.ts', './lib/app/object-edit/relations-configuration', './lib/app/core-services/messages.component.ts', './lib/app/core-services/messages', './lib/app/core-services/md'], function(exports_1, context_1) {
+System.register(['./lib/app/object-edit/config-loader', './lib/app/object-edit/persistence-manager', './lib/app/datastore/datastore', './lib/app/datastore/read-datastore', './lib/app/object-edit/project-configuration', './lib/app/object-edit/object-edit.component', './lib/app/object-edit/relations-configuration', './lib/app/core-services/messages.component', './lib/app/core-services/messages', './lib/app/core-services/md'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     return {
@@ -28,9 +28,9 @@ System.register(['./lib/app/object-edit/config-loader', './lib/app/object-edit/p
                     "ProjectConfiguration": project_configuration_1_1["ProjectConfiguration"]
                 });
             },
-            function (object_edit_component_ts_1_1) {
+            function (object_edit_component_1_1) {
                 exports_1({
-                    "ObjectEditComponent": object_edit_component_ts_1_1["ObjectEditComponent"]
+                    "ObjectEditComponent": object_edit_component_1_1["ObjectEditComponent"]
                 });
             },
             function (relations_configuration_1_1) {
@@ -38,9 +38,9 @@ System.register(['./lib/app/object-edit/config-loader', './lib/app/object-edit/p
                     "RelationsConfiguration": relations_configuration_1_1["RelationsConfiguration"]
                 });
             },
-            function (messages_component_ts_1_1) {
+            function (messages_component_1_1) {
                 exports_1({
-                    "MessagesComponent": messages_component_ts_1_1["MessagesComponent"]
+                    "MessagesComponent": messages_component_1_1["MessagesComponent"]
                 });
             },
             function (messages_1_1) {
