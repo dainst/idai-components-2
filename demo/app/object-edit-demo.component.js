@@ -46,15 +46,9 @@ System.register(['@angular/core', '@angular/router-deprecated', '../../lib/app/o
                     });
                 };
                 ObjectEditDemoComponent.prototype.ngOnInit = function () {
-                    var _this = this;
                     this.loadSampleData();
-                    var promises = [];
-                    promises.push(this.configLoader.getProjectConfiguration(ObjectEditDemoComponent.PROJECT_CONFIGURATION_PATH));
-                    promises.push(this.configLoader.getRelationsConfiguration(ObjectEditDemoComponent.RELATIONS_CONFIGURATION_PATH));
-                    Promise.all(promises).then(function (configs) {
-                        _this.projectConfiguration = configs[0];
-                        _this.relationsConfiguration = configs[1];
-                    }, function (errs) { console.error('errs: ', errs); });
+                    this.configLoader.setProjectConfiguration(ObjectEditDemoComponent.PROJECT_CONFIGURATION_PATH);
+                    this.configLoader.setRelationsConfiguration(ObjectEditDemoComponent.RELATIONS_CONFIGURATION_PATH);
                 };
                 ObjectEditDemoComponent.prototype.loadSampleData = function () {
                     for (var _i = 0, OBJECTS_1 = sample_objects_1.OBJECTS; _i < OBJECTS_1.length; _i++) {
@@ -79,4 +73,3 @@ System.register(['@angular/core', '@angular/router-deprecated', '../../lib/app/o
         }
     }
 });
-//# sourceMappingURL=object-edit-demo.component.js.map

@@ -9,6 +9,7 @@ import {OnChanges} from "@angular/core";
 import {Messages} from "../core-services/messages";
 import {RelationsConfiguration} from "./relations-configuration";
 import {MD} from "../core-services/md";
+import {ConfigLoader} from "./config-loader";
 
 /**
  * @author Jan G. Wieners
@@ -24,19 +25,29 @@ import {MD} from "../core-services/md";
 export class ObjectEditComponent implements OnChanges,OnInit {
 
     @Input() object: Entity;
-    @Input() projectConfiguration: ProjectConfiguration;
-    @Input() relationsConfiguration: RelationsConfiguration;
 
+    private projectConfiguration: ProjectConfiguration;
+    private relationsConfiguration: RelationsConfiguration;
     public types : string[];
     public fieldsForObjectType : any;
 
     constructor(
         private persistenceManager: PersistenceManager,
-        private messages: Messages
+        private messages: Messages,
+        private configLoader: ConfigLoader
     ) {}
 
     ngOnInit():any {
         this.setFieldsForObjectType(); // bad, this is necessary for testing
+
+        this.configLoader.relationsConfiguration().subscribe((relationsConfiguration)=> {
+
+            this.relationsConfiguration = relationsConfiguration;
+            this.persistenceManager.setRelationsConfiguration(relationsConfiguration)
+        });
+        this.configLoader.projectConfiguration().subscribe((projectConfiguration)=>{
+            this.projectConfiguration = projectConfiguration
+        });
     }
 
     public setType(type: string) {
@@ -53,8 +64,9 @@ export class ObjectEditComponent implements OnChanges,OnInit {
 
     public ngOnChanges() {
 
-        if (this.object && this.projectConfiguration && this.relationsConfiguration) {
-            this.persistenceManager.setRelationsConfiguration(this.relationsConfiguration);
+        if (!this.projectConfiguration || !this.relationsConfiguration) return;
+        
+        if (this.object) {
             this.persistenceManager.setOldVersion(this.object);
             this.setFieldsForObjectType();
             this.types=this.projectConfiguration.getTypes();

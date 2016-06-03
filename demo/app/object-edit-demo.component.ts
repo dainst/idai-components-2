@@ -19,8 +19,6 @@ export class ObjectEditDemoComponent implements OnInit {
     
     private objects = new Array();
     private selectedObject;
-    private projectConfiguration;
-    private relationsConfiguration;
 
     constructor(
         private configLoader:ConfigLoader,
@@ -35,16 +33,8 @@ export class ObjectEditDemoComponent implements OnInit {
 
     ngOnInit() {
         this.loadSampleData();
-
-        var promises = [];
-        promises.push(this.configLoader.getProjectConfiguration(ObjectEditDemoComponent.PROJECT_CONFIGURATION_PATH));
-        promises.push(this.configLoader.getRelationsConfiguration(ObjectEditDemoComponent.RELATIONS_CONFIGURATION_PATH));
-        
-        Promise.all(promises).then(configs=>{
-
-            this.projectConfiguration=configs[0];
-            this.relationsConfiguration=configs[1];
-        }, (errs)=>{console.error('errs: ',errs)});
+        this.configLoader.setProjectConfiguration(ObjectEditDemoComponent.PROJECT_CONFIGURATION_PATH);
+        this.configLoader.setRelationsConfiguration(ObjectEditDemoComponent.RELATIONS_CONFIGURATION_PATH);
     }
 
     loadSampleData(): void {

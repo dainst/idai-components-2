@@ -3,15 +3,16 @@ import {ProjectConfiguration} from "./project-configuration";
 import {RelationsConfiguration} from "./relations-configuration";
 import {Http} from "@angular/http";
 import {MD} from "../core-services/md";
-
+import {Observable} from "rxjs/Observable";
 
 /**
  * @author Daniel de Oliveira
  */
 @Injectable()
 export class ConfigLoader {
-
-   
+    
+    private projectConfigurationObservers = [];
+    private relationsConfigurationObservers = [];
 
     constructor(
         private http: Http){
@@ -20,28 +21,34 @@ export class ConfigLoader {
     /**
      * @returns {Promise<ProjectConfiguration>} which gets rejected with a key of MD or an error msg in case of an error.
      */
-    public getProjectConfiguration(path:string) : Promise<ProjectConfiguration> {
+    public projectConfiguration() : Observable<ProjectConfiguration> {
+        return Observable.create( observer => {
+            this.projectConfigurationObservers.push(observer);
+        });
+    }
 
-        return new Promise<ProjectConfiguration>((resolve, reject) => {
-            this.read(path,resolve,reject,function(data){
-                return new ProjectConfiguration(data);
-            })
+    public relationsConfiguration() : Observable<RelationsConfiguration> {
+        return Observable.create( observer => {
+            this.relationsConfigurationObservers.push(observer);
         });
     }
     
-    /**
-     * @returns {Promise<RelationsConfiguration>} which gets rejected with a key of MD or an error msg in case of an error.
-     */
-    public getRelationsConfiguration(path:string) : Promise<RelationsConfiguration> {
-
-        return new Promise<RelationsConfiguration>((resolve, reject) => {
-            this.read(path,resolve,reject,function(data){
-                return new RelationsConfiguration(data['relations']);
-            })
-        });
+    public setProjectConfiguration(path:string) {
+        this.read(path,this,function(data,self){
+            self.relationsConfigurationObservers.forEach(observer =>
+                observer.next(new ProjectConfiguration(data)));
+        })
     }
-
-    private read(path:string,resolve,reject,createMethod) {
+    
+    public setRelationsConfiguration(path:string) {
+        this.read(path,this,function(data,self){
+            self.relationsConfigurationObservers.forEach(observer =>
+                observer.next(new RelationsConfiguration(data['relations'])));
+        })
+    }
+    
+    
+    private read(path:string,self,createMethod) {
         this.http.get(path).
         subscribe(data_=>{
 
@@ -49,13 +56,12 @@ export class ConfigLoader {
             try {
                 data=JSON.parse(data_['_body'])
             } catch (e) {
-                reject(MD.PARSE_GENERIC_ERROR);
+                console.error(MD.PARSE_GENERIC_ERROR);
             }
-
             try {
-                resolve(createMethod(data))
+                createMethod(data,self)
             } catch (e) {
-                reject(e)
+                console.error(e)
             }
         });
     }
