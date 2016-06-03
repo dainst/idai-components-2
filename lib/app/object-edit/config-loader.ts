@@ -35,7 +35,7 @@ export class ConfigLoader {
     
     public setProjectConfiguration(path:string) {
         this.read(path,this,function(data,self){
-            self.relationsConfigurationObservers.forEach(observer =>
+            self.projectConfigurationObservers.forEach(observer =>
                 observer.next(new ProjectConfiguration(data)));
         })
     }
