@@ -28,6 +28,8 @@ export class ObjectEditComponent implements OnChanges,OnInit {
 
     private projectConfiguration: ProjectConfiguration;
     private relationsConfiguration: RelationsConfiguration;
+
+    public relationFields : any[];
     public types : string[];
     public fieldsForObjectType : any;
 
@@ -38,38 +40,37 @@ export class ObjectEditComponent implements OnChanges,OnInit {
     ) {}
 
     ngOnInit():any {
-        this.setFieldsForObjectType(); // bad, this is necessary for testing
+        // this.setFieldsForObjectType(); // bad, this is necessary for testing
 
         this.configLoader.relationsConfiguration().subscribe((relationsConfiguration)=> {
 
             this.relationsConfiguration = relationsConfiguration;
             this.persistenceManager.setRelationsConfiguration(relationsConfiguration)
+            this.relationFields = relationsConfiguration.getRelationFields();
         });
         this.configLoader.projectConfiguration().subscribe((projectConfiguration)=>{
-            this.projectConfiguration = projectConfiguration
+            this.projectConfiguration = projectConfiguration;
+            this.setFieldsForObjectType(this.object,this.projectConfiguration);
         });
     }
 
     public setType(type: string) {
-
         this.object.type = type;
-        this.setFieldsForObjectType();
+        this.setFieldsForObjectType(this.object,this.projectConfiguration);
     }
 
-    private setFieldsForObjectType() {
-        if (this.object==undefined) return;
-        if (!this.projectConfiguration) return;
-        this.fieldsForObjectType=this.projectConfiguration.getFields(this.object.type);
+    private setFieldsForObjectType(object,projectConfiguration) {
+        if (object==undefined) return;
+        if (!projectConfiguration) return;
+        this.fieldsForObjectType=projectConfiguration.getFields(object.type);
+        this.types=this.projectConfiguration.getTypes();
     }
 
     public ngOnChanges() {
 
-        if (!this.projectConfiguration || !this.relationsConfiguration) return;
-        
         if (this.object) {
             this.persistenceManager.setOldVersion(this.object);
-            this.setFieldsForObjectType();
-            this.types=this.projectConfiguration.getTypes();
+            this.setFieldsForObjectType(this.object,this.projectConfiguration);
         }
     }
 
