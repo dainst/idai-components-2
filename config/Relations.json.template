@@ -1,0 +1,14 @@
+{
+  "relations":[
+    {
+      "field":"Belongs to",
+      "inverse":"Includes",
+      "label":"Enthalten in"
+    },
+    {
+      "field":"Includes",
+      "inverse":"Belongs to",
+      "label":"Enthält"
+    }
+  ]
+}

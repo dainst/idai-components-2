@@ -47,4 +47,3 @@ System.register(['@angular/core', '@angular/router', './object-edit-demo.compone
         }
     }
 });
-//# sourceMappingURL=app.component.js.map

@@ -1,6 +1,7 @@
 import {Injectable} from "@angular/core";
 import {Datastore} from "../datastore/datastore";
-import {RelationsProvider} from "../object-edit/relations-provider";
+import {RelationsConfiguration} from "../object-edit/relations-configuration";
+import {ConfigLoader} from "../object-edit/config-loader";
 import {MD} from "../md";
 import {Entity} from "./entity";
 
@@ -11,11 +12,12 @@ import {Entity} from "./entity";
     
     constructor(
         private datastore: Datastore,
-        private relationsProvider: RelationsProvider
+        private configLoader: ConfigLoader
     ) {}
 
     private object: Entity = undefined;
     private oldVersion : Entity = undefined;
+    private relationsConfiguration : RelationsConfiguration = undefined;
 
     public setOldVersion(oldVersion) {
         this.oldVersion=JSON.parse(JSON.stringify(oldVersion));
@@ -46,20 +48,25 @@ import {Entity} from "./entity";
     public persist() {
 
         return new Promise<any>((resolve, reject) => {
-            if (this.object==undefined) return resolve();
+            this.configLoader.getRelationsConfiguration().then((relationsConfiguration)=>{
+                this.relationsConfiguration=relationsConfiguration;
 
-            this.persistIt(this.object).then(()=> {
-                Promise.all(this.makeGetPromises(this.object,this.oldVersion)).then((targetObjects)=> {
+                    if (this.object==undefined) return resolve();
 
-                    Promise.all(this.makeSavePromises(this.object,targetObjects)).then((targetObjects)=> {
+                    this.persistIt(this.object).then(()=> {
+                        Promise.all(this.makeGetPromises(this.object,this.oldVersion)).then((targetObjects)=> {
 
-                        this.unload();
-                        resolve();
-                    }, (err)=>reject(err));
+                            Promise.all(this.makeSavePromises(this.object,targetObjects)).then((targetObjects)=> {
+
+                                this.unload();
+                                resolve();
+                            }, (err)=>reject(err));
 
 
-                }, (err)=>reject(err))
-            }, (err)=> { reject(this.toStringArray(err)); });
+                        }, (err)=>reject(err))
+                    }, (err)=> { reject(this.toStringArray(err)); });
+                },
+                err=>{console.error("error while loading relationsconfiguration");reject(err);});
         });
     }
 
@@ -88,7 +95,7 @@ import {Entity} from "./entity";
     private pruneInverseRelations(object,targetObject) {
         for (var prop in targetObject) {
             if (!targetObject.hasOwnProperty(prop)) continue;
-            if (!this.relationsProvider.isRelationProperty(prop)) continue;
+            if (!this.relationsConfiguration.isRelationProperty(prop)) continue;
 
             var index=targetObject[prop].indexOf(object.id);
             if (index!=-1) {
@@ -102,12 +109,12 @@ import {Entity} from "./entity";
     private setInverseRelations(object, targetObject) {
         for (var prop in object) {
             if (!object.hasOwnProperty(prop)) continue;
-            if (!this.relationsProvider.isRelationProperty(prop)) continue;
+            if (!this.relationsConfiguration.isRelationProperty(prop)) continue;
 
             for (var id of object[prop]) {
                 if (id!=targetObject.id) continue;
 
-                var inverse = this.relationsProvider.getInverse(prop);
+                var inverse = this.relationsConfiguration.getInverse(prop);
 
                 if (targetObject[inverse]==undefined)
                     targetObject[inverse]=[];
@@ -128,7 +135,7 @@ import {Entity} from "./entity";
 
         for (var prop in object) {
             if (!object.hasOwnProperty(prop)) continue;
-            if (!this.relationsProvider.isRelationProperty(prop)) continue;
+            if (!this.relationsConfiguration.isRelationProperty(prop)) continue;
 
             for (var id of object[prop]) {
                 relatedObjectIDs.push(id);

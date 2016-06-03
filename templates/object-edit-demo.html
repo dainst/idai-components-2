@@ -1,6 +1,14 @@
 <div class="container-fluid" id="app">
 
     <p>
+        &lt;object-edit [(object)]="selectedObject" [(projectConfiguration)]="projectConfiguration" [(relationsConfiguration)]="relationsConfiguration" &gt;&lt;/object-edit&gt;
+    </p>
+
+    <p>
+        -
+    </p>
+
+    <p>
         Click on the button to select an item. Make your changes and click "Speichern".
     </p>
 
@@ -22,7 +30,7 @@
 
     <div class="row">
         <div class="col-md-12">
-            <object-edit [(object)]="selectedObject" [(projectConfiguration)]="projectConfiguration"></object-edit>
+            <object-edit [(object)]="selectedObject" [(projectConfiguration)]="projectConfiguration" [(relationsConfiguration)]="relationsConfiguration" ></object-edit>
         </div>
     </div>
 </div>

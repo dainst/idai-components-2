@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/router-deprecated', '../lib/ts/object-edit/object-edit.component', '../lib/ts/core-services/config-loader', '../lib/ts/datastore/datastore', "./sample-objects"], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/router-deprecated', '../lib/ts/object-edit/object-edit.component', '../lib/ts/object-edit/config-loader', '../lib/ts/datastore/datastore', "./sample-objects"], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -48,9 +48,13 @@ System.register(['@angular/core', '@angular/router-deprecated', '../lib/ts/objec
                 ObjectEditDemoComponent.prototype.ngOnInit = function () {
                     var _this = this;
                     this.loadSampleData();
-                    this.configLoader.getProjectConfiguration().then(function (pc) {
-                        _this.projectConfiguration = pc;
-                    });
+                    var promises = [];
+                    promises.push(this.configLoader.getProjectConfiguration(ObjectEditDemoComponent.PROJECT_CONFIGURATION_PATH));
+                    promises.push(this.configLoader.getRelationsConfiguration(ObjectEditDemoComponent.RELATIONS_CONFIGURATION_PATH));
+                    Promise.all(promises).then(function (configs) {
+                        _this.projectConfiguration = configs[0];
+                        _this.relationsConfiguration = configs[1];
+                    }, function (errs) { console.error('errs: ', errs); });
                 };
                 ObjectEditDemoComponent.prototype.loadSampleData = function () {
                     for (var _i = 0, OBJECTS_1 = sample_objects_1.OBJECTS; _i < OBJECTS_1.length; _i++) {
@@ -59,6 +63,8 @@ System.register(['@angular/core', '@angular/router-deprecated', '../lib/ts/objec
                         this.datastore.update(item);
                     }
                 };
+                ObjectEditDemoComponent.PROJECT_CONFIGURATION_PATH = 'config/Configuration.json';
+                ObjectEditDemoComponent.RELATIONS_CONFIGURATION_PATH = 'config/Relations.json';
                 ObjectEditDemoComponent = __decorate([
                     core_1.Component({
                         selector: 'object-edit-demo',

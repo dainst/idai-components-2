@@ -1,4 +1,4 @@
-System.register(['./lib/ts/core-services/config-loader', './lib/ts/core-services/persistence-manager', './lib/ts/datastore/datastore', './lib/ts/datastore/read-datastore', './lib/ts/core-services/project-configuration', './lib/ts/object-edit/object-edit.component', './lib/ts/object-edit/relations-provider', './lib/ts/core-services/messages.component', './lib/ts/core-services/messages', './lib/ts/md'], function(exports_1, context_1) {
+System.register(['./lib/ts/object-edit/config-loader', './lib/ts/core-services/persistence-manager', './lib/ts/datastore/datastore', './lib/ts/datastore/read-datastore', './lib/ts/object-edit/project-configuration', './lib/ts/object-edit/object-edit.component', './lib/ts/core-services/messages.component', './lib/ts/core-services/messages', './lib/ts/md'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     return {
@@ -31,11 +31,6 @@ System.register(['./lib/ts/core-services/config-loader', './lib/ts/core-services
             function (object_edit_component_1_1) {
                 exports_1({
                     "ObjectEditComponent": object_edit_component_1_1["ObjectEditComponent"]
-                });
-            },
-            function (relations_provider_1_1) {
-                exports_1({
-                    "RelationsProvider": relations_provider_1_1["RelationsProvider"]
                 });
             },
             function (messages_component_1_1) {

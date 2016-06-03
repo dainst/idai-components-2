@@ -2,12 +2,12 @@ import {Component, Input, OnInit} from '@angular/core';
 import {Entity} from "../core-services/entity";
 import {PersistenceManager} from "../core-services/persistence-manager";
 import {CORE_DIRECTIVES,COMMON_DIRECTIVES,FORM_DIRECTIVES} from "@angular/common";
-import {ProjectConfiguration} from "../core-services/project-configuration";
+import {ProjectConfiguration} from "./project-configuration";
 import {RelationPickerGroupComponent} from "./relation-picker-group.component";
 import {ValuelistComponent} from "./valuelist.component";
 import {OnChanges} from "@angular/core";
 import {Messages} from "../core-services/messages";
-import {RelationsProvider} from "./relations-provider";
+import {RelationsConfiguration} from "./relations-configuration";
 import {MD} from "../md";
 
 /**
@@ -25,14 +25,14 @@ export class ObjectEditComponent implements OnChanges,OnInit {
 
     @Input() object: Entity;
     @Input() projectConfiguration: ProjectConfiguration;
+    @Input() relationsConfiguration: RelationsConfiguration;
 
     public types : string[];
     public fieldsForObjectType : any;
 
     constructor(
         private persistenceManager: PersistenceManager,
-        private messages: Messages,
-        private relationsProvider: RelationsProvider // used from within template
+        private messages: Messages
     ) {}
 
     ngOnInit():any {
@@ -53,7 +53,7 @@ export class ObjectEditComponent implements OnChanges,OnInit {
 
     public ngOnChanges() {
 
-        if (this.object && this.projectConfiguration) {
+        if (this.object && this.projectConfiguration && this.relationsConfiguration) {
             this.persistenceManager.setOldVersion(this.object);
             this.setFieldsForObjectType();
             this.types=this.projectConfiguration.getTypes();
