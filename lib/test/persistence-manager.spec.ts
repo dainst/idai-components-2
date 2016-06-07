@@ -75,17 +75,17 @@ export function main() {
             mockDatastore.create.and.callFake(successFunction);
 
             object = {
-                "id" :"1", "identifier": "ob1", "title": "Title1",
+                "id" :"1", "identifier": "ob1",
                 "type": "Object", "synced" : 0
             };
 
             relatedObject = {
-                "id": "2" , "identifier": "ob2", "title": "Title2",
+                "id": "2" , "identifier": "ob2", 
                 "type": "Object"
             }
 
             anotherRelatedObject = {
-                "id": "3" , "identifier": "ob3", "title": "Title3",
+                "id": "3" , "identifier": "ob3",
                 "type": "Object"
             }
 
@@ -141,7 +141,7 @@ export function main() {
             function (done) {
 
                 var oldVersion = {
-                    "id" :"1", "identifier": "ob1", "title": "Title1", "BelongsTo" : [ "2" ],
+                    "id" :"1", "identifier": "ob1", "BelongsTo" : [ "2" ],
                     "type": "Object", "synced" : 0
                 }
 

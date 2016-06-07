@@ -41,7 +41,6 @@ export function main() {
 
         var selectedObject = {
             "identifier": "ob1",
-            "title": "Title",
             "synced": 0,
             "valid": true,
             "type": "Object"

@@ -42,12 +42,6 @@
                                class="form-control"
                                aria-describedby="identifier">
                     </div>
-                    <div class="form-group">
-                        <label id="title">{{object.type}} Title</label>
-                        <input id="object-edit-input-title" [(ngModel)]="object.title" (keyup)="markAsChanged()"
-                               class="form-control"
-                               aria-describedby="title">
-                    </div>
 
                     <!-- Diverse Object Informations -->
                     <div *ngFor="let field of fieldsForObjectType">
