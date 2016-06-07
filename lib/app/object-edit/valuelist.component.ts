@@ -26,17 +26,17 @@ export class ValuelistComponent {
 
     public setValues(selectedOptions: HTMLCollection) {
 
-        this.object[this.field.fieldDefinition] = [];
+        this.object[this.field.field] = [];
         for (var i = 0; i < selectedOptions.length; i++) {
-            this.object[this.field.fieldDefinition].push(selectedOptions.item(i).childNodes[0].nodeValue);
+            this.object[this.field.field].push(selectedOptions.item(i).childNodes[0].nodeValue);
         }
         this.persistenceManager.load(this.object);
     }
 
     public isSelected(item: string) {
 
-        if (this.object[this.field.fieldDefinition])
-            return (this.object[this.field.fieldDefinition].indexOf(item) > -1);
+        if (this.object[this.field.field])
+            return (this.object[this.field.field].indexOf(item) > -1);
         else
             return false;
     }
