@@ -5,6 +5,7 @@ import {CORE_DIRECTIVES,COMMON_DIRECTIVES,FORM_DIRECTIVES} from "@angular/common
 import {ProjectConfiguration} from "./project-configuration";
 import {RelationPickerGroupComponent} from "./relation-picker-group.component";
 import {ValuelistComponent} from "./valuelist.component";
+import {FieldlistComponent} from "./fieldlist.component";
 import {OnChanges} from "@angular/core";
 import {Messages} from "../core-services/messages";
 import {RelationsConfiguration} from "./relations-configuration";
@@ -17,7 +18,14 @@ import {ConfigLoader} from "./config-loader";
  * @author Daniel de Oliveira
  */
 @Component({
-    directives: [FORM_DIRECTIVES, CORE_DIRECTIVES, COMMON_DIRECTIVES, RelationPickerGroupComponent, ValuelistComponent],
+    directives: [
+        FORM_DIRECTIVES,
+        CORE_DIRECTIVES,
+        COMMON_DIRECTIVES,
+        RelationPickerGroupComponent,
+        ValuelistComponent,
+        FieldlistComponent
+    ],
     selector: 'object-edit',
     templateUrl: 'lib/templates/object-edit.html'
 })

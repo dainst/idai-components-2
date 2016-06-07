@@ -54,7 +54,7 @@
                         <div *ngIf="field" class="form-group">
                             <label *ngIf="field.label">{{field.label}}</label>
                             <label *ngIf="!field.label">{{field.field}}</label>
-                            <div *ngIf="!field.valuelist && !field.multiline">
+                            <div *ngIf="!field.valuelist && !field.multiline && !field.array">
                                 <input [(ngModel)]="object[field.field]" (keyup)="markAsChanged()" class="form-control">
                             </div>
                             <div *ngIf="field.multiline">
@@ -68,6 +68,7 @@
                             </div>
                             <valuelist *ngIf="field.valuelist && field.multivalue" [(object)]="object"
                                        [field]="field"></valuelist>
+                            <fieldlist *ngIf="field.array" [(object)]="object" [fieldDefinition]="field"></fieldlist>
                         </div>
                     </div>
 

@@ -33,8 +33,8 @@ export function main() {
                 var dmc = new ProjectConfiguration({"types":[ firstLevelType, secondLevelType ]});
 
                 var fields=dmc.getFields('SecondLevelType');
-                expect(fields[0].field).toBe('fieldA');
-                expect(fields[1].field).toBe('fieldB');
+                expect(fields[0].fieldDefinition).toBe('fieldA');
+                expect(fields[1].fieldDefinition).toBe('fieldB');
             }
         );
 
@@ -45,8 +45,8 @@ export function main() {
                 var dmc = new ProjectConfiguration({"types":[ secondLevelType, firstLevelType ]});
 
                 var fields=dmc.getFields('SecondLevelType');
-                expect(fields[0].field).toBe('fieldA');
-                expect(fields[1].field).toBe('fieldB');
+                expect(fields[0].fieldDefinition).toBe('fieldA');
+                expect(fields[1].fieldDefinition).toBe('fieldB');
             }
         );
 

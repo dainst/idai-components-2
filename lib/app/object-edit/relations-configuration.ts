@@ -15,14 +15,14 @@ export class RelationsConfiguration {
 
     public getInverse(prop) {
         for (var p of this.relationFields) {
-            if (p["field"]==prop) return p["inverse"];
+            if (p["fieldDefinition"]==prop) return p["inverse"];
         }
         return undefined;
     }
 
     public isRelationProperty(propertyName:string):boolean {
         for (var p of this.relationFields) {
-            if (p["field"]==propertyName) return true;
+            if (p["fieldDefinition"]==propertyName) return true;
         }
         return false;
     }
