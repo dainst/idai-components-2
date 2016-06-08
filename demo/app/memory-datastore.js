@@ -36,6 +36,7 @@ System.register(["@angular/core"], function(exports_1, context_1) {
                     });
                 };
                 MemoryDatastore.prototype.update = function (entity) {
+                    console.log("update entity ", entity);
                     this.objectCache[entity.id] = entity;
                     return new Promise(function (resolve, reject) {
                         resolve();
@@ -112,3 +113,4 @@ System.register(["@angular/core"], function(exports_1, context_1) {
         }
     }
 });
+//# sourceMappingURL=memory-datastore.js.map

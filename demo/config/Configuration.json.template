@@ -5,11 +5,7 @@
       "fields": [
         {
           "field" : "fieldlist_example",
-          "array" : "true",
-          "fields" : [
-            { "field" : "name" },
-            { "field" : "language" }
-          ]
+          "array" : "true"
         },
         {
           "field": "simple_field_example"

@@ -7,7 +7,7 @@
   "scripts": {
     "prebuild": "rimraf css/* && rimraf fonts/*",
     "build": "gulp compile",
-    "start": "gulp run",
+    "start": "npm run server",
     "test:loop": "karma start karma.conf",
     "test": "karma start karma.conf.js --single-run",
     "server": "gulp webserver-watch",
