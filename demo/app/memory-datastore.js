@@ -73,7 +73,7 @@ System.register(["@angular/core"], function(exports_1, context_1) {
                     query = query.toLowerCase();
                     var results = [];
                     for (var i in this.objectCache) {
-                        if (this.objectCache[i].identifier.indexOf(query) != -1)
+                        if (this.objectCache[i].id.indexOf(query) != -1)
                             results.push(this.objectCache[i]);
                     }
                     return new Promise(function (resolve, reject) {

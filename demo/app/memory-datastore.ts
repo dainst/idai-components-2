@@ -73,7 +73,7 @@ export class MemoryDatastore implements Datastore {
 
         var results : Entity[] = [];
         for (var i in this.objectCache) {
-            if (this.objectCache[i].identifier.indexOf(query)!=-1) results.push(this.objectCache[i]);
+            if (this.objectCache[i].id.indexOf(query)!=-1) results.push(this.objectCache[i]);
         }
 
         return new Promise((resolve, reject) => {

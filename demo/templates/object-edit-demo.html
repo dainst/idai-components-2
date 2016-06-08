@@ -18,14 +18,14 @@
     </p>
 
     <p>
-        Try out setting relations. In the appropriate search fields, you can search by entity identifier.
+        Try out setting relations. In the appropriate search fields, you can search by entity id (not identifier).
     </p>
 
     <p>
         -
     </p>
     <ul>
-        <li *ngFor="let item of objects; let i=index"><button (click)="clicked(item.id)">Item nr. {{i}}</button></li>
+        <li *ngFor="let item of objects; let i=index"><button (click)="clicked(item.id)">Item id: {{i+1}}</button></li>
     </ul>
 
     <div class="row">
