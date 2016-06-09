@@ -21,6 +21,7 @@ export class RelationPickerComponent implements OnChanges {
     @Input() object: Entity;
     @Input() field: any;
     @Input() relationIndex: number;
+    @Input() primary: string;
 
     private suggestions: Entity[];
     private selectedSuggestionIndex: number = -1;

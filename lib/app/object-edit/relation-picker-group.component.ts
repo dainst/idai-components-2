@@ -18,6 +18,7 @@ export class RelationPickerGroupComponent {
 
     @Input() object: Entity;
     @Input() field: any;
+    @Input() primary: string;
 
     public createRelation() {
 
