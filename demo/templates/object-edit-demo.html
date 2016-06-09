@@ -1,14 +1,14 @@
 <div class="container-fluid" id="app">
 
     <p>
-        <code>&lt;object-edit [(object)]="selectedObject" [primary]="'id'"&gt;&lt;/object-edit&gt;</code>
+        <code>&lt;object-edit [(object)]="selectedObject" [primary]="'title'"&gt;&lt;/object-edit&gt;</code>
     </p>
 
     <p>
         The <code>primary</code> option determines the object property shown as
-        label for the selected relations. If a type has an title field
+        label for the selected relations. If a type has a title field
         and an object has relations to another object, the others object title
-        is shown to mark the relation.
+        is shown to mark the relation, if <code>primary</code> is set to 'title'.
     </p>
 
     <p>
