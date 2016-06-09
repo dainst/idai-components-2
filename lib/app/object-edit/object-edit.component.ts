@@ -34,7 +34,6 @@ export class ObjectEditComponent implements OnChanges,OnInit {
 
     @Input() object: Entity;
     @Input() primary: string;
-    
 
     private projectConfiguration: ProjectConfiguration;
     private relationsConfiguration: RelationsConfiguration;

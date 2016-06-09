@@ -35,8 +35,7 @@ export class RelationPickerComponent implements OnChanges {
          */
         private datastore: Datastore,
         private persistenceManager: PersistenceManager // TODO instead of this the parent object edit component should get addressed for marking an object as changed
-    )
-    {}
+    ) {}
 
     public ngOnChanges() {
 

@@ -8,18 +8,18 @@
                 <div *ngFor="let suggestion of suggestions; let i = index">
                     <div *ngIf="selectedSuggestionIndex != i" class="suggestion" (mousedown)="chooseTarget(suggestion)"
                          (mouseover)="selectedSuggestionIndex = i">
-                        <span class="badge">{{suggestion.id}}</span>
+                        <span class="badge">{{suggestion[primary]}}</span>
                     </div>
                     <div *ngIf="selectedSuggestionIndex == i" class="suggestion selected-suggestion"
                          (mousedown)="createRelation(suggestion)">
-                        <span class="badge">{{suggestion.id}}</span>
+                        <span class="badge">{{suggestion[primary]}}</span>
                     </div>
                 </div>
             </div>
         </div>
         <div *ngIf="selectedTarget">
             <button class="btn btn-default" type="button" (click)="editTarget()">
-                <span class="badge">{{selectedTarget.id}}</span>
+                <span class="badge">{{selectedTarget[primary]}}</span>
             </button>
         </div>
     </div>
