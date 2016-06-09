@@ -1,7 +1,7 @@
-import {Entity} from '../../lib/app/core-services/entity';
+import {ExtendedEntity} from './extended-entity';
 
-export var OBJECTS: Entity[] = [
-    { "id":"1", "identifier": "ob1", "type": "Object" },
+export var OBJECTS: ExtendedEntity[] = [
+    { "id":"1", "identifier": "ob1", "type": "Object" , "fieldlist_example" : [ "a" , "b" ]},
     { "id":"2", "identifier": "ob2", "type": "Object" },
     { "id":"3", "identifier": "ob3", "type": "Object" },
     { "id":"4", "identifier": "ob4", "type": "Object" },

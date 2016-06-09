@@ -30,6 +30,9 @@ export class MemoryDatastore implements Datastore {
     }
 
     public update(entity:Entity):Promise<any> {
+        
+        console.log("update entity ",entity)
+
         this.objectCache[entity.id]=entity;
         return new Promise((resolve, reject) => {
             resolve();
