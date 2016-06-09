@@ -3,10 +3,6 @@ import {CORE_DIRECTIVES,COMMON_DIRECTIVES,FORM_DIRECTIVES} from "@angular/common
 import {Entity} from "../core-services/entity";
 import {PersistenceManager} from "./persistence-manager";
 
-export class ItemWrapper {
-    public value: string;
-}
-
 /**
  * @author Daniel de Oliveira
  */
@@ -16,7 +12,7 @@ export class ItemWrapper {
     template: `<div>
         <ul>
             <li *ngFor="let item of object[fieldDefinition.field]; let i=index">
-                <div>{{object[fieldDefinition.field][i]}}</div>
+                <div>{{item}}</div>
             </li>
       
         </ul>

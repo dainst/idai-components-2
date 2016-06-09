@@ -4,6 +4,13 @@
       "type": "Object",
       "fields": [
         {
+          "field" : "localized_fieldlist_example",
+            "inner" : {
+              "array": "true"
+            },
+            "localized" : "true"
+          },
+        {
           "field" : "fieldlist_example",
           "array" : "true"
         },
