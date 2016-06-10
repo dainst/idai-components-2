@@ -73,13 +73,13 @@ export class ObjectEditComponent implements OnChanges,OnInit {
     public ngOnChanges() {
 
         if (this.object) {
-            this.loadAndSaveService.load(this.object).then(()=>
-                this.setFieldsForObjectType(this.object,this.projectConfiguration)
-            );
+            this.loadAndSaveService.load(this.object).then(()=>{
+                this.setFieldsForObjectType(this.object,this.projectConfiguration);},
+                err=>{});
         }
     }
 
     public save() {
-        this.loadAndSaveService.save(this.object);
+        this.loadAndSaveService.save(this.object).then(()=>{},err=>{});
     }
 }
