@@ -34,10 +34,13 @@
             </header>
 
             <main>
-                <edit-form [(object)]="object"
-                           [primary]="primary"
-                           [fieldsForObjectType]="fieldsForObjectType"
-                           [relationFields]="relationFields"></edit-form>
+                <form>
+                    <edit-form [(object)]="object"
+                           [fieldsForObjectType]="fieldsForObjectType"></edit-form>
+                    <relations-form [(object)]="object"
+                               [primary]="primary"
+                               [relationFields]="relationFields"></relations-form>
+                </form>
             </main>
 
         </section>

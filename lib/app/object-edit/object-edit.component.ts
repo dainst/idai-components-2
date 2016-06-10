@@ -4,9 +4,9 @@ import {PersistenceManager} from "./persistence-manager";
 import {CORE_DIRECTIVES,COMMON_DIRECTIVES,FORM_DIRECTIVES} from "@angular/common";
 import {ProjectConfiguration} from "./project-configuration";
 import {EditFormComponent} from "./edit-form.component"
+import {RelationsFormComponent} from "./relations-form.component"
 import {OnChanges} from "@angular/core";
 import {RelationsConfiguration} from "./relations-configuration";
-
 import {ConfigLoader} from "./config-loader";
 import {LoadAndSaveService} from "./load-and-save-service";
 
@@ -20,7 +20,8 @@ import {LoadAndSaveService} from "./load-and-save-service";
         FORM_DIRECTIVES,
         CORE_DIRECTIVES,
         COMMON_DIRECTIVES,
-        EditFormComponent
+        EditFormComponent,
+        RelationsFormComponent
     ],
     selector: 'object-edit',
     templateUrl: 'lib/templates/object-edit.html'

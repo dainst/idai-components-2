@@ -1,0 +1,16 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Relationen</h3>
+    </div>
+    <ul class="list-group">
+        <li *ngFor="let relationField of relationFields" class="list-group-item">
+            <label *ngIf="relationField.label">{{relationField.label}}</label>
+            <label *ngIf="!relationField.label">{{relationField.field}}</label>
+            <relation-picker-group [(object)]="object" [field]="relationField" [primary]="primary"></relation-picker-group>
+        </li>
+    </ul>
+</div>
+
+
+
+

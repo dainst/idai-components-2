@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {Entity} from "../core-services/entity";
 import {PersistenceManager} from "./persistence-manager";
 import {CORE_DIRECTIVES,COMMON_DIRECTIVES,FORM_DIRECTIVES} from "@angular/common";
@@ -6,7 +6,6 @@ import {RelationPickerGroupComponent} from "./relation-picker-group.component";
 import {ValuelistComponent} from "./valuelist.component";
 import {FieldlistComponent} from "./fieldlist.component";
 import {LocalizedComponent} from "./localized.component";
-import {OnChanges} from "@angular/core";
 
 /**
  * @author Daniel de Oliveira
@@ -21,21 +20,19 @@ import {OnChanges} from "@angular/core";
         FieldlistComponent,
         LocalizedComponent
     ],
-    selector: 'edit-form',
-    templateUrl: 'lib/templates/edit-form.html'
+    selector: 'relations-form',
+    templateUrl: 'lib/templates/relations-form.html'
 })
 
-export class EditFormComponent{
+export class RelationsFormComponent{
 
     @Input() object: Entity;
-    @Input() fieldsForObjectType: any;
-
-    public types : string[];
+    @Input() primary: string;
+    @Input() relationFields: any;
 
     constructor(
         private persistenceManager: PersistenceManager
     ) {}
-
 
     public markAsChanged() {
         this.persistenceManager.load(this.object);

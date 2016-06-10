@@ -50,3 +50,4 @@ System.register(["@angular/core", "../../lib/app/object-edit/load-and-save-inter
         }
     }
 });
+//# sourceMappingURL=demo-load-and-save-interceptor.js.map
