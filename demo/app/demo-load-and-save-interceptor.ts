@@ -1,5 +1,4 @@
 import {Injectable} from "@angular/core";
-import {MD} from "../../lib/app/core-services/md";
 import {LoadAndSaveInterceptor} from "../../lib/app/object-edit/load-and-save-interceptor"
 import {Entity} from "../../lib/app/core-services/entity"
 
@@ -9,11 +8,11 @@ import {Entity} from "../../lib/app/core-services/entity"
 @Injectable()
 export class DemoLoadAndSaveInterceptor extends LoadAndSaveInterceptor {
 
-    interceptLoad(object:Entity) : string {
-        return undefined;
+    interceptLoad(object:Entity) : Entity {
+        return <Entity>JSON.parse(JSON.stringify(object));
     }
 
-    interceptSave(object:Entity) : string {
-        return undefined;
+    interceptSave(object:Entity) : Entity {
+        return <Entity>JSON.parse(JSON.stringify(object));
     }
 }

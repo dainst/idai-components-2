@@ -19,12 +19,13 @@ export class LoadAndSaveService {
     public load(object) : Promise<any> {
         return new Promise((resolve,reject)=> {
 
-            var result= this.loadAndSaveInterceptor.interceptLoad(object);
-            if (result!=undefined) {
-                this.messages.add(result);
+            try {
+                object=this.loadAndSaveInterceptor.interceptLoad(object);
+            } catch (e) {
+                this.messages.add(e);
                 return reject();
             }
-        
+
             this.persistenceManager.setOldVersion(object);
             resolve();
         })
@@ -35,12 +36,13 @@ export class LoadAndSaveService {
 
             this.messages.clear();
 
-            var result= this.loadAndSaveInterceptor.interceptSave(object);
-            if (result!=undefined) {
-                this.messages.add(result);
+            try {
+                object=this.loadAndSaveInterceptor.interceptSave(object);
+            } catch (e) {
+                this.messages.add(e);
                 return reject();
-            }
-
+            } 
+            
             this.persistenceManager.load(object);
             this.persistenceManager.persist().then(
                 () => {
