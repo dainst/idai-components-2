@@ -4,12 +4,15 @@
 import {bootstrap}    from '@angular/platform-browser-dynamic'
 import {AppComponent} from './app.component'
 import {HTTP_PROVIDERS} from '@angular/http';
-import {provide, enableProdMode} from '@angular/core';
+import {provide} from '@angular/core';
 import {Datastore} from "../../lib/app/datastore/datastore";
+import {LoadAndSaveService} from "../../lib/app/object-edit/load-and-save-service";
 import {Messages} from "../../lib/app/core-services/messages";
 import {MemoryDatastore} from "./memory-datastore";
 import {ConfigLoader} from "../../lib/app/object-edit/config-loader";
 import {PersistenceManager} from "../../lib/app/object-edit/persistence-manager";
+import {LoadAndSaveInterceptor} from "../../lib/app/object-edit/load-and-save-interceptor";
+import {DemoLoadAndSaveInterceptor} from "./demo-load-and-save-interceptor";
 import {MD} from "../../lib/app/core-services/md";
 import { ROUTER_PROVIDERS } from '@angular/router';
 import {LocationStrategy, HashLocationStrategy} from '@angular/common';
@@ -23,5 +26,7 @@ bootstrap(AppComponent, [
     provide(ConfigLoader, {useClass: ConfigLoader}),
     provide(PersistenceManager, {useClass: PersistenceManager}),
     provide(ConfigLoader, {useClass: ConfigLoader}),
+    provide(LoadAndSaveService, {useClass: LoadAndSaveService}),
+    provide(LoadAndSaveInterceptor, {useClass: DemoLoadAndSaveInterceptor}),
     provide(MD, {useClass: MD})
 ]);

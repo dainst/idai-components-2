@@ -5,6 +5,10 @@ import {MD} from "../core-services/md";
 import {Entity} from "../core-services/entity";
 
 /**
+ * This class is intended to be used only from within the library. 
+ * Clients outside this library are advised to use the load-and-service 
+ * to load and save objects.
+ * 
  * @author Daniel de Oliveira
  */
 @Injectable() export class PersistenceManager {
@@ -150,12 +154,7 @@ import {Entity} from "../core-services/entity";
      */
     private persistIt(object: Entity): Promise<any> {
 
-        // Replace with proper validation
-        if (!object.identifier || object.identifier.length == 0) {
-            return new Promise((resolve, reject) => { reject(MD.OBJLIST_IDMISSING); });
-        }
-
-        object['synced'] = 0; // TODO this must go out of the library
+        
 
         if (object.id) {
             return this.datastore.update(object);

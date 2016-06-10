@@ -3,15 +3,12 @@ import {Entity} from "../core-services/entity";
 import {PersistenceManager} from "./persistence-manager";
 import {CORE_DIRECTIVES,COMMON_DIRECTIVES,FORM_DIRECTIVES} from "@angular/common";
 import {ProjectConfiguration} from "./project-configuration";
-import {RelationPickerGroupComponent} from "./relation-picker-group.component";
-import {ValuelistComponent} from "./valuelist.component";
-import {FieldlistComponent} from "./fieldlist.component";
-import {LocalizedComponent} from "./localized.component";
+import {EditFormComponent} from "./edit-form.component"
 import {OnChanges} from "@angular/core";
-import {Messages} from "../core-services/messages";
 import {RelationsConfiguration} from "./relations-configuration";
-import {MD} from "../core-services/md";
+
 import {ConfigLoader} from "./config-loader";
+import {LoadAndSaveService} from "./load-and-save-service";
 
 /**
  * @author Jan G. Wieners
@@ -23,10 +20,7 @@ import {ConfigLoader} from "./config-loader";
         FORM_DIRECTIVES,
         CORE_DIRECTIVES,
         COMMON_DIRECTIVES,
-        RelationPickerGroupComponent,
-        ValuelistComponent,
-        FieldlistComponent,
-        LocalizedComponent
+        EditFormComponent
     ],
     selector: 'object-edit',
     templateUrl: 'lib/templates/object-edit.html'
@@ -46,13 +40,11 @@ export class ObjectEditComponent implements OnChanges,OnInit {
 
     constructor(
         private persistenceManager: PersistenceManager,
-        private messages: Messages,
-        private configLoader: ConfigLoader
+        private configLoader: ConfigLoader,
+        private loadAndSaveService: LoadAndSaveService
     ) {}
 
     ngOnInit():any {
-        // this.setFieldsForObjectType(); // bad, this is necessary for testing
-
         this.configLoader.relationsConfiguration().subscribe((relationsConfiguration)=> {
 
             this.relationsConfiguration = relationsConfiguration;
@@ -80,34 +72,13 @@ export class ObjectEditComponent implements OnChanges,OnInit {
     public ngOnChanges() {
 
         if (this.object) {
-            this.persistenceManager.setOldVersion(this.object);
-            this.setFieldsForObjectType(this.object,this.projectConfiguration);
+            this.loadAndSaveService.load(this.object).then(()=>
+                this.setFieldsForObjectType(this.object,this.projectConfiguration)
+            );
         }
     }
 
-    /**
-     * Saves the object to the local datastore.
-     */
     public save() {
-        this.messages.clear();
-
-        this.persistenceManager.load(this.object);
-        this.persistenceManager.persist().then(
-            () => {
-                this.persistenceManager.setOldVersion(this.object);
-                this.messages.add(MD.OBJLIST_SAVE_SUCCESS);
-            },
-            errors => {
-                if (errors) {
-                    for (var i in errors) {
-                        this.messages.add(errors[i]);
-                    }
-                }
-            }
-        );
-    }
-
-    public markAsChanged() {
-        this.persistenceManager.load(this.object);
+        this.loadAndSaveService.save(this.object);
     }
 }

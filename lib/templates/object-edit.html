@@ -32,56 +32,12 @@
                             style="margin-right: 5px; margin-top: 5px;" (click)="save()">Speichern</button>
                 </h1>
             </header>
+
             <main>
-                <form>
-
-                    <!-- Basic Object Information -->
-                    <div class="form-group">
-                        <label id="identifier">{{object.type}} Identifier</label>
-                        <input id="object-edit-input-identifier" [(ngModel)]="object.identifier" (keyup)="markAsChanged()"
-                               class="form-control"
-                               aria-describedby="identifier">
-                    </div>
-
-                    <!-- Diverse Object Informations -->
-                    <div *ngFor="let field of fieldsForObjectType">
-                        <div *ngIf="field" class="form-group">
-                            <label *ngIf="field.label">{{field.label}}</label>
-                            <label *ngIf="!field.label">{{field.field}}</label>
-                            <div *ngIf="!field.valuelist && !field.multiline && !field.array && !field.localized">
-                                <input [(ngModel)]="object[field.field]" (keyup)="markAsChanged()" class="form-control">
-                            </div>
-                            <div *ngIf="field.multiline">
-                                <textarea [(ngModel)]="object[field.field]" (keyup)="markAsChanged()"
-                                          class="form-control" rows="5"></textarea>
-                            </div>
-                            <div *ngIf="field.valuelist && !field.multivalue && !field.localized">
-                                <select [(ngModel)]="object[field.field]" (change)="markAsChanged()" class="form-control">
-                                    <option *ngFor="let item of field.valuelist" value="{{item}}">{{item}}</option>
-                                </select>
-                            </div>
-                            <valuelist *ngIf="field.valuelist && field.multivalue" [(object)]="object"
-                                       [field]="field"></valuelist>
-                            <fieldlist *ngIf="field.array && !field.localized" [(object)]="object" [fieldDefinition]="field"></fieldlist>
-                            <localized *ngIf="field.localized" [(object)]="object" [fieldDefinition]="field"></localized>
-                        </div>
-                    </div>
-
-                    <!-- Relations -->
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">Relationen</h3>
-                        </div>
-                        <ul class="list-group">
-                            <li *ngFor="let relationField of relationFields" class="list-group-item">
-                                <label *ngIf="relationField.label">{{relationField.label}}</label>
-                                <label *ngIf="!relationField.label">{{relationField.field}}</label>
-                                <relation-picker-group [(object)]="object" [field]="relationField" [primary]="primary"></relation-picker-group>
-                            </li>
-                        </ul>
-                    </div>
-                </form>
-
+                <edit-form [(object)]="object"
+                           [primary]="primary"
+                           [fieldsForObjectType]="fieldsForObjectType"
+                           [relationFields]="relationFields"></edit-form>
             </main>
 
         </section>

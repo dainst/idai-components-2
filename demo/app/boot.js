@@ -1,9 +1,9 @@
 /// <reference path="../../typings/browser/ambient/es6-shim/index.d.ts" />
 /// <reference path="../../typings/browser/ambient/node/index.d.ts" />
-System.register(['@angular/platform-browser-dynamic', './app.component', '@angular/http', '@angular/core', "../../lib/app/datastore/datastore", "../../lib/app/core-services/messages", "./memory-datastore", "../../lib/app/object-edit/config-loader", "../../lib/app/object-edit/persistence-manager", "../../lib/app/core-services/md", '@angular/router', '@angular/common'], function(exports_1, context_1) {
+System.register(['@angular/platform-browser-dynamic', './app.component', '@angular/http', '@angular/core', "../../lib/app/datastore/datastore", "../../lib/app/object-edit/load-and-save-service", "../../lib/app/core-services/messages", "./memory-datastore", "../../lib/app/object-edit/config-loader", "../../lib/app/object-edit/persistence-manager", "../../lib/app/object-edit/load-and-save-interceptor", "./demo-load-and-save-interceptor", "../../lib/app/core-services/md", '@angular/router', '@angular/common'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
-    var platform_browser_dynamic_1, app_component_1, http_1, core_1, datastore_1, messages_1, memory_datastore_1, config_loader_1, persistence_manager_1, md_1, router_1, common_1;
+    var platform_browser_dynamic_1, app_component_1, http_1, core_1, datastore_1, load_and_save_service_1, messages_1, memory_datastore_1, config_loader_1, persistence_manager_1, load_and_save_interceptor_1, demo_load_and_save_interceptor_1, md_1, router_1, common_1;
     return {
         setters:[
             function (platform_browser_dynamic_1_1) {
@@ -21,6 +21,9 @@ System.register(['@angular/platform-browser-dynamic', './app.component', '@angul
             function (datastore_1_1) {
                 datastore_1 = datastore_1_1;
             },
+            function (load_and_save_service_1_1) {
+                load_and_save_service_1 = load_and_save_service_1_1;
+            },
             function (messages_1_1) {
                 messages_1 = messages_1_1;
             },
@@ -32,6 +35,12 @@ System.register(['@angular/platform-browser-dynamic', './app.component', '@angul
             },
             function (persistence_manager_1_1) {
                 persistence_manager_1 = persistence_manager_1_1;
+            },
+            function (load_and_save_interceptor_1_1) {
+                load_and_save_interceptor_1 = load_and_save_interceptor_1_1;
+            },
+            function (demo_load_and_save_interceptor_1_1) {
+                demo_load_and_save_interceptor_1 = demo_load_and_save_interceptor_1_1;
             },
             function (md_1_1) {
                 md_1 = md_1_1;
@@ -52,9 +61,10 @@ System.register(['@angular/platform-browser-dynamic', './app.component', '@angul
                 core_1.provide(config_loader_1.ConfigLoader, { useClass: config_loader_1.ConfigLoader }),
                 core_1.provide(persistence_manager_1.PersistenceManager, { useClass: persistence_manager_1.PersistenceManager }),
                 core_1.provide(config_loader_1.ConfigLoader, { useClass: config_loader_1.ConfigLoader }),
+                core_1.provide(load_and_save_service_1.LoadAndSaveService, { useClass: load_and_save_service_1.LoadAndSaveService }),
+                core_1.provide(load_and_save_interceptor_1.LoadAndSaveInterceptor, { useClass: demo_load_and_save_interceptor_1.DemoLoadAndSaveInterceptor }),
                 core_1.provide(md_1.MD, { useClass: md_1.MD })
             ]);
         }
     }
 });
-//# sourceMappingURL=boot.js.map
