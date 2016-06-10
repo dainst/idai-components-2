@@ -22,7 +22,7 @@ export class LoadAndSaveService {
             var result= this.loadAndSaveInterceptor.interceptLoad(object);
             if (result!=undefined) {
                 this.messages.add(result);
-                reject();
+                return reject();
             }
         
             this.persistenceManager.setOldVersion(object);
@@ -38,7 +38,7 @@ export class LoadAndSaveService {
             var result= this.loadAndSaveInterceptor.interceptSave(object);
             if (result!=undefined) {
                 this.messages.add(result);
-                reject();
+                return reject();
             }
 
             this.persistenceManager.load(object);
