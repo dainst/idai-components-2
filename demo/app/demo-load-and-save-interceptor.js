@@ -35,7 +35,7 @@ System.register(["@angular/core", "../../lib/app/object-edit/load-and-save-inter
                     _super.apply(this, arguments);
                 }
                 DemoLoadAndSaveInterceptor.prototype.interceptLoad = function (object) {
-                    return JSON.parse(JSON.stringify(object));
+                    return object;
                 };
                 DemoLoadAndSaveInterceptor.prototype.interceptSave = function (object) {
                     return JSON.parse(JSON.stringify(object));
@@ -50,3 +50,4 @@ System.register(["@angular/core", "../../lib/app/object-edit/load-and-save-inter
         }
     }
 });
+//# sourceMappingURL=demo-load-and-save-interceptor.js.map

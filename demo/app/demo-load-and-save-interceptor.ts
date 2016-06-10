@@ -9,7 +9,7 @@ import {Entity} from "../../lib/app/core-services/entity"
 export class DemoLoadAndSaveInterceptor extends LoadAndSaveInterceptor {
 
     interceptLoad(object:Entity) : Entity {
-        return <Entity>JSON.parse(JSON.stringify(object));
+        return object;
     }
 
     interceptSave(object:Entity) : Entity {
