@@ -2,7 +2,7 @@ import {Injectable} from "@angular/core";
 import {MD} from "../core-services/md";
 import {PersistenceManager} from "./persistence-manager";
 import {Messages} from "../core-services/messages";
-import {LoadAndSaveInterceptor} from "./load-and-save-interceptor"
+import {ValidationInterceptor} from "./validation-interceptor"
 
 /**
  * @author Daniel de Oliveira
@@ -13,18 +13,11 @@ export class LoadAndSaveService {
     constructor(
         private messages:Messages,
         private persistenceManager:PersistenceManager,
-        private loadAndSaveInterceptor: LoadAndSaveInterceptor) {
+        private loadAndSaveInterceptor: ValidationInterceptor) {
     }
 
     public load(object) : Promise<any> {
         return new Promise((resolve,reject)=> {
-
-            try {
-                object=this.loadAndSaveInterceptor.interceptLoad(object);
-            } catch (e) {
-                this.messages.add(e);
-                return reject();
-            }
 
             this.persistenceManager.setOldVersion(object);
             resolve();
@@ -36,10 +29,9 @@ export class LoadAndSaveService {
 
             this.messages.clear();
 
-            try {
-                object=this.loadAndSaveInterceptor.interceptSave(object);
-            } catch (e) {
-                this.messages.add(e);
+            var result=this.loadAndSaveInterceptor.validate(object);
+            if (result!=undefined) {
+                this.messages.add(result);
                 return reject();
             } 
             

@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../lib/app/object-edit/load-and-save-interceptor"], function(exports_1, context_1) {
+System.register(["@angular/core", "../../lib/app/object-edit/validation-interceptor"], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __extends = (this && this.__extends) || function (d, b) {
@@ -15,39 +15,36 @@ System.register(["@angular/core", "../../lib/app/object-edit/load-and-save-inter
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, load_and_save_interceptor_1;
-    var DemoLoadAndSaveInterceptor;
+    var core_1, validation_interceptor_1;
+    var DemoValidationInterceptor;
     return {
         setters:[
             function (core_1_1) {
                 core_1 = core_1_1;
             },
-            function (load_and_save_interceptor_1_1) {
-                load_and_save_interceptor_1 = load_and_save_interceptor_1_1;
+            function (validation_interceptor_1_1) {
+                validation_interceptor_1 = validation_interceptor_1_1;
             }],
         execute: function() {
             /**
              * @author Daniel de Oliveira
              */
-            DemoLoadAndSaveInterceptor = (function (_super) {
-                __extends(DemoLoadAndSaveInterceptor, _super);
-                function DemoLoadAndSaveInterceptor() {
+            DemoValidationInterceptor = (function (_super) {
+                __extends(DemoValidationInterceptor, _super);
+                function DemoValidationInterceptor() {
                     _super.apply(this, arguments);
                 }
-                DemoLoadAndSaveInterceptor.prototype.interceptLoad = function (object) {
-                    return object;
+                DemoValidationInterceptor.prototype.validate = function (object) {
+                    return undefined;
                 };
-                DemoLoadAndSaveInterceptor.prototype.interceptSave = function (object) {
-                    return JSON.parse(JSON.stringify(object));
-                };
-                DemoLoadAndSaveInterceptor = __decorate([
+                DemoValidationInterceptor = __decorate([
                     core_1.Injectable(), 
                     __metadata('design:paramtypes', [])
-                ], DemoLoadAndSaveInterceptor);
-                return DemoLoadAndSaveInterceptor;
-            }(load_and_save_interceptor_1.LoadAndSaveInterceptor));
-            exports_1("DemoLoadAndSaveInterceptor", DemoLoadAndSaveInterceptor);
+                ], DemoValidationInterceptor);
+                return DemoValidationInterceptor;
+            }(validation_interceptor_1.ValidationInterceptor));
+            exports_1("DemoValidationInterceptor", DemoValidationInterceptor);
         }
     }
 });
-//# sourceMappingURL=demo-load-and-save-interceptor.js.map
+//# sourceMappingURL=demo-validation-interceptor.js.map

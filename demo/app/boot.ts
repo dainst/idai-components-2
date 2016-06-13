@@ -11,8 +11,8 @@ import {Messages} from "../../lib/app/core-services/messages";
 import {MemoryDatastore} from "./memory-datastore";
 import {ConfigLoader} from "../../lib/app/object-edit/config-loader";
 import {PersistenceManager} from "../../lib/app/object-edit/persistence-manager";
-import {LoadAndSaveInterceptor} from "../../lib/app/object-edit/load-and-save-interceptor";
-import {DemoLoadAndSaveInterceptor} from "./demo-load-and-save-interceptor";
+import {ValidationInterceptor} from "../../lib/app/object-edit/validation-interceptor";
+import {DemoValidationInterceptor} from "./demo-validation-interceptor";
 import {MD} from "../../lib/app/core-services/md";
 import { ROUTER_PROVIDERS } from '@angular/router';
 import {LocationStrategy, HashLocationStrategy} from '@angular/common';
@@ -27,6 +27,6 @@ bootstrap(AppComponent, [
     provide(PersistenceManager, {useClass: PersistenceManager}),
     provide(ConfigLoader, {useClass: ConfigLoader}),
     provide(LoadAndSaveService, {useClass: LoadAndSaveService}),
-    provide(LoadAndSaveInterceptor, {useClass: DemoLoadAndSaveInterceptor}),
+    provide(ValidationInterceptor, {useClass: DemoValidationInterceptor}),
     provide(MD, {useClass: MD})
 ]);

@@ -8,7 +8,6 @@ export {ObjectEditComponent} from './lib/app/object-edit/object-edit.component';
 export {RelationsConfiguration} from './lib/app/object-edit/relations-configuration';
 export {MessagesComponent} from './lib/app/core-services/messages.component';
 export {Messages} from './lib/app/core-services/messages';
-export {LoadAndSaveService} from './lib/app/object-edit/load-and-save-service';
-export {LoadAndSaveInterceptor} from './lib/app/object-edit/load-and-save-interceptor';
+export {ValidationInterceptor} from './lib/app/object-edit/validation-interceptor';
 export {Message} from './lib/app/core-services/message';
 export {MD} from './lib/app/core-services/md';
