@@ -9,5 +9,6 @@ export {RelationsConfiguration} from './lib/app/object-edit/relations-configurat
 export {MessagesComponent} from './lib/app/core-services/messages.component';
 export {Messages} from './lib/app/core-services/messages';
 export {ValidationInterceptor} from './lib/app/object-edit/validation-interceptor';
+export {LoadAndSaveService} from './lib/app/object-edit/load-and-save-service';
 export {Message} from './lib/app/core-services/message';
 export {MD} from './lib/app/core-services/md';
