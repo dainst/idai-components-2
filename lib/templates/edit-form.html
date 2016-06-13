@@ -1,9 +1,9 @@
-<div *ngFor="let field of fieldsForObjectType">
+<div *ngFor="let field of fieldsForObjectType; let i=index" id="edit-form-element-{{i}}">
     <div *ngIf="field" class="form-group">
         <label *ngIf="field.label">{{field.label}}</label>
         <label *ngIf="!field.label">{{field.field}}</label>
         <div *ngIf="!field.valuelist && !field.multiline && !field.array && !field.localized">
-            <input [(ngModel)]="object[field.field]" (keyup)="markAsChanged()" class="form-control">
+            <input [(ngModel)]="object[field.field]" (keyup)="markAsChanged()" class="form-control" id="edit-form-input-{{i}}">
         </div>
         <div *ngIf="field.multiline">
             <textarea [(ngModel)]="object[field.field]" (keyup)="markAsChanged()"
