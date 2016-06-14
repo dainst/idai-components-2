@@ -36,13 +36,14 @@ export class LocalizedComponent {
     @Input() object: Entity;
     @Input() fieldDefinition: any;
 
-    private setLang(a,lang) {
-        a['field']=lang;
-        return a;
+    public setLang(innerFieldDefinition, lang) {
+        innerFieldDefinition['field']=lang;
+        return innerFieldDefinition;
     }
 
-    private languages() : Array<string> {
-        return Object.keys(this.object[this.fieldDefinition.field])
+    public languages() : Array<string> {
+        if (!this.object[this.fieldDefinition.field]) return [];
+        return Object.keys(this.object[this.fieldDefinition.field]);
     }
 
     constructor(private persistenceManager: PersistenceManager) {}
