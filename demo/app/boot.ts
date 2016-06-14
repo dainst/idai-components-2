@@ -6,6 +6,7 @@ import {AppComponent} from './app.component'
 import {HTTP_PROVIDERS} from '@angular/http';
 import {provide} from '@angular/core';
 import {Datastore} from "../../lib/app/datastore/datastore";
+import {ReadDatastore} from "../../lib/app/datastore/read-datastore";
 import {LoadAndSaveService} from "../../lib/app/object-edit/load-and-save-service";
 import {Messages} from "../../lib/app/core-services/messages";
 import {MemoryDatastore} from "./memory-datastore";
@@ -22,6 +23,7 @@ bootstrap(AppComponent, [
     HTTP_PROVIDERS,
     provide(LocationStrategy, { useClass: HashLocationStrategy }),
     provide(Datastore, { useClass: MemoryDatastore }),
+    provide(ReadDatastore, { useExisting: Datastore }),
     provide(Messages, { useClass: Messages }),
     provide(ConfigLoader, {useClass: ConfigLoader}),
     provide(PersistenceManager, {useClass: PersistenceManager}),

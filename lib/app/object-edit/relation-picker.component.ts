@@ -2,7 +2,7 @@ import {Component, Input, OnChanges, ElementRef} from '@angular/core';
 import {CORE_DIRECTIVES,COMMON_DIRECTIVES,FORM_DIRECTIVES} from "@angular/common";
 import {Entity} from "../core-services/entity";
 import {PersistenceManager} from "./persistence-manager";
-import {Datastore} from "../datastore/datastore";
+import {ReadDatastore} from "../datastore/read-datastore";
 
 
 /**
@@ -33,7 +33,7 @@ export class RelationPickerComponent implements OnChanges {
         /**
          * In this component the datastore should be used only for read access.
          */
-        private datastore: Datastore,
+        private datastore: ReadDatastore,
         private persistenceManager: PersistenceManager // TODO instead of this the parent object edit component should get addressed for marking an object as changed
     ) {}
 
