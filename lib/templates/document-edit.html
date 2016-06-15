@@ -27,7 +27,7 @@
             <header>
                 <h1 id="object-type-heading">
                     <span class="mdi mdi-blur"></span>
-                    [{{document['resource'].type}}] {{document['resource'].id}}
+                    [{{document['resource'].type}}] {{document['resource']['@id']}}
                     <button class="btn btn-default pull-right" id="object-edit-button-save-object"
                             style="margin-right: 5px; margin-top: 5px;" (click)="save()">Speichern</button>
                 </h1>

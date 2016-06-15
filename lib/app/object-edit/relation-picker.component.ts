@@ -71,7 +71,7 @@ export class RelationPickerComponent implements OnChanges {
                         if (this.suggestions.length == 5)
                             break;
 
-                        if (this.checkSuggestion(documents[i]))
+                        if (this.checkSuggestion(documents[i]['resource']))
                             this.suggestions.push(documents[i]);
                     }
                 }).catch(err =>
@@ -84,19 +84,19 @@ export class RelationPickerComponent implements OnChanges {
      * Checks if the given object should be shown as a suggestion
      * @param object
      */
-    private checkSuggestion(document: Document) {
+    private checkSuggestion(resource: Resource) {
 
         // Don't suggest the object itself
-        if (this.document['@id'] == document['@id'])
+        if (this.resource['@id'] == resource['@id'])
             return false;
 
         // Don't suggest an object that is already included as a target in the relation list
-        if (this.resource[this.field.field].indexOf(document['@id']) > -1)
+        if (this.resource[this.field.field].indexOf(resource['@id']) > -1)
             return false;
 
         // Don't suggest an object that is already included as a target in the inverse relation list
         if (this.resource[this.field.inverse]
-                && this.resource[this.field.inverse].indexOf(document['@id']) > -1)
+                && this.resource[this.field.inverse].indexOf(resource['@id']) > -1)
             return false;
 
         return true;
@@ -109,7 +109,7 @@ export class RelationPickerComponent implements OnChanges {
     public createRelation(document: Document) {
 
         // this.createInverseRelation(target);
-        this.resource[this.field.field][this.relationIndex] = document['@id'];
+        this.resource[this.field.field][this.relationIndex] = document['resource']['@id'];
         this.selectedTarget = document;
         this.idSearchString = "";
         this.suggestions = [];

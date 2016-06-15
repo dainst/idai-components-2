@@ -23,6 +23,7 @@ import {Resource} from "../core-services/resource";
     ) {}
 
     private document: Document = undefined;
+    private resource: Resource = undefined;
     private oldVersion : Document = undefined;
     private relationsConfiguration : RelationsConfiguration = undefined;
 
@@ -36,10 +37,12 @@ import {Resource} from "../core-services/resource";
     
     public load(document) {
         this.document=document;
+        this.resource=this.document['resource'];
     }
 
     public unload() {
         this.document=undefined;
+        this.resource=undefined;
     }
 
     public isLoaded(): boolean {
@@ -66,7 +69,7 @@ import {Resource} from "../core-services/resource";
                 this.persistIt(this.document).then(()=> {
                     Promise.all(this.makeGetPromises(this.document,this.oldVersion)).then((targetDocuments)=> {
 
-                        Promise.all(this.makeSavePromises(this.document,targetDocuments)).then(()=> {
+                        Promise.all(this.makeSavePromises(this.resource,targetDocuments)).then(()=> {
 
                             this.unload();
                             resolve();
@@ -89,12 +92,12 @@ import {Resource} from "../core-services/resource";
         return promisesToGetObjects;
     }
 
-    private makeSavePromises(document,targetDocuments) {
+    private makeSavePromises(resource,targetDocuments) {
         var promisesToSaveObjects = new Array();
         for (var targetDocument of targetDocuments) {
 
-            this.pruneInverseRelations(this.document['@id'],targetDocument['resource']);
-            this.setInverseRelations(this.document, targetDocument);
+            this.pruneInverseRelations(resource['@id'],targetDocument['resource']);
+            this.setInverseRelations(resource, targetDocument['resource']);
             promisesToSaveObjects.push(this.datastore.update(targetDocument));
         }
         return promisesToSaveObjects;
@@ -114,25 +117,25 @@ import {Resource} from "../core-services/resource";
         }
     }
 
-    private setInverseRelations(document, targetDocument) {
-        for (var prop in document['resource']) {
-            if (!document['resource'].hasOwnProperty(prop)) continue;
+    private setInverseRelations(resource, targetResource) {
+        for (var prop in resource) {
+            if (!resource.hasOwnProperty(prop)) continue;
             if (!this.relationsConfiguration.isRelationProperty(prop)) continue;
 
-            for (var id of document['resource'][prop]) {
-                if (id!=targetDocument['@id']) continue;
+            for (var id of resource[prop]) {
+                if (id!=targetResource['@id']) continue;
 
                 var inverse = this.relationsConfiguration.getInverse(prop);
 
-                if (targetDocument['resource'][inverse]==undefined)
-                    targetDocument['resource'][inverse]=[];
+                if (targetResource[inverse]==undefined)
+                    targetResource[inverse]=[];
 
-                var index = targetDocument['resource'][inverse].indexOf(document['@id']);
+                var index = targetResource[inverse].indexOf(resource['@id']);
                 if (index != -1) {
-                    targetDocument['resource'][inverse].splice(index, 1);
+                    targetResource[inverse].splice(index, 1);
                 }
 
-                targetDocument['resource'][inverse].push(document['@id']);
+                targetResource[inverse].push(resource['@id']);
             }
         }
     }
@@ -159,7 +162,7 @@ import {Resource} from "../core-services/resource";
      */
     private persistIt(document: Document): Promise<any> {
         
-        if (document['@id']) {
+        if (document['resource']['@id']) {
             return this.datastore.update(document);
         } else {
             // TODO isn't it a problem that create resolves to object id?

@@ -32,7 +32,7 @@
         -
     </p>
     <ul>
-        <li *ngFor="let document of documents; let i=index"><button (click)="clicked(document['@id'])">Document id: {{document['@id']}}</button></li>
+        <li *ngFor="let document of documents; let i=index"><button (click)="clicked(document['resource']['@id'])">Document id: {{document['resource']['@id']}}</button></li>
     </ul>
 
     <div class="row">
