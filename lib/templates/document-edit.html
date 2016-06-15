@@ -1,6 +1,6 @@
-<div *ngIf="object">
+<div *ngIf="document">
 
-    <div *ngIf="!object.type" id="object-create">
+    <div *ngIf="!document['resource'].type" id="object-create">
         <section>
             <header >
                 <h1 id="create-object-heading">
@@ -20,14 +20,14 @@
         </section>
     </div>
 
-    <div *ngIf="object.type"
+    <div *ngIf="document['resource'].type"
          id="object-edit">
 
         <section>
             <header>
                 <h1 id="object-type-heading">
                     <span class="mdi mdi-blur"></span>
-                    [{{object.type}}] {{object.id}}
+                    [{{document['resource'].type}}] {{document['resource'].id}}
                     <button class="btn btn-default pull-right" id="object-edit-button-save-object"
                             style="margin-right: 5px; margin-top: 5px;" (click)="save()">Speichern</button>
                 </h1>
@@ -35,9 +35,9 @@
 
             <main>
                 <form>
-                    <edit-form [(object)]="object"
+                    <edit-form [(document)]="document"
                            [fieldsForObjectType]="fieldsForObjectType"></edit-form>
-                    <relations-form [(object)]="object"
+                    <relations-form [(document)]="document"
                                [primary]="primary"
                                [relationFields]="relationFields"></relations-form>
                 </form>

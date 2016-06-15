@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/router-deprecated', '../../lib/app/object-edit/object-edit.component', '../../lib/app/object-edit/config-loader', '../../lib/app/datastore/datastore', "./sample-objects"], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/router-deprecated', '../../lib/app/object-edit/document-edit.component', '../../lib/app/object-edit/config-loader', '../../lib/app/datastore/datastore', "./sample-objects"], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', '@angular/router-deprecated', '../../lib/app/o
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_deprecated_1, object_edit_component_1, config_loader_1, datastore_1, sample_objects_1;
+    var core_1, router_deprecated_1, document_edit_component_1, config_loader_1, datastore_1, sample_objects_1;
     var ObjectEditDemoComponent;
     return {
         setters:[
@@ -20,8 +20,8 @@ System.register(['@angular/core', '@angular/router-deprecated', '../../lib/app/o
             function (router_deprecated_1_1) {
                 router_deprecated_1 = router_deprecated_1_1;
             },
-            function (object_edit_component_1_1) {
-                object_edit_component_1 = object_edit_component_1_1;
+            function (document_edit_component_1_1) {
+                document_edit_component_1 = document_edit_component_1_1;
             },
             function (config_loader_1_1) {
                 config_loader_1 = config_loader_1_1;
@@ -37,12 +37,12 @@ System.register(['@angular/core', '@angular/router-deprecated', '../../lib/app/o
                 function ObjectEditDemoComponent(configLoader, datastore) {
                     this.configLoader = configLoader;
                     this.datastore = datastore;
-                    this.objects = new Array();
+                    this.documents = new Array();
                 }
                 ObjectEditDemoComponent.prototype.clicked = function (id) {
                     var _this = this;
-                    this.datastore.get(id).then(function (entity) {
-                        _this.selectedObject = JSON.parse(JSON.stringify(entity));
+                    this.datastore.get(id).then(function (document) {
+                        _this.selectedDocument = JSON.parse(JSON.stringify(document));
                     });
                 };
                 ObjectEditDemoComponent.prototype.ngOnInit = function () {
@@ -53,7 +53,7 @@ System.register(['@angular/core', '@angular/router-deprecated', '../../lib/app/o
                 ObjectEditDemoComponent.prototype.loadSampleData = function () {
                     for (var _i = 0, OBJECTS_1 = sample_objects_1.OBJECTS; _i < OBJECTS_1.length; _i++) {
                         var item = OBJECTS_1[_i];
-                        this.objects.push(item);
+                        this.documents.push(item);
                         this.datastore.update(item);
                     }
                 };
@@ -63,7 +63,7 @@ System.register(['@angular/core', '@angular/router-deprecated', '../../lib/app/o
                     core_1.Component({
                         selector: 'object-edit-demo',
                         templateUrl: 'demo/templates/object-edit-demo.html',
-                        directives: [router_deprecated_1.ROUTER_DIRECTIVES, object_edit_component_1.ObjectEditComponent]
+                        directives: [router_deprecated_1.ROUTER_DIRECTIVES, document_edit_component_1.DocumentEditComponent]
                     }), 
                     __metadata('design:paramtypes', [config_loader_1.ConfigLoader, datastore_1.Datastore])
                 ], ObjectEditDemoComponent);
@@ -73,3 +73,4 @@ System.register(['@angular/core', '@angular/router-deprecated', '../../lib/app/o
         }
     }
 });
+//# sourceMappingURL=object-edit-demo.component.js.map

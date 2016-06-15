@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {Entity} from "../core-services/entity";
+import {Document} from "../core-services/document";
 import {PersistenceManager} from "./persistence-manager";
 import {CORE_DIRECTIVES,COMMON_DIRECTIVES,FORM_DIRECTIVES} from "@angular/common";
 import {RelationPickerGroupComponent} from "./relation-picker-group.component";
@@ -26,7 +26,7 @@ import {LocalizedComponent} from "./localized.component";
 
 export class RelationsFormComponent{
 
-    @Input() object: Entity;
+    @Input() document: any;
     @Input() primary: string;
     @Input() relationFields: any;
 
@@ -35,6 +35,6 @@ export class RelationsFormComponent{
     ) {}
 
     public markAsChanged() {
-        this.persistenceManager.load(this.object);
+        this.persistenceManager.load(this.document);
     }
 }

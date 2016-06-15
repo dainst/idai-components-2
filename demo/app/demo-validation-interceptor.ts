@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {ValidationInterceptor} from "../../lib/app/object-edit/validation-interceptor"
-import {Entity} from "../../lib/app/core-services/entity"
+import {Resource} from "../../lib/app/core-services/resource"
 
 /**
  * @author Daniel de Oliveira
@@ -8,7 +8,7 @@ import {Entity} from "../../lib/app/core-services/entity"
 @Injectable()
 export class DemoValidationInterceptor extends ValidationInterceptor {
 
-    validate(object:Entity) : string {
+    validate(resource:Resource) : string {
         return undefined;
     }
 }

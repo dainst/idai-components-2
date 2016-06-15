@@ -1,7 +1,7 @@
 <div class="container-fluid" id="app">
 
     <p>
-        <code>&lt;object-edit [(object)]="selectedObject" [primary]="'title'"&gt;&lt;/object-edit&gt;</code>
+        <code>&lt;document-edit [(object)]="selectedObject" [primary]="'title'"&gt;&lt;/document-edit&gt;</code>
     </p>
 
     <p>
@@ -32,12 +32,12 @@
         -
     </p>
     <ul>
-        <li *ngFor="let item of objects; let i=index"><button (click)="clicked(item.id)">Item id: {{i+1}}</button></li>
+        <li *ngFor="let item of documents; let i=index"><button (click)="clicked(item['resource'].id)">Item id: {{i+1}}</button></li>
     </ul>
 
     <div class="row">
         <div class="col-md-12">
-            <object-edit [(object)]="selectedObject" [primary]="'id'"></object-edit>
+            <document-edit [(document)]="selectedDocument" [primary]="'id'"></document-edit>
         </div>
     </div>
 </div>

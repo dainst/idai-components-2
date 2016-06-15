@@ -1,4 +1,4 @@
-import {Entity} from "../core-services/entity";
+import {Resource} from "../core-services/resource";
 
 /**
  * @author Sebastian Cuy
@@ -6,12 +6,12 @@ import {Entity} from "../core-services/entity";
  */
 export class SearchTermExtractor {
 
-    public extractTerms(object:Entity):string[] {
+    public extractTerms(resource:Resource):string[] {
 
         var terms = [];
-        for (var property in object) {
-            if (!object.hasOwnProperty(property)) continue;
-            terms = terms.concat(this.extractProperty(object[property]));
+        for (var property in resource) {
+            if (!resource.hasOwnProperty(property)) continue;
+            terms = terms.concat(this.extractProperty(resource[property]));
         }
         return terms.map( term => term.toLowerCase());
     }

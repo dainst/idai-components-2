@@ -1,6 +1,7 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnChanges} from '@angular/core';
 import {CORE_DIRECTIVES,COMMON_DIRECTIVES,FORM_DIRECTIVES} from "@angular/common";
-import {Entity} from "../core-services/entity";
+import {Document} from "../core-services/document";
+import {Resource} from "../core-services/resource";
 import {RelationPickerComponent} from "./relation-picker.component";
 
 
@@ -14,28 +15,35 @@ import {RelationPickerComponent} from "./relation-picker.component";
     directives: [CORE_DIRECTIVES, COMMON_DIRECTIVES, FORM_DIRECTIVES, RelationPickerComponent]
 })
 
-export class RelationPickerGroupComponent {
+export class RelationPickerGroupComponent implements OnChanges {
 
-    @Input() object: Entity;
+    @Input() document: any;
     @Input() field: any;
     @Input() primary: string;
 
-    public createRelation() {
-
-        if (!this.object[this.field.field]) this.object[this.field.field] = [];
-
-        this.object[this.field.field].push("");
+    public resource: Resource;
+    
+    public ngOnChanges() {
+        
+        if (this.document)
+            this.resource = this.document['resource'];
     }
-
+    
+    public createRelation() {
+    
+        if (!this.resource[this.field.field]) this.resource[this.field.field] = [];
+    
+        this.resource[this.field.field].push("");
+    }
+    
     public validateNewest(): boolean {
-
-        var index: number = this.object[this.field.field].length - 1;
-
-        if (!this.object[this.field.field][index] || this.object[this.field.field][index].length == 0) {
+    
+        var index: number = this.resource[this.field.field].length - 1;
+    
+        if (!this.resource[this.field.field][index] || this.resource[this.field.field][index].length == 0) {
             return false;
         } else {
             return true;
         }
     }
-
 }

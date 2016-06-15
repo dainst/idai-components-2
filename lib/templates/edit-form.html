@@ -3,21 +3,21 @@
         <label *ngIf="field.label">{{field.label}}</label>
         <label *ngIf="!field.label">{{field.field}}</label>
         <div *ngIf="!field.valuelist && !field.multiline && !field.array && !field.localized">
-            <input [(ngModel)]="object[field.field]" (keyup)="markAsChanged()" class="form-control" id="edit-form-input-{{i}}">
+            <input [(ngModel)]="document['resource'][field.field]" (keyup)="markAsChanged()" class="form-control" id="edit-form-input-{{i}}">
         </div>
         <div *ngIf="field.multiline">
-            <textarea [(ngModel)]="object[field.field]" (keyup)="markAsChanged()"
+            <textarea [(ngModel)]="document['resource'][field.field]" (keyup)="markAsChanged()"
                       class="form-control" rows="5"></textarea>
         </div>
         <div *ngIf="field.valuelist && !field.multivalue && !field.localized">
-            <select [(ngModel)]="object[field.field]" (change)="markAsChanged()" class="form-control">
+            <select [(ngModel)]="document['resource'][field.field]" (change)="markAsChanged()" class="form-control">
                 <option *ngFor="let item of field.valuelist" value="{{item}}">{{item}}</option>
             </select>
         </div>
-        <valuelist *ngIf="field.valuelist && field.multivalue" [(object)]="object"
+        <valuelist *ngIf="field.valuelist && field.multivalue" [(document)]="document"
                    [field]="field"></valuelist>
-        <fieldlist *ngIf="field.array && !field.localized" [(object)]="object" [fieldDefinition]="field"></fieldlist>
-        <localized *ngIf="field.localized" [(object)]="object" [fieldDefinition]="field"></localized>
+        <fieldlist *ngIf="field.array && !field.localized" [(document)]="document" [fieldDefinition]="field"></fieldlist>
+        <localized *ngIf="field.localized" [(document)]="document" [fieldDefinition]="field"></localized>
     </div>
 </div>
 

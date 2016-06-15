@@ -1,6 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {CORE_DIRECTIVES,COMMON_DIRECTIVES,FORM_DIRECTIVES} from "@angular/common";
-import {Entity} from "../core-services/entity";
+import {Document} from "../core-services/document";
 import {PersistenceManager} from "./persistence-manager";
 
 /**
@@ -11,7 +11,7 @@ import {PersistenceManager} from "./persistence-manager";
     selector: 'fieldlist',
     template: `<div>
         <ul>
-            <li *ngFor="let item of object[fieldDefinition.field]; let i=index">
+            <li *ngFor="let item of document['resource'][fieldDefinition.field]; let i=index">
                 <div>{{item}}</div>
             </li>
       
@@ -22,12 +22,12 @@ import {PersistenceManager} from "./persistence-manager";
 
 export class FieldlistComponent {
 
-    @Input() object: Entity;
+    @Input() document: any;
     @Input() fieldDefinition: any;
 
     constructor(private persistenceManager: PersistenceManager) {}
 
     public markAsChanged() {
-        this.persistenceManager.load(this.object);
+        this.persistenceManager.load(this.document);
     }
 }

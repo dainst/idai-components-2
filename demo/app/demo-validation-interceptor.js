@@ -34,7 +34,7 @@ System.register(["@angular/core", "../../lib/app/object-edit/validation-intercep
                 function DemoValidationInterceptor() {
                     _super.apply(this, arguments);
                 }
-                DemoValidationInterceptor.prototype.validate = function (object) {
+                DemoValidationInterceptor.prototype.validate = function (resource) {
                     return undefined;
                 };
                 DemoValidationInterceptor = __decorate([
@@ -47,3 +47,4 @@ System.register(["@angular/core", "../../lib/app/object-edit/validation-intercep
         }
     }
 });
+//# sourceMappingURL=demo-validation-interceptor.js.map

@@ -5,6 +5,10 @@ import {Messages} from "../core-services/messages";
 import {ValidationInterceptor} from "./validation-interceptor"
 
 /**
+ * The purpose of this is to have a place
+ * for the calls to setOldVersion, to validate,
+ * and to convert errors to messages.
+ *
  * @author Daniel de Oliveira
  */
 @Injectable()
@@ -16,29 +20,29 @@ export class LoadAndSaveService {
         private loadAndSaveInterceptor: ValidationInterceptor) {
     }
 
-    public load(object) : Promise<any> {
+    public load(document) : Promise<any> {
         return new Promise((resolve,reject)=> {
 
-            this.persistenceManager.setOldVersion(object);
+            this.persistenceManager.setOldVersion(document);
             resolve();
         })
     }
 
-    public save(object) : Promise<any> {
+    public save(document) : Promise<any> {
         return new Promise((resolve,reject)=>{
 
             this.messages.clear();
 
-            var result=this.loadAndSaveInterceptor.validate(object);
+            var result=this.loadAndSaveInterceptor.validate(document);
             if (result!=undefined) {
                 this.messages.add(result);
                 return reject();
             } 
             
-            this.persistenceManager.load(object);
+            this.persistenceManager.load(document);
             this.persistenceManager.persist().then(
                 () => {
-                    this.persistenceManager.setOldVersion(object);
+                    this.persistenceManager.setOldVersion(document);
                     this.messages.add(MD.OBJLIST_SAVE_SUCCESS);
                     resolve();
                 },

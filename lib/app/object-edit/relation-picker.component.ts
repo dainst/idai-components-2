@@ -1,6 +1,7 @@
 import {Component, Input, OnChanges, ElementRef} from '@angular/core';
 import {CORE_DIRECTIVES,COMMON_DIRECTIVES,FORM_DIRECTIVES} from "@angular/common";
-import {Entity} from "../core-services/entity";
+import {Document} from "../core-services/document";
+import {Resource} from "../core-services/resource";
 import {PersistenceManager} from "./persistence-manager";
 import {ReadDatastore} from "../datastore/read-datastore";
 
@@ -18,36 +19,39 @@ import {ReadDatastore} from "../datastore/read-datastore";
 
 export class RelationPickerComponent implements OnChanges {
 
-    @Input() object: Entity;
+    @Input() document: any;
+    
     @Input() field: any;
     @Input() relationIndex: number;
     @Input() primary: string;
 
-    private suggestions: Entity[];
+    public resource: Resource;
+
+    private suggestions: Document[];
     private selectedSuggestionIndex: number = -1;
-    private selectedTarget: Entity;
+    private selectedTarget: Document;
     private idSearchString: string;
     private suggestionsVisible: boolean;
 
     constructor(private element: ElementRef,
-        /**
-         * In this component the datastore should be used only for read access.
-         */
         private datastore: ReadDatastore,
         private persistenceManager: PersistenceManager // TODO instead of this the parent object edit component should get addressed for marking an object as changed
     ) {}
 
     public ngOnChanges() {
 
+        if (this.document)
+            this.resource=this.document['resource'];
+
         this.suggestions = [];
         this.idSearchString = "";
         this.selectedTarget = undefined;
 
-        var relationId: string = this.object[this.field.field][this.relationIndex];
+        var relationId: string = this.resource[this.field.field][this.relationIndex];
 
         if (relationId && relationId != "") {
             this.datastore.get(relationId).then(
-                object => { this.selectedTarget = object; },
+                document => { this.selectedTarget = document; },
                 err => { console.error(err); }
             );
         } else {
@@ -59,16 +63,16 @@ export class RelationPickerComponent implements OnChanges {
 
         if (this.idSearchString.length > 0) {
             this.datastore.find(this.idSearchString, {})
-                .then(objects => {
+                .then(documents => {
                     this.suggestions = [];
-                    for (var i in objects) {
+                    for (var i in documents) {
 
                         // Show only the first five suggestions
                         if (this.suggestions.length == 5)
                             break;
 
-                        if (this.checkSuggestion(objects[i]))
-                            this.suggestions.push(objects[i]);
+                        if (this.checkSuggestion(documents[i]['resource']))
+                            this.suggestions.push(documents[i]);
                     }
                 }).catch(err =>
                 console.error(err));
@@ -80,19 +84,19 @@ export class RelationPickerComponent implements OnChanges {
      * Checks if the given object should be shown as a suggestion
      * @param object
      */
-    private checkSuggestion(object: Entity) {
+    private checkSuggestion(resource: Resource) {
 
         // Don't suggest the object itself
-        if (this.object.id == object.id)
+        if (this.resource.id == resource.id)
             return false;
 
         // Don't suggest an object that is already included as a target in the relation list
-        if (this.object[this.field.field].indexOf(object.id) > -1)
+        if (this.resource[this.field.field].indexOf(resource.id) > -1)
             return false;
 
         // Don't suggest an object that is already included as a target in the inverse relation list
-        if (this.object[this.field.inverse]
-                && this.object[this.field.inverse].indexOf(object.id) > -1)
+        if (this.resource[this.field.inverse]
+                && this.resource[this.field.inverse].indexOf(resource.id) > -1)
             return false;
 
         return true;
@@ -102,20 +106,20 @@ export class RelationPickerComponent implements OnChanges {
      * Creates a relation to the target object.
      * @param target
      */
-    public createRelation(target: Entity) {
+    public createRelation(document: Document) {
 
         // this.createInverseRelation(target);
-        this.object[this.field.field][this.relationIndex] = target.id;
-        this.selectedTarget = target;
+        this.resource[this.field.field][this.relationIndex] = document['resource'].id;
+        this.selectedTarget = document;
         this.idSearchString = "";
         this.suggestions = [];
 
-        this.persistenceManager.load(this.object);
+        this.persistenceManager.load(this.document);
     }
 
     public editTarget() {
 
-        this.idSearchString = this.selectedTarget.identifier;
+        this.idSearchString = this.selectedTarget['resource'].identifier;
         this.suggestions = [ this.selectedTarget ];
         this.selectedSuggestionIndex = 0;
         this.selectedTarget = undefined;
@@ -130,18 +134,18 @@ export class RelationPickerComponent implements OnChanges {
 
     public leaveSuggestionMode() {
 
-        if (!this.object[this.field.field][this.relationIndex]
-                || this.object[this.field.field][this.relationIndex] == "") {
+        if (!this.resource[this.field.field][this.relationIndex]
+                || this.resource[this.field.field][this.relationIndex] == "") {
             this.deleteRelation();
         }
 
         this.suggestionsVisible = false;
 
-        if (!this.selectedTarget && this.object[this.field.field][this.relationIndex]
-                                 && this.object[this.field.field][this.relationIndex] != "") {
-            this.datastore.get(this.object[this.field.field][this.relationIndex])
+        if (!this.selectedTarget && this.resource[this.field.field][this.relationIndex]
+                                 && this.resource[this.field.field][this.relationIndex] != "") {
+            this.datastore.get(this.resource[this.field.field][this.relationIndex])
                 .then(
-                    object => { this.selectedTarget = object; },
+                    document => { this.selectedTarget = document; },
                     err => { console.error(err); }
                 );
         }
@@ -158,18 +162,18 @@ export class RelationPickerComponent implements OnChanges {
 
     public deleteRelation(): Promise<any> {
 
-        var targetId = this.object[this.field.field][this.relationIndex];
+        var targetId = this.resource[this.field.field][this.relationIndex];
 
         return new Promise<any>((resolve) => {
             if (targetId.length == 0) {
-                this.object[this.field.field].splice(this.relationIndex, 1);
+                this.resource[this.field.field].splice(this.relationIndex, 1);
             } else {
-                this.object[this.field.field].splice(this.relationIndex, 1);
+                this.resource[this.field.field].splice(this.relationIndex, 1);
                 // todo
-                this.persistenceManager.load(this.object);
+                this.persistenceManager.load(this.document);
             }
 
-            if (this.object[this.field.field].length==0) delete this.object[this.field.field]
+            if (this.resource[this.field.field].length==0) delete this.resource[this.field.field]
             resolve();
         });
     }

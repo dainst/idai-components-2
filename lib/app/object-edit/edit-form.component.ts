@@ -1,12 +1,11 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Entity} from "../core-services/entity";
+import {Document} from "../core-services/document";
 import {PersistenceManager} from "./persistence-manager";
 import {CORE_DIRECTIVES,COMMON_DIRECTIVES,FORM_DIRECTIVES} from "@angular/common";
 import {RelationPickerGroupComponent} from "./relation-picker-group.component";
 import {ValuelistComponent} from "./valuelist.component";
 import {FieldlistComponent} from "./fieldlist.component";
 import {LocalizedComponent} from "./localized.component";
-import {OnChanges} from "@angular/core";
 
 /**
  * @author Daniel de Oliveira
@@ -27,7 +26,7 @@ import {OnChanges} from "@angular/core";
 
 export class EditFormComponent{
 
-    @Input() object: Entity;
+    @Input() document: any;
     @Input() fieldsForObjectType: any;
 
     public types : string[];
@@ -38,6 +37,6 @@ export class EditFormComponent{
 
 
     public markAsChanged() {
-        this.persistenceManager.load(this.object);
+        this.persistenceManager.load(this.document);
     }
 }

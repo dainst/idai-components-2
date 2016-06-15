@@ -1,24 +1,25 @@
 import {Component, OnInit, Inject} from '@angular/core';
 import {ROUTER_DIRECTIVES} from '@angular/router-deprecated';
-import {ObjectEditComponent} from '../../lib/app/object-edit/object-edit.component';
+import {DocumentEditComponent} from '../../lib/app/object-edit/document-edit.component';
 import {ConfigLoader} from '../../lib/app/object-edit/config-loader'
 import {Datastore} from '../../lib/app/datastore/datastore'
 import {OBJECTS} from "./sample-objects";
+import {Document} from "../../lib/app/core-services/document"
 
 @Component({
     selector: 'object-edit-demo',
 
     templateUrl: 'demo/templates/object-edit-demo.html',
 
-    directives: [ ROUTER_DIRECTIVES, ObjectEditComponent ]
+    directives: [ ROUTER_DIRECTIVES, DocumentEditComponent ]
 })
 export class ObjectEditDemoComponent implements OnInit {
 
     private static PROJECT_CONFIGURATION_PATH='demo/config/Configuration.json';
     private static RELATIONS_CONFIGURATION_PATH='demo/config/Relations.json';
     
-    private objects = new Array();
-    private selectedObject;
+    private documents = new Array();
+    private selectedDocument : Document;
 
     constructor(
         private configLoader:ConfigLoader,
@@ -26,8 +27,8 @@ export class ObjectEditDemoComponent implements OnInit {
     }
 
     public clicked(id) {
-        this.datastore.get(id).then((entity)=> {
-            this.selectedObject = JSON.parse(JSON.stringify(entity));
+        this.datastore.get(id).then((document)=> {
+            this.selectedDocument = JSON.parse(JSON.stringify(document));
         });
     }
 
@@ -39,7 +40,7 @@ export class ObjectEditDemoComponent implements OnInit {
 
     loadSampleData(): void {
         for (var item of OBJECTS) {
-            this.objects.push(item);
+            this.documents.push(item);
             this.datastore.update(item);
         }
     }

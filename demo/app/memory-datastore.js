@@ -30,14 +30,14 @@ System.register(["@angular/core"], function(exports_1, context_1) {
                     return undefined;
                 };
                 ;
-                MemoryDatastore.prototype.create = function (object) {
+                MemoryDatastore.prototype.create = function (document) {
                     return new Promise(function (resolve, reject) {
                         resolve();
                     });
                 };
-                MemoryDatastore.prototype.update = function (entity) {
-                    console.log("update entity ", entity);
-                    this.objectCache[entity.id] = entity;
+                MemoryDatastore.prototype.update = function (document) {
+                    console.log("update document ", document);
+                    this.objectCache[document['resource'].id] = document;
                     return new Promise(function (resolve, reject) {
                         resolve();
                     });
@@ -74,7 +74,7 @@ System.register(["@angular/core"], function(exports_1, context_1) {
                     query = query.toLowerCase();
                     var results = [];
                     for (var i in this.objectCache) {
-                        if (this.objectCache[i].id.indexOf(query) != -1)
+                        if (this.objectCache[i]['resource'].id.indexOf(query) != -1)
                             results.push(this.objectCache[i]);
                     }
                     return new Promise(function (resolve, reject) {
@@ -91,12 +91,12 @@ System.register(["@angular/core"], function(exports_1, context_1) {
                         resolve();
                     });
                 };
-                MemoryDatastore.prototype.saveObject = function (object) {
+                MemoryDatastore.prototype.saveObject = function (document) {
                     return new Promise(function (resolve, reject) {
                         resolve();
                     });
                 };
-                MemoryDatastore.prototype.saveFulltext = function (object) {
+                MemoryDatastore.prototype.saveFulltext = function (document) {
                     return new Promise(function (resolve, reject) {
                         resolve();
                     });
@@ -113,3 +113,4 @@ System.register(["@angular/core"], function(exports_1, context_1) {
         }
     }
 });
+//# sourceMappingURL=memory-datastore.js.map

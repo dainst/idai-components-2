@@ -1,16 +1,15 @@
-import {Entity} from "../core-services/entity";
+import {Document} from "../core-services/document";
 import {ReadDatastore} from "./read-datastore";
-import {Observable} from "rxjs/Observable";
 
 export abstract class Datastore extends ReadDatastore {
 
-    abstract create(object: Entity): Promise<string>;
+    abstract create(doc: Document): Promise<string>;
 
-    abstract update(object: Entity): Promise<any>;
+    abstract update(object: Document): Promise<any>;
 
     abstract remove(id: string): Promise<any>;
 
     abstract clear(): Promise<any>;
 
-    abstract refresh(id:string):Promise<Entity>;
+    abstract refresh(id:string):Promise<Document>;
 }

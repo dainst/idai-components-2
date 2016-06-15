@@ -1,5 +1,4 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Entity} from "../core-services/entity";
 import {PersistenceManager} from "./persistence-manager";
 import {CORE_DIRECTIVES,COMMON_DIRECTIVES,FORM_DIRECTIVES} from "@angular/common";
 import {ProjectConfiguration} from "./project-configuration";
@@ -9,6 +8,7 @@ import {OnChanges} from "@angular/core";
 import {RelationsConfiguration} from "./relations-configuration";
 import {ConfigLoader} from "./config-loader";
 import {LoadAndSaveService} from "./load-and-save-service";
+import {Document} from "../core-services/document";
 
 /**
  * @author Jan G. Wieners
@@ -23,13 +23,13 @@ import {LoadAndSaveService} from "./load-and-save-service";
         EditFormComponent,
         RelationsFormComponent
     ],
-    selector: 'object-edit',
-    templateUrl: 'lib/templates/object-edit.html'
+    selector: 'document-edit',
+    templateUrl: 'lib/templates/document-edit.html'
 })
 
-export class ObjectEditComponent implements OnChanges,OnInit {
+export class DocumentEditComponent implements OnChanges,OnInit {
 
-    @Input() object: Entity;
+    @Input() document: any;
     @Input() primary: string;
 
     private projectConfiguration: ProjectConfiguration;
@@ -54,32 +54,32 @@ export class ObjectEditComponent implements OnChanges,OnInit {
         });
         this.configLoader.projectConfiguration().subscribe((projectConfiguration)=>{
             this.projectConfiguration = projectConfiguration;
-            this.setFieldsForObjectType(this.object,this.projectConfiguration);
+            this.setFieldsForObjectType(this.document,this.projectConfiguration);
         });
     }
 
     public setType(type: string) {
-        this.object.type = type;
-        this.setFieldsForObjectType(this.object,this.projectConfiguration);
+        this.document['resource'].type = type;
+        this.setFieldsForObjectType(this.document,this.projectConfiguration);
     }
 
-    private setFieldsForObjectType(object,projectConfiguration) {
-        if (object==undefined) return;
+    private setFieldsForObjectType(document,projectConfiguration) {
+        if (document==undefined) return;
         if (!projectConfiguration) return;
-        this.fieldsForObjectType=projectConfiguration.getFields(object.type);
+        this.fieldsForObjectType=projectConfiguration.getFields(document['resource'].type);
         this.types=this.projectConfiguration.getTypes();
     }
 
     public ngOnChanges() {
 
-        if (this.object) {
-            this.loadAndSaveService.load(this.object).then(()=>{
-                this.setFieldsForObjectType(this.object,this.projectConfiguration);},
+        if (this.document) {
+            this.loadAndSaveService.load(this.document).then(()=>{
+                this.setFieldsForObjectType(this.document,this.projectConfiguration);},
                 err=>{});
         }
     }
 
     public save() {
-        this.loadAndSaveService.save(this.object).then(()=>{},err=>{});
+        this.loadAndSaveService.save(this.document).then(()=>{},err=>{});
     }
 }
