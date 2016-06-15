@@ -37,7 +37,7 @@ System.register(["@angular/core"], function(exports_1, context_1) {
                 };
                 MemoryDatastore.prototype.update = function (document) {
                     console.log("update document ", document);
-                    this.objectCache[document['resource'].id] = document;
+                    this.objectCache[document['@id']] = document;
                     return new Promise(function (resolve, reject) {
                         resolve();
                     });
@@ -74,7 +74,7 @@ System.register(["@angular/core"], function(exports_1, context_1) {
                     query = query.toLowerCase();
                     var results = [];
                     for (var i in this.objectCache) {
-                        if (this.objectCache[i]['resource'].id.indexOf(query) != -1)
+                        if (this.objectCache[i]['@id'].indexOf(query) != -1)
                             results.push(this.objectCache[i]);
                     }
                     return new Promise(function (resolve, reject) {

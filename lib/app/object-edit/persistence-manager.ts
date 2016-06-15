@@ -5,6 +5,11 @@ import {Document} from "../core-services/document";
 import {Resource} from "../core-services/resource";
 
 /**
+ * With a document to persist, it determines which other documents are 
+ * affected by being related to the document in its current or previous state.
+ * When persisting, it maintains a consistent state of relations between the objects
+ * by also persisting the related documents with updated target relations.
+ * 
  * This class is intended to be used only from within the library. 
  * Clients outside this library are advised to use the load-and-service 
  * to load and save objects.
@@ -59,9 +64,9 @@ import {Resource} from "../core-services/resource";
                 if (this.document==undefined) return resolve();
 
                 this.persistIt(this.document).then(()=> {
-                    Promise.all(this.makeGetPromises(this.document,this.oldVersion)).then((targetObjects)=> {
+                    Promise.all(this.makeGetPromises(this.document,this.oldVersion)).then((targetDocuments)=> {
 
-                        Promise.all(this.makeSavePromises(this.document,targetObjects)).then((targetObjects)=> {
+                        Promise.all(this.makeSavePromises(this.document,targetDocuments)).then(()=> {
 
                             this.unload();
                             resolve();
@@ -88,19 +93,19 @@ import {Resource} from "../core-services/resource";
         var promisesToSaveObjects = new Array();
         for (var targetDocument of targetDocuments) {
 
-            this.pruneInverseRelations(this.document['resource'],targetDocument['resource']);
-            this.setInverseRelations(this.document['resource'], targetDocument['resource']);
+            this.pruneInverseRelations(this.document['@id'],targetDocument['resource']);
+            this.setInverseRelations(this.document, targetDocument);
             promisesToSaveObjects.push(this.datastore.update(targetDocument));
         }
         return promisesToSaveObjects;
     }
 
-    private pruneInverseRelations(resource,targetResource) {
+    private pruneInverseRelations(id,targetResource) {
         for (var prop in targetResource) {
             if (!targetResource.hasOwnProperty(prop)) continue;
             if (!this.relationsConfiguration.isRelationProperty(prop)) continue;
 
-            var index=targetResource[prop].indexOf(resource.id);
+            var index=targetResource[prop].indexOf(id);
             if (index!=-1) {
                 targetResource[prop].splice(index,1)
             }
@@ -109,25 +114,25 @@ import {Resource} from "../core-services/resource";
         }
     }
 
-    private setInverseRelations(resource, targetResource) {
-        for (var prop in resource) {
-            if (!resource.hasOwnProperty(prop)) continue;
+    private setInverseRelations(document, targetDocument) {
+        for (var prop in document['resource']) {
+            if (!document['resource'].hasOwnProperty(prop)) continue;
             if (!this.relationsConfiguration.isRelationProperty(prop)) continue;
 
-            for (var id of resource[prop]) {
-                if (id!=targetResource.id) continue;
+            for (var id of document['resource'][prop]) {
+                if (id!=targetDocument['@id']) continue;
 
                 var inverse = this.relationsConfiguration.getInverse(prop);
 
-                if (targetResource[inverse]==undefined)
-                    targetResource[inverse]=[];
+                if (targetDocument['resource'][inverse]==undefined)
+                    targetDocument['resource'][inverse]=[];
 
-                var index = targetResource[inverse].indexOf(resource.id);
+                var index = targetDocument['resource'][inverse].indexOf(document['@id']);
                 if (index != -1) {
-                    targetResource[inverse].splice(index, 1);
+                    targetDocument['resource'][inverse].splice(index, 1);
                 }
 
-                targetResource[inverse].push(resource.id);
+                targetDocument['resource'][inverse].push(document['@id']);
             }
         }
     }
@@ -153,10 +158,8 @@ import {Resource} from "../core-services/resource";
      * @param document
      */
     private persistIt(document: Document): Promise<any> {
-
         
-
-        if (document['resource'].id) {
+        if (document['@id']) {
             return this.datastore.update(document);
         } else {
             // TODO isn't it a problem that create resolves to object id?

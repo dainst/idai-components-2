@@ -32,12 +32,12 @@
         -
     </p>
     <ul>
-        <li *ngFor="let item of documents; let i=index"><button (click)="clicked(item['resource'].id)">Item id: {{item['resource'].id}}</button></li>
+        <li *ngFor="let document of documents; let i=index"><button (click)="clicked(document['@id'])">Document id: {{document['@id']}}</button></li>
     </ul>
 
     <div class="row">
         <div class="col-md-12">
-            <document-edit [(document)]="selectedDocument" [primary]="'id'"></document-edit>
+            <document-edit [(document)]="selectedDocument"></document-edit>
         </div>
     </div>
 </div>

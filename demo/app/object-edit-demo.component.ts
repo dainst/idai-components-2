@@ -28,6 +28,7 @@ export class ObjectEditDemoComponent implements OnInit {
 
     public clicked(id) {
         this.datastore.get(id).then((document)=> {
+            console.log("doc ",document)
             this.selectedDocument = JSON.parse(JSON.stringify(document));
         });
     }

@@ -42,6 +42,7 @@ System.register(['@angular/core', '@angular/router-deprecated', '../../lib/app/o
                 ObjectEditDemoComponent.prototype.clicked = function (id) {
                     var _this = this;
                     this.datastore.get(id).then(function (document) {
+                        console.log("doc ", document);
                         _this.selectedDocument = JSON.parse(JSON.stringify(document));
                     });
                 };
