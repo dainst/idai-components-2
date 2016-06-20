@@ -16,8 +16,8 @@
         </div>
         <valuelist *ngIf="field.valuelist && field.multivalue" [(document)]="document"
                    [field]="field"></valuelist>
-        <fieldlist *ngIf="field.array && !field.localized" [(document)]="document" [fieldDefinition]="field"></fieldlist>
-        <localized *ngIf="field.localized" [(document)]="document" [fieldDefinition]="field"></localized>
+        <fieldlist *ngIf="field.array && !field.localized" [(resource)]="document['resource']" [fieldDefinition]="field"></fieldlist>
+        <localized *ngIf="field.localized" [(resource)]="document['resource']" [fieldDefinition]="field"></localized>
     </div>
 </div>
 

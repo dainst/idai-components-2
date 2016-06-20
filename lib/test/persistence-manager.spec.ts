@@ -1,6 +1,6 @@
 import {fdescribe,describe,expect,fit,it,xit, inject, beforeEach,beforeEachProviders} from '@angular/core/testing';
 import {provide} from "@angular/core";
-import {Entity} from "../app/core-services/entity";
+import {Document} from "../app/core-services/document";
 import {PersistenceManager} from "../app/object-edit/persistence-manager";
 import {RelationsConfiguration} from "../app/object-edit/relations-configuration";
 import {Messages} from "../app/core-services/messages";
@@ -23,13 +23,13 @@ export function main() {
         var id = "abc";
 
         var object;
-        var relatedObject : Entity;
-        var anotherRelatedObject : Entity;
+        var relatedObject : any;
+        var anotherRelatedObject : any;
 
         var getFunction = function (id) {
             return {
                 then: function (suc, err) {
-                    if (id == relatedObject.id) {
+                    if (id == relatedObject['resource']['@id']) {
                         suc(relatedObject);
                     }
                     else {
@@ -57,6 +57,7 @@ export function main() {
 
             mockDatastore = jasmine.createSpyObj('mockDatastore', ['get', 'create', 'update', 'refresh']);
             persistenceManager = new PersistenceManager(mockDatastore);
+            persistenceManager.setOldVersion({"resource":{}});
             persistenceManager.setRelationsConfiguration(new RelationsConfiguration(
                 [
                     {
@@ -74,28 +75,27 @@ export function main() {
             mockDatastore.update.and.callFake(successFunction);
             mockDatastore.create.and.callFake(successFunction);
 
-            object = {
-                "id" :"1", "identifier": "ob1",
+            object = { "resource" : {
+                "@id" :"1", "identifier": "ob1",
                 "type": "Object", "synced" : 0
-            };
+            }};
 
-            relatedObject = {
-                "id": "2" , "identifier": "ob2", 
+            relatedObject = { "resource" : {
+                "@id": "2" , "identifier": "ob2", 
                 "type": "Object"
-            }
+            }};
 
-            anotherRelatedObject = {
-                "id": "3" , "identifier": "ob3",
+            anotherRelatedObject = { "resource" : {
+                "@id": "3" , "identifier": "ob3",
                 "type": "Object"
-            }
+            }};
 
         });
 
         it('save the base object',
             function (done) {
 
-                persistenceManager.load(object);
-                persistenceManager.persist().then(()=>{
+                persistenceManager.persist(object).then(()=>{
                     expect(mockDatastore.update).toHaveBeenCalledWith(object);
                     done();
                 },(err)=>{fail(err);done();});
@@ -105,13 +105,12 @@ export function main() {
         it('save the related object',
             function (done) {
 
-                object["BelongsTo"]=["2"];
+                object['resource']["BelongsTo"]=["2"];
 
-                persistenceManager.load(object);
-                persistenceManager.persist().then(()=>{
+                persistenceManager.persist(object).then(()=>{
 
                     expect(mockDatastore.update).toHaveBeenCalledWith(relatedObject);
-                    expect(relatedObject['Contains'][0]).toBe("1");
+                    expect(relatedObject['resource']['Contains'][0]).toBe("1");
                     done();
 
                 },(err)=>{fail(err);done();});
@@ -121,15 +120,14 @@ export function main() {
         it('add two relations of the same type',
             function (done) {
 
-                object["BelongsTo"]=["2","3"];
+                object['resource']["BelongsTo"]=["2","3"];
 
-                persistenceManager.load(object);
-                persistenceManager.persist().then(()=>{
+                persistenceManager.persist(object).then(()=>{
 
                     // expect(mockDatastore.update).toHaveBeenCalledWith(relatedObject); // right now it is not possible to test both objects due to problems with the return val of promise.all
                     expect(mockDatastore.update).toHaveBeenCalledWith(anotherRelatedObject);
                     // expect(relatedObject['Contains'][0]).toBe("1");
-                    expect(anotherRelatedObject['Contains'][0]).toBe("1");
+                    expect(anotherRelatedObject['resource']['Contains'][0]).toBe("1");
                     done();
 
                 },(err)=>{fail(err);done();});
@@ -140,22 +138,21 @@ export function main() {
         it('delete a relation',
             function (done) {
 
-                var oldVersion = {
-                    "id" :"1", "identifier": "ob1", "BelongsTo" : [ "2" ],
+                var oldVersion = { "resource" : {
+                    "@id" :"1", "identifier": "ob1", "BelongsTo" : [ "2" ],
                     "type": "Object", "synced" : 0
-                }
+                }};
 
                 relatedObject['Contains']=["1"];
 
                 persistenceManager.setOldVersion(oldVersion);
-                persistenceManager.load(object);
-                persistenceManager.persist().then(()=>{
+                persistenceManager.persist(object).then(()=>{
 
                     expect(mockDatastore.update).toHaveBeenCalledWith(object);
                     expect(mockDatastore.update).toHaveBeenCalledWith(relatedObject);
 
-                    expect(object['BelongsTo']).toBe(undefined);
-                    expect(relatedObject['Contains']).toBe(undefined);
+                    expect(object['resource']['BelongsTo']).toBe(undefined);
+                    expect(relatedObject['resource']['Contains']).toBe(undefined);
 
 
                     done();

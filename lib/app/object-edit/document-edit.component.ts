@@ -49,7 +49,7 @@ export class DocumentEditComponent implements OnChanges,OnInit {
         this.configLoader.relationsConfiguration().subscribe((relationsConfiguration)=> {
 
             this.relationsConfiguration = relationsConfiguration;
-            this.persistenceManager.setRelationsConfiguration(relationsConfiguration)
+            this.persistenceManager.setRelationsConfiguration(relationsConfiguration);
             this.relationFields = relationsConfiguration.getRelationFields();
         });
         this.configLoader.projectConfiguration().subscribe((projectConfiguration)=>{

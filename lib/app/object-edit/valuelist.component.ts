@@ -1,8 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {CORE_DIRECTIVES,COMMON_DIRECTIVES,FORM_DIRECTIVES} from "@angular/common";
-import {Document} from "../core-services/document";
 import {Resource} from "../core-services/resource";
-import {PersistenceManager} from "./persistence-manager";
+import {LoadAndSaveService} from "./load-and-save-service";
 
 /**
  * @author Thomas Kleinke
@@ -25,7 +24,7 @@ export class ValuelistComponent {
 
     public resource: Resource;
 
-    constructor(private persistenceManager: PersistenceManager) {}
+    constructor(private loadAndSaveService: LoadAndSaveService) {}
 
     public ngOnChanges() {
         
@@ -39,7 +38,7 @@ export class ValuelistComponent {
         for (var i = 0; i < selectedOptions.length; i++) {
             this.resource[this.field.field].push(selectedOptions.item(i).childNodes[0].nodeValue);
         }
-        this.persistenceManager.load(this.document);
+        this.loadAndSaveService.setChanged();
     }
     
     public isSelected(item: string) {

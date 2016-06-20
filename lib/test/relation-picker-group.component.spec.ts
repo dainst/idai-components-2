@@ -1,5 +1,4 @@
 import {describe,xdescribe, expect, fit, it, xit, beforeEach} from '@angular/core/testing';
-import {Entity} from "../app/core-services/entity";
 import {RelationPickerGroupComponent} from "../app/object-edit/relation-picker-group.component";
 
 /**
@@ -8,14 +7,14 @@ import {RelationPickerGroupComponent} from "../app/object-edit/relation-picker-g
 export function main() {
     describe('RelationPickerGroupComponent', () => {
 
-        var object: Entity;
+        var resource: any;
         var relationPickerGroupComponent: RelationPickerGroupComponent;
 
         beforeEach(() => {
-            object = { "id": "id1", "identifier": "ob1", "type": "Object" };
+            resource = { "id@": "id1", "identifier": "ob1", "type": "Object" };
 
             relationPickerGroupComponent = new RelationPickerGroupComponent();
-            relationPickerGroupComponent.object = object;
+            relationPickerGroupComponent.resource = resource;
             relationPickerGroupComponent.field = { "field": "Above", "inverse": "Below" };
         });
 
@@ -23,8 +22,8 @@ export function main() {
             function() {
                 relationPickerGroupComponent.createRelation();
 
-                expect(object["Above"].length).toBe(1);
-                expect(object["Above"][0]).toBe("");
+                expect(resource["Above"].length).toBe(1);
+                expect(resource["Above"][0]).toBe("");
             }
         );
     });

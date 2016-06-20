@@ -16,7 +16,7 @@ import {FieldlistComponent} from "./fieldlist.component";
             <li *ngFor="let language of languages()">
                 {{language}}
                 
-                <fieldlist *ngIf="fieldDefinition.inner.array" [(document)]="document['resource'][fieldDefinition.field]" 
+                <fieldlist *ngIf="fieldDefinition.inner.array" [(resource)]="resource[fieldDefinition.field]" 
                     [fieldDefinition]="setLang(fieldDefinition.inner,language)"></fieldlist>
                 <div *ngIf="!fieldDefinition.inner.array">not implemented</div>
         
@@ -33,7 +33,7 @@ import {FieldlistComponent} from "./fieldlist.component";
 })
 export class LocalizedComponent {
 
-    @Input() document: any;
+    @Input() resource: any;
     @Input() fieldDefinition: any;
 
     public setLang(innerFieldDefinition, lang) {
@@ -42,9 +42,9 @@ export class LocalizedComponent {
     }
 
     public languages() : Array<string> {
-        if (!this.document['resource'][this.fieldDefinition.field]) return [];
-        return Object.keys(this.document['resource'][this.fieldDefinition.field]);
+        if (!this.resource[this.fieldDefinition.field]) return [];
+        return Object.keys(this.resource[this.fieldDefinition.field]);
     }
 
-    constructor(private persistenceManager: PersistenceManager) {}
+    constructor() {}
 }

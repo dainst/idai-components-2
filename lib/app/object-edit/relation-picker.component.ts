@@ -2,7 +2,7 @@ import {Component, Input, OnChanges, ElementRef} from '@angular/core';
 import {CORE_DIRECTIVES,COMMON_DIRECTIVES,FORM_DIRECTIVES} from "@angular/common";
 import {Document} from "../core-services/document";
 import {Resource} from "../core-services/resource";
-import {PersistenceManager} from "./persistence-manager";
+import {LoadAndSaveService} from "./load-and-save-service";
 import {ReadDatastore} from "../datastore/read-datastore";
 
 
@@ -35,7 +35,7 @@ export class RelationPickerComponent implements OnChanges {
 
     constructor(private element: ElementRef,
         private datastore: ReadDatastore,
-        private persistenceManager: PersistenceManager // TODO instead of this the parent object edit component should get addressed for marking an object as changed
+        private loadAndSaveService: LoadAndSaveService 
     ) {}
 
     public ngOnChanges() {
@@ -114,7 +114,7 @@ export class RelationPickerComponent implements OnChanges {
         this.idSearchString = "";
         this.suggestions = [];
 
-        this.persistenceManager.load(this.document);
+        this.loadAndSaveService.setChanged();
     }
 
     public editTarget() {
@@ -170,7 +170,7 @@ export class RelationPickerComponent implements OnChanges {
             } else {
                 this.resource[this.field.field].splice(this.relationIndex, 1);
                 // todo
-                this.persistenceManager.load(this.document);
+                this.loadAndSaveService.setChanged();
             }
 
             if (this.resource[this.field.field].length==0) delete this.resource[this.field.field]

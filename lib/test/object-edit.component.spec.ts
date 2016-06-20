@@ -1,10 +1,10 @@
 import {fdescribe, describe, xdescribe,expect, it, fit, xit,inject, async, beforeEachProviders,
         } from '@angular/core/testing';
 import {TestComponentBuilder} from '@angular/compiler/testing';
-import {ObjectEditComponent} from '../app/object-edit/object-edit.component'
 import {provide, Component} from "@angular/core";
 import {PersistenceManager} from "../app/object-edit/persistence-manager";
 import {Datastore} from "../app/datastore/datastore";
+import {DocumentEditComponent} from "../app/object-edit/document-edit.component";
 import {Messages} from "../app/core-services/messages";
 import {RelationsConfiguration} from "../app/object-edit/relations-configuration";
 
@@ -50,8 +50,6 @@ export function main() {
 
             var compiled = fixture.debugElement.nativeElement;
 
-            console.log(compiled)
-
             var labels = [];
             var nodeList = compiled.querySelectorAll(selector);
 
@@ -67,7 +65,7 @@ export function main() {
             provide(Datastore, { useClass: MockDatastore }),
             provide(PersistenceManager, { useClass: PersistenceManager }),
             provide(Messages, { useClass: MockMessages }),
-            provide(ObjectEditComponent, {useClass: ObjectEditComponent}),
+            provide(DocumentEditComponent, {useClass: DocumentEditComponent}),
         ]);
 
 
@@ -105,7 +103,7 @@ export function main() {
 
 @Component({
     selector: 'oec',
-    template: '<object-edit [(object)]="selectedObject" [(projectConfiguration)]="projectConfiguration"></object-edit>',
-    directives: [ObjectEditComponent]
+    template: '<document-edit [(object)]="selectedObject" [(projectConfiguration)]="projectConfiguration"></document-edit>',
+    directives: [DocumentEditComponent]
 })
 class TestComponent {}

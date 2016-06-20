@@ -22,8 +22,6 @@ import {Resource} from "../core-services/resource";
         private datastore: Datastore
     ) {}
 
-    private document: Document = undefined;
-    private resource: Resource = undefined;
     private oldVersion : Document = undefined;
     private relationsConfiguration : RelationsConfiguration = undefined;
 
@@ -33,20 +31,6 @@ import {Resource} from "../core-services/resource";
 
     public setOldVersion(oldVersion) {
         this.oldVersion=JSON.parse(JSON.stringify(oldVersion));
-    }
-    
-    public load(document) {
-        this.document=document;
-        this.resource=this.document['resource'];
-    }
-
-    public unload() {
-        this.document=undefined;
-        this.resource=undefined;
-    }
-
-    public isLoaded(): boolean {
-        return (this.document!=undefined)
     }
     
     /**
@@ -59,19 +43,19 @@ import {Resource} from "../core-services/resource";
      *   <code>string[]</code>, containing ids of M where possible,
      *   and error messages where not.
      */
-    public persist() {
+    public persist(document) {
+        var resource=document['resource'];
 
         return new Promise<any>((resolve, reject) => {
             if (!this.relationsConfiguration) return reject("no relations configuration available");
 
-                if (this.document==undefined) return resolve();
+                if (document==undefined) return resolve();
 
-                this.persistIt(this.document).then(()=> {
-                    Promise.all(this.makeGetPromises(this.document,this.oldVersion)).then((targetDocuments)=> {
+                this.persistIt(document).then(()=> {
+                    Promise.all(this.makeGetPromises(document,this.oldVersion)).then((targetDocuments)=> {
 
-                        Promise.all(this.makeSavePromises(this.resource,targetDocuments)).then(()=> {
+                        Promise.all(this.makeSavePromises(resource,targetDocuments)).then(()=> {
 
-                            this.unload();
                             resolve();
                         }, (err)=>reject(err));
 

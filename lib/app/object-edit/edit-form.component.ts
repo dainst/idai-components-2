@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Document} from "../core-services/document";
-import {PersistenceManager} from "./persistence-manager";
+import {LoadAndSaveService} from "./load-and-save-service";
 import {CORE_DIRECTIVES,COMMON_DIRECTIVES,FORM_DIRECTIVES} from "@angular/common";
 import {RelationPickerGroupComponent} from "./relation-picker-group.component";
 import {ValuelistComponent} from "./valuelist.component";
@@ -32,11 +31,11 @@ export class EditFormComponent{
     public types : string[];
 
     constructor(
-        private persistenceManager: PersistenceManager
+        private loadAndSaveService: LoadAndSaveService
     ) {}
 
 
     public markAsChanged() {
-        this.persistenceManager.load(this.document);
+        this.loadAndSaveService.setChanged();
     }
 }

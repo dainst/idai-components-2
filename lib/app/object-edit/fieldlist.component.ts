@@ -1,7 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {CORE_DIRECTIVES,COMMON_DIRECTIVES,FORM_DIRECTIVES} from "@angular/common";
-import {Document} from "../core-services/document";
-import {PersistenceManager} from "./persistence-manager";
+import {LoadAndSaveService} from "./load-and-save-service";
 
 /**
  * @author Daniel de Oliveira
@@ -11,7 +10,7 @@ import {PersistenceManager} from "./persistence-manager";
     selector: 'fieldlist',
     template: `<div>
         <ul>
-            <li *ngFor="let item of document['resource'][fieldDefinition.field]; let i=index">
+            <li *ngFor="let item of resource[fieldDefinition.field]; let i=index">
                 <div>{{item}}</div>
             </li>
       
@@ -22,12 +21,12 @@ import {PersistenceManager} from "./persistence-manager";
 
 export class FieldlistComponent {
 
-    @Input() document: any;
+    @Input() resource: any;
     @Input() fieldDefinition: any;
 
-    constructor(private persistenceManager: PersistenceManager) {}
+    constructor(private loadAndSaveService: LoadAndSaveService) {}
 
     public markAsChanged() {
-        this.persistenceManager.load(this.document);
+        this.loadAndSaveService.setChanged();
     }
 }
