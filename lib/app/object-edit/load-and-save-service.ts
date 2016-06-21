@@ -23,7 +23,7 @@ import {ValidationInterceptor} from "./validation-interceptor"
 //
 export class LoadAndSaveService {
 
-    private changed = true;
+    private changed = false;
     
     constructor(
         private messages:Messages,
