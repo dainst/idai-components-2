@@ -24,7 +24,7 @@ import {Document} from "../core-services/document";
         RelationsFormComponent
     ],
     selector: 'document-edit',
-    templateUrl: 'lib/templates/document-edit.html'
+    templateUrl: 'src/templates/document-edit.html'
 })
 
 export class DocumentEditComponent implements OnChanges,OnInit {

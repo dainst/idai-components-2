@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
-import {ValidationInterceptor} from "../../lib/app/object-edit/validation-interceptor"
-import {Resource} from "../../lib/app/core-services/resource"
+import {ValidationInterceptor} from "../../src/app/object-edit/validation-interceptor"
+import {Resource} from "../../src/app/core-services/resource"
 
 /**
  * @author Daniel de Oliveira

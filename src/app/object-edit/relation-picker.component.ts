@@ -13,7 +13,7 @@ import {ReadDatastore} from "../datastore/read-datastore";
 @Component({
 
     selector: 'relation-picker',
-    templateUrl: 'lib/templates/relation-picker.html',
+    templateUrl: 'src/templates/relation-picker.html',
     directives: [CORE_DIRECTIVES, COMMON_DIRECTIVES, FORM_DIRECTIVES]
 })
 

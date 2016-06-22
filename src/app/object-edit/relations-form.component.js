@@ -70,7 +70,7 @@ System.register(['@angular/core', "./load-and-save-service", "@angular/common", 
                             localized_component_1.LocalizedComponent
                         ],
                         selector: 'relations-form',
-                        templateUrl: 'lib/templates/relations-form.html'
+                        templateUrl: 'src/templates/relations-form.html'
                     }), 
                     __metadata('design:paramtypes', [load_and_save_service_1.LoadAndSaveService])
                 ], RelationsFormComponent);

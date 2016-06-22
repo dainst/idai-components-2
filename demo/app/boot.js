@@ -1,6 +1,6 @@
 /// <reference path="../../typings/browser/ambient/es6-shim/index.d.ts" />
 /// <reference path="../../typings/browser/ambient/node/index.d.ts" />
-System.register(['@angular/platform-browser-dynamic', './app.component', '@angular/http', '@angular/core', "../../lib/app/datastore/datastore", "../../lib/app/datastore/read-datastore", "../../lib/app/object-edit/load-and-save-service", "../../lib/app/core-services/messages", "./memory-datastore", "../../lib/app/object-edit/config-loader", "../../lib/app/object-edit/persistence-manager", "../../lib/app/object-edit/validation-interceptor", "./demo-validation-interceptor", "../../lib/app/core-services/md", '@angular/router', '@angular/common'], function(exports_1, context_1) {
+System.register(['@angular/platform-browser-dynamic', './app.component', '@angular/http', '@angular/core', "../../src/app/datastore/datastore", "../../src/app/datastore/read-datastore", "../../src/app/object-edit/load-and-save-service", "../../src/app/core-services/messages", "./memory-datastore", "../../src/app/object-edit/config-loader", "../../src/app/object-edit/persistence-manager", "../../src/app/object-edit/validation-interceptor", "./demo-validation-interceptor", "../../src/app/core-services/md", '@angular/router', '@angular/common'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var platform_browser_dynamic_1, app_component_1, http_1, core_1, datastore_1, read_datastore_1, load_and_save_service_1, messages_1, memory_datastore_1, config_loader_1, persistence_manager_1, validation_interceptor_1, demo_validation_interceptor_1, md_1, router_1, common_1;
@@ -72,4 +72,3 @@ System.register(['@angular/platform-browser-dynamic', './app.component', '@angul
         }
     }
 });
-//# sourceMappingURL=boot.js.map

@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/router-deprecated', '../../lib/app/object-edit/document-edit.component', '../../lib/app/object-edit/config-loader', '../../lib/app/datastore/datastore', "./sample-objects"], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/router-deprecated', '../../src/app/object-edit/document-edit.component', '../../src/app/object-edit/config-loader', '../../src/app/datastore/datastore', "./sample-objects"], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -74,4 +74,3 @@ System.register(['@angular/core', '@angular/router-deprecated', '../../lib/app/o
         }
     }
 });
-//# sourceMappingURL=object-edit-demo.component.js.map

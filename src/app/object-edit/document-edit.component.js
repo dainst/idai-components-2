@@ -100,7 +100,7 @@ System.register(['@angular/core', "./persistence-manager", "@angular/common", ".
                             relations_form_component_1.RelationsFormComponent
                         ],
                         selector: 'document-edit',
-                        templateUrl: 'lib/templates/document-edit.html'
+                        templateUrl: 'src/templates/document-edit.html'
                     }), 
                     __metadata('design:paramtypes', [persistence_manager_1.PersistenceManager, config_loader_1.ConfigLoader, load_and_save_service_1.LoadAndSaveService])
                 ], DocumentEditComponent);

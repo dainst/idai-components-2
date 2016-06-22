@@ -63,7 +63,7 @@ System.register(['@angular/core', "@angular/common", "./relation-picker.componen
                 RelationPickerGroupComponent = __decorate([
                     core_1.Component({
                         selector: 'relation-picker-group',
-                        templateUrl: 'lib/templates/relation-picker-group.html',
+                        templateUrl: 'src/templates/relation-picker-group.html',
                         directives: [common_1.CORE_DIRECTIVES, common_1.COMMON_DIRECTIVES, common_1.FORM_DIRECTIVES, relation_picker_component_1.RelationPickerComponent]
                     }), 
                     __metadata('design:paramtypes', [])

@@ -1,10 +1,10 @@
 import {Component, OnInit, Inject} from '@angular/core';
 import {ROUTER_DIRECTIVES} from '@angular/router-deprecated';
-import {DocumentEditComponent} from '../../lib/app/object-edit/document-edit.component';
-import {ConfigLoader} from '../../lib/app/object-edit/config-loader'
-import {Datastore} from '../../lib/app/datastore/datastore'
+import {DocumentEditComponent} from '../../src/app/object-edit/document-edit.component';
+import {ConfigLoader} from '../../src/app/object-edit/config-loader'
+import {Datastore} from '../../src/app/datastore/datastore'
 import {OBJECTS} from "./sample-objects";
-import {Document} from "../../lib/app/core-services/document"
+import {Document} from "../../src/app/core-services/document"
 
 @Component({
     selector: 'object-edit-demo',

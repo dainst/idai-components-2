@@ -66,7 +66,7 @@ System.register(['@angular/core', "./load-and-save-service", "@angular/common", 
                             localized_component_1.LocalizedComponent
                         ],
                         selector: 'edit-form',
-                        templateUrl: 'lib/templates/edit-form.html'
+                        templateUrl: 'src/templates/edit-form.html'
                     }), 
                     __metadata('design:paramtypes', [load_and_save_service_1.LoadAndSaveService])
                 ], EditFormComponent);

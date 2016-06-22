@@ -224,7 +224,7 @@ System.register(['@angular/core', "@angular/common", "./load-and-save-service", 
                 RelationPickerComponent = __decorate([
                     core_1.Component({
                         selector: 'relation-picker',
-                        templateUrl: 'lib/templates/relation-picker.html',
+                        templateUrl: 'src/templates/relation-picker.html',
                         directives: [common_1.CORE_DIRECTIVES, common_1.COMMON_DIRECTIVES, common_1.FORM_DIRECTIVES]
                     }), 
                     __metadata('design:paramtypes', [core_1.ElementRef, read_datastore_1.ReadDatastore, load_and_save_service_1.LoadAndSaveService])

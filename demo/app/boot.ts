@@ -5,16 +5,16 @@ import {bootstrap}    from '@angular/platform-browser-dynamic'
 import {AppComponent} from './app.component'
 import {HTTP_PROVIDERS} from '@angular/http';
 import {provide} from '@angular/core';
-import {Datastore} from "../../lib/app/datastore/datastore";
-import {ReadDatastore} from "../../lib/app/datastore/read-datastore";
-import {LoadAndSaveService} from "../../lib/app/object-edit/load-and-save-service";
-import {Messages} from "../../lib/app/core-services/messages";
+import {Datastore} from "../../src/app/datastore/datastore";
+import {ReadDatastore} from "../../src/app/datastore/read-datastore";
+import {LoadAndSaveService} from "../../src/app/object-edit/load-and-save-service";
+import {Messages} from "../../src/app/core-services/messages";
 import {MemoryDatastore} from "./memory-datastore";
-import {ConfigLoader} from "../../lib/app/object-edit/config-loader";
-import {PersistenceManager} from "../../lib/app/object-edit/persistence-manager";
-import {ValidationInterceptor} from "../../lib/app/object-edit/validation-interceptor";
+import {ConfigLoader} from "../../src/app/object-edit/config-loader";
+import {PersistenceManager} from "../../src/app/object-edit/persistence-manager";
+import {ValidationInterceptor} from "../../src/app/object-edit/validation-interceptor";
 import {DemoValidationInterceptor} from "./demo-validation-interceptor";
-import {MD} from "../../lib/app/core-services/md";
+import {MD} from "../../src/app/core-services/md";
 import { ROUTER_PROVIDERS } from '@angular/router';
 import {LocationStrategy, HashLocationStrategy} from '@angular/common';
 

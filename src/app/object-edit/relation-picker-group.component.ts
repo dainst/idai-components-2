@@ -11,7 +11,7 @@ import {RelationPickerComponent} from "./relation-picker.component";
 @Component({
 
     selector: 'relation-picker-group',
-    templateUrl: 'lib/templates/relation-picker-group.html',
+    templateUrl: 'src/templates/relation-picker-group.html',
     directives: [CORE_DIRECTIVES, COMMON_DIRECTIVES, FORM_DIRECTIVES, RelationPickerComponent]
 })
 

@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {LoadAndSaveService} from "./load-and-save-service";
 import {CORE_DIRECTIVES,COMMON_DIRECTIVES,FORM_DIRECTIVES} from "@angular/common";
 import {RelationPickerGroupComponent} from "./relation-picker-group.component";
@@ -19,21 +19,19 @@ import {LocalizedComponent} from "./localized.component";
         FieldlistComponent,
         LocalizedComponent
     ],
-    selector: 'edit-form',
-    templateUrl: 'lib/templates/edit-form.html'
+    selector: 'relations-form',
+    templateUrl: 'src/templates/relations-form.html'
 })
 
-export class EditFormComponent{
+export class RelationsFormComponent{
 
     @Input() document: any;
-    @Input() fieldsForObjectType: any;
-
-    public types : string[];
+    @Input() primary: string;
+    @Input() relationFields: any;
 
     constructor(
         private loadAndSaveService: LoadAndSaveService
     ) {}
-
 
     public markAsChanged() {
         this.loadAndSaveService.setChanged();

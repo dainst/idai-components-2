@@ -1,4 +1,4 @@
-System.register(["@angular/core", "../../lib/app/object-edit/validation-interceptor"], function(exports_1, context_1) {
+System.register(["@angular/core", "../../src/app/object-edit/validation-interceptor"], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __extends = (this && this.__extends) || function (d, b) {
@@ -47,4 +47,3 @@ System.register(["@angular/core", "../../lib/app/object-edit/validation-intercep
         }
     }
 });
-//# sourceMappingURL=demo-validation-interceptor.js.map
