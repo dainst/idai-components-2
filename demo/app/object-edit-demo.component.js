@@ -74,3 +74,4 @@ System.register(['@angular/core', '@angular/router-deprecated', '../../lib/app/o
         }
     }
 });
+//# sourceMappingURL=object-edit-demo.component.js.map

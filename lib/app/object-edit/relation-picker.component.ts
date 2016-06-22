@@ -33,6 +33,11 @@ export class RelationPickerComponent implements OnChanges {
     private idSearchString: string;
     private suggestionsVisible: boolean;
 
+    // This is to compensate for an issue where it is possible
+    // to call updateSuggestions repeatedly in short time.
+    // It is intended to be only used as guard in updateSuggestions.
+    private updateSuggestionsMode=false;
+
     constructor(private element: ElementRef,
         private datastore: ReadDatastore,
         private loadAndSaveService: LoadAndSaveService 
@@ -61,21 +66,41 @@ export class RelationPickerComponent implements OnChanges {
 
     private updateSuggestions() {
 
+        if (this.updateSuggestionsMode) return;
+        this.updateSuggestionsMode=true;
+
         if (this.idSearchString.length < 1) return;
-        
-        this.suggestions = [];
+
+        this.clearSuggestions();
         this.datastore.find(this.idSearchString)
             .then(documents => {
-                for (var i in documents) {
 
-                    // Show only the first five suggestions
-                    if (this.suggestions.length == 5)
-                        break;
+                this.makeSuggestionsFrom(documents);
+                this.updateSuggestionsMode=false;
 
-                    if (this.checkSuggestion(documents[i]['resource']))
-                        this.suggestions.push(documents[i]);
-                }
-            }).catch(err => console.debug(err));
+            }).catch(err => {
+                console.debug(err);
+                this.updateSuggestionsMode=false;
+            }
+        );
+    }
+
+    private clearSuggestions() {
+        this.suggestions = [];
+    }
+
+    private makeSuggestionsFrom(documents) {
+        for (var i in documents) {
+
+            // Show only the first five suggestions
+            if (this.suggestions.length == 5)
+                break;
+
+            if (this.checkSuggestion(documents[i]['resource']))
+                this.suggestions.push(documents[i]);
+
+            this.updateSuggestionsMode=false;
+        }
     }
 
     /**
