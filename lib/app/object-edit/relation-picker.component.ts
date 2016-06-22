@@ -61,23 +61,21 @@ export class RelationPickerComponent implements OnChanges {
 
     private updateSuggestions() {
 
-        if (this.idSearchString.length > 0) {
-            this.datastore.find(this.idSearchString)
-                .then(documents => {
-                    this.suggestions = [];
-                    for (var i in documents) {
+        if (this.idSearchString.length < 1) return;
+        
+        this.suggestions = [];
+        this.datastore.find(this.idSearchString)
+            .then(documents => {
+                for (var i in documents) {
 
-                        // Show only the first five suggestions
-                        if (this.suggestions.length == 5)
-                            break;
+                    // Show only the first five suggestions
+                    if (this.suggestions.length == 5)
+                        break;
 
-                        if (this.checkSuggestion(documents[i]['resource']))
-                            this.suggestions.push(documents[i]);
-                    }
-                }).catch(err =>
-                console.error(err));
-        } else
-            this.suggestions = [];
+                    if (this.checkSuggestion(documents[i]['resource']))
+                        this.suggestions.push(documents[i]);
+                }
+            }).catch(err => console.debug(err));
     }
 
     /**
