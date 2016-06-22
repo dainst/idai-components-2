@@ -62,7 +62,7 @@ export class RelationPickerComponent implements OnChanges {
     private updateSuggestions() {
 
         if (this.idSearchString.length > 0) {
-            this.datastore.find(this.idSearchString, {})
+            this.datastore.find(this.idSearchString)
                 .then(documents => {
                     this.suggestions = [];
                     for (var i in documents) {
@@ -216,7 +216,11 @@ export class RelationPickerComponent implements OnChanges {
                 break;
             default:
                 this.selectedSuggestionIndex = 0;
-                this.updateSuggestions();
+                setTimeout(this.updateSuggestions.bind(this), 100); // This is to compensate for
+                  // a slight delay where idSearchString takes some time to get updated. The behaviour
+                  // was discovered on an ocasion where the search string got pasted into the input field.
+                  // If one does the keyup quickly after pasting, it wasn't working. If One leaves the command
+                  // key somewhat later, it worked.
                 break;
         }
     }
