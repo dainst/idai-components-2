@@ -29,6 +29,4 @@ export abstract class ReadDatastore  {
     abstract find(query: string): Promise<Document[]>;
 
     abstract all(options: any): Promise<Document[]>;
-
-    abstract getUnsyncedObjects(): Observable<Document>;
 }
