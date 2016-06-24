@@ -1,4 +1,4 @@
-System.register(['@angular/core', "@angular/common", "./load-and-save-service", "../datastore/read-datastore"], function(exports_1, context_1) {
+System.register(['@angular/core', "@angular/common", "./save-service", "../datastore/read-datastore"], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', "@angular/common", "./load-and-save-service", 
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, common_1, load_and_save_service_1, read_datastore_1;
+    var core_1, common_1, save_service_1, read_datastore_1;
     var RelationPickerComponent;
     return {
         setters:[
@@ -20,8 +20,8 @@ System.register(['@angular/core', "@angular/common", "./load-and-save-service", 
             function (common_1_1) {
                 common_1 = common_1_1;
             },
-            function (load_and_save_service_1_1) {
-                load_and_save_service_1 = load_and_save_service_1_1;
+            function (save_service_1_1) {
+                save_service_1 = save_service_1_1;
             },
             function (read_datastore_1_1) {
                 read_datastore_1 = read_datastore_1_1;
@@ -32,10 +32,10 @@ System.register(['@angular/core', "@angular/common", "./load-and-save-service", 
              * @author Thomas Kleinke
              */
             RelationPickerComponent = (function () {
-                function RelationPickerComponent(element, datastore, loadAndSaveService) {
+                function RelationPickerComponent(element, datastore, saveService) {
                     this.element = element;
                     this.datastore = datastore;
-                    this.loadAndSaveService = loadAndSaveService;
+                    this.saveService = saveService;
                     this.selectedSuggestionIndex = -1;
                     // This is to compensate for an issue where it is possible
                     // to call updateSuggestions repeatedly in short time.
@@ -114,7 +114,7 @@ System.register(['@angular/core', "@angular/common", "./load-and-save-service", 
                     this.selectedTarget = document;
                     this.idSearchString = "";
                     this.suggestions = [];
-                    this.loadAndSaveService.setChanged();
+                    this.saveService.setChanged();
                 };
                 RelationPickerComponent.prototype.editTarget = function () {
                     this.idSearchString = this.selectedTarget['resource'].identifier;
@@ -155,7 +155,7 @@ System.register(['@angular/core', "@angular/common", "./load-and-save-service", 
                         else {
                             _this.resource[_this.field.field].splice(_this.relationIndex, 1);
                             // todo
-                            _this.loadAndSaveService.setChanged();
+                            _this.saveService.setChanged();
                         }
                         if (_this.resource[_this.field.field].length == 0)
                             delete _this.resource[_this.field.field];
@@ -227,7 +227,7 @@ System.register(['@angular/core', "@angular/common", "./load-and-save-service", 
                         templateUrl: 'src/templates/relation-picker.html',
                         directives: [common_1.CORE_DIRECTIVES, common_1.COMMON_DIRECTIVES, common_1.FORM_DIRECTIVES]
                     }), 
-                    __metadata('design:paramtypes', [core_1.ElementRef, read_datastore_1.ReadDatastore, load_and_save_service_1.LoadAndSaveService])
+                    __metadata('design:paramtypes', [core_1.ElementRef, read_datastore_1.ReadDatastore, save_service_1.SaveService])
                 ], RelationPickerComponent);
                 return RelationPickerComponent;
             }());

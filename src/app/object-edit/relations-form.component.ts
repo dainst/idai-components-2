@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {LoadAndSaveService} from "./load-and-save-service";
+import {SaveService} from "./save-service";
 import {CORE_DIRECTIVES,COMMON_DIRECTIVES,FORM_DIRECTIVES} from "@angular/common";
 import {RelationPickerGroupComponent} from "./relation-picker-group.component";
 import {ValuelistComponent} from "./valuelist.component";
@@ -30,10 +30,10 @@ export class RelationsFormComponent{
     @Input() relationFields: any;
 
     constructor(
-        private loadAndSaveService: LoadAndSaveService
+        private saveService: SaveService
     ) {}
 
     public markAsChanged() {
-        this.loadAndSaveService.setChanged();
+        this.saveService.setChanged();
     }
 }

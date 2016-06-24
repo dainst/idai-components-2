@@ -1,4 +1,4 @@
-System.register(['@angular/core', "./persistence-manager", "@angular/common", "./edit-form.component", "./relations-form.component", "./config-loader", "./load-and-save-service"], function(exports_1, context_1) {
+System.register(['@angular/core', "./persistence-manager", "@angular/common", "./edit-form.component", "./relations-form.component", "./config-loader"], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', "./persistence-manager", "@angular/common", ".
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, persistence_manager_1, common_1, edit_form_component_1, relations_form_component_1, config_loader_1, load_and_save_service_1;
+    var core_1, persistence_manager_1, common_1, edit_form_component_1, relations_form_component_1, config_loader_1;
     var DocumentEditComponent;
     return {
         setters:[
@@ -31,9 +31,6 @@ System.register(['@angular/core', "./persistence-manager", "@angular/common", ".
             },
             function (config_loader_1_1) {
                 config_loader_1 = config_loader_1_1;
-            },
-            function (load_and_save_service_1_1) {
-                load_and_save_service_1 = load_and_save_service_1_1;
             }],
         execute: function() {
             /**
@@ -42,10 +39,9 @@ System.register(['@angular/core', "./persistence-manager", "@angular/common", ".
              * @author Daniel de Oliveira
              */
             DocumentEditComponent = (function () {
-                function DocumentEditComponent(persistenceManager, configLoader, loadAndSaveService) {
+                function DocumentEditComponent(persistenceManager, configLoader) {
                     this.persistenceManager = persistenceManager;
                     this.configLoader = configLoader;
-                    this.loadAndSaveService = loadAndSaveService;
                 }
                 DocumentEditComponent.prototype.ngOnInit = function () {
                     var _this = this;
@@ -72,11 +68,9 @@ System.register(['@angular/core', "./persistence-manager", "@angular/common", ".
                     this.types = this.projectConfiguration.getTypes();
                 };
                 DocumentEditComponent.prototype.ngOnChanges = function () {
-                    var _this = this;
                     if (this.document) {
-                        this.loadAndSaveService.load(this.document).then(function () {
-                            _this.setFieldsForObjectType(_this.document, _this.projectConfiguration);
-                        }, function (err) { });
+                        this.persistenceManager.setOldVersion(this.document);
+                        this.setFieldsForObjectType(this.document, this.projectConfiguration);
                     }
                 };
                 __decorate([
@@ -99,7 +93,7 @@ System.register(['@angular/core', "./persistence-manager", "@angular/common", ".
                         selector: 'document-edit',
                         templateUrl: 'src/templates/document-edit.html'
                     }), 
-                    __metadata('design:paramtypes', [persistence_manager_1.PersistenceManager, config_loader_1.ConfigLoader, load_and_save_service_1.LoadAndSaveService])
+                    __metadata('design:paramtypes', [persistence_manager_1.PersistenceManager, config_loader_1.ConfigLoader])
                 ], DocumentEditComponent);
                 return DocumentEditComponent;
             }());

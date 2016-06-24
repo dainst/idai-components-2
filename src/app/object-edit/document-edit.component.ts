@@ -7,8 +7,6 @@ import {RelationsFormComponent} from "./relations-form.component"
 import {OnChanges} from "@angular/core";
 import {RelationsConfiguration} from "./relations-configuration";
 import {ConfigLoader} from "./config-loader";
-import {LoadAndSaveService} from "./load-and-save-service";
-import {Document} from "../core-services/document";
 
 /**
  * @author Jan G. Wieners
@@ -41,8 +39,7 @@ export class DocumentEditComponent implements OnChanges,OnInit {
 
     constructor(
         private persistenceManager: PersistenceManager,
-        private configLoader: ConfigLoader,
-        private loadAndSaveService: LoadAndSaveService
+        private configLoader: ConfigLoader
     ) {}
 
     ngOnInit():any {
@@ -73,9 +70,8 @@ export class DocumentEditComponent implements OnChanges,OnInit {
     public ngOnChanges() {
 
         if (this.document) {
-            this.loadAndSaveService.load(this.document).then(()=>{
-                this.setFieldsForObjectType(this.document,this.projectConfiguration);},
-                err=>{});
+            this.persistenceManager.setOldVersion(this.document);
+            this.setFieldsForObjectType(this.document,this.projectConfiguration);
         }
     }
 }

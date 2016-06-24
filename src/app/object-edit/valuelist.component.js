@@ -1,4 +1,4 @@
-System.register(['@angular/core', "@angular/common", "./load-and-save-service"], function(exports_1, context_1) {
+System.register(['@angular/core', "@angular/common", "./save-service"], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', "@angular/common", "./load-and-save-service"],
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, common_1, load_and_save_service_1;
+    var core_1, common_1, save_service_1;
     var ValuelistComponent;
     return {
         setters:[
@@ -20,16 +20,16 @@ System.register(['@angular/core', "@angular/common", "./load-and-save-service"],
             function (common_1_1) {
                 common_1 = common_1_1;
             },
-            function (load_and_save_service_1_1) {
-                load_and_save_service_1 = load_and_save_service_1_1;
+            function (save_service_1_1) {
+                save_service_1 = save_service_1_1;
             }],
         execute: function() {
             /**
              * @author Thomas Kleinke
              */
             ValuelistComponent = (function () {
-                function ValuelistComponent(loadAndSaveService) {
-                    this.loadAndSaveService = loadAndSaveService;
+                function ValuelistComponent(saveService) {
+                    this.saveService = saveService;
                 }
                 ValuelistComponent.prototype.ngOnChanges = function () {
                     if (this.document)
@@ -40,7 +40,7 @@ System.register(['@angular/core', "@angular/common", "./load-and-save-service"],
                     for (var i = 0; i < selectedOptions.length; i++) {
                         this.resource[this.field.field].push(selectedOptions.item(i).childNodes[0].nodeValue);
                     }
-                    this.loadAndSaveService.setChanged();
+                    this.saveService.setChanged();
                 };
                 ValuelistComponent.prototype.isSelected = function (item) {
                     if (this.resource[this.field.field])
@@ -62,7 +62,7 @@ System.register(['@angular/core', "@angular/common", "./load-and-save-service"],
                         template: "<div>\n    <select (change)=\"setValues($event.target.selectedOptions)\" class=\"form-control\" multiple>\n        <option *ngFor=\"let item of field.valuelist\" value=\"{{item}}\" [selected]=\"isSelected(item)\">{{item}}</option>\n    </select>\n</div>",
                         directives: [common_1.CORE_DIRECTIVES, common_1.COMMON_DIRECTIVES, common_1.FORM_DIRECTIVES]
                     }), 
-                    __metadata('design:paramtypes', [load_and_save_service_1.LoadAndSaveService])
+                    __metadata('design:paramtypes', [save_service_1.SaveService])
                 ], ValuelistComponent);
                 return ValuelistComponent;
             }());

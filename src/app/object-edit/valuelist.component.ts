@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {CORE_DIRECTIVES,COMMON_DIRECTIVES,FORM_DIRECTIVES} from "@angular/common";
 import {Resource} from "../core-services/resource";
-import {LoadAndSaveService} from "./load-and-save-service";
+import {SaveService} from "./save-service";
 
 /**
  * @author Thomas Kleinke
@@ -24,7 +24,7 @@ export class ValuelistComponent {
 
     public resource: Resource;
 
-    constructor(private loadAndSaveService: LoadAndSaveService) {}
+    constructor(private saveService: SaveService) {}
 
     public ngOnChanges() {
         
@@ -38,7 +38,7 @@ export class ValuelistComponent {
         for (var i = 0; i < selectedOptions.length; i++) {
             this.resource[this.field.field].push(selectedOptions.item(i).childNodes[0].nodeValue);
         }
-        this.loadAndSaveService.setChanged();
+        this.saveService.setChanged();
     }
     
     public isSelected(item: string) {

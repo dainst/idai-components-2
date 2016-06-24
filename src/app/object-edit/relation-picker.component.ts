@@ -2,7 +2,7 @@ import {Component, Input, OnChanges, ElementRef} from '@angular/core';
 import {CORE_DIRECTIVES,COMMON_DIRECTIVES,FORM_DIRECTIVES} from "@angular/common";
 import {Document} from "../core-services/document";
 import {Resource} from "../core-services/resource";
-import {LoadAndSaveService} from "./load-and-save-service";
+import {SaveService} from "./save-service";
 import {ReadDatastore} from "../datastore/read-datastore";
 
 
@@ -40,7 +40,7 @@ export class RelationPickerComponent implements OnChanges {
 
     constructor(private element: ElementRef,
         private datastore: ReadDatastore,
-        private loadAndSaveService: LoadAndSaveService 
+        private saveService: SaveService 
     ) {}
 
     public ngOnChanges() {
@@ -137,7 +137,7 @@ export class RelationPickerComponent implements OnChanges {
         this.idSearchString = "";
         this.suggestions = [];
 
-        this.loadAndSaveService.setChanged();
+        this.saveService.setChanged();
     }
 
     public editTarget() {
@@ -193,7 +193,7 @@ export class RelationPickerComponent implements OnChanges {
             } else {
                 this.resource[this.field.field].splice(this.relationIndex, 1);
                 // todo
-                this.loadAndSaveService.setChanged();
+                this.saveService.setChanged();
             }
 
             if (this.resource[this.field.field].length==0) delete this.resource[this.field.field]

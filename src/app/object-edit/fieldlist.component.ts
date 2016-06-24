@@ -1,6 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {CORE_DIRECTIVES,COMMON_DIRECTIVES,FORM_DIRECTIVES} from "@angular/common";
-import {LoadAndSaveService} from "./load-and-save-service";
+import {SaveService} from "./save-service";
 
 /**
  * @author Daniel de Oliveira
@@ -24,9 +24,9 @@ export class FieldlistComponent {
     @Input() resource: any;
     @Input() fieldDefinition: any;
 
-    constructor(private loadAndSaveService: LoadAndSaveService) {}
+    constructor(private saveService: SaveService) {}
 
     public markAsChanged() {
-        this.loadAndSaveService.setChanged();
+        this.saveService.setChanged();
     }
 }

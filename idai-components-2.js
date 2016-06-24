@@ -1,4 +1,4 @@
-System.register(['./src/app/object-edit/config-loader', './src/app/object-edit/persistence-manager', './src/app/datastore/datastore', './src/app/datastore/read-datastore', './src/app/object-edit/project-configuration', './src/app/object-edit/document-edit.component', './src/app/object-edit/relations-configuration', './src/app/core-services/messages.component', './src/app/core-services/messages', './src/app/object-edit/validation-interceptor', './src/app/object-edit/load-and-save-service', './src/app/core-services/md'], function(exports_1, context_1) {
+System.register(['./src/app/object-edit/config-loader', './src/app/datastore/datastore', './src/app/datastore/read-datastore', './src/app/object-edit/project-configuration', './src/app/object-edit/document-edit.component', './src/app/object-edit/save-service', './src/app/object-edit/relations-configuration', './src/app/core-services/messages.component', './src/app/core-services/messages', './src/app/object-edit/validation-interceptor', './src/app/core-services/md'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     return {
@@ -6,11 +6,6 @@ System.register(['./src/app/object-edit/config-loader', './src/app/object-edit/p
             function (config_loader_1_1) {
                 exports_1({
                     "ConfigLoader": config_loader_1_1["ConfigLoader"]
-                });
-            },
-            function (persistence_manager_1_1) {
-                exports_1({
-                    "PersistenceManager": persistence_manager_1_1["PersistenceManager"]
                 });
             },
             function (datastore_1_1) {
@@ -33,6 +28,11 @@ System.register(['./src/app/object-edit/config-loader', './src/app/object-edit/p
                     "DocumentEditComponent": document_edit_component_1_1["DocumentEditComponent"]
                 });
             },
+            function (save_service_1_1) {
+                exports_1({
+                    "SaveService": save_service_1_1["SaveService"]
+                });
+            },
             function (relations_configuration_1_1) {
                 exports_1({
                     "RelationsConfiguration": relations_configuration_1_1["RelationsConfiguration"]
@@ -51,11 +51,6 @@ System.register(['./src/app/object-edit/config-loader', './src/app/object-edit/p
             function (validation_interceptor_1_1) {
                 exports_1({
                     "ValidationInterceptor": validation_interceptor_1_1["ValidationInterceptor"]
-                });
-            },
-            function (load_and_save_service_1_1) {
-                exports_1({
-                    "LoadAndSaveService": load_and_save_service_1_1["LoadAndSaveService"]
                 });
             },
             function (md_1_1) {
