@@ -78,8 +78,4 @@ export class DocumentEditComponent implements OnChanges,OnInit {
                 err=>{});
         }
     }
-
-    public save() {
-        this.loadAndSaveService.save(this.document).then(()=>{},err=>{});
-    }
 }

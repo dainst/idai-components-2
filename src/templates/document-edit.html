@@ -1,50 +1,25 @@
 <div *ngIf="document">
 
     <div *ngIf="!document['resource'].type" id="object-create">
-        <section>
-            <header >
-                <h1 id="create-object-heading">
-                    <span class="mdi mdi-blur"></span>
-                    New Object
-                </h1>
-            </header>
-            <main>
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        Please choose the object type.
-                    </div>
-                    <button *ngFor="let type of types; let index = index" (mousedown)="setType(type)"
-                            type="button" id="create-object-option-{{index}}" class="list-group-item">{{type}}</button>
-                </div>
-            </main>
-        </section>
+        <!--<h1 id="create-object-heading">-->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Please choose the object type.
+            </div>
+            <button *ngFor="let type of types; let index = index" (mousedown)="setType(type)"
+                    type="button" id="create-object-option-{{index}}" class="list-group-item">{{type}}</button>
+        </div>
     </div>
 
     <div *ngIf="document['resource'].type"
          id="object-edit">
 
-        <section>
-            <header>
-                <h1 id="object-type-heading">
-                    <span class="mdi mdi-blur"></span>
-                    [{{document['resource'].type}}] {{document['resource']['@id']}}
-                    <button class="btn btn-default pull-right" id="object-edit-button-save-object"
-                            style="margin-right: 5px; margin-top: 5px;" (click)="save()">Speichern</button>
-                </h1>
-            </header>
-
-            <main>
-                <form>
-                    <edit-form [(document)]="document"
-                           [fieldsForObjectType]="fieldsForObjectType"></edit-form>
-                    <relations-form [(document)]="document"
-                               [primary]="primary"
-                               [relationFields]="relationFields"></relations-form>
-                </form>
-            </main>
-
-        </section>
-
+        <form>
+            <edit-form [(document)]="document"
+                       [fieldsForObjectType]="fieldsForObjectType"></edit-form>
+            <relations-form [(document)]="document"
+                            [primary]="primary"
+                            [relationFields]="relationFields"></relations-form>
+        </form>
     </div>
-
 </div>

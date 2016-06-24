@@ -79,9 +79,6 @@ System.register(['@angular/core', "./persistence-manager", "@angular/common", ".
                         }, function (err) { });
                     }
                 };
-                DocumentEditComponent.prototype.save = function () {
-                    this.loadAndSaveService.save(this.document).then(function () { }, function (err) { });
-                };
                 __decorate([
                     core_1.Input(), 
                     __metadata('design:type', Object)
