@@ -6,6 +6,7 @@ export {ReadDatastore} from './src/app/datastore/read-datastore';
 export {ProjectConfiguration} from './src/app/object-edit/project-configuration';
 export {DocumentEditComponent} from './src/app/object-edit/document-edit.component';
 export {SaveService} from './src/app/object-edit/save-service';
+export {PersistenceManager} from './src/app/object-edit/persistence-manager';
 export {RelationsConfiguration} from './src/app/object-edit/relations-configuration';
 export {MessagesComponent} from './src/app/core-services/messages.component';
 export {Messages} from './src/app/core-services/messages';

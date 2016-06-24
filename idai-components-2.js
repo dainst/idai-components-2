@@ -1,4 +1,4 @@
-System.register(['./src/app/object-edit/config-loader', './src/app/datastore/datastore', './src/app/datastore/read-datastore', './src/app/object-edit/project-configuration', './src/app/object-edit/document-edit.component', './src/app/object-edit/save-service', './src/app/object-edit/relations-configuration', './src/app/core-services/messages.component', './src/app/core-services/messages', './src/app/object-edit/validation-interceptor', './src/app/core-services/md'], function(exports_1, context_1) {
+System.register(['./src/app/object-edit/config-loader', './src/app/datastore/datastore', './src/app/datastore/read-datastore', './src/app/object-edit/project-configuration', './src/app/object-edit/document-edit.component', './src/app/object-edit/save-service', './src/app/object-edit/persistence-manager', './src/app/object-edit/relations-configuration', './src/app/core-services/messages.component', './src/app/core-services/messages', './src/app/object-edit/validation-interceptor', './src/app/core-services/md'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     return {
@@ -31,6 +31,11 @@ System.register(['./src/app/object-edit/config-loader', './src/app/datastore/dat
             function (save_service_1_1) {
                 exports_1({
                     "SaveService": save_service_1_1["SaveService"]
+                });
+            },
+            function (persistence_manager_1_1) {
+                exports_1({
+                    "PersistenceManager": persistence_manager_1_1["PersistenceManager"]
                 });
             },
             function (relations_configuration_1_1) {
