@@ -1,5 +1,6 @@
 import {Document} from "../core-services/document";
 import {ReadDatastore} from "./read-datastore";
+import {Observable} from "rxjs/Observable";
 
 /**
  * The interface for datastores supporting 
@@ -10,6 +11,11 @@ import {ReadDatastore} from "./read-datastore";
  */ 
 export abstract class Datastore extends ReadDatastore {
 
+    /**
+     * @param doc
+     * @returns {Promise<T>} resolve -> (),
+     *   reject -> the error message or a message key.
+     */
     abstract create(doc: Document): Promise<string>;
 
     /**
@@ -19,9 +25,15 @@ export abstract class Datastore extends ReadDatastore {
      */ 
     abstract update(doc: Document): Promise<any>;
 
+    /**
+     * @param resourceId document['resource']['id']
+     */
     abstract remove(resourceId: string): Promise<any>;
 
-    abstract clear(): Promise<any>;
-
-    abstract refresh(resourceId:string):Promise<Document>;
+    /**
+     * Subscription enables clients to get notified
+     * when documents get modified via one of the accessor
+     * methods defined here.
+     */
+    abstract documentChangesNotifications():Observable<Document>;
 }
