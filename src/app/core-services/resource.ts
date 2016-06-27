@@ -1,5 +1,5 @@
 export interface Resource {
-    id?: string;
+    '@id'?: string;
     identifier: string;
     type: string;
 }

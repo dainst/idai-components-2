@@ -1,4 +1,7 @@
+import {Resource} from './resource'
+
 export interface Document {
-    '@id':string;
-    resource : any;
+    resource : Resource;
+    modified?: Date;
+    created?: Date;
 }
