@@ -65,7 +65,7 @@ System.register(['@angular/platform-browser-dynamic', './app.component', '@angul
                 core_1.provide(config_loader_1.ConfigLoader, { useClass: config_loader_1.ConfigLoader }),
                 core_1.provide(persistence_manager_1.PersistenceManager, { useClass: persistence_manager_1.PersistenceManager }),
                 core_1.provide(config_loader_1.ConfigLoader, { useClass: config_loader_1.ConfigLoader }),
-                core_1.provide(save_service_1.SaveService, { useClass: save_service_1.SaveService }),
+                core_1.provide(save_service_1.DocumentEditChangeMonitor, { useClass: save_service_1.DocumentEditChangeMonitor }),
                 core_1.provide(validation_interceptor_1.ValidationInterceptor, { useClass: demo_validation_interceptor_1.DemoValidationInterceptor }),
                 core_1.provide(md_1.MD, { useClass: md_1.MD })
             ]);

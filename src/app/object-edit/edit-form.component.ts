@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {SaveService} from "./save-service";
+import {DocumentEditChangeMonitor} from "./document-edit-change-monitor";
 import {CORE_DIRECTIVES,COMMON_DIRECTIVES,FORM_DIRECTIVES} from "@angular/common";
 import {RelationPickerGroupComponent} from "./relation-picker-group.component";
 import {ValuelistComponent} from "./valuelist.component";
@@ -31,7 +31,7 @@ export class EditFormComponent{
     public types : string[];
 
     constructor(
-        private saveService: SaveService
+        private saveService: DocumentEditChangeMonitor
     ) {}
 
 

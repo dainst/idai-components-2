@@ -1,4 +1,4 @@
-System.register(['@angular/core', "@angular/common", "./save-service", "../datastore/read-datastore"], function(exports_1, context_1) {
+System.register(['@angular/core', "@angular/common", "./document-edit-change-monitor", "../datastore/read-datastore"], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', "@angular/common", "./save-service", "../datas
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, common_1, save_service_1, read_datastore_1;
+    var core_1, common_1, document_edit_change_monitor_1, read_datastore_1;
     var RelationPickerComponent;
     return {
         setters:[
@@ -20,8 +20,8 @@ System.register(['@angular/core', "@angular/common", "./save-service", "../datas
             function (common_1_1) {
                 common_1 = common_1_1;
             },
-            function (save_service_1_1) {
-                save_service_1 = save_service_1_1;
+            function (document_edit_change_monitor_1_1) {
+                document_edit_change_monitor_1 = document_edit_change_monitor_1_1;
             },
             function (read_datastore_1_1) {
                 read_datastore_1 = read_datastore_1_1;
@@ -227,7 +227,7 @@ System.register(['@angular/core', "@angular/common", "./save-service", "../datas
                         templateUrl: 'src/templates/relation-picker.html',
                         directives: [common_1.CORE_DIRECTIVES, common_1.COMMON_DIRECTIVES, common_1.FORM_DIRECTIVES]
                     }), 
-                    __metadata('design:paramtypes', [core_1.ElementRef, read_datastore_1.ReadDatastore, save_service_1.SaveService])
+                    __metadata('design:paramtypes', [core_1.ElementRef, read_datastore_1.ReadDatastore, document_edit_change_monitor_1.DocumentEditChangeMonitor])
                 ], RelationPickerComponent);
                 return RelationPickerComponent;
             }());

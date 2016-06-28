@@ -1,4 +1,4 @@
-System.register(['./src/app/object-edit/config-loader', './src/app/datastore/datastore', './src/app/datastore/read-datastore', './src/app/object-edit/project-configuration', './src/app/object-edit/document-edit.component', './src/app/object-edit/save-service', './src/app/object-edit/persistence-manager', './src/app/object-edit/relations-configuration', './src/app/core-services/messages.component', './src/app/core-services/messages', './src/app/object-edit/validation-interceptor', './src/app/core-services/md'], function(exports_1, context_1) {
+System.register(['./src/app/object-edit/config-loader', './src/app/datastore/datastore', './src/app/datastore/read-datastore', './src/app/object-edit/project-configuration', './src/app/object-edit/document-edit.component', './src/app/object-edit/document-edit-change-monitor', './src/app/object-edit/persistence-manager', './src/app/object-edit/relations-configuration', './src/app/core-services/messages.component', './src/app/core-services/messages', './src/app/core-services/md'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     return {
@@ -28,9 +28,9 @@ System.register(['./src/app/object-edit/config-loader', './src/app/datastore/dat
                     "DocumentEditComponent": document_edit_component_1_1["DocumentEditComponent"]
                 });
             },
-            function (save_service_1_1) {
+            function (document_edit_change_monitor_1_1) {
                 exports_1({
-                    "SaveService": save_service_1_1["SaveService"]
+                    "DocumentEditChangeMonitor": document_edit_change_monitor_1_1["DocumentEditChangeMonitor"]
                 });
             },
             function (persistence_manager_1_1) {
@@ -51,11 +51,6 @@ System.register(['./src/app/object-edit/config-loader', './src/app/datastore/dat
             function (messages_1_1) {
                 exports_1({
                     "Messages": messages_1_1["Messages"]
-                });
-            },
-            function (validation_interceptor_1_1) {
-                exports_1({
-                    "ValidationInterceptor": validation_interceptor_1_1["ValidationInterceptor"]
                 });
             },
             function (md_1_1) {

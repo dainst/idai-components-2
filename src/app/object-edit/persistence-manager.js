@@ -42,6 +42,11 @@ System.register(["@angular/core", "../datastore/datastore"], function(exports_1,
                 PersistenceManager.prototype.setRelationsConfiguration = function (relationsConfiguration) {
                     this.relationsConfiguration = relationsConfiguration;
                 };
+                /**
+                 * Package private.
+                 *
+                 * @param oldVersion
+                 */
                 PersistenceManager.prototype.setOldVersion = function (oldVersion) {
                     this.oldVersion = JSON.parse(JSON.stringify(oldVersion));
                 };
@@ -66,6 +71,7 @@ System.register(["@angular/core", "../datastore/datastore"], function(exports_1,
                         _this.persistIt(document).then(function () {
                             Promise.all(_this.makeGetPromises(document, _this.oldVersion)).then(function (targetDocuments) {
                                 Promise.all(_this.makeSavePromises(resource, targetDocuments)).then(function () {
+                                    _this.setOldVersion(document);
                                     resolve();
                                 }, function (err) { return reject(err); });
                             }, function (err) { return reject(err); });

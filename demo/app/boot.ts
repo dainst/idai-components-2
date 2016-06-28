@@ -7,7 +7,7 @@ import {HTTP_PROVIDERS} from '@angular/http';
 import {provide} from '@angular/core';
 import {Datastore} from "../../src/app/datastore/datastore";
 import {ReadDatastore} from "../../src/app/datastore/read-datastore";
-import {SaveService} from "../../src/app/object-edit/save-service";
+import {DocumentEditChangeMonitor} from "../../src/app/object-edit/save-service";
 import {Messages} from "../../src/app/core-services/messages";
 import {MemoryDatastore} from "./memory-datastore";
 import {ConfigLoader} from "../../src/app/object-edit/config-loader";
@@ -28,7 +28,7 @@ bootstrap(AppComponent, [
     provide(ConfigLoader, {useClass: ConfigLoader}),
     provide(PersistenceManager, {useClass: PersistenceManager}),
     provide(ConfigLoader, {useClass: ConfigLoader}),
-    provide(SaveService, {useClass: SaveService}),
+    provide(DocumentEditChangeMonitor, {useClass: DocumentEditChangeMonitor}),
     provide(ValidationInterceptor, {useClass: DemoValidationInterceptor}),
     provide(MD, {useClass: MD})
 ]);

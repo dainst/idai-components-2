@@ -29,7 +29,12 @@ import {Resource} from "../core-services/resource";
         this.relationsConfiguration = relationsConfiguration;
     }
 
-    public setOldVersion(oldVersion) {
+    /**
+     * Package private.
+     * 
+     * @param oldVersion
+     */
+    setOldVersion(oldVersion) {
         this.oldVersion=JSON.parse(JSON.stringify(oldVersion));
     }
     
@@ -56,6 +61,7 @@ import {Resource} from "../core-services/resource";
 
                         Promise.all(this.makeSavePromises(resource,targetDocuments)).then(()=> {
 
+                            this.setOldVersion(document);
                             resolve();
                         }, (err)=>reject(err));
 

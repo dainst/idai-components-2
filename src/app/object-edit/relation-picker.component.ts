@@ -2,7 +2,7 @@ import {Component, Input, OnChanges, ElementRef} from '@angular/core';
 import {CORE_DIRECTIVES,COMMON_DIRECTIVES,FORM_DIRECTIVES} from "@angular/common";
 import {Document} from "../core-services/document";
 import {Resource} from "../core-services/resource";
-import {SaveService} from "./save-service";
+import {DocumentEditChangeMonitor} from "./document-edit-change-monitor";
 import {ReadDatastore} from "../datastore/read-datastore";
 
 
@@ -40,7 +40,7 @@ export class RelationPickerComponent implements OnChanges {
 
     constructor(private element: ElementRef,
         private datastore: ReadDatastore,
-        private saveService: SaveService 
+        private saveService: DocumentEditChangeMonitor 
     ) {}
 
     public ngOnChanges() {

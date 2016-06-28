@@ -1,4 +1,4 @@
-System.register(['@angular/core', "@angular/common", "./save-service"], function(exports_1, context_1) {
+System.register(['@angular/core', "@angular/common", "./document-edit-change-monitor"], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', "@angular/common", "./save-service"], function
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, common_1, save_service_1;
+    var core_1, common_1, document_edit_change_monitor_1;
     var FieldlistComponent;
     return {
         setters:[
@@ -20,8 +20,8 @@ System.register(['@angular/core', "@angular/common", "./save-service"], function
             function (common_1_1) {
                 common_1 = common_1_1;
             },
-            function (save_service_1_1) {
-                save_service_1 = save_service_1_1;
+            function (document_edit_change_monitor_1_1) {
+                document_edit_change_monitor_1 = document_edit_change_monitor_1_1;
             }],
         execute: function() {
             /**
@@ -48,7 +48,7 @@ System.register(['@angular/core', "@angular/common", "./save-service"], function
                         template: "<div>\n        <ul>\n            <li *ngFor=\"let item of resource[fieldDefinition.field]; let i=index\">\n                <div>{{item}}</div>\n            </li>\n      \n        </ul>\n    </div>",
                         directives: [common_1.CORE_DIRECTIVES, common_1.COMMON_DIRECTIVES, common_1.FORM_DIRECTIVES]
                     }), 
-                    __metadata('design:paramtypes', [save_service_1.SaveService])
+                    __metadata('design:paramtypes', [document_edit_change_monitor_1.DocumentEditChangeMonitor])
                 ], FieldlistComponent);
                 return FieldlistComponent;
             }());
