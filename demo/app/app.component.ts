@@ -1,6 +1,7 @@
-import {Component, OnInit, Inject} from '@angular/core';
-import { Router,ROUTER_DIRECTIVES, Routes } from '@angular/router';
+import {Component} from '@angular/core';
+import {ROUTER_DIRECTIVES, Routes} from '@angular/router';
 import {ObjectEditDemoComponent} from './object-edit-demo.component';
+import {MessagesDemoComponent} from './messages-demo.component';
 
 /**
  * @author Daniel de Oliveira
@@ -12,6 +13,7 @@ import {ObjectEditDemoComponent} from './object-edit-demo.component';
 })
 @Routes([
     {path: '/edit', component: ObjectEditDemoComponent},
+    {path: '/messages', component: MessagesDemoComponent}
 ])
 export class AppComponent {
 }

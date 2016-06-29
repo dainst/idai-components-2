@@ -1,5 +1,4 @@
 import {Document} from "../core-services/document";
-import {Observable} from "rxjs/Observable";
 
 /**
  * The interface providing read access methods 

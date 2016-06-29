@@ -1,0 +1,23 @@
+<div class="container-fluid" id="app">
+
+    <p>
+        <code>&lt;messages&gt;&lt;/messages&gt;</code>
+    </p>
+
+    <p>
+        -
+    </p>
+
+    <p>
+        Click on a button to show the corresponding message.
+    </p>
+
+    <p>
+        -
+    </p>
+    <div *ngFor="let msgKey of messageKeys">
+        <button (click)="showMessage(msgKey)">Message: {{msgKey}}</button>
+    </div>
+    <div><button (click)="clearMessages()">Delete all messages</button></div>
+    <div class="well" style="margin-top: 15px;"><message></message></div>
+</div>

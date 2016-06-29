@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/router', './object-edit-demo.component'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/router', './object-edit-demo.component', './messages-demo.component'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', '@angular/router', './object-edit-demo.compone
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_1, object_edit_demo_component_1;
+    var core_1, router_1, object_edit_demo_component_1, messages_demo_component_1;
     var AppComponent;
     return {
         setters:[
@@ -22,6 +22,9 @@ System.register(['@angular/core', '@angular/router', './object-edit-demo.compone
             },
             function (object_edit_demo_component_1_1) {
                 object_edit_demo_component_1 = object_edit_demo_component_1_1;
+            },
+            function (messages_demo_component_1_1) {
+                messages_demo_component_1 = messages_demo_component_1_1;
             }],
         execute: function() {
             /**
@@ -38,6 +41,7 @@ System.register(['@angular/core', '@angular/router', './object-edit-demo.compone
                     }),
                     router_1.Routes([
                         { path: '/edit', component: object_edit_demo_component_1.ObjectEditDemoComponent },
+                        { path: '/messages', component: messages_demo_component_1.MessagesDemoComponent }
                     ]), 
                     __metadata('design:paramtypes', [])
                 ], AppComponent);
@@ -47,3 +51,4 @@ System.register(['@angular/core', '@angular/router', './object-edit-demo.compone
         }
     }
 });
+//# sourceMappingURL=app.component.js.map
