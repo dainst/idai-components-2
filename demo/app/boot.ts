@@ -7,13 +7,11 @@ import {HTTP_PROVIDERS} from '@angular/http';
 import {provide} from '@angular/core';
 import {Datastore} from "../../src/app/datastore/datastore";
 import {ReadDatastore} from "../../src/app/datastore/read-datastore";
-import {DocumentEditChangeMonitor} from "../../src/app/object-edit/save-service";
+import {DocumentEditChangeMonitor} from "../../src/app/object-edit/document-edit-change-monitor";
 import {Messages} from "../../src/app/core-services/messages";
 import {MemoryDatastore} from "./memory-datastore";
 import {ConfigLoader} from "../../src/app/object-edit/config-loader";
 import {PersistenceManager} from "../../src/app/object-edit/persistence-manager";
-import {ValidationInterceptor} from "../../src/app/object-edit/validation-interceptor";
-import {DemoValidationInterceptor} from "./demo-validation-interceptor";
 import {MD} from "../../src/app/core-services/md";
 import { ROUTER_PROVIDERS } from '@angular/router';
 import {LocationStrategy, HashLocationStrategy} from '@angular/common';
@@ -29,6 +27,5 @@ bootstrap(AppComponent, [
     provide(PersistenceManager, {useClass: PersistenceManager}),
     provide(ConfigLoader, {useClass: ConfigLoader}),
     provide(DocumentEditChangeMonitor, {useClass: DocumentEditChangeMonitor}),
-    provide(ValidationInterceptor, {useClass: DemoValidationInterceptor}),
     provide(MD, {useClass: MD})
 ]);
