@@ -30,15 +30,25 @@ System.register(['@angular/core', '@angular/router-deprecated', '../../src/app/c
                 messages_1 = messages_1_1;
             }],
         execute: function() {
+            /**
+             * @author Thomas Kleinke
+             */
             MessagesDemoComponent = (function () {
                 function MessagesDemoComponent(md, messages) {
                     this.md = md;
                     this.messages = messages;
                     this.messageKeys = [];
+                    this.params = [];
+                    this.useParams = false;
                     this.messageKeys = Object.keys(md.msgs);
                 }
                 MessagesDemoComponent.prototype.showMessage = function (msgKey) {
-                    this.messages.add(msgKey);
+                    if (this.useParams) {
+                        this.messages.add(msgKey, this.params);
+                    }
+                    else {
+                        this.messages.add(msgKey);
+                    }
                 };
                 MessagesDemoComponent.prototype.clearMessages = function () {
                     this.messages.clear();

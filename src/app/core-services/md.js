@@ -33,26 +33,37 @@ System.register(["@angular/core"], function(exports_1, context_1) {
                     this.msgs[MD.OBJLIST_IDEXISTS] = {
                         content: 'Objekt-Identifier existiert bereits.',
                         level: 'danger',
+                        params: []
                     };
                     this.msgs[MD.OBJLIST_IDMISSING] = {
                         content: 'Objekt-Identifier fehlt.',
-                        level: 'danger'
+                        level: 'danger',
+                        params: []
                     };
                     this.msgs[MD.OBJLIST_SAVE_SUCCESS] = {
                         content: 'Das Objekt wurde erfolgreich gespeichert.',
-                        level: 'success'
+                        level: 'success',
+                        params: []
                     };
                     this.msgs[MD.MESSAGES_NOBODY] = {
                         content: "Keine Message gefunden für Schlüssel 'id'.",
-                        level: 'danger'
+                        level: 'danger',
+                        params: []
                     };
                     this.msgs[MD.PC_GENERIC_ERROR] = {
                         content: "Fehler beim Auswerten eines Konfigurationsobjektes.",
-                        level: 'danger'
+                        level: 'danger',
+                        params: []
                     };
                     this.msgs[MD.PARSE_GENERIC_ERROR] = {
                         content: "Fehler beim Parsen einer Konfigurationsdatei.",
-                        level: 'danger'
+                        level: 'danger',
+                        params: []
+                    };
+                    this.msgs[MD.IMPORTER_SUCCESS] = {
+                        content: "{0} Ressourcen wurden erfolgreich importiert.",
+                        level: 'success',
+                        params: ["Eine oder mehrere"]
                     };
                 }
                 MD.OBJLIST_IDEXISTS = 'objectlist/idexists';
@@ -61,6 +72,7 @@ System.register(["@angular/core"], function(exports_1, context_1) {
                 MD.MESSAGES_NOBODY = 'messages/nobody';
                 MD.PC_GENERIC_ERROR = 'pmc/generic';
                 MD.PARSE_GENERIC_ERROR = 'parse/generic';
+                MD.IMPORTER_SUCCESS = 'importer/success';
                 MD = __decorate([
                     core_1.Injectable(), 
                     __metadata('design:paramtypes', [])

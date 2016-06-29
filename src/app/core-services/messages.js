@@ -24,68 +24,46 @@ System.register(["@angular/core", "./md"], function(exports_1, context_1) {
             /**
              * Maintains a collection of currently active messages the
              * user can see at a given moment. Messages can be added
-             * or removed based on identifiers.
+             * based on identifiers.
              *
              * @author Jan G. Wieners
              * @author Daniel M. de Oliveira
+             * @author Thomas Kleinke
              */
             Messages = (function () {
                 function Messages(messagesDictionary) {
                     this.messagesDictionary = messagesDictionary;
-                    this.messageMap = {};
-                    /**
-                     * Holds the collection to be delivered when calling {@link Messages#getMessages()}.
-                     *
-                     * Angular2 expects a non-changing
-                     * object / array to generate the view.
-                     * If getMessages() would convert the map "messages" every time to an array when it gets executed,
-                     * Angular2 would fail with "Expression has changed after it was checked" exception.
-                     */
                     this.messageList = [];
                 }
                 /**
                  * @param id used to identify the message. Must be an existing key.
-                 *   If it is not, the the id param gets interpreted as a message content of an unkown
+                 *   If it is not, the id param gets interpreted as a message content of an unknown
                  *   error condition with level 'danger'.
+                 * @param params (optional) contains strings which will be inserted into the message content.
+                 *   Every occurrence of "{0}", "{1}", "{2}" etc. will be replaced with the param string at the corresponding
+                 *   array position: {0} will be replaced with params[0] etc.
                  */
-                Messages.prototype.add = function (id) {
+                Messages.prototype.add = function (id, params) {
                     var msg = this.messagesDictionary.msgs[id];
-                    if (msg)
-                        this.messageMap[id] = msg;
-                    else {
-                        this.messageMap[id] = {
-                            content: id,
-                            level: 'danger'
-                        };
-                    }
+                    if (!msg)
+                        msg = { content: id, level: 'danger', params: [] };
+                    this.messageList.push({
+                        content: msg.content,
+                        level: msg.level,
+                        params: params ? params.slice() : msg.params
+                    });
                 };
                 /**
                  * Removes all messages.
                  */
                 Messages.prototype.clear = function () {
-                    for (var p in this.messageMap)
-                        delete this.messageMap[p];
+                    this.messageList.splice(0, this.messageList.length);
                 };
                 /**
-                 * Provides access to the messages data structure
-                 * which can be used as an angular model since
-                 * it is guaranteed that getMessages() returns always the
-                 * same object.
-                 *
                  * @returns {Array} reference to the list of current messages.
                  */
                 Messages.prototype.getMessages = function () {
-                    this.refreshMessageList();
                     return this.messageList;
-                };
-                /**
-                 * Updates messageList on the basis of the current state of messages.
-                 */
-                Messages.prototype.refreshMessageList = function () {
-                    this.messageList.length = 0;
-                    for (var p in this.messageMap) {
-                        this.messageList.push(this.messageMap[p]);
-                    }
                 };
                 Messages = __decorate([
                     core_1.Injectable(), 

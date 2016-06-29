@@ -1,4 +1,5 @@
 export interface Message {
-    level: string, // {"success", "info", "warning", "danger"}
-    content: string
+    level: string; // {"success", "info", "warning", "danger"}
+    content: string;
+    params: Array<string>;
 }

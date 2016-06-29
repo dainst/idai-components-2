@@ -11,7 +11,7 @@ import {Message} from "./message"
  * @author Jan G. Wieners
  */
 @Injectable()
-export class MD { // = Messages Dictionary. For reasons of brevity of calls to it just "M".
+export class MD { // = Messages Dictionary. For reasons of brevity of calls to it just "MD".
 
     public static OBJLIST_IDEXISTS : string = 'objectlist/idexists';
     public static OBJLIST_IDMISSING : string = 'objectlist/idmissing';
@@ -19,6 +19,7 @@ export class MD { // = Messages Dictionary. For reasons of brevity of calls to i
     public static MESSAGES_NOBODY : string = 'messages/nobody';
     public static PC_GENERIC_ERROR : string = 'pmc/generic';
     public static PARSE_GENERIC_ERROR : string = 'parse/generic';
+    public static IMPORTER_SUCCESS : string = 'importer/success';
 
     public msgs : { [id: string]: Message } = {};
 
@@ -26,26 +27,37 @@ export class MD { // = Messages Dictionary. For reasons of brevity of calls to i
         this.msgs[MD.OBJLIST_IDEXISTS]={
             content: 'Objekt-Identifier existiert bereits.',
             level: 'danger',
+            params: []
         };
         this.msgs[MD.OBJLIST_IDMISSING]={
             content: 'Objekt-Identifier fehlt.',
-            level: 'danger'
+            level: 'danger',
+            params: []
         };
         this.msgs[MD.OBJLIST_SAVE_SUCCESS]={
             content: 'Das Objekt wurde erfolgreich gespeichert.',
-            level: 'success'
+            level: 'success',
+            params: []
         };
         this.msgs[MD.MESSAGES_NOBODY]={
             content: "Keine Message gefunden für Schlüssel 'id'.",
-            level: 'danger'
+            level: 'danger',
+            params: []
         };
         this.msgs[MD.PC_GENERIC_ERROR]={
             content: "Fehler beim Auswerten eines Konfigurationsobjektes.",
-            level: 'danger'
+            level: 'danger',
+            params: []
         };
         this.msgs[MD.PARSE_GENERIC_ERROR]={
             content: "Fehler beim Parsen einer Konfigurationsdatei.",
-            level: 'danger'
+            level: 'danger',
+            params: []
+        };
+        this.msgs[MD.IMPORTER_SUCCESS]={
+            content: "{0} Ressourcen wurden erfolgreich importiert.",
+            level: 'success',
+            params: [ "Eine oder mehrere" ]
         };
     }
 }

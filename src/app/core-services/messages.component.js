@@ -23,15 +23,25 @@ System.register(['@angular/core', "./messages"], function(exports_1, context_1) 
         execute: function() {
             /**
              * @author Jan G. Wieners
+             * @author Thomas Kleinke
              */
             MessagesComponent = (function () {
                 function MessagesComponent(messages) {
                     this.messages = messages;
                 }
+                MessagesComponent.prototype.getMessageContent = function (message) {
+                    var content = message.content;
+                    if (message.params) {
+                        for (var i in message.params) {
+                            content = content.replace("{" + i + "}", message.params[i]);
+                        }
+                    }
+                    return content;
+                };
                 MessagesComponent = __decorate([
                     core_1.Component({
                         selector: 'message',
-                        template: "<div *ngFor=\"let message of messages.getMessages(); let index=index\"\n     class=\"alert alert-{{message.level}}\"\n     role=\"alert\"\n     id=\"message-{{index}}\">\n    {{message.content}}\n</div>"
+                        template: "<div *ngFor=\"let message of messages.getMessages(); let index=index\"\n     class=\"alert alert-{{message.level}}\"\n     role=\"alert\"\n     id=\"message-{{index}}\">\n    {{getMessageContent(message)}}\n</div>"
                     }), 
                     __metadata('design:paramtypes', [messages_1.Messages])
                 ], MessagesComponent);

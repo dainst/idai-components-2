@@ -5,6 +5,7 @@ System.register(['@angular/core/testing', "../app/core-services/messages", "../a
     /**
      * @author Daniel M. de Oliveira
      * @author Jan G. Wieners
+     * @author Thomas Kleinke
      */
     function main() {
         testing_1.describe('Messages', function () {
@@ -16,30 +17,35 @@ System.register(['@angular/core/testing', "../app/core-services/messages", "../a
                 messages.add(md_1.MD.OBJLIST_IDEXISTS);
             });
             testing_1.it('should store, retrieve and delete a message', function () {
-                testing_1.expect(messages.getMessages()[0]).toBe(messagesDictionary.msgs[md_1.MD.OBJLIST_IDEXISTS]);
+                testing_1.expect(messages.getMessages()[0]).toEqual(messagesDictionary.msgs[md_1.MD.OBJLIST_IDEXISTS]);
                 messages.clear();
                 testing_1.expect(messages.getMessages()[0]).toBe(undefined);
             });
-            testing_1.it('add two messages with the same identifier', function () {
+            testing_1.it('should add two messages with the same identifier', function () {
                 messages.add(md_1.MD.OBJLIST_IDEXISTS);
-                testing_1.expect(messages.getMessages()[0]).toBe(messagesDictionary.msgs[md_1.MD.OBJLIST_IDEXISTS]);
-                testing_1.expect(messages.getMessages().length).toBe(1);
-            });
-            testing_1.it('add two messages with different identifiers', function () {
-                messages.add(md_1.MD.MESSAGES_NOBODY);
-                testing_1.expect(messages.getMessages()[0]).toBe(messagesDictionary.msgs[md_1.MD.OBJLIST_IDEXISTS]);
-                testing_1.expect(messages.getMessages()[1]).toBe(messagesDictionary.msgs[md_1.MD.MESSAGES_NOBODY]);
+                testing_1.expect(messages.getMessages()[0]).toEqual(messagesDictionary.msgs[md_1.MD.OBJLIST_IDEXISTS]);
                 testing_1.expect(messages.getMessages().length).toBe(2);
             });
-            testing_1.it('will add a non existing message', function () {
+            testing_1.it('should add two messages with different identifiers', function () {
+                messages.add(md_1.MD.MESSAGES_NOBODY);
+                testing_1.expect(messages.getMessages()[0]).toEqual(messagesDictionary.msgs[md_1.MD.OBJLIST_IDEXISTS]);
+                testing_1.expect(messages.getMessages()[1]).toEqual(messagesDictionary.msgs[md_1.MD.MESSAGES_NOBODY]);
+                testing_1.expect(messages.getMessages().length).toBe(2);
+            });
+            testing_1.it('should add a message with parameters', function () {
+                var params = ["param1", "param2"];
+                messages.add(md_1.MD.MESSAGES_NOBODY, params);
+                testing_1.expect(messages.getMessages()[1].params).toEqual(params);
+            });
+            testing_1.it('should add a non existing message', function () {
                 messages.add("notexisting");
                 testing_1.expect(messages.getMessages()[1].content).toBe('notexisting');
                 testing_1.expect(messages.getMessages()[1].level).toBe('danger');
             });
-            testing_1.it('will return always the same instance', function () {
+            testing_1.it('should return always the same instance', function () {
                 testing_1.expect(messages.getMessages() == messages.getMessages()).toBeTruthy();
             });
-            testing_1.it('will clear all messages', function () {
+            testing_1.it('should clear all messages', function () {
                 messages.clear();
                 testing_1.expect(messages.getMessages().length).toBe(0);
             });
