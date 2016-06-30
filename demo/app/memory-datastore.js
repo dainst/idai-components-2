@@ -23,20 +23,22 @@ System.register(["@angular/core"], function(exports_1, context_1) {
              */
             MemoryDatastore = (function () {
                 function MemoryDatastore() {
-                    this.observers = [];
                     this.objectCache = {};
                 }
                 MemoryDatastore.prototype.getUnsyncedObjects = function () {
                     return undefined;
                 };
                 ;
+                // NOT IMPLEMENTED
+                MemoryDatastore.prototype.documentChangesNotifications = function () {
+                    return undefined;
+                };
                 MemoryDatastore.prototype.create = function (document) {
                     return new Promise(function (resolve, reject) {
                         resolve();
                     });
                 };
                 MemoryDatastore.prototype.update = function (document) {
-                    console.log("update document ", document);
                     this.objectCache[document['resource']['@id']] = document;
                     return new Promise(function (resolve, reject) {
                         resolve();
@@ -101,8 +103,6 @@ System.register(["@angular/core"], function(exports_1, context_1) {
                         resolve();
                     });
                 };
-                MemoryDatastore.IDAIFIELDOBJECT = 'idai-field-object';
-                MemoryDatastore.FULLTEXT = 'fulltext';
                 MemoryDatastore = __decorate([
                     core_1.Injectable(), 
                     __metadata('design:paramtypes', [])
@@ -113,3 +113,4 @@ System.register(["@angular/core"], function(exports_1, context_1) {
         }
     }
 });
+//# sourceMappingURL=memory-datastore.js.map

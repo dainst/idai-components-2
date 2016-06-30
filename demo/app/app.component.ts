@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {ROUTER_DIRECTIVES, Routes} from '@angular/router';
-import {ObjectEditDemoComponent} from './object-edit-demo.component';
+import {DocumentEditDemoComponent} from './document-edit-demo.component';
 import {MessagesDemoComponent} from './messages-demo.component';
 
 /**
@@ -12,7 +12,7 @@ import {MessagesDemoComponent} from './messages-demo.component';
     directives: [ROUTER_DIRECTIVES]
 })
 @Routes([
-    {path: '/edit', component: ObjectEditDemoComponent},
+    {path: '/edit', component: DocumentEditDemoComponent},
     {path: '/messages', component: MessagesDemoComponent}
 ])
 export class AppComponent {

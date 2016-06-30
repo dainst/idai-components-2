@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/router-deprecated', '../../src/app/object-edit/document-edit.component', '../../src/app/object-edit/config-loader', '../../src/app/datastore/datastore', "./sample-objects"], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/router-deprecated', '../../src/app/object-edit/document-edit.component', '../../src/app/object-edit/config-loader', '../../src/app/datastore/datastore', "./sample-objects", "../../src/app/object-edit/persistence-manager"], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,8 +10,8 @@ System.register(['@angular/core', '@angular/router-deprecated', '../../src/app/o
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_deprecated_1, document_edit_component_1, config_loader_1, datastore_1, sample_objects_1;
-    var ObjectEditDemoComponent;
+    var core_1, router_deprecated_1, document_edit_component_1, config_loader_1, datastore_1, sample_objects_1, persistence_manager_1;
+    var DocumentEditDemoComponent;
     return {
         setters:[
             function (core_1_1) {
@@ -31,46 +31,60 @@ System.register(['@angular/core', '@angular/router-deprecated', '../../src/app/o
             },
             function (sample_objects_1_1) {
                 sample_objects_1 = sample_objects_1_1;
+            },
+            function (persistence_manager_1_1) {
+                persistence_manager_1 = persistence_manager_1_1;
             }],
         execute: function() {
-            ObjectEditDemoComponent = (function () {
-                function ObjectEditDemoComponent(configLoader, datastore) {
+            DocumentEditDemoComponent = (function () {
+                function DocumentEditDemoComponent(configLoader, datastore, persistenceManager) {
                     this.configLoader = configLoader;
                     this.datastore = datastore;
+                    this.persistenceManager = persistenceManager;
                     this.documents = new Array();
                 }
-                ObjectEditDemoComponent.prototype.clicked = function (id) {
+                DocumentEditDemoComponent.prototype.clicked = function (id) {
+                    var _this = this;
+                    if (!this.selectedDocument)
+                        return this.changeTo(id);
+                    this.persistenceManager.persist(this.selectedDocument).then(function () {
+                        _this.changeTo(id);
+                    }, function () {
+                        console.error("error while persisting object");
+                    });
+                };
+                DocumentEditDemoComponent.prototype.changeTo = function (id) {
                     var _this = this;
                     this.datastore.get(id).then(function (document) {
-                        console.log("doc ", document);
                         _this.selectedDocument = JSON.parse(JSON.stringify(document));
                     });
                 };
-                ObjectEditDemoComponent.prototype.ngOnInit = function () {
+                DocumentEditDemoComponent.prototype.ngOnInit = function () {
                     this.loadSampleData();
-                    this.configLoader.setProjectConfiguration(ObjectEditDemoComponent.PROJECT_CONFIGURATION_PATH);
-                    this.configLoader.setRelationsConfiguration(ObjectEditDemoComponent.RELATIONS_CONFIGURATION_PATH);
+                    this.configLoader.setProjectConfiguration(DocumentEditDemoComponent.PROJECT_CONFIGURATION_PATH);
+                    this.configLoader.setRelationsConfiguration(DocumentEditDemoComponent.RELATIONS_CONFIGURATION_PATH);
                 };
-                ObjectEditDemoComponent.prototype.loadSampleData = function () {
+                DocumentEditDemoComponent.prototype.loadSampleData = function () {
                     for (var _i = 0, OBJECTS_1 = sample_objects_1.OBJECTS; _i < OBJECTS_1.length; _i++) {
                         var item = OBJECTS_1[_i];
                         this.documents.push(item);
                         this.datastore.update(item);
                     }
                 };
-                ObjectEditDemoComponent.PROJECT_CONFIGURATION_PATH = 'demo/config/Configuration.json';
-                ObjectEditDemoComponent.RELATIONS_CONFIGURATION_PATH = 'demo/config/Relations.json';
-                ObjectEditDemoComponent = __decorate([
+                DocumentEditDemoComponent.PROJECT_CONFIGURATION_PATH = 'demo/config/Configuration.json';
+                DocumentEditDemoComponent.RELATIONS_CONFIGURATION_PATH = 'demo/config/Relations.json';
+                DocumentEditDemoComponent = __decorate([
                     core_1.Component({
-                        selector: 'object-edit-demo',
-                        templateUrl: 'demo/templates/object-edit-demo.html',
+                        selector: 'document-edit-demo',
+                        templateUrl: 'demo/templates/document-edit-demo.html',
                         directives: [router_deprecated_1.ROUTER_DIRECTIVES, document_edit_component_1.DocumentEditComponent]
                     }), 
-                    __metadata('design:paramtypes', [config_loader_1.ConfigLoader, datastore_1.Datastore])
-                ], ObjectEditDemoComponent);
-                return ObjectEditDemoComponent;
+                    __metadata('design:paramtypes', [config_loader_1.ConfigLoader, datastore_1.Datastore, persistence_manager_1.PersistenceManager])
+                ], DocumentEditDemoComponent);
+                return DocumentEditDemoComponent;
             }());
-            exports_1("ObjectEditDemoComponent", ObjectEditDemoComponent);
+            exports_1("DocumentEditDemoComponent", DocumentEditDemoComponent);
         }
     }
 });
+//# sourceMappingURL=document-edit-demo.component.js.map

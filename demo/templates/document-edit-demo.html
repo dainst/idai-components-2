@@ -1,0 +1,42 @@
+<div class="container-fluid" id="app">
+
+    <p>
+        <code>&lt;document-edit [(document)]="selectedDocument" [primary]="'title'"&gt;&lt;/document-edit&gt;</code>
+    </p>
+
+    <p>
+        The <code>primary</code> option determines the resource's property shown as
+        label for the selected relations. If your types all have '@id' fields, <code>
+        primary</code> can be set to '@id' so that resources related
+        to the edited document's resource are shown by displaying their '@id'.
+    </p>
+
+    <p>
+        -
+    </p>
+
+    <p>
+        Click on a button to select a document and make some changes.
+        Try out setting relations. In the corresponding search fields,
+        you can select target resources by typing in their '@id'.
+    </p>
+
+    <p>
+        By clicking another button the changes to the document get
+        persisted automatically before
+        the next document gets opened in the editor.
+    </p>
+
+    <p>
+        -
+    </p>
+    <ul>
+        <li *ngFor="let document of documents; let i=index"><button (click)="clicked(document['resource']['@id'])">document['resource']['@id']: {{document['resource']['@id']}}</button></li>
+    </ul>
+
+    <div class="row">
+        <div class="col-md-12">
+            <document-edit [(document)]="selectedDocument" [primary]="'@id'"></document-edit>
+        </div>
+    </div>
+</div>

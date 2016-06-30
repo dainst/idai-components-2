@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/router', './object-edit-demo.component', './messages-demo.component'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/router', './document-edit-demo.component', './messages-demo.component'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', '@angular/router', './object-edit-demo.compone
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_1, object_edit_demo_component_1, messages_demo_component_1;
+    var core_1, router_1, document_edit_demo_component_1, messages_demo_component_1;
     var AppComponent;
     return {
         setters:[
@@ -20,8 +20,8 @@ System.register(['@angular/core', '@angular/router', './object-edit-demo.compone
             function (router_1_1) {
                 router_1 = router_1_1;
             },
-            function (object_edit_demo_component_1_1) {
-                object_edit_demo_component_1 = object_edit_demo_component_1_1;
+            function (document_edit_demo_component_1_1) {
+                document_edit_demo_component_1 = document_edit_demo_component_1_1;
             },
             function (messages_demo_component_1_1) {
                 messages_demo_component_1 = messages_demo_component_1_1;
@@ -40,7 +40,7 @@ System.register(['@angular/core', '@angular/router', './object-edit-demo.compone
                         directives: [router_1.ROUTER_DIRECTIVES]
                     }),
                     router_1.Routes([
-                        { path: '/edit', component: object_edit_demo_component_1.ObjectEditDemoComponent },
+                        { path: '/edit', component: document_edit_demo_component_1.DocumentEditDemoComponent },
                         { path: '/messages', component: messages_demo_component_1.MessagesDemoComponent }
                     ]), 
                     __metadata('design:paramtypes', [])

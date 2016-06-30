@@ -9,11 +9,7 @@ import {Observable} from "rxjs/Observable";
 @Injectable()
 export class MemoryDatastore implements Datastore {
 
-    private static IDAIFIELDOBJECT = 'idai-field-object';
-    private static FULLTEXT = 'fulltext';
-
     private db: Promise<any>;
-    private observers = [];
     private objectCache: { [id: string]: Document } = {};
 
     public getUnsyncedObjects(): Observable<Document> {
@@ -21,6 +17,11 @@ export class MemoryDatastore implements Datastore {
     }
     
     constructor(){};
+
+    // NOT IMPLEMENTED
+    public documentChangesNotifications():Observable<Document> {
+        return undefined;
+    }
 
     public create(document:Document):Promise<string> {
 
@@ -31,8 +32,6 @@ export class MemoryDatastore implements Datastore {
 
     public update(document:Document):Promise<any> {
         
-        console.log("update document ",document)
-
         this.objectCache[document['resource']['@id']]=document;
         return new Promise((resolve, reject) => {
             resolve();
