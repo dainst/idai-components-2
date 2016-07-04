@@ -114,8 +114,8 @@ export class RelationPickerComponent implements OnChanges {
             return false;
 
         // Don't suggest an object that is already included as a target in the relation list
-        if (this.resource[this.field.field].indexOf(resource['@id']) > -1)
-            return false;
+        // if (this.resource[this.field.field].indexOf(resource['@id']) > -1)
+        //     return false;
 
         // Don't suggest an object that is already included as a target in the inverse relation list
         if (this.resource[this.field.inverse]
@@ -142,7 +142,7 @@ export class RelationPickerComponent implements OnChanges {
 
     public editTarget() {
 
-        this.idSearchString = this.selectedTarget['resource'].identifier;
+        this.idSearchString = this.selectedTarget['resource'][this.primary];
         this.suggestions = [ this.selectedTarget ];
         this.selectedSuggestionIndex = 0;
         this.selectedTarget = undefined;
@@ -159,7 +159,7 @@ export class RelationPickerComponent implements OnChanges {
 
         if (!this.resource[this.field.field][this.relationIndex]
                 || this.resource[this.field.field][this.relationIndex] == "") {
-            this.deleteRelation();
+            return this.deleteRelation();
         }
 
         this.suggestionsVisible = false;

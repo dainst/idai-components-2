@@ -96,8 +96,8 @@ System.register(['@angular/core', "@angular/common", "./document-edit-change-mon
                     if (this.resource['@id'] == resource['@id'])
                         return false;
                     // Don't suggest an object that is already included as a target in the relation list
-                    if (this.resource[this.field.field].indexOf(resource['@id']) > -1)
-                        return false;
+                    // if (this.resource[this.field.field].indexOf(resource['@id']) > -1)
+                    //     return false;
                     // Don't suggest an object that is already included as a target in the inverse relation list
                     if (this.resource[this.field.inverse]
                         && this.resource[this.field.inverse].indexOf(resource['@id']) > -1)
@@ -117,7 +117,7 @@ System.register(['@angular/core', "@angular/common", "./document-edit-change-mon
                     this.saveService.setChanged();
                 };
                 RelationPickerComponent.prototype.editTarget = function () {
-                    this.idSearchString = this.selectedTarget['resource'].identifier;
+                    this.idSearchString = this.selectedTarget['resource'][this.primary];
                     this.suggestions = [this.selectedTarget];
                     this.selectedSuggestionIndex = 0;
                     this.selectedTarget = undefined;
@@ -130,7 +130,7 @@ System.register(['@angular/core', "@angular/common", "./document-edit-change-mon
                     var _this = this;
                     if (!this.resource[this.field.field][this.relationIndex]
                         || this.resource[this.field.field][this.relationIndex] == "") {
-                        this.deleteRelation();
+                        return this.deleteRelation();
                     }
                     this.suggestionsVisible = false;
                     if (!this.selectedTarget && this.resource[this.field.field][this.relationIndex]
