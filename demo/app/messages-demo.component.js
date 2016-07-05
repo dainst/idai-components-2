@@ -67,4 +67,3 @@ System.register(['@angular/core', '@angular/router-deprecated', '../../src/app/c
         }
     }
 });
-//# sourceMappingURL=messages-demo.component.js.map

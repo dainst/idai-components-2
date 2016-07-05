@@ -51,4 +51,3 @@ System.register(['@angular/core', '@angular/router', './document-edit-demo.compo
         }
     }
 });
-//# sourceMappingURL=app.component.js.map

@@ -1,5 +1,4 @@
-/// <reference path="../../typings/browser/ambient/es6-shim/index.d.ts" />
-/// <reference path="../../typings/browser/ambient/node/index.d.ts" />
+/// <reference path="../../typings/index.d.ts" />
 System.register(['@angular/platform-browser-dynamic', './app.component', '@angular/http', '@angular/core', "../../src/app/datastore/datastore", "../../src/app/datastore/read-datastore", "../../src/app/object-edit/document-edit-change-monitor", "../../src/app/core-services/messages", "./memory-datastore", "../../src/app/object-edit/config-loader", "../../src/app/object-edit/persistence-manager", "../../src/app/core-services/md", '@angular/router', '@angular/common'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
@@ -65,4 +64,3 @@ System.register(['@angular/platform-browser-dynamic', './app.component', '@angul
         }
     }
 });
-//# sourceMappingURL=boot.js.map
