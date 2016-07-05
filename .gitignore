@@ -9,3 +9,5 @@ src/app/**/*.js
 src/app/**/*.js.map
 src/test/**/*.js
 src/test/**/*.js.map
+*js
+*js.map
