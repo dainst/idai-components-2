@@ -45,7 +45,13 @@ gulp.task('compile',['convert-sass'], function () {
             'node_modules/bootstrap-sass/assets/fonts/**/*'
         ])
         .pipe(gulp.dest('fonts'));
-	// sources
+	
+    // sources
+    gulp
+        .src('*.ts')
+        .pipe(typescript(tscConfig.compilerOptions))
+        .pipe(gulp.dest('./'));
+    
     gulp
 		.src('demo/app/**/*.ts')
 		.pipe(typescript(tscConfig.compilerOptions))

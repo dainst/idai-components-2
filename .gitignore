@@ -11,3 +11,4 @@ src/test/**/*.js
 src/test/**/*.js.map
 idai-components-2.js
 idai-components-2.js.map
+references.js
