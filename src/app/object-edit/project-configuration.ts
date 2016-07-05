@@ -15,9 +15,9 @@ import {MD} from "../core-services/md";
 @Injectable()
 export class ProjectConfiguration {
 
-    private fieldMap: { [type: string]: any[] } = {}
+    private fieldMap: { [type: string]: any[] } = {};
 
-    private excavation: string
+    private excavation: string;
 
     /**
      * @param configuration
@@ -27,14 +27,14 @@ export class ProjectConfiguration {
         this.initFieldMap(configuration['types']);
         this.expandTypesWithParentFields(configuration['types']);
 
-        this.excavation=configuration['excavation']
+        this.excavation=configuration['excavation'];
     }
 
     /**
      * @returns {string[]} array with the names of all types of the current project.
      */
     public getTypes(): string[] {
-        return Object.keys(this.fieldMap)
+        return Object.keys(this.fieldMap);
     }
 
     /**
@@ -86,10 +86,10 @@ export class ProjectConfiguration {
         var fields=[];
 
         if (this.fieldMap[type.parent]==undefined) {
-            throw MD.PC_GENERIC_ERROR
+            throw MD.PC_GENERIC_ERROR;
         } else
-            fields=this.fieldMap[type.parent]
+            fields=this.fieldMap[type.parent];
 
-        return fields.concat(type.fields)
+        return fields.concat(type.fields);
     }
 }
