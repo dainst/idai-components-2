@@ -52,15 +52,15 @@ gulp.task('compile',['convert-sass'], function () {
 		.pipe(gulp.dest('demo/app/'));
 
     gulp
-        .src('lib/app/**/*.ts')
+        .src('src/app/**/*.ts')
         .pipe(typescript(tscConfig.compilerOptions))
-        .pipe(gulp.dest('lib/app/'));
+        .pipe(gulp.dest('src/app/'));
 
 	// test sources
     return gulp
-		.src('lib/test/**/*.ts')
+		.src('src/test/**/*.ts')
 		.pipe(typescript(tscConfig.compilerOptions))
-		.pipe(gulp.dest('lib/test/'));
+		.pipe(gulp.dest('src/test/'));
 });
 
 
