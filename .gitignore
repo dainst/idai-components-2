@@ -9,5 +9,5 @@ src/app/**/*.js
 src/app/**/*.js.map
 src/test/**/*.js
 src/test/**/*.js.map
-*js
-*js.map
+idai-components-2.js
+idai-components-2.js.map
