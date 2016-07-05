@@ -12,3 +12,4 @@ export {MessagesComponent} from './src/app/core-services/messages.component';
 export {Messages} from './src/app/core-services/messages';
 export {Message} from './src/app/core-services/message';
 export {MD} from './src/app/core-services/md';
+export {Utils} from './src/app/core-services/utils';
