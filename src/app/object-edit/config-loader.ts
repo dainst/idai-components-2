@@ -7,12 +7,16 @@ import {Observable} from "rxjs/Observable";
 
 /**
  * @author Daniel de Oliveira
+ * @author Thomas Kleinke
  */
 @Injectable()
 export class ConfigLoader {
-    
+
     private projectConfigurationObservers = [];
     private relationsConfigurationObservers = [];
+
+    private projectConfig: ProjectConfiguration;
+    private relationsConfig: RelationsConfiguration;
 
     constructor(
         private http: Http){
@@ -24,30 +28,39 @@ export class ConfigLoader {
     public projectConfiguration() : Observable<ProjectConfiguration> {
         return Observable.create( observer => {
             this.projectConfigurationObservers.push(observer);
+            if (this.projectConfig) {
+                observer.next(this.projectConfig);
+            }
         });
+
     }
 
     public relationsConfiguration() : Observable<RelationsConfiguration> {
         return Observable.create( observer => {
             this.relationsConfigurationObservers.push(observer);
+            if (this.relationsConfig) {
+                observer.next(this.relationsConfig);
+            }
         });
     }
-    
+
     public setProjectConfiguration(path:string) {
         this.read(path,this,function(data,self){
+            this.projectConfig = new ProjectConfiguration(data);
             self.projectConfigurationObservers.forEach(observer =>
-                observer.next(new ProjectConfiguration(data)));
-        })
+                observer.next(this.projectConfig));
+        }.bind(this))
     }
-    
+
     public setRelationsConfiguration(path:string) {
         this.read(path,this,function(data,self){
+            this.relationsConfig = new RelationsConfiguration(data['relations']);
             self.relationsConfigurationObservers.forEach(observer =>
-                observer.next(new RelationsConfiguration(data['relations'])));
-        })
+                observer.next(this.relationsConfig));
+        }.bind(this))
     }
-    
-    
+
+
     private read(path:string,self,createMethod) {
         this.http.get(path).
         subscribe(data_=>{
