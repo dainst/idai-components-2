@@ -12,6 +12,9 @@ import {Message} from "./message";
      class="alert alert-{{message.level}}"
      role="alert"
      id="message-{{index}}">
+     <button type="button" class="close" (click)="closeAlert(message)" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+     </button>
     {{getMessageContent(message)}}
 </div>`
 })
@@ -30,5 +33,9 @@ export class MessagesComponent {
         }
         
         return content;
+    }
+
+    public closeAlert(message: Message) {
+        this.messages.removeMessage(message)
     }
 }

@@ -40,6 +40,16 @@ export class Messages {
     }
 
     /**
+     * @param message to be removed
+     */
+    public removeMessage(message: Message) {
+        var index:number = this.messageList.indexOf(message, 0);
+        if (index > -1) {
+            this.messageList.splice(index, 1);
+        }
+    }
+    
+    /**
      * Removes all messages.
      */
     public clear() {
@@ -52,4 +62,6 @@ export class Messages {
     public getMessages() : Message[] {
         return this.messageList;
     }
+
+    
 }
