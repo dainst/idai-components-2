@@ -5,6 +5,7 @@ import {RelationPickerGroupComponent} from "./relation-picker-group.component";
 import {ValuelistComponent} from "./valuelist.component";
 import {FieldlistComponent} from "./fieldlist.component";
 import {LocalizedComponent} from "./localized.component";
+import {StringInputComponent} from "./forms/string-input.component";
 
 /**
  * @author Daniel de Oliveira
@@ -17,7 +18,8 @@ import {LocalizedComponent} from "./localized.component";
         RelationPickerGroupComponent,
         ValuelistComponent,
         FieldlistComponent,
-        LocalizedComponent
+        LocalizedComponent,
+        StringInputComponent
     ],
     selector: 'edit-form',
     templateUrl: 'src/templates/edit-form.html'
@@ -37,5 +39,9 @@ export class EditFormComponent{
 
     public markAsChanged() {
         this.saveService.setChanged();
+    }
+
+    customTrackBy(index: number, obj: any): any {
+        return index;
     }
 }

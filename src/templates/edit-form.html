@@ -1,22 +1,42 @@
 <div *ngFor="let field of fieldsForObjectType; let i=index" id="edit-form-element-{{i}}">
     <div *ngIf="field" class="form-group">
+
+
+
         <label *ngIf="field.label">{{field.label}}</label>
         <label *ngIf="!field.label">{{field.field}}</label>
-        <div *ngIf="!field.valuelist && !field.multiline && !field.array && !field.localized">
-            <input [(ngModel)]="document['resource'][field.field]" (keyup)="markAsChanged()" class="form-control" id="edit-form-input-{{i}}">
+
+
+
+
+
+
+        <div *ngIf="field.input_type == 'idai-string'">
+            <string-input [(field)]="document['resource'][field.field]"></string-input>
         </div>
+
+
+
         <div *ngIf="field.multiline">
             <textarea [(ngModel)]="document['resource'][field.field]" (keyup)="markAsChanged()"
                       class="form-control" rows="5"></textarea>
         </div>
+
         <div *ngIf="field.valuelist && !field.multivalue && !field.localized">
             <select [(ngModel)]="document['resource'][field.field]" (change)="markAsChanged()" class="form-control">
                 <option *ngFor="let item of field.valuelist" value="{{item}}">{{item}}</option>
             </select>
         </div>
-        <valuelist *ngIf="field.valuelist && field.multivalue" [(document)]="document"
-                   [field]="field"></valuelist>
+
+        <valuelist *ngIf="field.valuelist && field.multivalue" [(document)]="document" [field]="field"></valuelist>
         <fieldlist *ngIf="field.array && !field.localized" [(resource)]="document['resource']" [fieldDefinition]="field"></fieldlist>
+
+        <div *ngIf="field.array && !field.localized">
+            <div *ngFor="let item of document['resource'][field.field]; let i=index; trackBy:customTrackBy">
+                <input [(ngModel)]="document['resource'][field.field][i]">
+            </div>
+        </div>
+
         <localized *ngIf="field.localized" [(resource)]="document['resource']" [fieldDefinition]="field"></localized>
     </div>
 </div>
