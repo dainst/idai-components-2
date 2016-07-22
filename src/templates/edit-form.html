@@ -36,9 +36,7 @@
             <input-array [(field)]="document['resource'][field.field]"></input-array>
         </div>
 
-
-
-        <localized *ngIf="field.localized" [(resource)]="document['resource']" [fieldDefinition]="field"></localized>
+        <localized *ngIf="field.localized" [(field)]="document['resource'][field.field]" [innerInputType]="field.inner.input_type" ></localized>
     </div>
 </div>
 

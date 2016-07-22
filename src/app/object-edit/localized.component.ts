@@ -16,8 +16,8 @@ import {InputArrayComponent} from "./forms/input-array.component";
             <li *ngFor="let language of languages()">
                 {{language}}
                 
-                <div *ngIf="fieldDefinition.inner.input_type == 'idai-input-array'">
-                    <input-array [(field)]="resource[fieldDefinition.field][language]"></input-array>
+                <div *ngIf="innerInputType == 'idai-input-array'">
+                    <input-array [(field)]="field[language]"></input-array>
                 </div>
         
         
@@ -35,13 +35,10 @@ import {InputArrayComponent} from "./forms/input-array.component";
 })
 export class LocalizedComponent {
 
-    @Input() resource: any;
-    @Input() fieldDefinition: any;
+    @Input() field: any;
+    @Input() innerInputType: any;
 
     public languages() : Array<string> {
-        if (!this.resource[this.fieldDefinition.field]) return [];
-        return Object.keys(this.resource[this.fieldDefinition.field]);
+        return Object.keys(this.field);
     }
-
-    constructor() {}
 }
