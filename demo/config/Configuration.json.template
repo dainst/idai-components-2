@@ -6,16 +6,17 @@
         {
           "field" : "localized_fieldlist_example",
             "inner" : {
-              "array": "true"
+              "input_type" : "idai-input-array"
             },
             "localized" : "true"
           },
         {
           "field" : "fieldlist_example",
-          "array" : "true"
+          "input_type" : "idai-input-array"
         },
         {
-          "field": "simple_field_example"
+          "field": "simple_field_example",
+          "input_type" : "idai-string"
         },
         {
           "field": "valuelist_example",

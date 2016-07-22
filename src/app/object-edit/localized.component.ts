@@ -1,11 +1,11 @@
 import {Component, Input} from '@angular/core';
 import {CORE_DIRECTIVES,COMMON_DIRECTIVES,FORM_DIRECTIVES} from "@angular/common";
-import {Document} from "../core-services/document";
-import {PersistenceManager} from "./persistence-manager";
 import {FieldlistComponent} from "./fieldlist.component";
+import {InputArrayComponent} from "./forms/input-array.component";
 
 /**
  * @author Daniel de Oliveira
+ * @author Fabian Zavodnik
  */
 @Component({
 
@@ -16,9 +16,10 @@ import {FieldlistComponent} from "./fieldlist.component";
             <li *ngFor="let language of languages()">
                 {{language}}
                 
-                <fieldlist *ngIf="fieldDefinition.inner.array" [(resource)]="resource[fieldDefinition.field]" 
-                    [fieldDefinition]="setLang(fieldDefinition.inner,language)"></fieldlist>
-                <div *ngIf="!fieldDefinition.inner.array">not implemented</div>
+                <div *ngIf="fieldDefinition.inner.input_type == 'idai-input-array'">
+                    <input-array [(field)]="resource[fieldDefinition.field][language]"></input-array>
+                </div>
+        
         
             </li>
         </ul>
@@ -28,18 +29,14 @@ import {FieldlistComponent} from "./fieldlist.component";
         CORE_DIRECTIVES,
         COMMON_DIRECTIVES,
         FORM_DIRECTIVES,
-        FieldlistComponent
+        FieldlistComponent,
+        InputArrayComponent
     ]
 })
 export class LocalizedComponent {
 
     @Input() resource: any;
     @Input() fieldDefinition: any;
-
-    public setLang(innerFieldDefinition, lang) {
-        innerFieldDefinition['field']=lang;
-        return innerFieldDefinition;
-    }
 
     public languages() : Array<string> {
         if (!this.resource[this.fieldDefinition.field]) return [];
