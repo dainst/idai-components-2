@@ -1,0 +1,4 @@
+<div *ngFor="let item of field; let i=index; trackBy:customTrackBy">
+    <input [(ngModel)]="field[i]"><button type="button" (click)="removeInputArrayItemAtIndex(i)">Remove</button>
+</div>
+<button type="button" (click)="addInputArrayItem()">Add</button>

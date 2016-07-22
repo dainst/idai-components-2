@@ -29,13 +29,14 @@
         </div>
 
         <valuelist *ngIf="field.valuelist && field.multivalue" [(document)]="document" [field]="field"></valuelist>
+
         <fieldlist *ngIf="field.array && !field.localized" [(resource)]="document['resource']" [fieldDefinition]="field"></fieldlist>
 
-        <div *ngIf="field.array && !field.localized">
-            <div *ngFor="let item of document['resource'][field.field]; let i=index; trackBy:customTrackBy">
-                <input [(ngModel)]="document['resource'][field.field][i]">
-            </div>
+        <div *ngIf="field.input_type == 'idai-input-array'">
+            <input-array [(field)]="document['resource'][field.field]"></input-array>
         </div>
+
+
 
         <localized *ngIf="field.localized" [(resource)]="document['resource']" [fieldDefinition]="field"></localized>
     </div>

@@ -6,6 +6,7 @@ import {ValuelistComponent} from "./valuelist.component";
 import {FieldlistComponent} from "./fieldlist.component";
 import {LocalizedComponent} from "./localized.component";
 import {StringInputComponent} from "./forms/string-input.component";
+import {InputArrayComponent} from "./forms/input-array.component";
 
 /**
  * @author Daniel de Oliveira
@@ -19,7 +20,8 @@ import {StringInputComponent} from "./forms/string-input.component";
         ValuelistComponent,
         FieldlistComponent,
         LocalizedComponent,
-        StringInputComponent
+        StringInputComponent,
+        InputArrayComponent
     ],
     selector: 'edit-form',
     templateUrl: 'src/templates/edit-form.html'
@@ -41,7 +43,5 @@ export class EditFormComponent{
         this.saveService.setChanged();
     }
 
-    customTrackBy(index: number, obj: any): any {
-        return index;
-    }
+
 }
