@@ -9,7 +9,7 @@ import {DocumentEditChangeMonitor} from "../document-edit-change-monitor";
 @Component({
 
     selector: 'string-input',
-    template: `<input [(ngModel)]="field" (keyup)="markAsChanged()" class="form-control" [attr.class]="'input-'+field">`,
+    template: `<input [(ngModel)]="field" (keyup)="markAsChanged()" class="form-control">`,
     directives: [CORE_DIRECTIVES, COMMON_DIRECTIVES, FORM_DIRECTIVES]
 })
 

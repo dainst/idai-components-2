@@ -12,7 +12,7 @@
 
 
         <div *ngIf="field.input_type == 'idai-string'">
-            <string-input [(field)]="document['resource'][field.field]"></string-input>
+            <string-input [(field)]="document['resource'][field.field]" id="edit-form-input-{{i}}"></string-input>
         </div>
 
 
