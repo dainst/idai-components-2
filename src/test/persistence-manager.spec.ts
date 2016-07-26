@@ -61,12 +61,12 @@ export function main() {
             persistenceManager.setRelationsConfiguration(new RelationsConfiguration(
                 [
                     {
-                        "field":"BelongsTo",
+                        "name":"BelongsTo",
                         "inverse":"Contains",
                         "label":"Enthalten in"
                     },
                     {
-                        "field":"Contains",
+                        "name":"Contains",
                         "inverse":"BelongsTo",
                         "label":"Enthält"
                     }

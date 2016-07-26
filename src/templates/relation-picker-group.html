@@ -2,11 +2,11 @@
     <relation-picker [(document)]="document" [field]="field" [relationIndex]="i" [primary]="primary"></relation-picker>
 </div>
 <div class="circular-button add-relation"
-     *ngIf="!resource[field.field] || resource[field.field].length == 0 || validateNewest()"
+     *ngIf="!resource[field.name] || resource[field.name].length == 0 || validateNewest()"
      type="button"
      (click)="createRelation()">+</div>
 
 <!-- Button disabled when waiting for input -->
 <div class="circular-button add-relation-disabled"
-     *ngIf="resource[field.field] && resource[field.field].length > 0 && !validateNewest()"
+     *ngIf="resource[field.name] && resource[field.name].length > 0 && !validateNewest()"
      type="button">+</div>
