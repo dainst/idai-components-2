@@ -4,7 +4,8 @@
         <label *ngIf="field.label">{{field.label}}</label>
         <label *ngIf="!field.label">{{field.field}}</label>
 
-        <div *ngIf="field.input_type == 'idai-string'">
+        <div *ngIf="field.input_type == 'idai-string'
+             || (!field.input_type && !field.multiline && !field.valuelist && !field.localized && !field.array)">
             <string-input [(resource)]="document['resource']" [fieldName]="field.field"></string-input>
         </div>
 
