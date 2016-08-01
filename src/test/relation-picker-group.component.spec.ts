@@ -11,7 +11,7 @@ export function main() {
         var relationPickerGroupComponent: RelationPickerGroupComponent;
 
         beforeEach(() => {
-            resource = { "id@": "id1", "identifier": "ob1", "type": "Object" };
+            resource = { "id": "id1", "identifier": "ob1", "type": "Object" };
 
             relationPickerGroupComponent = new RelationPickerGroupComponent();
             relationPickerGroupComponent.resource = resource;

@@ -110,16 +110,16 @@ export class RelationPickerComponent implements OnChanges {
     private checkSuggestion(resource: Resource) {
 
         // Don't suggest the object itself
-        if (this.resource['@id'] == resource['@id'])
+        if (this.resource['id'] == resource['id'])
             return false;
 
         // Don't suggest an object that is already included as a target in the relation list
-        // if (this.resource[this.field.field].indexOf(resource['@id']) > -1)
+        // if (this.resource[this.field.field].indexOf(resource['id']) > -1)
         //     return false;
 
         // Don't suggest an object that is already included as a target in the inverse relation list
         if (this.resource[this.field.inverse]
-                && this.resource[this.field.inverse].indexOf(resource['@id']) > -1)
+                && this.resource[this.field.inverse].indexOf(resource['id']) > -1)
             return false;
 
         return true;
@@ -132,7 +132,7 @@ export class RelationPickerComponent implements OnChanges {
     public createRelation(document: Document) {
 
         // this.createInverseRelation(target);
-        this.resource[this.field.field][this.relationIndex] = document['resource']['@id'];
+        this.resource[this.field.field][this.relationIndex] = document['resource']['id'];
         this.selectedTarget = document;
         this.idSearchString = "";
         this.suggestions = [];

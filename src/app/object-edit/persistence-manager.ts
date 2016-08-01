@@ -86,7 +86,7 @@ import {Resource} from "../core-services/resource";
         var promisesToSaveObjects = new Array();
         for (var targetDocument of targetDocuments) {
 
-            this.pruneInverseRelations(resource['@id'],targetDocument['resource']);
+            this.pruneInverseRelations(resource['id'],targetDocument['resource']);
             this.setInverseRelations(resource, targetDocument['resource']);
             promisesToSaveObjects.push(this.datastore.update(targetDocument));
         }
@@ -113,19 +113,19 @@ import {Resource} from "../core-services/resource";
             if (!this.relationsConfiguration.isRelationProperty(prop)) continue;
 
             for (var id of resource[prop]) {
-                if (id!=targetResource['@id']) continue;
+                if (id!=targetResource['id']) continue;
 
                 var inverse = this.relationsConfiguration.getInverse(prop);
 
                 if (targetResource[inverse]==undefined)
                     targetResource[inverse]=[];
 
-                var index = targetResource[inverse].indexOf(resource['@id']);
+                var index = targetResource[inverse].indexOf(resource['id']);
                 if (index != -1) {
                     targetResource[inverse].splice(index, 1);
                 }
 
-                targetResource[inverse].push(resource['@id']);
+                targetResource[inverse].push(resource['id']);
             }
         }
     }
@@ -152,7 +152,7 @@ import {Resource} from "../core-services/resource";
      */
     private persistIt(document: Document): Promise<any> {
         
-        if (document['resource']['@id']) {
+        if (document['resource']['id']) {
             return this.datastore.update(document);
         } else {
             // TODO isn't it a problem that create resolves to object id?

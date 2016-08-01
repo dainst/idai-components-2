@@ -1,4 +1,4 @@
 export interface Resource {
-    '@id'?: string;
+    id?: string;
     type: string;
 }

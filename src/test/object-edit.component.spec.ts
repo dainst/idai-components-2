@@ -1,4 +1,4 @@
-import {fdescribe, describe, xdescribe,expect, it, fit, xit,inject, async, beforeEachProviders,
+import {fdescribe, describe, xdescribe, it, fit, xit,inject, async, beforeEachProviders,
         } from '@angular/core/testing';
 import {TestComponentBuilder} from '@angular/compiler/testing';
 import {provide, Component} from "@angular/core";
@@ -6,7 +6,6 @@ import {PersistenceManager} from "../app/object-edit/persistence-manager";
 import {Datastore} from "../app/datastore/datastore";
 import {DocumentEditComponent} from "../app/object-edit/document-edit.component";
 import {Messages} from "../app/core-services/messages";
-import {RelationsConfiguration} from "../app/object-edit/relations-configuration";
 
 
 /**
@@ -21,7 +20,6 @@ export function main() {
 
         class MockDatastore {}
         class MockMessages  {}
-        class MockRelationsConfiguration {}
 
         var projectConfiguration = {
             getTypes : function() {

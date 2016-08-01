@@ -1,6 +1,5 @@
-import {fdescribe,describe,expect,fit,it,xit, inject, beforeEach,beforeEachProviders} from '@angular/core/testing';
+import {fdescribe,describe,expect,fit,it,xit, beforeEach,beforeEachProviders} from '@angular/core/testing';
 import {provide} from "@angular/core";
-import {Document} from "../app/core-services/document";
 import {PersistenceManager} from "../app/object-edit/persistence-manager";
 import {RelationsConfiguration} from "../app/object-edit/relations-configuration";
 import {Messages} from "../app/core-services/messages";
@@ -29,7 +28,7 @@ export function main() {
         var getFunction = function (id) {
             return {
                 then: function (suc, err) {
-                    if (id == relatedObject['resource']['@id']) {
+                    if (id == relatedObject['resource']['id']) {
                         suc(relatedObject);
                     }
                     else {
@@ -76,17 +75,17 @@ export function main() {
             mockDatastore.create.and.callFake(successFunction);
 
             object = { "resource" : {
-                "@id" :"1", "identifier": "ob1",
+                "id" :"1", "identifier": "ob1",
                 "type": "Object", "synced" : 0
             }};
 
             relatedObject = { "resource" : {
-                "@id": "2" , "identifier": "ob2", 
+                "id": "2" , "identifier": "ob2", 
                 "type": "Object"
             }};
 
             anotherRelatedObject = { "resource" : {
-                "@id": "3" , "identifier": "ob3",
+                "id": "3" , "identifier": "ob3",
                 "type": "Object"
             }};
 
@@ -139,7 +138,7 @@ export function main() {
             function (done) {
 
                 var oldVersion = { "resource" : {
-                    "@id" :"1", "identifier": "ob1", "BelongsTo" : [ "2" ],
+                    "id" :"1", "identifier": "ob1", "BelongsTo" : [ "2" ],
                     "type": "Object", "synced" : 0
                 }};
 
