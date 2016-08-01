@@ -5,33 +5,33 @@
       "label": "Object",
       "fields": [
         {
-          "name" : "localized_multiple_input_example",
-          "label": "Localized Multiple Input Example",
+          "name" : "localized_multiple_input",
+          "label": "Localized Multiple Input",
           "inner" : {
             "inputType" : "input/multiple"
           },
           "localized" : "true"
           },
         {
-          "name" : "multiple_input_example",
-          "label": "Multiple Input Example",
+          "name" : "multiple_input",
+          "label": "Multiple Input",
           "inputType" : "input/multiple"
         },
         {
-          "name": "single_input_example",
-          "label": "Input Example",
+          "name": "single_input",
+          "label": "Simple Input",
           "inputType": "input/single"
         },
         {
-          "name": "minimal_default_example",
+          "name": "minimal_default",
         },
         {
-          "name": "text_example",
-          "label": "Multiline, Text Example",
+          "name": "text",
+          "label": "Multiline, Text",
           "inputType": "input/text"
         },
         {
-          "name": "single_select_dropdown_example",
+          "name": "single_select_dropdown",
           "inputType": "select/single/dropdown",
           "valuelist": [
             "Alabaster",
@@ -40,7 +40,7 @@
           ]
         },
         {
-          "name": "single_select_radio_example",
+          "name": "single_select_radio",
           "inputType": "select/single/radio",
           "valuelist": [
             "Radio",
@@ -50,8 +50,8 @@
           ]
         },
         {
-          "name": "multiselect_checkbox_example",
-          "label": "Multiple Selection Example with Checkboxes",
+          "name": "multiselect_checkbox",
+          "label": "Multiple Selection with Checkboxes",
           "inputType": "select/multi/checkbox",
           "valuelist": [
             "check",
@@ -61,8 +61,8 @@
           ]
         },
         {
-          "name": "multiselect_multiselect_example",
-          "label": "Multiple Selection Example for Long Lists",
+          "name": "multiselect_multiselect",
+          "label": "Multiple Selection for Long Lists",
           "inputType": "select/multi/multiselect",
           "valuelist": [
             "multiselection",
