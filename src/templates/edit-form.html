@@ -5,7 +5,7 @@
         <label *ngIf="!field.label">{{field.field}}</label>
 
         <div *ngIf="field.input_type == 'idai-string'">
-            <string-input [(resource)]="document['resource']" [fieldName]="field.field" id="edit-form-input-{{i}}"></string-input>
+            <string-input [(resource)]="document['resource']" [fieldName]="field.field"></string-input>
         </div>
 
         <div *ngIf="field.multiline">
