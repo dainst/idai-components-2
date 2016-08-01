@@ -2,39 +2,83 @@
   "types": [
     {
       "type": "Object",
+      "label": "Object",
       "fields": [
         {
-          "field" : "localized_fieldlist_example",
-            "inner" : {
-              "input_type" : "idai-input-array"
-            },
-            "localized" : "true"
+          "field" : "localized_multiple_input_example",
+          "label": "Localized Multiple Input Example",
+          "inner" : {
+            "input_type" : "input/multiple"
+          },
+          "localized" : "true"
           },
         {
-          "field" : "fieldlist_example",
-          "input_type" : "idai-input-array"
+          "field" : "multiple_input_example",
+          "label": "Multiple Input Example",
+          "input_type" : "input/multiple"
         },
         {
-          "field": "simple_field_example",
-          "input_type" : "idai-string"
+          "field": "single_input_example",
+          "label": "Input Example",
+          "input_type": "input/single"
         },
         {
-          "field": "valuelist_example",
+          "field": "minimal_default_example",
+        },
+        {
+          "field": "text_example",
+          "label": "Multiline, Text Example",
+          "input_type": "input/text"
+        },
+        {
+          "field": "single_select_dropdown_example",
+          "input_type": "select/single/dropdown",
           "valuelist": [
             "Alabaster",
             "Amber",
             "Antler"
-          ],
-          "multivalue": true
+          ]
         },
         {
-          "field": "multiline_example",
-          "multiline": true
+          "field": "single_select_radio_example",
+          "input_type": "select/single/radio",
+          "valuelist": [
+            "Radio",
+            "CD",
+            "Television",
+            "Internets"
+          ]
+        },
+        {
+          "field": "multiselect_checkbox_example",
+          "label": "Multiple Selection Example with Checkboxes",
+          "input_type": "select/multi/checkbox",
+          "valuelist": [
+            "check",
+            "this",
+            "and/or",
+            "that"
+          ]
+        },
+        {
+          "field": "multiselect_multiselect_example",
+          "label": "Multiple Selection Example for Long Lists",
+          "input_type": "select/multi/multiselect",
+          "valuelist": [
+            "multiselection",
+            "for very long but",
+            "collapsed",
+            "lists"
+          ],
+          "expandable": "true"
         }
+
+
       ]
     },
     {
       "type": "Object Enhanced",
+      "label": "Enhanced Object",
       "parent" : "Object",
       "fields": [
         {
@@ -45,7 +89,7 @@
         },
         {
           "field": "Description",
-          "multiline": true
+          "input_type": "input/text"
         },
         {
           "field": "Range Start"
