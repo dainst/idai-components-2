@@ -9,13 +9,14 @@ import {DocumentEditChangeMonitor} from "../document-edit-change-monitor";
 @Component({
 
     selector: 'string-input',
-    template: `<input [(ngModel)]="field" (keyup)="markAsChanged()" class="form-control">`,
+    template: `<input [(ngModel)]="resource[fieldName]" (keyup)="markAsChanged()" class="form-control">`,
     directives: [CORE_DIRECTIVES, COMMON_DIRECTIVES, FORM_DIRECTIVES]
 })
 
 export class StringInputComponent {
 
-    @Input() field: any;
+    @Input() resource: Resource;
+    @Input() fieldName: string;
 
     constructor(private documentEditChangeMonitor: DocumentEditChangeMonitor) {}
 

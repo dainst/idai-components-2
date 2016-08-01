@@ -1,21 +1,12 @@
 <div *ngFor="let field of fieldsForObjectType; let i=index" id="edit-form-element-{{i}}">
     <div *ngIf="field" class="form-group">
 
-
-
         <label *ngIf="field.label">{{field.label}}</label>
         <label *ngIf="!field.label">{{field.field}}</label>
 
-
-
-
-
-
         <div *ngIf="field.input_type == 'idai-string'">
-            <string-input [(field)]="document['resource'][field.field]" id="edit-form-input-{{i}}"></string-input>
+            <string-input [(resource)]="document['resource']" [fieldName]="field.field" id="edit-form-input-{{i}}"></string-input>
         </div>
-
-
 
         <div *ngIf="field.multiline">
             <textarea [(ngModel)]="document['resource'][field.field]" (keyup)="markAsChanged()"
