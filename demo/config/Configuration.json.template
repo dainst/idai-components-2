@@ -5,34 +5,34 @@
       "label": "Object",
       "fields": [
         {
-          "field" : "localized_multiple_input_example",
+          "name" : "localized_multiple_input_example",
           "label": "Localized Multiple Input Example",
           "inner" : {
-            "input_type" : "input/multiple"
+            "inputType" : "input/multiple"
           },
           "localized" : "true"
           },
         {
-          "field" : "multiple_input_example",
+          "name" : "multiple_input_example",
           "label": "Multiple Input Example",
-          "input_type" : "input/multiple"
+          "inputType" : "input/multiple"
         },
         {
-          "field": "single_input_example",
+          "name": "single_input_example",
           "label": "Input Example",
-          "input_type": "input/single"
+          "inputType": "input/single"
         },
         {
-          "field": "minimal_default_example",
+          "name": "minimal_default_example",
         },
         {
-          "field": "text_example",
+          "name": "text_example",
           "label": "Multiline, Text Example",
-          "input_type": "input/text"
+          "inputType": "input/text"
         },
         {
-          "field": "single_select_dropdown_example",
-          "input_type": "select/single/dropdown",
+          "name": "single_select_dropdown_example",
+          "inputType": "select/single/dropdown",
           "valuelist": [
             "Alabaster",
             "Amber",
@@ -40,8 +40,8 @@
           ]
         },
         {
-          "field": "single_select_radio_example",
-          "input_type": "select/single/radio",
+          "name": "single_select_radio_example",
+          "inputType": "select/single/radio",
           "valuelist": [
             "Radio",
             "CD",
@@ -50,9 +50,9 @@
           ]
         },
         {
-          "field": "multiselect_checkbox_example",
+          "name": "multiselect_checkbox_example",
           "label": "Multiple Selection Example with Checkboxes",
-          "input_type": "select/multi/checkbox",
+          "inputType": "select/multi/checkbox",
           "valuelist": [
             "check",
             "this",
@@ -61,9 +61,9 @@
           ]
         },
         {
-          "field": "multiselect_multiselect_example",
+          "name": "multiselect_multiselect_example",
           "label": "Multiple Selection Example for Long Lists",
-          "input_type": "select/multi/multiselect",
+          "inputType": "select/multi/multiselect",
           "valuelist": [
             "multiselection",
             "for very long but",
@@ -89,7 +89,7 @@
         },
         {
           "field": "Description",
-          "input_type": "input/text"
+          "inputType": "input/text"
         },
         {
           "field": "Range Start"
