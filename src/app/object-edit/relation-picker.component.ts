@@ -52,7 +52,7 @@ export class RelationPickerComponent implements OnChanges {
         this.idSearchString = "";
         this.selectedTarget = undefined;
 
-        var relationId: string = this.resource[this.field.field][this.relationIndex];
+        var relationId: string = this.resource[this.field.name][this.relationIndex];
 
         if (relationId && relationId != "") {
             this.datastore.get(relationId).then(
@@ -113,8 +113,9 @@ export class RelationPickerComponent implements OnChanges {
         if (this.resource['id'] == resource['id'])
             return false;
 
+        // TODO Why is this check not active anymore?
         // Don't suggest an object that is already included as a target in the relation list
-        // if (this.resource[this.field.field].indexOf(resource['id']) > -1)
+        // if (this.resource[this.field.name].indexOf(resource['id']) > -1)
         //     return false;
 
         // Don't suggest an object that is already included as a target in the inverse relation list
@@ -131,8 +132,7 @@ export class RelationPickerComponent implements OnChanges {
      */
     public createRelation(document: Document) {
 
-        // this.createInverseRelation(target);
-        this.resource[this.field.field][this.relationIndex] = document['resource']['id'];
+        this.resource[this.field.name][this.relationIndex] = document['resource']['id'];
         this.selectedTarget = document;
         this.idSearchString = "";
         this.suggestions = [];
@@ -157,16 +157,16 @@ export class RelationPickerComponent implements OnChanges {
 
     public leaveSuggestionMode() {
 
-        if (!this.resource[this.field.field][this.relationIndex]
-                || this.resource[this.field.field][this.relationIndex] == "") {
+        if (!this.resource[this.field.name][this.relationIndex]
+                || this.resource[this.field.name][this.relationIndex] == "") {
             return this.deleteRelation();
         }
 
         this.suggestionsVisible = false;
 
-        if (!this.selectedTarget && this.resource[this.field.field][this.relationIndex]
-                                 && this.resource[this.field.field][this.relationIndex] != "") {
-            this.datastore.get(this.resource[this.field.field][this.relationIndex])
+        if (!this.selectedTarget && this.resource[this.field.name][this.relationIndex]
+                                 && this.resource[this.field.name][this.relationIndex] != "") {
+            this.datastore.get(this.resource[this.field.name][this.relationIndex])
                 .then(
                     document => { this.selectedTarget = document; },
                     err => { console.error(err); }
@@ -185,18 +185,18 @@ export class RelationPickerComponent implements OnChanges {
 
     public deleteRelation(): Promise<any> {
 
-        var targetId = this.resource[this.field.field][this.relationIndex];
+        var targetId = this.resource[this.field.name][this.relationIndex];
 
         return new Promise<any>((resolve) => {
             if (targetId.length == 0) {
-                this.resource[this.field.field].splice(this.relationIndex, 1);
+                this.resource[this.field.name].splice(this.relationIndex, 1);
             } else {
-                this.resource[this.field.field].splice(this.relationIndex, 1);
+                this.resource[this.field.name].splice(this.relationIndex, 1);
                 // todo
                 this.saveService.setChanged();
             }
 
-            if (this.resource[this.field.field].length==0) delete this.resource[this.field.field]
+            if (this.resource[this.field.name].length==0) delete this.resource[this.field.name]
             resolve();
         });
     }
