@@ -4,7 +4,7 @@ import {CORE_DIRECTIVES,COMMON_DIRECTIVES,FORM_DIRECTIVES} from "@angular/common
 import {RelationPickerGroupComponent} from "./relation-picker-group.component";
 import {ValuelistComponent} from "./valuelist.component";
 import {FieldlistComponent} from "./fieldlist.component";
-import {LocalizedComponent} from "./localized.component";
+import {LocalizedComponent} from "./forms/localized.component";
 import {StringInputComponent} from "./forms/string-input.component";
 import {InputArrayComponent} from "./forms/input-array.component";
 import {InputTextComponent} from "./forms/input-text.component";

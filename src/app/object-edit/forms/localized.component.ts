@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {CORE_DIRECTIVES,COMMON_DIRECTIVES,FORM_DIRECTIVES} from "@angular/common";
-import {FieldlistComponent} from "./fieldlist.component";
-import {InputArrayComponent} from "./forms/input-array.component";
+import {FieldlistComponent} from "../fieldlist.component";
+import {InputArrayComponent} from "./input-array.component";
 
 /**
  * @author Daniel de Oliveira
