@@ -19,6 +19,8 @@
 
         <select-multi-checkbox *ngIf="field.inputType == 'select/multi/checkbox'" [(resource)]="document['resource']" [field]="field"></select-multi-checkbox>
 
+        <select-multi-multiselect *ngIf="field.inputType == 'select/multi/multiselect'" [(resource)]="document['resource']" [field]="field"></select-multi-multiselect>
+
     </div>
 </div>
 

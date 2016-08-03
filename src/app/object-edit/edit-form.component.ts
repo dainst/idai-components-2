@@ -11,7 +11,7 @@ import {InputTextComponent} from "./forms/input-text.component";
 import {SelectSingleDropdownComponent} from "./forms/select-single-dropdown.component";
 import {SelectSingleRadioComponent} from "./forms/select-single-radio.component";
 import {SelectMultiCheckboxComponent} from "./forms/select-multi-checkbox.component";
-
+import {SelectMultiMultiselectComponent} from "./forms/select-multi-multiselect.component";
 /**
  * @author Daniel de Oliveira
  */
@@ -29,7 +29,8 @@ import {SelectMultiCheckboxComponent} from "./forms/select-multi-checkbox.compon
         InputTextComponent,
         SelectSingleDropdownComponent,
         SelectSingleRadioComponent,
-        SelectMultiCheckboxComponent
+        SelectMultiCheckboxComponent,
+        SelectMultiMultiselectComponent
     ],
     selector: 'edit-form',
     templateUrl: 'src/templates/edit-form.html'
