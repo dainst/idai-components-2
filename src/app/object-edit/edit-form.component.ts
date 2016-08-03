@@ -7,6 +7,10 @@ import {FieldlistComponent} from "./fieldlist.component";
 import {LocalizedComponent} from "./localized.component";
 import {StringInputComponent} from "./forms/string-input.component";
 import {InputArrayComponent} from "./forms/input-array.component";
+import {InputTextComponent} from "./forms/input-text.component";
+import {SelectSingleDropdownComponent} from "./forms/select-single-dropdown.component";
+import {SelectSingleRadioComponent} from "./forms/select-single-radio.component";
+import {SelectMultiCheckboxComponent} from "./forms/select-multi-checkbox.component";
 
 /**
  * @author Daniel de Oliveira
@@ -21,7 +25,11 @@ import {InputArrayComponent} from "./forms/input-array.component";
         FieldlistComponent,
         LocalizedComponent,
         StringInputComponent,
-        InputArrayComponent
+        InputArrayComponent,
+        InputTextComponent,
+        SelectSingleDropdownComponent,
+        SelectSingleRadioComponent,
+        SelectMultiCheckboxComponent
     ],
     selector: 'edit-form',
     templateUrl: 'src/templates/edit-form.html'

@@ -23,7 +23,7 @@
           "inputType": "input/single"
         },
         {
-          "name": "minimal_default"
+          "name": "minimalist_default"
         },
         {
           "name": "text",

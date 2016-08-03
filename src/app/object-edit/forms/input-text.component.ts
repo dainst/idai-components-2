@@ -7,33 +7,19 @@ import {DocumentEditChangeMonitor} from "../document-edit-change-monitor";
  * @author Fabian Zavodnik
  */
 @Component({
-
-    selector: 'input-array',
-    templateUrl: 'src/templates/input-array.html',
+    selector: 'input-text',
+    template: `<textarea [(ngModel)]="resource[fieldName]" (keyup)="markAsChanged()" class="form-control"></textarea>`,
     directives: [CORE_DIRECTIVES, COMMON_DIRECTIVES, FORM_DIRECTIVES]
 })
 
-export class InputArrayComponent {
+export class InputTextComponent {
 
-    @Input() field: [String];
+    @Input() resource: Resource;
+    @Input() fieldName: string;
 
     constructor(private documentEditChangeMonitor: DocumentEditChangeMonitor) {}
 
     public markAsChanged() {
         this.documentEditChangeMonitor.setChanged();
-    }
-
-    customTrackBy(index: number, obj: any): any {
-        return index;
-    }
-    
-    public addInputArrayItem() {
-        if(this.field==undefined) this.field = new Array<String>();
-        this.field.push("")
-    }
-    
-    public removeInputArrayItemAtIndex(index) {
-        this.field.splice(index,1);
-
     }
 }

@@ -7,33 +7,21 @@ import {DocumentEditChangeMonitor} from "../document-edit-change-monitor";
  * @author Fabian Zavodnik
  */
 @Component({
-
-    selector: 'input-array',
-    templateUrl: 'src/templates/input-array.html',
+    selector: 'select-single-dropdown',
+    template: `<select [(ngModel)]="resource[field.name]" (change)="markAsChanged()" class="form-control">
+                <option *ngFor="let item of field.valuelist" value="{{item}}">{{item}}</option>
+</select>`,
     directives: [CORE_DIRECTIVES, COMMON_DIRECTIVES, FORM_DIRECTIVES]
 })
 
-export class InputArrayComponent {
+export class SelectSingleDropdownComponent {
 
+    @Input() resource: Resource;
     @Input() field: [String];
 
     constructor(private documentEditChangeMonitor: DocumentEditChangeMonitor) {}
 
     public markAsChanged() {
         this.documentEditChangeMonitor.setChanged();
-    }
-
-    customTrackBy(index: number, obj: any): any {
-        return index;
-    }
-    
-    public addInputArrayItem() {
-        if(this.field==undefined) this.field = new Array<String>();
-        this.field.push("")
-    }
-    
-    public removeInputArrayItemAtIndex(index) {
-        this.field.splice(index,1);
-
     }
 }

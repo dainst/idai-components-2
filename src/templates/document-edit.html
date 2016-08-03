@@ -12,14 +12,22 @@
     </div>
 
     <div *ngIf="document['resource'].type"
-         id="object-edit">
+         id="object-edit" class="row">
+        <div class="col-sm-6">
+            <form>
+                <edit-form [(document)]="document"
+                           [fieldsForObjectType]="fieldsForObjectType"></edit-form>
+                <relations-form [(document)]="document"
+                                [primary]="primary"
+                                [relationFields]="relationFields"></relations-form>
+            </form>
+        </div>
+        <div class="col-sm-6">
+            <b>JSON-Preview</b>
+            <textarea rows="40">{{document['resource']|json}}</textarea>
+        </div>
 
-        <form>
-            <edit-form [(document)]="document"
-                       [fieldsForObjectType]="fieldsForObjectType"></edit-form>
-            <relations-form [(document)]="document"
-                            [primary]="primary"
-                            [relationFields]="relationFields"></relations-form>
-        </form>
+
+
     </div>
 </div>

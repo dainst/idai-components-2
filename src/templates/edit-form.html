@@ -2,33 +2,23 @@
     <div *ngIf="field" class="form-group">
 
         <label *ngIf="field.label">{{field.label}}</label>
-        <label *ngIf="!field.label">{{field.field}}</label>
+        <label *ngIf="!field.label">{{field.name}}</label>
 
-        <div *ngIf="field.input_type == 'idai-string'
-             || (!field.input_type && !field.multiline && !field.valuelist && !field.localized && !field.array)">
-            <string-input [(resource)]="document['resource']" [fieldName]="field.field"></string-input>
-        </div>
 
-        <div *ngIf="field.multiline">
-            <textarea [(ngModel)]="document['resource'][field.field]" (keyup)="markAsChanged()"
-                      class="form-control" rows="5"></textarea>
-        </div>
+        <string-input *ngIf="field.inputType == 'input/single' || (field.inputType == undefined && field.inner == undefined)" [(resource)]="document['resource']" [fieldName]="field.name"></string-input>
 
-        <div *ngIf="field.valuelist && !field.multivalue && !field.localized">
-            <select [(ngModel)]="document['resource'][field.field]" (change)="markAsChanged()" class="form-control">
-                <option *ngFor="let item of field.valuelist" value="{{item}}">{{item}}</option>
-            </select>
-        </div>
+        <input-array *ngIf="field.inputType == 'input/multiple'" [(field)]="document['resource'][field.name]"></input-array>
 
-        <valuelist *ngIf="field.valuelist && field.multivalue" [(document)]="document" [field]="field"></valuelist>
+        <localized *ngIf="field.localized" [(field)]="document['resource'][field.name]" [innerInputType]="field.inner.inputType" ></localized>
 
-        <fieldlist *ngIf="field.array && !field.localized" [(resource)]="document['resource']" [fieldDefinition]="field"></fieldlist>
+        <input-text *ngIf="field.inputType == 'input/text'" [(resource)]="document['resource']" [fieldName]="field.name"></input-text>
 
-        <div *ngIf="field.input_type == 'idai-input-array'">
-            <input-array [(field)]="document['resource'][field.field]"></input-array>
-        </div>
+        <select-single-dropdown *ngIf="field.inputType == 'select/single/dropdown'" [(resource)]="document['resource']" [field]="field"></select-single-dropdown>
 
-        <localized *ngIf="field.localized" [(field)]="document['resource'][field.field]" [innerInputType]="field.inner.input_type" ></localized>
+        <select-single-radio *ngIf="field.inputType == 'select/single/radio'" [(resource)]="document['resource']" [field]="field"></select-single-radio>
+
+        <select-multi-checkbox *ngIf="field.inputType == 'select/multi/checkbox'" [(resource)]="document['resource']" [field]="field"></select-multi-checkbox>
+
     </div>
 </div>
 
