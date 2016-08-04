@@ -5,7 +5,7 @@ import {InputArrayComponent} from "./input-array.component";
 
 /**
  * @author Daniel de Oliveira
- * @author Fabian Zavodnik
+ * @author Fabian Z.
  */
 @Component({
 

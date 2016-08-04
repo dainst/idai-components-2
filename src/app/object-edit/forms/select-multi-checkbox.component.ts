@@ -4,7 +4,7 @@ import {Resource} from "../../core-services/resource";
 import {DocumentEditChangeMonitor} from "../document-edit-change-monitor";
 
 /**
- * @author Fabian Zavodnik
+ * @author Fabian Z.
  */
 @Component({
     selector: 'select-multi-checkbox',
