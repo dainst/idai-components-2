@@ -6,28 +6,22 @@
             <div class="panel-heading">
                 Please choose the object type.
             </div>
-            <button *ngFor="let type of types; let index = index" (mousedown)="setType(type)"
-                    type="button" id="create-object-option-{{index}}" class="list-group-item">{{type}}</button>
+            <button *ngFor="let type of types; let index = index" (mousedown)="setType(type.name)"
+                    type="button" id="create-object-option-{{index}}" class="list-group-item">{{type.label}}</button>
         </div>
     </div>
 
     <div *ngIf="document['resource'].type"
-         id="object-edit" class="row">
-        <div class="col-sm-6">
-            <form>
-                <edit-form [(document)]="document"
-                           [fieldsForObjectType]="fieldsForObjectType"></edit-form>
-                <relations-form [(document)]="document"
-                                [primary]="primary"
-                                [relationFields]="relationFields"></relations-form>
-            </form>
-        </div>
-        <div class="col-sm-6">
-            <b>JSON-Preview</b>
-            <textarea rows="40">{{document['resource']|json}}</textarea>
-        </div>
+         id="object-edit" >
 
+        <h1>{{objectTypeLabel}}</h1>
 
-
+        <form>
+            <edit-form [(document)]="document"
+                       [fieldsForObjectType]="fieldsForObjectType"></edit-form>
+            <relations-form [(document)]="document"
+                            [primary]="primary"
+                            [relationFields]="relationFields"></relations-form>
+        </form>
     </div>
 </div>

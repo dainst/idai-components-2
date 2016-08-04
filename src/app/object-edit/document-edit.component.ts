@@ -34,8 +34,9 @@ export class DocumentEditComponent implements OnChanges,OnInit {
     private relationsConfiguration: RelationsConfiguration;
 
     public relationFields : any[];
-    public types : string[];
+    public types : any[];
     public fieldsForObjectType : any;
+    public objectTypeLabel : String;
 
     constructor(
         private persistenceManager: PersistenceManager,
@@ -52,6 +53,7 @@ export class DocumentEditComponent implements OnChanges,OnInit {
         this.configLoader.projectConfiguration().subscribe((projectConfiguration)=>{
             this.projectConfiguration = projectConfiguration;
             this.setFieldsForObjectType(this.document,this.projectConfiguration);
+            this.setObjectTypeLabel(this.document,this.projectConfiguration);
         });
     }
 
@@ -67,11 +69,18 @@ export class DocumentEditComponent implements OnChanges,OnInit {
         this.types=this.projectConfiguration.getTypes();
     }
 
+    private setObjectTypeLabel(document, projectConfiguration) {
+        if (document==undefined) return;
+        if (!projectConfiguration) return;
+        this.objectTypeLabel = projectConfiguration.getLabelForType(document['resource'].type);
+    }
+
     public ngOnChanges() {
 
         if (this.document) {
             this.persistenceManager.setOldVersion(this.document);
             this.setFieldsForObjectType(this.document,this.projectConfiguration);
+            this.setObjectTypeLabel(this.document,this.projectConfiguration);
         }
     }
 }

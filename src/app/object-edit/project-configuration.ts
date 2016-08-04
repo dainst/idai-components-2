@@ -15,26 +15,37 @@ import {MD} from "../core-services/md";
 @Injectable()
 export class ProjectConfiguration {
 
-    private fieldMap: { [type: string]: any[] } = {};
+    private typeMap: { [type: string]: any } = {};
 
     private excavation: string;
+
+    private typesList: any[] = undefined;
 
     /**
      * @param configuration
      */
     constructor(configuration) {
-
-        this.initFieldMap(configuration['types']);
+        this.initTypeMap(configuration);
         this.expandTypesWithParentFields(configuration['types']);
-
         this.excavation=configuration['excavation'];
+
     }
 
     /**
-     * @returns {string[]} array with the names of all types of the current project.
+     * @returns {any[]} array with objects containing the names and labels of all types of the current project.
      */
-    public getTypes(): string[] {
-        return Object.keys(this.fieldMap);
+    public getTypes(): any[] {
+        if(this.typesList) return this.typesList;
+
+        var types = [];
+        for (var typeKey of Object.keys(this.typeMap) ) {
+            types.push({
+                'name': this.typeMap[typeKey].name,
+                'label':this.typeMap[typeKey].label
+            });
+        }
+        this.typesList = types;
+        return this.typesList;
     }
 
     /**
@@ -42,7 +53,13 @@ export class ProjectConfiguration {
      * @returns {any[]} the fields definitions for the type.
      */
     public getFields(typeName: string): any[] {
-        return this.fieldMap[typeName];
+        if(!this.typeMap[typeName]) return [];
+        return this.typeMap[typeName]['fields'];
+    }
+
+    public getLabelForType(typeName: string): String {
+        if(!this.typeMap[typeName]) return "";
+        return this.typeMap[typeName].label;
     }
 
     /**
@@ -53,16 +70,21 @@ export class ProjectConfiguration {
         return this.excavation;
     }
 
-    private initFieldMap(types) {
-        for (var type of types) {
-            this.fieldMap[this.name(type)] = type.fields;
+    private initTypeMap(configuration) {
+        for (var type of configuration['types']) {
+            var typeName = this.name(type);
+            this.typeMap[typeName] = {
+                "name": typeName,
+                "label": type["label"] || typeName,
+                "fields": type.fields
+            }
         }
     }
 
     private expandTypesWithParentFields(types) {
         for (var type of types) {
             if (this.hasParent(type)) {
-                this.fieldMap[this.name(type)]
+                this.typeMap[this.name(type)].fields
                     = this.prependFieldsOfParentType(type);
             }
         }
@@ -85,10 +107,10 @@ export class ProjectConfiguration {
     private prependFieldsOfParentType(type) {
         var fields=[];
 
-        if (this.fieldMap[type.parent]==undefined) {
+        if (this.typeMap[type.parent]==undefined) {
             throw MD.PC_GENERIC_ERROR;
         } else
-            fields=this.fieldMap[type.parent];
+            fields=this.typeMap[type.parent].fields;
 
         return fields.concat(type.fields);
     }

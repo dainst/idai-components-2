@@ -1,7 +1,7 @@
 {
   "types": [
     {
-      "type": "Object",
+      "type": "object",
       "label": "Object",
       "fields": [
         {
@@ -91,9 +91,8 @@
       ]
     },
     {
-      "type": "Object Enhanced",
-      "label": "Enhanced Object",
-      "parent" : "Object",
+      "type": "object_enhanced",
+      "parent" : "object",
       "fields": [
         {
           "field": "Dimensions"
@@ -114,7 +113,8 @@
       ]
     },
     {
-      "type": "Section",
+      "type": "section",
+      "label": "Sektion",
       "fields": [
 
       ]
