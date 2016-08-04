@@ -18,22 +18,26 @@ export class SelectMultiMultiselectComponent {
     @Input() field: any;
 
     constructor(private documentEditChangeMonitor: DocumentEditChangeMonitor) {}
-    
-    public getIndexOfItem(item) {
-        if (this.resource[this.field.name] != undefined) {
-            return this.resource[this.field.name].indexOf(item, 0);
-        }
-    }
 
-    public addInputArrayItem(item) {
+
+
+    public toggleItem(item) {
         if(this.resource[this.field.name]==undefined) this.resource[this.field.name] = new Array<String>();
 
-        var index = this.getIndexOfItem(item)
-        if (index > -1) {
-            this.resource[this.field.name].splice(index, 1);
+        var resourceListIndex = this.resource[this.field.name].indexOf(item, 0);
+
+        if (resourceListIndex > -1) {
+            this.resource[this.field.name].splice(resourceListIndex, 1);
+
+            this.field.valuelist.push(item);
         } else {
+            var valueListIndex = this.field.valuelist.indexOf(item, 0);
+            this.field.valuelist.splice(valueListIndex, 1);
+
             this.resource[this.field.name].push(item);
         }
+
+
 
         this.markAsChanged()
     }
