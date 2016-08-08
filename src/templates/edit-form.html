@@ -5,13 +5,13 @@
         <label *ngIf="!field.label">{{field.name}}</label>
 
 
-        <string-input *ngIf="field.inputType == 'input/single' || (field.inputType == undefined && field.inner == undefined)" [(resource)]="document['resource']" [fieldName]="field.name"></string-input>
+        <string-input *ngIf="field.inputType == 'input/single/simple' || (field.inputType == undefined && field.inner == undefined)" [(resource)]="document['resource']" [fieldName]="field.name"></string-input>
 
-        <input-array *ngIf="field.inputType == 'input/multiple'" [(field)]="document['resource'][field.name]"></input-array>
+        <input-array *ngIf="field.inputType == 'input/multi/simple'" [(field)]="document['resource'][field.name]"></input-array>
 
         <localized *ngIf="field.localized" [(field)]="document['resource'][field.name]" [innerInputType]="field.inner.inputType" ></localized>
 
-        <input-text *ngIf="field.inputType == 'input/text'" [(resource)]="document['resource']" [fieldName]="field.name"></input-text>
+        <input-text *ngIf="field.inputType == 'input/single/text'" [(resource)]="document['resource']" [fieldName]="field.name"></input-text>
 
         <select-single-dropdown *ngIf="field.inputType == 'select/single/dropdown'" [(resource)]="document['resource']" [field]="field"></select-single-dropdown>
 

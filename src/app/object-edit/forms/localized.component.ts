@@ -16,7 +16,7 @@ import {InputArrayComponent} from "./input-array.component";
             <li *ngFor="let language of languages()">
                 {{language}}
                 
-                <div *ngIf="innerInputType == 'input/multiple'">
+                <div *ngIf="innerInputType == 'input/multi/simple'">
                     <input-array [(field)]="field[language]"></input-array>
                 </div>
         

@@ -8,19 +8,19 @@
           "name" : "localized_multiple_input",
           "label": "Localized Multiple Input",
           "inner" : {
-            "inputType" : "input/multiple"
+            "inputType" : "input/multi/simple"
           },
           "localized" : "true"
           },
         {
           "name" : "multiple_input",
           "label": "Multiple Input",
-          "inputType" : "input/multiple"
+          "inputType" : "input/multi/simple"
         },
         {
           "name": "single_input",
           "label": "Simple Input",
-          "inputType": "input/single"
+          "inputType": "input/single/simple"
         },
         {
           "name": "minimalist_default"
@@ -28,7 +28,7 @@
         {
           "name": "text",
           "label": "Multiline, Text",
-          "inputType": "input/text"
+          "inputType": "input/single/text"
         },
         {
           "name": "single_select_dropdown",
@@ -102,7 +102,7 @@
         },
         {
           "field": "Description",
-          "inputType": "input/text"
+          "inputType": "input/single/text"
         },
         {
           "field": "Range Start"
