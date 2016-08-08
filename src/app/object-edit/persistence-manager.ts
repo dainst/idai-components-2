@@ -86,46 +86,46 @@ import {Resource} from "../core-services/resource";
         var promisesToSaveObjects = new Array();
         for (var targetDocument of targetDocuments) {
 
-            this.pruneInverseRelations(resource['id'],targetDocument['resource']);
+            this.pruneInverseRelations(resource['id'],targetDocument['resource']['relations']);
             this.setInverseRelations(resource, targetDocument['resource']);
             promisesToSaveObjects.push(this.datastore.update(targetDocument));
         }
         return promisesToSaveObjects;
     }
 
-    private pruneInverseRelations(id,targetResource) {
-        for (var prop in targetResource) {
-            if (!targetResource.hasOwnProperty(prop)) continue;
-            if (!this.relationsConfiguration.isRelationProperty(prop)) continue;
+    private pruneInverseRelations(id,targetRelations) {
+        for (var relation in targetRelations) {
+            if (!this.relationsConfiguration.isRelationProperty(relation)) continue;
 
-            var index=targetResource[prop].indexOf(id);
+            var index=targetRelations[relation].indexOf(id);
             if (index!=-1) {
-                targetResource[prop].splice(index,1)
+                targetRelations[relation].splice(index,1)
             }
 
-            if (targetResource[prop].length==0) delete targetResource[prop];
+            if (targetRelations[relation].length==0)
+                delete targetRelations[relation];
         }
     }
 
     private setInverseRelations(resource, targetResource) {
-        for (var prop in resource) {
-            if (!resource.hasOwnProperty(prop)) continue;
-            if (!this.relationsConfiguration.isRelationProperty(prop)) continue;
 
-            for (var id of resource[prop]) {
+        for (var relation in resource['relations']) {
+            if (!this.relationsConfiguration.isRelationProperty(relation)) continue;
+
+            for (var id of resource['relations'][relation]) {
                 if (id!=targetResource['id']) continue;
 
-                var inverse = this.relationsConfiguration.getInverse(prop);
+                var inverse = this.relationsConfiguration.getInverse(relation);
 
-                if (targetResource[inverse]==undefined)
-                    targetResource[inverse]=[];
+                if (targetResource['relations'][inverse]==undefined)
+                    targetResource['relations'][inverse]=[];
 
-                var index = targetResource[inverse].indexOf(resource['id']);
+                var index = targetResource['relations'][inverse].indexOf(resource['id']);
                 if (index != -1) {
-                    targetResource[inverse].splice(index, 1);
+                    targetResource['relations'][inverse].splice(index, 1);
                 }
 
-                targetResource[inverse].push(resource['id']);
+                targetResource['relations'][inverse].push(resource['id']);
             }
         }
     }
@@ -134,11 +134,11 @@ import {Resource} from "../core-services/resource";
     private extractRelatedObjectIDs(resource:Resource) : Array<string> {
         var relatedObjectIDs = new Array();
 
-        for (var prop in resource) {
-            if (!resource.hasOwnProperty(prop)) continue;
+        for (var prop in resource['relations']) {
+            if (!resource['relations'].hasOwnProperty(prop)) continue;
             if (!this.relationsConfiguration.isRelationProperty(prop)) continue;
 
-            for (var id of resource[prop]) {
+            for (var id of resource['relations'][prop]) {
                 relatedObjectIDs.push(id);
             }
         }

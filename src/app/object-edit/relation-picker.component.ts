@@ -26,6 +26,7 @@ export class RelationPickerComponent implements OnChanges {
     @Input() primary: string;
 
     public resource: Resource;
+    public relations: any;
 
     private suggestions: Document[];
     private selectedSuggestionIndex: number = -1;
@@ -45,14 +46,17 @@ export class RelationPickerComponent implements OnChanges {
 
     public ngOnChanges() {
 
-        if (this.document)
+        if (this.document) {
             this.resource=this.document['resource'];
+            this.relations=this.resource['relations'];
+        }
+
 
         this.suggestions = [];
         this.idSearchString = "";
         this.selectedTarget = undefined;
 
-        var relationId: string = this.resource[this.field.name][this.relationIndex];
+        var relationId: string = this.relations[this.field.name][this.relationIndex];
 
         if (relationId && relationId != "") {
             this.datastore.get(relationId).then(
@@ -119,8 +123,8 @@ export class RelationPickerComponent implements OnChanges {
         //     return false;
 
         // Don't suggest an object that is already included as a target in the inverse relation list
-        if (this.resource[this.field.inverse]
-                && this.resource[this.field.inverse].indexOf(resource['id']) > -1)
+        if (this.resource['relations'][this.field.inverse]
+                && this.resource['relations'][this.field.inverse].indexOf(resource['id']) > -1)
             return false;
 
         return true;
@@ -132,7 +136,7 @@ export class RelationPickerComponent implements OnChanges {
      */
     public createRelation(document: Document) {
 
-        this.resource[this.field.name][this.relationIndex] = document['resource']['id'];
+        this.resource['relations'][this.field.name][this.relationIndex] = document['resource']['id'];
         this.selectedTarget = document;
         this.idSearchString = "";
         this.suggestions = [];
@@ -157,16 +161,16 @@ export class RelationPickerComponent implements OnChanges {
 
     public leaveSuggestionMode() {
 
-        if (!this.resource[this.field.name][this.relationIndex]
-                || this.resource[this.field.name][this.relationIndex] == "") {
+        if (!this.resource['relations'][this.field.name][this.relationIndex]
+                || this.resource['relations'][this.field.name][this.relationIndex] == "") {
             return this.deleteRelation();
         }
 
         this.suggestionsVisible = false;
 
-        if (!this.selectedTarget && this.resource[this.field.name][this.relationIndex]
-                                 && this.resource[this.field.name][this.relationIndex] != "") {
-            this.datastore.get(this.resource[this.field.name][this.relationIndex])
+        if (!this.selectedTarget && this.resource['relations'][this.field.name][this.relationIndex]
+                                 && this.resource['relations'][this.field.name][this.relationIndex] != "") {
+            this.datastore.get(this.resource['relations'][this.field.name][this.relationIndex])
                 .then(
                     document => { this.selectedTarget = document; },
                     err => { console.error(err); }
@@ -185,18 +189,19 @@ export class RelationPickerComponent implements OnChanges {
 
     public deleteRelation(): Promise<any> {
 
-        var targetId = this.resource[this.field.name][this.relationIndex];
+        var targetId = this.resource['relations'][this.field.name][this.relationIndex];
 
         return new Promise<any>((resolve) => {
             if (targetId.length == 0) {
-                this.resource[this.field.name].splice(this.relationIndex, 1);
+                this.resource['relations'][this.field.name].splice(this.relationIndex, 1);
             } else {
-                this.resource[this.field.name].splice(this.relationIndex, 1);
+                this.resource['relations'][this.field.name].splice(this.relationIndex, 1);
                 // todo
                 this.saveService.setChanged();
             }
 
-            if (this.resource[this.field.name].length==0) delete this.resource[this.field.name]
+            if (this.resource['relations'][this.field.name].length==0)
+                delete this.resource['relations'][this.field.name]
             resolve();
         });
     }

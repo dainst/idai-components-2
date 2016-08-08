@@ -1,6 +1,5 @@
 import {Component, Input, OnChanges} from '@angular/core';
 import {CORE_DIRECTIVES,COMMON_DIRECTIVES,FORM_DIRECTIVES} from "@angular/common";
-import {Resource} from "../core-services/resource";
 import {RelationPickerComponent} from "./relation-picker.component";
 
 
@@ -20,26 +19,27 @@ export class RelationPickerGroupComponent implements OnChanges {
     @Input() field: any;
     @Input() primary: string;
 
-    public resource: Resource;
+    public relations: any;
     
     public ngOnChanges() {
         
-        if (this.document)
-            this.resource = this.document['resource'];
+        if (this.document) 
+            this.relations = this.document['resource']['relations'];
     }
     
     public createRelation() {
 
-        if (!this.resource[this.field.name]) this.resource[this.field.name] = [];
+        if (!this.relations[this.field.name])
+            this.relations[this.field.name] = [];
     
-        this.resource[this.field.name].push("")
+        this.relations[this.field.name].push("")
     }
     
     public validateNewest(): boolean {
     
-        var index: number = this.resource[this.field.name].length - 1;
+        var index: number = this.relations[this.field.name].length - 1;
     
-        if (!this.resource[this.field.name][index] || this.resource[this.field.name][index].length == 0) {
+        if (!this.relations[this.field.name][index] || this.relations[this.field.name][index].length == 0) {
             return false;
         } else {
             return true;

@@ -7,23 +7,26 @@ import {RelationPickerGroupComponent} from "../app/object-edit/relation-picker-g
 export function main() {
     describe('RelationPickerGroupComponent', () => {
 
-        var resource: any;
+        var document: any;
         var relationPickerGroupComponent: RelationPickerGroupComponent;
 
         beforeEach(() => {
-            resource = { "id": "id1", "identifier": "ob1", "type": "Object" };
+            document = { "resource" : 
+                { "id": "id1", "identifier": "ob1", "type": "object", "relations" : {} }
+            };
 
             relationPickerGroupComponent = new RelationPickerGroupComponent();
-            relationPickerGroupComponent.resource = resource;
+            relationPickerGroupComponent.document = document;
             relationPickerGroupComponent.field = { "name": "Above", "inverse": "Below" };
         });
 
         it('should create an empty relation array if no relation array exists and a new relation is created',
             function() {
+                relationPickerGroupComponent.ngOnChanges();
                 relationPickerGroupComponent.createRelation();
 
-                expect(resource["Above"].length).toBe(1);
-                expect(resource["Above"][0]).toBe("");
+                expect(document['resource']['relations']['Above'].length).toBe(1);
+                expect(document['resource']['relations']['Above'][0]).toBe("");
             }
         );
     });
