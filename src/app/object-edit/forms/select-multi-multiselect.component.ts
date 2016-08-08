@@ -19,8 +19,6 @@ export class SelectMultiMultiselectComponent {
 
     constructor(private documentEditChangeMonitor: DocumentEditChangeMonitor) {}
 
-
-
     public toggleItem(item) {
         if(this.resource[this.field.name]==undefined) this.resource[this.field.name] = new Array<String>();
 
@@ -37,12 +35,6 @@ export class SelectMultiMultiselectComponent {
             this.resource[this.field.name].push(item);
         }
 
-
-
-        this.markAsChanged()
-    }
-
-    public markAsChanged() {
         this.documentEditChangeMonitor.setChanged();
     }
 

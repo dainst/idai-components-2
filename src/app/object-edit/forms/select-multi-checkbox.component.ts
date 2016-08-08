@@ -28,11 +28,8 @@ export class SelectMultiCheckboxComponent {
         } else {
             this.resource[this.field.name].push(item);
         }
-        
-        this.markAsChanged()
-    }
 
-    public markAsChanged() {
         this.documentEditChangeMonitor.setChanged();
     }
+    
 }

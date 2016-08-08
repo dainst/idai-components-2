@@ -1,10 +1,10 @@
 import {Component, Input} from '@angular/core';
 import {CORE_DIRECTIVES,COMMON_DIRECTIVES,FORM_DIRECTIVES} from "@angular/common";
-import {Resource} from "../../core-services/resource";
 import {DocumentEditChangeMonitor} from "../document-edit-change-monitor";
 
 /**
  * @author Fabian Z.
+ * @author Thomas Kleinke
  */
 @Component({
 
@@ -15,25 +15,24 @@ import {DocumentEditChangeMonitor} from "../document-edit-change-monitor";
 
 export class InputArrayComponent {
 
-    @Input() field: [String];
+    @Input() field: String[];
 
     constructor(private documentEditChangeMonitor: DocumentEditChangeMonitor) {}
-
-    public markAsChanged() {
-        this.documentEditChangeMonitor.setChanged();
-    }
 
     customTrackBy(index: number, obj: any): any {
         return index;
     }
     
     public addInputArrayItem() {
-        if(this.field==undefined) this.field = new Array<String>();
-        this.field.push("")
+
+        if (this.field == undefined) this.field = new Array<String>();
+        this.field.push("");
+        this.documentEditChangeMonitor.setChanged();
     }
     
     public removeInputArrayItemAtIndex(index) {
-        this.field.splice(index,1);
 
+        this.field.splice(index, 1);
+        this.documentEditChangeMonitor.setChanged();
     }
 }

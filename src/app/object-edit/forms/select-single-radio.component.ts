@@ -15,7 +15,7 @@ import {DocumentEditChangeMonitor} from "../document-edit-change-monitor";
 export class SelectSingleRadioComponent {
 
     @Input() resource: Resource;
-    @Input() field: [String];
+    @Input() field: String[];
 
     constructor(private documentEditChangeMonitor: DocumentEditChangeMonitor) {}
 
