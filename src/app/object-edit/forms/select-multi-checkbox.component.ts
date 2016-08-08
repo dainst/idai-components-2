@@ -8,7 +8,7 @@ import {DocumentEditChangeMonitor} from "../document-edit-change-monitor";
  */
 @Component({
     selector: 'select-multi-checkbox',
-    template: `<div *ngFor="let item of field.valuelist" class="checkbox"><label><input value="{{item}}" type="checkbox" (click)="addInputArrayItem(item)">{{item}}</label></div>`,
+    templateUrl: 'src/templates/select-multi-checkbox.html',
     directives: [CORE_DIRECTIVES, COMMON_DIRECTIVES, FORM_DIRECTIVES]
 })
 
