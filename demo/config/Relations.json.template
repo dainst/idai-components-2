@@ -1,14 +1,32 @@
 {
   "relations":[
     {
-      "name":"Belongs to",
-      "inverse":"Includes",
-      "label":"Enthalten in"
+      "name": "Belongs to",
+      "inverse": "Includes",
+      "label": "Enthalten in",
+      "domain": ["object", "object_enhanced", "section"],
+      "range": ["object", "object_enhanced", "section"]
     },
     {
-      "name":"Includes",
-      "inverse":"Belongs to",
-      "label":"Enthält"
+      "name": "Includes",
+      "inverse": "Belongs to",
+      "label": "Enthält",
+      "domain": ["object", "object_enhanced", "section"],
+      "range": ["object", "object_enhanced", "section"]
+    },
+    {
+      "name": "Found in",
+      "inverse": "Find spot of",
+      "label": "Gefunden in",
+      "domain": ["object", "object_enhanced"],
+      "range": ["section"]
+    },
+    {
+      "name": "Find spot of",
+      "inverse": "Found in",
+      "label": "Fundort von",
+      "domain": ["section"],
+      "range": ["object", "object_enhanced"]
     }
   ]
 }

@@ -108,8 +108,8 @@ export class RelationPickerComponent implements OnChanges {
     }
 
     /**
-     * Checks if the given object should be shown as a suggestion
-     * @param object
+     * Checks if the given resource should be shown as a suggestion
+     * @param resource
      */
     private checkSuggestion(resource: Resource) {
 
@@ -125,6 +125,10 @@ export class RelationPickerComponent implements OnChanges {
         // Don't suggest an object that is already included as a target in the inverse relation list
         if (this.resource['relations'][this.field.inverse]
                 && this.resource['relations'][this.field.inverse].indexOf(resource['id']) > -1)
+            return false;
+
+        // Don't suggest an object whose type is not a part of the relation's range
+        if (this.field.range.indexOf(resource.type) == -1)
             return false;
 
         return true;
