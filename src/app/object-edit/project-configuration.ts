@@ -57,7 +57,7 @@ export class ProjectConfiguration {
         return this.typeMap[typeName]['fields'];
     }
 
-    public getLabelForType(typeName: string): String {
+    public getLabelForType(typeName: string): string {
         if(!this.typeMap[typeName]) return "";
         return this.typeMap[typeName].label;
     }
@@ -94,7 +94,7 @@ export class ProjectConfiguration {
         return type.type;
     }
 
-    private hasParent(type) : Boolean {
+    private hasParent(type) : boolean {
         return type['parent'];
     }
 

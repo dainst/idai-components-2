@@ -36,7 +36,7 @@ export class DocumentEditComponent implements OnChanges,OnInit {
     public relationFields : any[];
     public types : any[];
     public fieldsForObjectType : any;
-    public objectTypeLabel : String;
+    public objectTypeLabel : string;
 
     constructor(
         private persistenceManager: PersistenceManager,
