@@ -1,9 +1,11 @@
-<div *ngFor="let field of fieldsForObjectType; let i=index" id="edit-form-element-{{i}}">
-    <div *ngIf="field" class="form-group">
+<div  *ngFor="let field of fieldsForObjectType; let i=index" id="edit-form-element-{{i}}">
+    <div *ngIf="field" class="form-group panel panel-default">
+        <div class="panel-heading">
+            <label *ngIf="field.label">{{field.label}}</label>
+            <label *ngIf="!field.label">{{field.name}}</label>
+        </div>
 
-        <label *ngIf="field.label">{{field.label}}</label>
-        <label *ngIf="!field.label">{{field.name}}</label>
-
+        <div class="panel-body">
 
         <string-input *ngIf="field.inputType == 'input/single/simple' || (field.inputType == undefined && field.inner == undefined)" [(resource)]="document['resource']" [fieldName]="field.name"></string-input>
 
@@ -20,7 +22,7 @@
         <select-multi-checkbox *ngIf="field.inputType == 'select/multi/checkbox'" [(resource)]="document['resource']" [field]="field"></select-multi-checkbox>
 
         <select-multi-multiselect *ngIf="field.inputType == 'select/multi/multiselect'" [(resource)]="document['resource']" [field]="field"></select-multi-multiselect>
-
+        </div>
     </div>
 </div>
 

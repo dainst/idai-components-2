@@ -16,12 +16,20 @@
 
         <h1>{{objectTypeLabel}}</h1>
 
-        <form>
-            <edit-form [(document)]="document"
-                       [fieldsForObjectType]="fieldsForObjectType"></edit-form>
-            <relations-form [(document)]="document"
-                            [primary]="primary"
-                            [relationFields]="relationFields"></relations-form>
-        </form>
+        <div class="row">
+
+            <form>
+                <div class="col-md-7">
+                    <edit-form [(document)]="document"
+                           [fieldsForObjectType]="fieldsForObjectType"></edit-form>
+                </div>
+                <div class="col-md-5">
+                    <relations-form [(document)]="document"
+                                [primary]="primary"
+                                [relationFields]="relationFields"></relations-form>
+                </div>
+            </form>
+
+        </div>
     </div>
 </div>
