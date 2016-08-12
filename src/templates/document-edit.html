@@ -14,7 +14,11 @@
     <div *ngIf="document['resource'].type"
          id="object-edit" >
 
-        <h1>{{objectTypeLabel}}</h1>
+        <h1>
+            {{objectTypeLabel}}
+            <div *ngIf="document['resource'].type"><small>Typ: {{document['resource'].type}}</small></div>
+
+        </h1>
 
         <div class="row">
 
