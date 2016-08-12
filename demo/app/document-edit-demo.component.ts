@@ -45,12 +45,12 @@ export class DocumentEditDemoComponent implements OnInit {
         });
     }
 
-
-
     ngOnInit() {
         this.loadSampleData();
-        this.configLoader.setProjectConfiguration(DocumentEditDemoComponent.PROJECT_CONFIGURATION_PATH);
-        this.configLoader.setRelationsConfiguration(DocumentEditDemoComponent.RELATIONS_CONFIGURATION_PATH);
+        
+        this.configLoader.setConfigurationPaths(
+            DocumentEditDemoComponent.PROJECT_CONFIGURATION_PATH,
+            DocumentEditDemoComponent.RELATIONS_CONFIGURATION_PATH);
     }
 
     loadSampleData(): void {

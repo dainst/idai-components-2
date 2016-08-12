@@ -8,74 +8,91 @@ import {Observable} from "rxjs/Observable";
 /**
  * @author Daniel de Oliveira
  * @author Thomas Kleinke
+ * @author Fabian Z.
  */
 @Injectable()
 export class ConfigLoader {
 
-    private projectConfigurationObservers = [];
-    private relationsConfigurationObservers = [];
+    private observers = [];
 
-    private projectConfig: ProjectConfiguration;
-    private relationsConfig: RelationsConfiguration;
+    private projectConfig: ProjectConfiguration = undefined;
+    private relationsConfig: RelationsConfiguration = undefined;
+
+    private error = undefined;
 
     constructor(
         private http: Http){
     }
 
+
+    private notify() {
+        if (!this.relationsConfig && !this.projectConfig && !this.error) return;
+        this.observers.forEach(observer => {
+            observer.next({
+                projectConfiguration: this.projectConfig,
+                relationsConfiguration: this.relationsConfig,
+                error: this.error
+            });
+        });
+    }
+
+    public configuration() {
+        return Observable.create( observer => {
+            this.observers.push(observer);
+            this.notify();
+        });
+    }
+
     /**
-     * @returns {Promise<ProjectConfiguration>} which gets rejected with a key of MD or an error msg in case of an error.
+     *
+     * @param projectConfigurationPath
+     * @param relationsConfigurationPath
      */
-    public projectConfiguration() : Observable<ProjectConfiguration> {
-        return Observable.create( observer => {
-            this.projectConfigurationObservers.push(observer);
-            if (this.projectConfig) {
-                observer.next(this.projectConfig);
-            }
-        });
+    public setConfigurationPaths (projectConfigurationPath: string, relationsConfigurationPath: string) {
+        var ps=[]
+        ps.push(this.read(this.http,projectConfigurationPath, "project"));
+        ps.push(this.read(this.http,relationsConfigurationPath, "relations"));
 
+        Promise.all(ps).then(
+            (configs)=>{
+                for (var config of configs) {
+                    if (config.configType == "relations") {
+                        this.relationsConfig = new RelationsConfiguration(config.data['relations']);
+                    } else {
+                        this.projectConfig = new ProjectConfiguration(config.data);
+                    }
+                }
+                this.notify();
+            },
+            (error) => {
+                console.error(error['path'], error);
+                this.error = {
+                    msgkey: MD.PARSE_GENERIC_ERROR
+                };
+                this.notify();
+            }
+        );
     }
 
-    public relationsConfiguration() : Observable<RelationsConfiguration> {
-        return Observable.create( observer => {
-            this.relationsConfigurationObservers.push(observer);
-            if (this.relationsConfig) {
-                observer.next(this.relationsConfig);
-            }
-        });
-    }
-
-    public setProjectConfiguration(path:string) {
-        this.read(path,this,function(data,self){
-            this.projectConfig = new ProjectConfiguration(data);
-            self.projectConfigurationObservers.forEach(observer =>
-                observer.next(this.projectConfig));
-        }.bind(this))
-    }
-
-    public setRelationsConfiguration(path:string) {
-        this.read(path,this,function(data,self){
-            this.relationsConfig = new RelationsConfiguration(data['relations']);
-            self.relationsConfigurationObservers.forEach(observer =>
-                observer.next(this.relationsConfig));
-        }.bind(this))
-    }
-
-
-    private read(path:string,self,createMethod) {
-        this.http.get(path).
-        subscribe(data_=>{
-
-            var data;
-            try {
-                data=JSON.parse(data_['_body'])
-            } catch (e) {
-                console.error(MD.PARSE_GENERIC_ERROR);
-            }
-            try {
-                createMethod(data,self)
-            } catch (e) {
-                console.error(e)
-            }
+    private read(http:any, path:string, configType:string) {
+        return new Promise(function(resolve,reject) {
+            http.get(path).subscribe(data_=> {
+                var data;
+                try {
+                    data = JSON.parse(data_['_body'])
+                } catch (e) {
+                    e['path'] = path
+                    reject(e);
+                }
+                try {
+                    resolve({
+                        data: data,
+                        configType: configType
+                    });
+                } catch (e) {
+                    console.log(e);
+                }
+            });
         });
     }
 }

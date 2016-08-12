@@ -8,6 +8,10 @@ import {OnChanges} from "@angular/core";
 import {RelationsConfiguration} from "./relations-configuration";
 import {ConfigLoader} from "./config-loader";
 
+import {MessagesComponent} from '../core-services/messages.component';
+//import {MD} from '../core-services/md';
+import {Messages} from '../core-services/messages';
+
 /**
  * @author Jan G. Wieners
  * @author Thomas Kleinke
@@ -19,7 +23,8 @@ import {ConfigLoader} from "./config-loader";
         CORE_DIRECTIVES,
         COMMON_DIRECTIVES,
         EditFormComponent,
-        RelationsFormComponent
+        RelationsFormComponent,
+        MessagesComponent
     ],
     selector: 'document-edit',
     templateUrl: 'src/templates/document-edit.html'
@@ -33,6 +38,7 @@ export class DocumentEditComponent implements OnChanges,OnInit {
     private projectConfiguration: ProjectConfiguration;
     private relationsConfiguration: RelationsConfiguration;
 
+
     public relationFields : any[];
     public types : any[];
     public fieldsForObjectType : any;
@@ -40,20 +46,23 @@ export class DocumentEditComponent implements OnChanges,OnInit {
 
     constructor(
         private persistenceManager: PersistenceManager,
-        private configLoader: ConfigLoader
+        private configLoader: ConfigLoader,
+        private messages: Messages
     ) {}
 
     ngOnInit():any {
-        this.configLoader.relationsConfiguration().subscribe((relationsConfiguration)=> {
+        this.configLoader.configuration().subscribe((result)=>{
+            if(result.error == undefined) {
+                this.projectConfiguration = result.projectConfiguration;
+                this.setFieldsForObjectType(this.document, this.projectConfiguration);
+                this.setObjectTypeLabel(this.document, this.projectConfiguration);
 
-            this.relationsConfiguration = relationsConfiguration;
-            this.persistenceManager.setRelationsConfiguration(relationsConfiguration);
-            this.relationFields = relationsConfiguration.getRelationFields();
-        });
-        this.configLoader.projectConfiguration().subscribe((projectConfiguration)=>{
-            this.projectConfiguration = projectConfiguration;
-            this.setFieldsForObjectType(this.document,this.projectConfiguration);
-            this.setObjectTypeLabel(this.document,this.projectConfiguration);
+                this.relationsConfiguration = result.relationsConfiguration;
+                this.persistenceManager.setRelationsConfiguration(this.relationsConfiguration);
+                this.relationFields = this.relationsConfiguration.getRelationFields();
+            } else {
+                this.messages.add(result.error.msgkey);
+            }
         });
     }
 
