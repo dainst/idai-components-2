@@ -44,7 +44,7 @@ export class DocumentEditComponent implements OnChanges,OnInit {
 
     constructor(
         private persistenceManager: PersistenceManager,
-        private configLoader: ConfigLoader,
+        private configLoader: ConfigLoader
     ) {}
 
     ngOnInit():any {
