@@ -62,6 +62,4 @@ export class Messages {
     public getMessages() : Message[] {
         return this.messageList;
     }
-
-    
 }

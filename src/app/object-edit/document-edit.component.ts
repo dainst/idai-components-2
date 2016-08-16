@@ -61,7 +61,7 @@ export class DocumentEditComponent implements OnChanges,OnInit {
                 this.persistenceManager.setRelationsConfiguration(this.relationsConfiguration);
                 this.relationFields = this.relationsConfiguration.getRelationFields();
             } else {
-                this.messages.add(result.error.msgkey);
+                this.messages.add(result.error.msgkey,[result.error.msgparams]);
             }
         });
     }

@@ -50,7 +50,7 @@ export class MD { // = Messages Dictionary. For reasons of brevity of calls to i
             params: []
         };
         this.msgs[MD.PARSE_GENERIC_ERROR]={
-            content: "Fehler beim Parsen einer Konfigurationsdatei.",
+            content: 'Fehler beim Parsen der Konfigurationsdatei "{0}" (mehr Informationen in der Konsole).',
             level: 'danger',
             params: []
         };

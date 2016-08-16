@@ -84,7 +84,8 @@ export class ConfigLoader {
             (error) => {
                 console.error(error['path'], error);
                 this.error = {
-                    msgkey: MD.PARSE_GENERIC_ERROR
+                    msgkey: MD.PARSE_GENERIC_ERROR,
+                    msgparams: error['path']
                 };
                 this.notify();
             }
