@@ -51,9 +51,13 @@ export class ConfigLoader {
      * each configuration or an error report in case errors 
      * occured during the reading process.
      * 
-     * @returns {any}
+     * It is recommended that clients, who have multiple places
+     * where the configs are needed, still have exactly one common 
+     * place in their app where the errors get handled.
+     * 
+     * @returns {Observable<any>} the result, containing configs or errors.
      */
-    public configuration() {
+    public configuration() : Observable<any> {
         return Observable.create( observer => {
             this.observers.push(observer);
             this.notify();
