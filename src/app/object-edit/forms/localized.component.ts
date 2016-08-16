@@ -1,6 +1,5 @@
 import {Component, Input} from '@angular/core';
 import {CORE_DIRECTIVES,COMMON_DIRECTIVES,FORM_DIRECTIVES} from "@angular/common";
-import {FieldlistComponent} from "../fieldlist.component";
 import {InputArrayComponent} from "./input-array.component";
 
 /**
@@ -29,7 +28,6 @@ import {InputArrayComponent} from "./input-array.component";
         CORE_DIRECTIVES,
         COMMON_DIRECTIVES,
         FORM_DIRECTIVES,
-        FieldlistComponent,
         InputArrayComponent
     ]
 })

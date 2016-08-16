@@ -3,7 +3,6 @@ import {DocumentEditChangeMonitor} from "./document-edit-change-monitor";
 import {CORE_DIRECTIVES,COMMON_DIRECTIVES,FORM_DIRECTIVES} from "@angular/common";
 import {RelationPickerGroupComponent} from "./relation-picker-group.component";
 import {ValuelistComponent} from "./valuelist.component";
-import {FieldlistComponent} from "./fieldlist.component";
 import {LocalizedComponent} from "./forms/localized.component";
 import {StringInputComponent} from "./forms/string-input.component";
 import {InputArrayComponent} from "./forms/input-array.component";
@@ -22,7 +21,6 @@ import {SelectMultiMultiselectComponent} from "./forms/select-multi-multiselect.
         COMMON_DIRECTIVES,
         RelationPickerGroupComponent,
         ValuelistComponent,
-        FieldlistComponent,
         LocalizedComponent,
         StringInputComponent,
         InputArrayComponent,
