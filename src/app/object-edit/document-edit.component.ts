@@ -9,7 +9,6 @@ import {RelationsConfiguration} from "./relations-configuration";
 import {ConfigLoader} from "./config-loader";
 
 import {MessagesComponent} from '../core-services/messages.component';
-import {Messages} from '../core-services/messages';
 
 /**
  * @author Jan G. Wieners
@@ -46,7 +45,6 @@ export class DocumentEditComponent implements OnChanges,OnInit {
     constructor(
         private persistenceManager: PersistenceManager,
         private configLoader: ConfigLoader,
-        private messages: Messages
     ) {}
 
     ngOnInit():any {
@@ -59,8 +57,6 @@ export class DocumentEditComponent implements OnChanges,OnInit {
                 this.relationsConfiguration = result.relationsConfiguration;
                 this.persistenceManager.setRelationsConfiguration(this.relationsConfiguration);
                 this.relationFields = this.relationsConfiguration.getRelationFields();
-            } else {
-                this.messages.add(result.error.msgkey,[result.error.msgparams]);
             }
         });
     }
