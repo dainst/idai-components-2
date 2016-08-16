@@ -1,6 +1,6 @@
 import {fdescribe, xdescribe,describe, expect, fit, it, xit, inject, beforeEach, beforeEachProviders} from '@angular/core/testing';
 import {ProjectConfiguration} from "../app/object-edit/project-configuration";
-import {MD} from "../app/core-services/md";
+import {MDInternal} from "../app/core-services/md-internal";
 
 /**
  * @author Daniel de Oliveira
@@ -25,7 +25,7 @@ export function main() {
                     "field": "fieldB"
                 }
             ]
-        }
+        };
 
         it('should let types inherit fields from parent types',
             function() {
@@ -52,7 +52,7 @@ export function main() {
 
         it('should fail if parent type is not defined',
             function() {
-                expect(function(){new ProjectConfiguration({"types":[ secondLevelType ]})}).toThrow(MD.PC_GENERIC_ERROR)
+                expect(function(){new ProjectConfiguration({"types":[ secondLevelType ]})}).toThrow(MDInternal.PC_GENERIC_ERROR)
             }
         );
     });
