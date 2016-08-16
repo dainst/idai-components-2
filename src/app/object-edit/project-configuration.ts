@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {MD} from "../core-services/md";
+import {MDInternal} from "../core-services/md-internal";
 
 /**
  * ProjectConfiguration maintains the current projects properties.
@@ -108,7 +108,7 @@ export class ProjectConfiguration {
         var fields=[];
 
         if (this.typeMap[type.parent]==undefined) {
-            throw MD.PC_GENERIC_ERROR;
+            throw MDInternal.PC_GENERIC_ERROR;
         } else
             fields=this.typeMap[type.parent].fields;
 

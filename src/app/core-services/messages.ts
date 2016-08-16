@@ -1,6 +1,7 @@
 import {Injectable} from "@angular/core";
 import {Message} from "./message";
 import {MD} from "./md";
+import {MDInternal} from "./md-internal";
 
 /**
  * Maintains a collection of currently active messages the
@@ -14,7 +15,9 @@ import {MD} from "./md";
 @Injectable()
 export class Messages {
 
-    constructor(private messagesDictionary:MD){ }
+    private internalMessagesDictionary = new MDInternal();
+    
+    constructor(private messagesDictionary:MD){}
 
     private messageList : Message[] = [];
 
@@ -28,7 +31,9 @@ export class Messages {
      */
     public add(id: string, params?: Array<string>): void {
 
-        var msg = this.messagesDictionary.msgs[id];
+        var msg = this.internalMessagesDictionary.msgs[id];
+        var providedMsg = this.messagesDictionary.msgs[id];
+        if (providedMsg) msg=providedMsg;
 
         if (!msg) msg = { content: id, level: 'danger', params: [] };
 

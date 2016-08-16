@@ -2,7 +2,7 @@ import {Injectable} from "@angular/core";
 import {ProjectConfiguration} from "./project-configuration";
 import {RelationsConfiguration} from "./relations-configuration";
 import {Http} from "@angular/http";
-import {MD} from "../core-services/md";
+import {MDInternal} from "../core-services/md-internal";
 import {Observable} from "rxjs/Observable";
 
 /**
@@ -84,7 +84,7 @@ export class ConfigLoader {
             (error) => {
                 console.error(error['path'], error);
                 this.error = {
-                    msgkey: MD.PARSE_GENERIC_ERROR,
+                    msgkey: MDInternal.PARSE_GENERIC_ERROR,
                     msgparams: error['path']
                 };
                 this.notify();

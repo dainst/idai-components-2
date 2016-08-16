@@ -9,7 +9,6 @@ import {RelationsConfiguration} from "./relations-configuration";
 import {ConfigLoader} from "./config-loader";
 
 import {MessagesComponent} from '../core-services/messages.component';
-//import {MD} from '../core-services/md';
 import {Messages} from '../core-services/messages';
 
 /**
