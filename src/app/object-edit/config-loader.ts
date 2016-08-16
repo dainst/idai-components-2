@@ -6,6 +6,15 @@ import {MD} from "../core-services/md";
 import {Observable} from "rxjs/Observable";
 
 /**
+ * Lets clients subscribe for the app
+ * configuration. In order for this to work, they
+ * have to subscribe via the <code>configuration</code>
+ * as well as setting the config paths via
+ * <code>setConfigurationPaths</code>.
+ *
+ * The code is purposely designed that the order in which
+ * you call these methods does not matter. 
+ *
  * @author Daniel de Oliveira
  * @author Thomas Kleinke
  * @author Fabian Z.
@@ -49,7 +58,7 @@ export class ConfigLoader {
      * @param relationsConfigurationPath
      */
     public setConfigurationPaths (projectConfigurationPath: string, relationsConfigurationPath: string) {
-        var ps=[]
+        var ps=[];
         ps.push(this.read(this.http,projectConfigurationPath, "project"));
         ps.push(this.read(this.http,relationsConfigurationPath, "relations"));
 
@@ -74,14 +83,14 @@ export class ConfigLoader {
         );
     }
 
-    private read(http:any, path:string, configType:string) {
+    private read(http:any, path:string, configType:string): Promise<any> {
         return new Promise(function(resolve,reject) {
             http.get(path).subscribe(data_=> {
                 var data;
                 try {
-                    data = JSON.parse(data_['_body'])
+                    data = JSON.parse(data_['_body']);
                 } catch (e) {
-                    e['path'] = path
+                    e['path'] = path;
                     reject(e);
                 }
                 try {
