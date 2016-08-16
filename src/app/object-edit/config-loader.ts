@@ -45,6 +45,14 @@ export class ConfigLoader {
         });
     }
 
+    /**
+     * When all config files have been read, a subscriber is
+     * notified with an object containing further objects for 
+     * each configuration or an error report in case errors 
+     * occured during the reading process.
+     * 
+     * @returns {any}
+     */
     public configuration() {
         return Observable.create( observer => {
             this.observers.push(observer);
