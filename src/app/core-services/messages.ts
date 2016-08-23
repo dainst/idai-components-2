@@ -33,15 +33,22 @@ export class Messages {
 
         var msg = this.internalMessagesDictionary.msgs[id];
         var providedMsg = this.messagesDictionary.msgs[id];
-        if (providedMsg) msg=providedMsg;
+        if (providedMsg) msg = providedMsg;
 
-        if (!msg) msg = { content: id, level: 'danger', params: [] };
-
-        this.messageList.push({
-            content: msg.content,
-            level: msg.level,
-            params: params ? params.slice() : msg.params
+        if (!msg) msg = {content: id, level: 'danger', params: []};
+        var isNew = true;
+        this.messageList.forEach(function (message) {
+            if (message.content == msg.content) {
+                isNew = false;
+            }
         });
+        if (isNew) {
+            this.messageList.push({
+                content: msg.content,
+                level: msg.level,
+                params: params ? params.slice() : msg.params
+            });
+        }
     }
 
     /**
