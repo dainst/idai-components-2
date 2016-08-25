@@ -42,11 +42,11 @@ export function main() {
             }
         );
 
-        it('should add two messages with the same identifier',
+        it('should add only one message with the same identifier',
             function(){
                 messages.add("key1");
                 expect(messages.getMessages()[0]).toEqual(messagesDictionary.msgs["key1"]);
-                expect(messages.getMessages().length).toBe(2);
+                expect(messages.getMessages().length).toBe(1);
             }
         );
 
