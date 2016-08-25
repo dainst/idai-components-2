@@ -15,6 +15,6 @@ export var OBJECTS: Document[] = [
 
     { "resource" : { "id" : "/demo/6", "identifier": "ob5", "type": "section", "relations" : {} }},
 
-    { "resource" : { "id" : "/demo/7", "identifier": "ob6", "relations" : {} }}
+    { "resource" : { "id" : "/demo/7", "identifier": "ob6", "type": "section", "relations" : {} }}
     
 ];

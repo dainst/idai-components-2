@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {ROUTER_DIRECTIVES, Routes} from '@angular/router';
+import {ROUTER_DIRECTIVES, RouteConfig} from '@angular/router-deprecated';
 import {DocumentEditDemoComponent} from './document-edit-demo.component';
 import {MessagesDemoComponent} from './messages-demo.component';
 import {Messages} from '../../src/app/core-services/messages';
@@ -13,7 +13,7 @@ import {ConfigLoader} from '../../src/app/object-edit/config-loader';
     templateUrl: 'demo/templates/app.html',
     directives: [ROUTER_DIRECTIVES]
 })
-@Routes([
+@RouteConfig([
     {path: '/edit', component: DocumentEditDemoComponent},
     {path: '/messages', component: MessagesDemoComponent}
 ])

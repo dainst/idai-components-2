@@ -14,7 +14,7 @@ import {ConfigLoader} from "../../src/app/object-edit/config-loader";
 import {PersistenceManager} from "../../src/app/object-edit/persistence-manager";
 import {MD} from "../../src/app/core-services/md";
 import {M} from "./m";
-import { ROUTER_PROVIDERS } from '@angular/router';
+import {ROUTER_PROVIDERS} from '@angular/router-deprecated';
 import {LocationStrategy, HashLocationStrategy} from '@angular/common';
 
 bootstrap(AppComponent, [
