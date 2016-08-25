@@ -7,21 +7,21 @@
 
         <div class="panel-body">
 
-        <string-input *ngIf="field.inputType == 'input/single/simple' || (field.inputType == undefined && field.inner == undefined)" [(resource)]="document['resource']" [fieldName]="field.name"></string-input>
+        <string_input *ngIf="field.inputType == 'string_input' || (field.inputType == undefined && field.inner == undefined)" [(resource)]="document['resource']" [fieldName]="field.name"></string_input>
 
-        <input-array *ngIf="field.inputType == 'input/multi/simple'" [(field)]="document['resource'][field.name]"></input-array>
+        <string_inputs *ngIf="field.inputType == 'string_inputs'" [(field)]="document['resource'][field.name]"></string_inputs>
 
         <localized *ngIf="field.localized" [(field)]="document['resource'][field.name]" [innerInputType]="field.inner.inputType" ></localized>
 
-        <input-text *ngIf="field.inputType == 'input/single/text'" [(resource)]="document['resource']" [fieldName]="field.name"></input-text>
+        <text *ngIf="field.inputType == 'text'" [(resource)]="document['resource']" [fieldName]="field.name"></text>
 
-        <select-single-dropdown *ngIf="field.inputType == 'select/single/dropdown'" [(resource)]="document['resource']" [field]="field"></select-single-dropdown>
+        <dropdown *ngIf="field.inputType == 'dropdown'" [(resource)]="document['resource']" [field]="field"></dropdown>
 
-        <select-single-radio *ngIf="field.inputType == 'select/single/radio'" [(resource)]="document['resource']" [field]="field"></select-single-radio>
+        <radio *ngIf="field.inputType == 'radio'" [(resource)]="document['resource']" [field]="field"></radio>
 
-        <select-multi-checkbox *ngIf="field.inputType == 'select/multi/checkbox'" [(resource)]="document['resource']" [field]="field"></select-multi-checkbox>
+        <checkboxes *ngIf="field.inputType == 'checkboxes'" [(resource)]="document['resource']" [field]="field"></checkboxes>
 
-        <select-multi-multiselect *ngIf="field.inputType == 'select/multi/multiselect'" [(resource)]="document['resource']" [field]="field"></select-multi-multiselect>
+        <multiselect *ngIf="field.inputType == 'multiselect'" [(resource)]="document['resource']" [field]="field"></multiselect>
         </div>
     </div>
 </div>

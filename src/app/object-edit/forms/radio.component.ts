@@ -7,16 +7,15 @@ import {DocumentEditChangeMonitor} from "../document-edit-change-monitor";
  * @author Fabian Z.
  */
 @Component({
-
-    selector: 'string-input',
-    template: `<input [(ngModel)]="resource[fieldName]" (keyup)="markAsChanged()" class="form-control">`,
+    selector: 'radio',
+    template: `<div *ngFor="let item of field.valuelist" class="radio"><label><input value="{{item}}" type="radio" name="{{resource[field.name]}}" (click)="resource[field.name] = item; markAsChanged()" [checked]="item === resource[field.name]">{{item}}</label></div>`,
     directives: [CORE_DIRECTIVES, COMMON_DIRECTIVES, FORM_DIRECTIVES]
 })
 
-export class StringInputComponent {
+export class RadioComponent {
 
     @Input() resource: Resource;
-    @Input() fieldName: string;
+    @Input() field: String[];
 
     constructor(private documentEditChangeMonitor: DocumentEditChangeMonitor) {}
 

@@ -8,12 +8,12 @@ import {DocumentEditChangeMonitor} from "../document-edit-change-monitor";
  */
 @Component({
 
-    selector: 'input-array',
-    templateUrl: 'src/templates/input-array.html',
+    selector: 'string_inputs',
+    templateUrl: 'src/templates/form-components/inputs.html',
     directives: [CORE_DIRECTIVES, COMMON_DIRECTIVES, FORM_DIRECTIVES]
 })
 
-export class InputArrayComponent {
+export class InputsComponent {
 
     @Input() field: String[];
 

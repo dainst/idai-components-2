@@ -4,13 +4,13 @@ import {CORE_DIRECTIVES,COMMON_DIRECTIVES,FORM_DIRECTIVES} from "@angular/common
 import {RelationPickerGroupComponent} from "./relation-picker-group.component";
 import {ValuelistComponent} from "./valuelist.component";
 import {LocalizedComponent} from "./forms/localized.component";
-import {StringInputComponent} from "./forms/string-input.component";
-import {InputArrayComponent} from "./forms/input-array.component";
-import {InputTextComponent} from "./forms/input-text.component";
-import {SelectSingleDropdownComponent} from "./forms/select-single-dropdown.component";
-import {SelectSingleRadioComponent} from "./forms/select-single-radio.component";
-import {SelectMultiCheckboxComponent} from "./forms/select-multi-checkbox.component";
-import {SelectMultiMultiselectComponent} from "./forms/select-multi-multiselect.component";
+import {InputComponent} from "./forms/input.component";
+import {InputsComponent} from "./forms/inputs.component";
+import {TextComponent} from "./forms/text.component";
+import {DropdownComponent} from "./forms/dropdown.component";
+import {RadioComponent} from "./forms/radio.component";
+import {CheckboxesComponent} from "./forms/checkboxes.component";
+import {MultiselectComponent} from "./forms/multiselect.component";
 /**
  * @author Daniel de Oliveira
  */
@@ -22,13 +22,13 @@ import {SelectMultiMultiselectComponent} from "./forms/select-multi-multiselect.
         RelationPickerGroupComponent,
         ValuelistComponent,
         LocalizedComponent,
-        StringInputComponent,
-        InputArrayComponent,
-        InputTextComponent,
-        SelectSingleDropdownComponent,
-        SelectSingleRadioComponent,
-        SelectMultiCheckboxComponent,
-        SelectMultiMultiselectComponent
+        InputComponent,
+        InputsComponent,
+        TextComponent,
+        DropdownComponent,
+        RadioComponent,
+        CheckboxesComponent,
+        MultiselectComponent
     ],
     selector: 'edit-form',
     templateUrl: 'src/templates/edit-form.html'

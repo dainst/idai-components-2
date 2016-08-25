@@ -1,6 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {CORE_DIRECTIVES,COMMON_DIRECTIVES,FORM_DIRECTIVES} from "@angular/common";
-import {InputArrayComponent} from "./input-array.component";
+import {InputsComponent} from "./inputs.component";
 
 /**
  * @author Daniel de Oliveira
@@ -15,8 +15,8 @@ import {InputArrayComponent} from "./input-array.component";
             <li *ngFor="let language of languages()">
                 {{language}}
                 
-                <div *ngIf="innerInputType == 'input/multi/simple'">
-                    <input-array [(field)]="field[language]"></input-array>
+                <div *ngIf="innerInputType == 'string_inputs'">
+                    <string_inputs [(field)]="field[language]"></string_inputs>
                 </div>
         
         
@@ -28,7 +28,7 @@ import {InputArrayComponent} from "./input-array.component";
         CORE_DIRECTIVES,
         COMMON_DIRECTIVES,
         FORM_DIRECTIVES,
-        InputArrayComponent
+        InputsComponent
     ]
 })
 export class LocalizedComponent {

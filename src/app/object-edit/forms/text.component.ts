@@ -7,15 +7,15 @@ import {DocumentEditChangeMonitor} from "../document-edit-change-monitor";
  * @author Fabian Z.
  */
 @Component({
-    selector: 'select-single-radio',
-    template: `<div *ngFor="let item of field.valuelist" class="radio"><label><input value="{{item}}" type="radio" name="{{resource[field.name]}}" (click)="resource[field.name] = item; markAsChanged()" [checked]="item === resource[field.name]">{{item}}</label></div>`,
+    selector: 'text',
+    template: `<textarea [(ngModel)]="resource[fieldName]" (keyup)="markAsChanged()" class="form-control"></textarea>`,
     directives: [CORE_DIRECTIVES, COMMON_DIRECTIVES, FORM_DIRECTIVES]
 })
 
-export class SelectSingleRadioComponent {
+export class TextComponent {
 
     @Input() resource: Resource;
-    @Input() field: String[];
+    @Input() fieldName: string;
 
     constructor(private documentEditChangeMonitor: DocumentEditChangeMonitor) {}
 

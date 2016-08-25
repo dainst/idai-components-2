@@ -7,14 +7,14 @@ import {DocumentEditChangeMonitor} from "../document-edit-change-monitor";
  * @author Fabian Z.
  */
 @Component({
-    selector: 'select-single-dropdown',
+    selector: 'dropdown',
     template: `<select [(ngModel)]="resource[field.name]" (change)="markAsChanged()" class="form-control">
                 <option *ngFor="let item of field.valuelist" value="{{item}}">{{item}}</option>
 </select>`,
     directives: [CORE_DIRECTIVES, COMMON_DIRECTIVES, FORM_DIRECTIVES]
 })
 
-export class SelectSingleDropdownComponent {
+export class DropdownComponent {
 
     @Input() resource: Resource;
     @Input() field: String[];
