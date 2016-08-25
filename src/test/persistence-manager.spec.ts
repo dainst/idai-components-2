@@ -1,5 +1,5 @@
-import {fdescribe,describe,expect,fit,it,xit, beforeEach,beforeEachProviders} from '@angular/core/testing';
-import {provide} from "@angular/core";
+/// <reference path="../../typings/globals/jasmine/index.d.ts" />
+import {addProviders} from '@angular/core/testing';
 import {PersistenceManager} from "../app/object-edit/persistence-manager";
 import {RelationsConfiguration} from "../app/object-edit/relations-configuration";
 import {Messages} from "../app/core-services/messages";
@@ -12,10 +12,9 @@ import {MD} from "../app/core-services/md";
 export function main() {
     describe('PersistenceManager', () => {
 
-        beforeEachProviders(() => [
-            provide(Messages, {useClass: Messages}),
-            provide(MD, {useClass: MD})
-        ]);
+        beforeEach(() => {
+            addProviders([Messages, MD]);
+        });
 
         var mockDatastore;
         var persistenceManager;

@@ -1,4 +1,4 @@
-import {describe,xdescribe, expect, fit, it, xit, beforeEach} from '@angular/core/testing';
+/// <reference path="../../typings/globals/jasmine/index.d.ts" />
 import {RelationPickerGroupComponent} from "../app/object-edit/relation-picker-group.component";
 
 /**

@@ -1,7 +1,6 @@
-import {fdescribe, describe, xdescribe, it, fit, xit,inject, async, beforeEachProviders,
-        } from '@angular/core/testing';
-import {TestComponentBuilder} from '@angular/compiler/testing';
-import {provide, Component} from "@angular/core";
+/// <reference path="../../typings/globals/jasmine/index.d.ts" />
+import {async, inject, addProviders, TestComponentBuilder} from '@angular/core/testing';
+import {Component} from "@angular/core";
 import {PersistenceManager} from "../app/object-edit/persistence-manager";
 import {Datastore} from "../app/datastore/datastore";
 import {DocumentEditComponent} from "../app/object-edit/document-edit.component";
@@ -59,12 +58,14 @@ export function main() {
         };
 
 
-        beforeEachProviders(() => [
-            provide(Datastore, { useClass: MockDatastore }),
-            provide(PersistenceManager, { useClass: PersistenceManager }),
-            provide(Messages, { useClass: MockMessages }),
-            provide(DocumentEditComponent, {useClass: DocumentEditComponent}),
-        ]);
+        beforeEach(() => {
+            addProviders([
+                {provide: Datastore, useClass: MockDatastore},
+                {provide: PersistenceManager, useClass: PersistenceManager},
+                {provide: Messages, useClass: MockMessages},
+                {provide: DocumentEditComponent, useClass: DocumentEditComponent}
+            ]);
+        });
 
 
         it('should build without a problem',

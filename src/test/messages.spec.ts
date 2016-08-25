@@ -1,4 +1,4 @@
-import {fdescribe,describe,xdescribe,expect,fit,it,xit, inject,beforeEach, beforeEachProviders} from '@angular/core/testing';
+/// <reference path="../../typings/globals/jasmine/index.d.ts" />
 import {Messages} from "../app/core-services/messages";
 import {MDInternal} from "../app/core-services/md-internal";
 
