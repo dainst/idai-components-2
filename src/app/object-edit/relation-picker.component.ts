@@ -37,7 +37,7 @@ export class RelationPickerComponent implements OnChanges {
     // This is to compensate for an issue where it is possible
     // to call updateSuggestions repeatedly in short time.
     // It is intended to be only used as guard in updateSuggestions.
-    private updateSuggestionsMode=false;
+    private updateSuggestionsMode = false;
 
     constructor(private element: ElementRef,
         private datastore: ReadDatastore,
@@ -71,20 +71,21 @@ export class RelationPickerComponent implements OnChanges {
     private updateSuggestions() {
 
         if (this.updateSuggestionsMode) return;
-        this.updateSuggestionsMode=true;
+
+        this.clearSuggestions();
 
         if (this.idSearchString.length < 1) return;
 
-        this.clearSuggestions();
+        this.updateSuggestionsMode = true;
+
         this.datastore.find(this.idSearchString)
             .then(documents => {
-
                 this.makeSuggestionsFrom(documents);
-                this.updateSuggestionsMode=false;
+                this.updateSuggestionsMode = false;
 
             }).catch(err => {
                 console.debug(err);
-                this.updateSuggestionsMode=false;
+                this.updateSuggestionsMode = false;
             }
         );
     }
@@ -102,8 +103,6 @@ export class RelationPickerComponent implements OnChanges {
 
             if (this.checkSuggestion(documents[i]['resource']))
                 this.suggestions.push(documents[i]);
-
-            this.updateSuggestionsMode=false;
         }
     }
 
