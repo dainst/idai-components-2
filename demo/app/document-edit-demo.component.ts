@@ -1,5 +1,4 @@
-import {Component, OnInit, Inject} from '@angular/core';
-import {ROUTER_DIRECTIVES} from '@angular/router-deprecated';
+import {Component, OnInit} from '@angular/core';
 import {DocumentEditComponent} from '../../src/app/object-edit/document-edit.component';
 import {ConfigLoader} from '../../src/app/object-edit/config-loader'
 import {Datastore} from '../../src/app/datastore/datastore'
@@ -12,7 +11,7 @@ import {PersistenceManager} from "../../src/app/object-edit/persistence-manager"
 
     templateUrl: 'demo/templates/document-edit-demo.html',
 
-    directives: [ ROUTER_DIRECTIVES, DocumentEditComponent ]
+    directives: [ DocumentEditComponent ]
 })
 export class DocumentEditDemoComponent implements OnInit {
 
