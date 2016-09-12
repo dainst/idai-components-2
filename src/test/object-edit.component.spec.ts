@@ -108,11 +108,8 @@ export function main() {
         it('should build without a problem', function(done) {
 
             TestBed.compileComponents().then(() => {
-                console.log("LOG1");
-
+                
                 const fixture: ComponentFixture<TestComponent> = TestBed.createComponent(TestComponent);
-
-                console.log("LOG2");
 
                 console.log("f0", fixture.debugElement.children[0].componentInstance)
 
