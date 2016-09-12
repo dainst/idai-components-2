@@ -1,5 +1,4 @@
 import {Component} from '@angular/core';
-import {MessagesComponent} from '../../src/app/core-services/messages.component';
 import {MD} from '../../src/app/core-services/md';
 import {Messages} from '../../src/app/core-services/messages';
 
@@ -8,10 +7,7 @@ import {Messages} from '../../src/app/core-services/messages';
  */
 @Component({
     selector: 'messages-demo',
-
-    templateUrl: 'demo/templates/messages-demo.html',
-
-    directives: [ MessagesComponent ]
+    templateUrl: 'demo/templates/messages-demo.html'
 })
 export class MessagesDemoComponent {
 

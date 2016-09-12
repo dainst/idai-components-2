@@ -1,5 +1,4 @@
 import {Component, Input} from '@angular/core';
-import {CORE_DIRECTIVES,COMMON_DIRECTIVES,FORM_DIRECTIVES} from "@angular/common";
 import {Resource} from "../../core-services/resource";
 import {DocumentEditChangeMonitor} from "../document-edit-change-monitor";
 
@@ -7,9 +6,9 @@ import {DocumentEditChangeMonitor} from "../document-edit-change-monitor";
  * @author Fabian Z.
  */
 @Component({
+    moduleId: module.id,
     selector: 'checkboxes',
-    templateUrl: 'src/templates/form-components/checkboxes.html',
-    directives: [CORE_DIRECTIVES, COMMON_DIRECTIVES, FORM_DIRECTIVES]
+    templateUrl: '../../../templates/form-components/checkboxes.html'
 })
 
 export class CheckboxesComponent {

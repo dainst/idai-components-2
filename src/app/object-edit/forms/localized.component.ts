@@ -1,6 +1,4 @@
 import {Component, Input} from '@angular/core';
-import {CORE_DIRECTIVES,COMMON_DIRECTIVES,FORM_DIRECTIVES} from "@angular/common";
-import {InputsComponent} from "./inputs.component";
 
 /**
  * @author Daniel de Oliveira
@@ -23,13 +21,7 @@ import {InputsComponent} from "./inputs.component";
             </li>
         </ul>
 
-    </div>`,
-    directives: [
-        CORE_DIRECTIVES,
-        COMMON_DIRECTIVES,
-        FORM_DIRECTIVES,
-        InputsComponent
-    ]
+    </div>`
 })
 export class LocalizedComponent {
 

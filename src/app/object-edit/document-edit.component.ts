@@ -1,14 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {PersistenceManager} from "./persistence-manager";
-import {CORE_DIRECTIVES,COMMON_DIRECTIVES,FORM_DIRECTIVES} from "@angular/common";
 import {ProjectConfiguration} from "./project-configuration";
-import {EditFormComponent} from "./edit-form.component"
-import {RelationsFormComponent} from "./relations-form.component"
 import {OnChanges} from "@angular/core";
 import {RelationsConfiguration} from "./relations-configuration";
 import {ConfigLoader} from "./config-loader";
-
-import {MessagesComponent} from '../core-services/messages.component';
 
 /**
  * @author Jan G. Wieners
@@ -16,16 +11,9 @@ import {MessagesComponent} from '../core-services/messages.component';
  * @author Daniel de Oliveira
  */
 @Component({
-    directives: [
-        FORM_DIRECTIVES,
-        CORE_DIRECTIVES,
-        COMMON_DIRECTIVES,
-        EditFormComponent,
-        RelationsFormComponent,
-        MessagesComponent
-    ],
+    moduleId: module.id,
     selector: 'document-edit',
-    templateUrl: 'src/templates/document-edit.html'
+    templateUrl: '../../templates/document-edit.html'
 })
 
 export class DocumentEditComponent implements OnChanges,OnInit {

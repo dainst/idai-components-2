@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {DocumentEditComponent} from '../../src/app/object-edit/document-edit.component';
 import {ConfigLoader} from '../../src/app/object-edit/config-loader'
 import {Datastore} from '../../src/app/datastore/datastore'
 import {OBJECTS} from "./sample-objects";
@@ -8,10 +7,7 @@ import {PersistenceManager} from "../../src/app/object-edit/persistence-manager"
 
 @Component({
     selector: 'document-edit-demo',
-
-    templateUrl: 'demo/templates/document-edit-demo.html',
-
-    directives: [ DocumentEditComponent ]
+    templateUrl: 'demo/templates/document-edit-demo.html'
 })
 export class DocumentEditDemoComponent implements OnInit {
 

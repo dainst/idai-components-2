@@ -1,5 +1,4 @@
 import {Component, Input, OnChanges, ElementRef} from '@angular/core';
-import {CORE_DIRECTIVES,COMMON_DIRECTIVES,FORM_DIRECTIVES} from "@angular/common";
 import {Document} from "../core-services/document";
 import {Resource} from "../core-services/resource";
 import {DocumentEditChangeMonitor} from "./document-edit-change-monitor";
@@ -11,10 +10,9 @@ import {ReadDatastore} from "../datastore/read-datastore";
  * @author Thomas Kleinke
  */
 @Component({
-
+    moduleId: module.id,
     selector: 'relation-picker',
-    templateUrl: 'src/templates/relation-picker.html',
-    directives: [CORE_DIRECTIVES, COMMON_DIRECTIVES, FORM_DIRECTIVES]
+    templateUrl: '../../templates/relation-picker.html'
 })
 
 export class RelationPickerComponent implements OnChanges {

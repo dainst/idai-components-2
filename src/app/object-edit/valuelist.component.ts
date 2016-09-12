@@ -1,5 +1,4 @@
 import {Component, Input} from '@angular/core';
-import {CORE_DIRECTIVES,COMMON_DIRECTIVES,FORM_DIRECTIVES} from "@angular/common";
 import {Resource} from "../core-services/resource";
 import {DocumentEditChangeMonitor} from "./document-edit-change-monitor";
 
@@ -13,8 +12,7 @@ import {DocumentEditChangeMonitor} from "./document-edit-change-monitor";
     <select (change)="setValues($event.target.selectedOptions)" class="form-control" multiple>
         <option *ngFor="let item of field.valuelist" value="{{item}}" [selected]="isSelected(item)">{{item}}</option>
     </select>
-</div>`,
-    directives: [CORE_DIRECTIVES, COMMON_DIRECTIVES, FORM_DIRECTIVES]
+</div>`
 })
 
 export class ValuelistComponent {

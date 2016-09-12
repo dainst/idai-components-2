@@ -1,9 +1,9 @@
 /// <reference path="../../typings/globals/jasmine/index.d.ts" />
-import {addProviders} from '@angular/core/testing';
 import {PersistenceManager} from "../app/object-edit/persistence-manager";
 import {RelationsConfiguration} from "../app/object-edit/relations-configuration";
 import {Messages} from "../app/core-services/messages";
 import {MD} from "../app/core-services/md";
+import {TestBed} from "@angular/core/testing";
 
 /**
  * @author Daniel de Oliveira
@@ -13,7 +13,11 @@ export function main() {
     describe('PersistenceManager', () => {
 
         beforeEach(() => {
-            addProviders([Messages, MD]);
+            TestBed.configureTestingModule({
+                declarations: [],
+                imports: [],
+                providers: [Messages, MD]
+            });
         });
 
         var mockDatastore;

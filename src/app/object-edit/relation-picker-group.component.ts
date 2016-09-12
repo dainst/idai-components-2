@@ -1,16 +1,12 @@
 import {Component, Input, OnChanges} from '@angular/core';
-import {CORE_DIRECTIVES,COMMON_DIRECTIVES,FORM_DIRECTIVES} from "@angular/common";
-import {RelationPickerComponent} from "./relation-picker.component";
-
 
 /**
  * @author Thomas Kleinke
  */
 @Component({
-
+    moduleId: module.id,
     selector: 'relation-picker-group',
-    templateUrl: 'src/templates/relation-picker-group.html',
-    directives: [CORE_DIRECTIVES, COMMON_DIRECTIVES, FORM_DIRECTIVES, RelationPickerComponent]
+    templateUrl: '../../templates/relation-picker-group.html'
 })
 
 export class RelationPickerGroupComponent implements OnChanges {

@@ -1,10 +1,26 @@
 /// <reference path="../../typings/globals/jasmine/index.d.ts" />
-import {async, inject, addProviders, TestComponentBuilder} from '@angular/core/testing';
 import {Component} from "@angular/core";
 import {PersistenceManager} from "../app/object-edit/persistence-manager";
 import {Datastore} from "../app/datastore/datastore";
-import {DocumentEditComponent} from "../app/object-edit/document-edit.component";
+import {ConfigLoader} from "../app/object-edit/config-loader";
+import {DocumentEditComponent} from '../../src/app/object-edit/document-edit.component';
+import {EditFormComponent} from '../../src/app/object-edit/edit-form.component';
+import {RelationsFormComponent} from '../../src/app/object-edit/relations-form.component';
+import {RelationPickerComponent} from '../../src/app/object-edit/relation-picker.component';
+import {RelationPickerGroupComponent} from '../../src/app/object-edit/relation-picker-group.component';
+import {CheckboxesComponent} from '../../src/app/object-edit/forms/checkboxes.component';
+import {DropdownComponent} from '../../src/app/object-edit/forms/dropdown.component';
+import {InputComponent} from '../../src/app/object-edit/forms/input.component';
+import {InputsComponent} from '../../src/app/object-edit/forms/inputs.component';
+import {LocalizedComponent} from '../../src/app/object-edit/forms/localized.component';
+import {MultiselectComponent} from '../../src/app/object-edit/forms/multiselect.component';
+import {RadioComponent} from '../../src/app/object-edit/forms/radio.component';
+import {TextComponent} from '../../src/app/object-edit/forms/text.component';
 import {Messages} from "../app/core-services/messages";
+import {TestBed, ComponentFixture} from "@angular/core/testing";
+import {HttpModule} from "@angular/http";
+import {FormsModule} from "@angular/forms";
+import {MessagesComponent} from "../app/core-services/messages.component";
 
 
 /**
@@ -57,52 +73,79 @@ export function main() {
             return labels;
         };
 
-
         beforeEach(() => {
-            addProviders([
-                {provide: Datastore, useClass: MockDatastore},
-                {provide: PersistenceManager, useClass: PersistenceManager},
-                {provide: Messages, useClass: MockMessages},
-                {provide: DocumentEditComponent, useClass: DocumentEditComponent}
-            ]);
+            TestBed.configureTestingModule({
+                declarations: [
+                    TestComponent,
+                    DocumentEditComponent,
+                    EditFormComponent,
+                    RelationsFormComponent,
+                    RelationPickerComponent,
+                    RelationPickerGroupComponent,
+                    CheckboxesComponent,
+                    DropdownComponent,
+                    InputComponent,
+                    InputsComponent,
+                    LocalizedComponent,
+                    MultiselectComponent,
+                    RadioComponent,
+                    TextComponent,
+                    MessagesComponent
+                ],
+                imports: [
+                    HttpModule,
+                    FormsModule
+                ],
+                providers: [
+                    PersistenceManager,
+                    { provide: Datastore, useClass: MockDatastore },
+                    { provide: Messages, useClass: MockMessages },
+                    ConfigLoader
+                ]
+            });
         });
 
+        it('should build without a problem', function(done) {
 
-        it('should build without a problem',
-            async(inject([TestComponentBuilder], (tcb: TestComponentBuilder) => {
-                tcb.createAsync(TestComponent)
-                    .then((fixture) => {
+            TestBed.compileComponents().then(() => {
+                console.log("LOG1");
 
-                        console.log("f0",fixture.debugElement.children[0].componentInstance)
+                const fixture: ComponentFixture<TestComponent> = TestBed.createComponent(TestComponent);
 
-                        // fixture.detectChanges();
+                console.log("LOG2");
 
-                        console.log("f1",fixture.debugElement.children[0].componentInstance)
+                console.log("f0", fixture.debugElement.children[0].componentInstance)
 
-                        fixture.debugElement.children[0].componentInstance.object = selectedObject;
-                        fixture.debugElement.children[0].componentInstance.projectConfiguration = projectConfiguration;
+                // fixture.detectChanges();
 
-                        fixture.detectChanges();
+                console.log("f1", fixture.debugElement.children[0].componentInstance)
 
-                        console.log("f2",fixture.debugElement.children[0].componentInstance)
+                fixture.debugElement.children[0].componentInstance.object = selectedObject;
+                fixture.debugElement.children[0].componentInstance.projectConfiguration = projectConfiguration;
 
+                fixture.detectChanges();
 
-                        // expect(getElementContent(fixture, 'label')).toContain('Material');
-                        //
-                        // var labels = getElementContent(fixture, 'option');
-                        //
-                        // expect(labels).toContain('Alabaster');
-                        // expect(labels).toContain('Amber');
-                        // expect(labels).toContain('Antler');
-                    });
-            }))
-        );
+                console.log("f2", fixture.debugElement.children[0].componentInstance)
+
+                // expect(getElementContent(fixture, 'label')).toContain('Material');
+                //
+                // var labels = getElementContent(fixture, 'option');
+                //
+                // expect(labels).toContain('Alabaster');
+                // expect(labels).toContain('Amber');
+                // expect(labels).toContain('Antler');
+
+                done();
+            }, err => {
+                fail(err);
+                done();
+            });
+        });
     });
 }
 
 @Component({
     selector: 'oec',
-    template: '<document-edit [(object)]="selectedObject" [(projectConfiguration)]="projectConfiguration"></document-edit>',
-    directives: [DocumentEditComponent]
+    template: '<document-edit [(document)]="selectedObject" [primary]="\'id\'"></document-edit>'
 })
 class TestComponent {}

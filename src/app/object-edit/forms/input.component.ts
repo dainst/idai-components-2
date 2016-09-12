@@ -1,5 +1,4 @@
 import {Component, Input} from '@angular/core';
-import {CORE_DIRECTIVES,COMMON_DIRECTIVES,FORM_DIRECTIVES} from "@angular/common";
 import {Resource} from "../../core-services/resource";
 import {DocumentEditChangeMonitor} from "../document-edit-change-monitor";
 
@@ -9,8 +8,7 @@ import {DocumentEditChangeMonitor} from "../document-edit-change-monitor";
 @Component({
 
     selector: 'string_input',
-    template: `<input [(ngModel)]="resource[fieldName]" (keyup)="markAsChanged()" class="form-control">`,
-    directives: [CORE_DIRECTIVES, COMMON_DIRECTIVES, FORM_DIRECTIVES]
+    template: `<input [(ngModel)]="resource[fieldName]" (keyup)="markAsChanged()" class="form-control">`
 })
 
 export class InputComponent {

@@ -1,5 +1,4 @@
 import {Component, Input} from '@angular/core';
-import {CORE_DIRECTIVES,COMMON_DIRECTIVES,FORM_DIRECTIVES} from "@angular/common";
 import {DocumentEditChangeMonitor} from "../document-edit-change-monitor";
 
 /**
@@ -7,10 +6,9 @@ import {DocumentEditChangeMonitor} from "../document-edit-change-monitor";
  * @author Thomas Kleinke
  */
 @Component({
-
+    moduleId: module.id,
     selector: 'string_inputs',
-    templateUrl: 'src/templates/form-components/inputs.html',
-    directives: [CORE_DIRECTIVES, COMMON_DIRECTIVES, FORM_DIRECTIVES]
+    templateUrl: '../../../templates/form-components/inputs.html'
 })
 
 export class InputsComponent {
