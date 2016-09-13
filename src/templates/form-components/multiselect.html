@@ -3,16 +3,16 @@
     <div *ngFor="let item of resource[field.name]" class="checkbox" style="display:inline">
         <label>
             <input value="{{item}}"
-                   type="checkbox"
-                   (click)="toggleItem(item)"
-                   checked="checked">
+                type="checkbox"
+                (click)="toggleItem(item)"
+                checked="checked">
             {{item}}
         </label>
     </div>
 </div>
 <div>
     Search in long list:<br>
-    <input [(ngModel)]="queryTerm">
+    <input class="form-control" [(ngModel)]="queryTerm">
 </div>
 <div *ngFor="let item of field.valuelist" class="checkbox">
 
