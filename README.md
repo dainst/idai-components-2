@@ -6,9 +6,10 @@ Clone this repository and run
 
 ```
 npm install
-cd config
+cd demo/config
 cp Configuration.json.template Configuration.json
-cd ..
+cp Relations.json.template Relations.json
+cd ../..
 npm run build
 npm run server
 ```
