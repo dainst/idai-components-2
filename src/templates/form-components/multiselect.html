@@ -16,7 +16,7 @@
 </div>
 <div *ngFor="let item of field.valuelist" class="checkbox">
 
-    <label [style.display]="queryTerm != '' && item.indexOf(queryTerm) > -1 ? 'block' : 'none'">
+    <label [style.display]="queryTerm == '*' || (queryTerm != '' && item.indexOf(queryTerm) > -1) ? 'block' : 'none'">
         <input value="{{item}}"
                type="checkbox"
                (click)="toggleItem(item)">
