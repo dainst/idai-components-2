@@ -8,19 +8,19 @@
           "name" : "localized_multiple_input",
           "label": "Localized Multiple Input",
           "inner" : {
-            "inputType" : "input/multi/simple"
+            "inputType" : "inputs"
           },
           "localized" : "true"
           },
         {
           "name" : "multiple_input",
           "label": "Multiple Input",
-          "inputType" : "input/multi/simple"
+          "inputType" : "input"
         },
         {
           "name": "single_input",
           "label": "Simple Input",
-          "inputType": "input/single/simple"
+          "inputType": "input"
         },
         {
           "name": "minimalist_default"
@@ -28,11 +28,11 @@
         {
           "name": "text",
           "label": "Multiline, Text",
-          "inputType": "input/single/text"
+          "inputType": "input"
         },
         {
           "name": "single_select_dropdown",
-          "inputType": "select/single/dropdown",
+          "inputType": "dropdown",
           "valuelist": [
             "Alabaster",
             "Amber",
@@ -41,7 +41,7 @@
         },
         {
           "name": "single_select_radio",
-          "inputType": "select/single/radio",
+          "inputType": "radio",
           "valuelist": [
             "Radio",
             "CD",
@@ -52,7 +52,7 @@
         {
           "name": "multiselect_checkbox",
           "label": "Multiple Selection with Checkboxes",
-          "inputType": "select/multi/checkbox",
+          "inputType": "checkboxes",
           "valuelist": [
             "check",
             "this",
@@ -63,7 +63,7 @@
         {
           "name": "multiselect_multiselect",
           "label": "Multiple Selection for Long Lists",
-          "inputType": "select/multi/multiselect",
+          "inputType": "multiselect",
           "valuelist": [
             "Acid Jazz",
             "Avant-Garde Jazz",
@@ -102,7 +102,7 @@
         },
         {
           "field": "Description",
-          "inputType": "input/single/text"
+          "inputType": "input"
         },
         {
           "field": "Range Start"
