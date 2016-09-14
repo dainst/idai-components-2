@@ -11,7 +11,8 @@
     "test:loop": "karma start karma.conf",
     "test": "karma start karma.conf.js --single-run",
     "server": "gulp webserver-watch",
-    "postinstall": "typings install"
+    "postinstall": "typings install",
+    "e2e": "webdriver-manager update && protractor protractor.conf.js"
   },
   "repository": {
     "type": "git",

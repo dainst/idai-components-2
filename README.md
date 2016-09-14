@@ -11,39 +11,30 @@ cp Configuration.json.template Configuration.json
 cp Relations.json.template Relations.json
 cd ../..
 npm run build
-npm run server
+npm start (= npm run server)
 ```
 
 The last command starts a webserver listening on http://localhost:8083.
 
-## Development
+## Testing
 
-```
-app - the demo application
-lib - the library files
-```
 
-When opening http://localhost:8083 in a browser, you will see a link
-to the object edit demo. Click it to open the demo.
-
-## Publishing
-
-Edit the exports in [idai-components-2.ts](idai-components-2.ts).
-
-Create js and css files by
-
-```
-npm run build
-```
-
-Test the library files with
+Unit test the library files with
 
 ```
 npm test
 ```
 
-Commit all files including the js and css files and push them to github and release
-a new version.
+E2E test the library by running the server, then opening another terminal and running
+
+```
+npm run e2e
+```
+
+
+## Publishing
+
+Adjust the exports in [idai-components-2.ts](idai-components-2.ts).
 
 ## Using the library
 
