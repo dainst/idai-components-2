@@ -6,15 +6,23 @@ Clone this repository and run
 
 ```
 npm install
-cd demo/config
-cp Configuration.json.template Configuration.json
-cp Relations.json.template Relations.json
-cd ../..
 npm run build
 npm start (= npm run server)
 ```
 
 The last command starts a webserver listening on http://localhost:8083.
+
+## Demo
+
+The demo app is used to display the functionality of the library.
+It makes use of the configuration files at
+
+```
+demo/config
+```
+
+which will get automatically created from their template counterparts
+by `npm run build` in case they don't exist.
 
 ## Testing
 

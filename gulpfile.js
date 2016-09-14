@@ -68,3 +68,23 @@ gulp.task('compile',['convert-sass'], function () {
 });
 
 
+function createConfig(path) {
+	fs.access(path, fs.F_OK, function (err) {
+
+		if (err) {
+			fs.createReadStream(path+'.template').pipe(fs.createWriteStream(path));
+		} else {
+			console.log('Will not create '+path+' from template because file already exists.');
+		}
+	});
+}
+
+// Creates configfiles if the do not exist already
+//
+gulp.task('create-configs', function (callback) {
+
+	createConfig('./demo/config/Configuration.json');
+	createConfig('./demo/config/Relations.json');
+	
+});
+
