@@ -7,7 +7,7 @@ import {DocumentEditChangeMonitor} from "../document-edit-change-monitor";
  */
 @Component({
     moduleId: module.id,
-    selector: 'string_inputs',
+    selector: 'dai-inputs',
     templateUrl: '../../../templates/form-components/inputs.html'
 })
 

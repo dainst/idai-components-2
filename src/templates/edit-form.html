@@ -7,21 +7,22 @@
 
         <div class="card-block">
 
-        <string_input *ngIf="field.inputType == 'string_input' || (field.inputType == undefined && field.inner == undefined)" [(resource)]="document['resource']" [fieldName]="field.name"></string_input>
+            <dai-input *ngIf="field.inputType == 'input' || (field.inputType == undefined && field.inner == undefined)" [(resource)]="document['resource']" [fieldName]="field.name"></dai-input>
 
-        <string_inputs *ngIf="field.inputType == 'string_inputs'" [(field)]="document['resource'][field.name]"></string_inputs>
+            <dai-inputs *ngIf="field.inputType == 'inputs'" [(field)]="document['resource'][field.name]"></dai-inputs>
 
-        <localized *ngIf="field.localized" [(field)]="document['resource'][field.name]" [innerInputType]="field.inner.inputType" ></localized>
+            <dai-localized-input *ngIf="field.localized" [(field)]="document['resource'][field.name]" [innerInputType]="field.inner.inputType" ></dai-localized-input>
 
-        <text *ngIf="field.inputType == 'text'" [(resource)]="document['resource']" [fieldName]="field.name"></text>
+            <dai-text *ngIf="field.inputType == 'text'" [(resource)]="document['resource']" [fieldName]="field.name"></dai-text>
 
-        <dropdown *ngIf="field.inputType == 'dropdown'" [(resource)]="document['resource']" [field]="field"></dropdown>
+            <dai-dropdown *ngIf="field.inputType == 'dropdown'" [(resource)]="document['resource']" [field]="field"></dai-dropdown>
 
-        <radio *ngIf="field.inputType == 'radio'" [(resource)]="document['resource']" [field]="field"></radio>
+            <dai-radio *ngIf="field.inputType == 'radio'" [(resource)]="document['resource']" [field]="field"></dai-radio>
 
-        <checkboxes *ngIf="field.inputType == 'checkboxes'" [(resource)]="document['resource']" [field]="field"></checkboxes>
+            <dai-checkboxes *ngIf="field.inputType == 'checkboxes'" [(resource)]="document['resource']" [field]="field"></dai-checkboxes>
 
-        <multiselect *ngIf="field.inputType == 'multiselect'" [(resource)]="document['resource']" [field]="field"></multiselect>
+            <dai-multiselect *ngIf="field.inputType == 'multiselect'" [(resource)]="document['resource']" [field]="field"></dai-multiselect>
+
         </div>
     </div>
 </div>

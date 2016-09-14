@@ -6,7 +6,7 @@ import {DocumentEditChangeMonitor} from "../document-edit-change-monitor";
  * @author Fabian Z.
  */
 @Component({
-    selector: 'text',
+    selector: 'dai-text',
     template: `<textarea [(ngModel)]="resource[fieldName]" (keyup)="markAsChanged()" class="form-control"></textarea>`
 })
 

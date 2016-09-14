@@ -28,7 +28,7 @@
         {
           "name": "text",
           "label": "Multiline, Text",
-          "inputType": "input"
+          "inputType": "text"
         },
         {
           "name": "single_select_dropdown",

@@ -6,24 +6,23 @@ import {Component, Input} from '@angular/core';
  */
 @Component({
 
-    selector: 'localized',
+    selector: 'dai-localized-input',
     template: `<div>
 
         <ul>
             <li *ngFor="let language of languages()">
                 {{language}}
                 
-                <div *ngIf="innerInputType == 'string_inputs'">
-                    <string_inputs [(field)]="field[language]"></string_inputs>
-                </div>
-        
+                <div *ngIf="innerInputType == 'dai-inputs'">
+                    <dai-inputs [(field)]="field[language]"></dai-inputs>
+                </div>      
         
             </li>
         </ul>
 
     </div>`
 })
-export class LocalizedComponent {
+export class LocalizedInputComponent {
 
     @Input() field: any;
     @Input() innerInputType: any;

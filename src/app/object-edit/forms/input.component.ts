@@ -3,11 +3,12 @@ import {Resource} from "../../core-services/resource";
 import {DocumentEditChangeMonitor} from "../document-edit-change-monitor";
 
 /**
- * @author Fabian Z.
+ * @author Fabian Zav.
+ * @author Sebastian Cuy
  */
 @Component({
 
-    selector: 'string_input',
+    selector: 'dai-input',
     template: `<input [(ngModel)]="resource[fieldName]" (keyup)="markAsChanged()" class="form-control">`
 })
 

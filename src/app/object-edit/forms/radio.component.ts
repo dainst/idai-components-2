@@ -6,7 +6,7 @@ import {DocumentEditChangeMonitor} from "../document-edit-change-monitor";
  * @author Fabian Z.
  */
 @Component({
-    selector: 'radio',
+    selector: 'dai-radio',
     template: `<div *ngFor="let item of field.valuelist" class="radio"><label><input value="{{item}}" type="radio" name="{{resource[field.name]}}" (click)="resource[field.name] = item; markAsChanged()" [checked]="item === resource[field.name]"> {{item}}</label></div>`
 })
 

@@ -6,7 +6,7 @@ import {DocumentEditChangeMonitor} from "../document-edit-change-monitor";
  * @author Fabian Z.
  */
 @Component({
-    selector: 'dropdown',
+    selector: 'dai-dropdown',
     template: `<select [(ngModel)]="resource[field.name]" (change)="markAsChanged()" class="form-control">
                 <option *ngFor="let item of field.valuelist" value="{{item}}">{{item}}</option>
 </select>`
