@@ -1,10 +1,11 @@
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h3 class="panel-title">Relationen</h3>
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">Relationen</h3>
     </div>
-    <ul class="list-group">
+    <ul class="list-group list-group-flush">
         <template ngFor [ngForOf]="relationFields" let-relationField="$implicit">
-            <li *ngIf="relationField.domain.indexOf(document.resource.type) > -1" class="list-group-item">
+            <li *ngIf="relationField.domain.indexOf(document.resource.type) > -1"
+                    class="list-group-item">
                 <label *ngIf="relationField.label">{{relationField.label}}</label>
                 <label *ngIf="!relationField.label">{{relationField.name}}</label>
                 <relation-picker-group [(document)]="document" [field]="relationField" [primary]="primary"></relation-picker-group>

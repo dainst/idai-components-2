@@ -2,8 +2,8 @@
 <div *ngIf="document">
     <div *ngIf="!document['resource'].type" id="object-create">
         <!--<h1 id="create-object-heading">-->
-        <div class="panel panel-default">
-            <div class="panel-heading">
+        <div class="card">
+            <div class="card-header">
                 Please choose the object type.
             </div>
             <button *ngFor="let type of types; let index = index" (mousedown)="setType(type.name)"

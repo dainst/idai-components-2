@@ -1,11 +1,11 @@
 <div  *ngFor="let field of fieldsForObjectType; let i=index" id="edit-form-element-{{i}}">
-    <div *ngIf="field" class="form-group panel panel-default">
-        <div class="panel-heading">
-            <label *ngIf="field.label">{{field.label}}</label>
-            <label *ngIf="!field.label">{{field.name}}</label>
+    <div *ngIf="field" class="form-group card">
+        <div class="card-header">
+            <span *ngIf="field.label">{{field.label}}</span>
+            <span *ngIf="!field.label">{{field.name}}</span>
         </div>
 
-        <div class="panel-body">
+        <div class="card-block">
 
         <string_input *ngIf="field.inputType == 'string_input' || (field.inputType == undefined && field.inner == undefined)" [(resource)]="document['resource']" [fieldName]="field.name"></string_input>
 

@@ -1,13 +1,15 @@
-<div class="well well-sm">
-    Selection:<br>
-    <div *ngFor="let item of resource[field.name]" class="checkbox" style="display:inline">
-        <label>
-            <input value="{{item}}"
-                type="checkbox"
-                (click)="toggleItem(item)"
-                checked="checked">
-            {{item}}
-        </label>
+<div class="card">
+    <div class="card-block">
+        Selection:<br>
+        <div *ngFor="let item of resource[field.name]" class="checkbox" style="display:inline">
+            <label>
+                <input value="{{item}}"
+                    type="checkbox"
+                    (click)="toggleItem(item)"
+                    checked="checked">
+                {{item}}
+            </label>
+        </div>
     </div>
 </div>
 <div>

@@ -12,17 +12,17 @@ var webserver = require('gulp-webserver');
 // compile sass and concatenate to single css file in build dir
 gulp.task('convert-sass', function() {
 
-	return gulp.src('lib/scss/app.scss')
+	return gulp.src('src/scss/app.scss')
 	  	.pipe(sass({includePaths: [
-			'node_modules/bootstrap-sass/assets/stylesheets/',
+			'node_modules/bootstrap/scss/',
 			'node_modules/mdi/scss/'
 		], precision: 8}))
 	  	.pipe(concat(pkg.name + '.css'))
-	    .pipe(gulp.dest('lib/css'));
+	    .pipe(gulp.dest('src/css'));
 });
 
 function watch() {
-    gulp.watch('scss/**/*.scss',      ['convert-sass']);
+    gulp.watch('src/scss/**/*.scss', ['convert-sass']);
 }
 
 gulp.task('webserver-watch', function() {
