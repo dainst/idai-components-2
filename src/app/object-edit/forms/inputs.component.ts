@@ -13,7 +13,8 @@ import {DocumentEditChangeMonitor} from "../document-edit-change-monitor";
 
 export class InputsComponent {
 
-    @Input() field: String[];
+    @Input() resource: Resource;
+    @Input() fieldName: string;
 
     constructor(private documentEditChangeMonitor: DocumentEditChangeMonitor) {}
 
@@ -23,14 +24,14 @@ export class InputsComponent {
     
     public addInputArrayItem() {
 
-        if (this.field == undefined) this.field = new Array<String>();
-        this.field.push("");
+        if (this.resource[this.fieldName] == undefined) this.resource[this.fieldName] = new Array<String>();
+        this.resource[this.fieldName].push("");
         this.documentEditChangeMonitor.setChanged();
     }
     
     public removeInputArrayItemAtIndex(index) {
 
-        this.field.splice(index, 1);
+        this.resource[this.fieldName].splice(index, 1);
         this.documentEditChangeMonitor.setChanged();
     }
 }

@@ -10,8 +10,8 @@
           "inner" : {
             "inputType" : "inputs"
           },
-          "localized" : "true"
-          },
+          "inputType" : "inputs_localized"
+        },
         {
           "name" : "multiple_input",
           "label": "Multiple Input",
