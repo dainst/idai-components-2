@@ -49,11 +49,6 @@ export class DocumentEditComponent implements OnChanges,OnInit {
         });
     }
 
-    public setType(type: string) {
-        this.document['resource'].type = type;
-        this.setFieldsForObjectType(this.document,this.projectConfiguration);
-    }
-
     private setFieldsForObjectType(document,projectConfiguration) {
         if (document==undefined) return;
         if (!projectConfiguration) return;
