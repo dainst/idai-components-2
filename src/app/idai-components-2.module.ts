@@ -13,7 +13,7 @@ import {CheckboxesComponent} from './object-edit/forms/checkboxes.component';
 import {DropdownComponent} from './object-edit/forms/dropdown.component';
 import {InputComponent} from './object-edit/forms/input.component';
 import {InputsComponent} from './object-edit/forms/inputs.component';
-import {LocalizedInputComponent} from './object-edit/forms/localized-input.component';
+import {InputsLocalizedComponent} from './object-edit/forms/inputs-localized.component';
 import {MultiselectComponent} from './object-edit/forms/multiselect.component';
 import {RadioComponent} from './object-edit/forms/radio.component';
 import {TextComponent} from './object-edit/forms/text.component';
@@ -36,7 +36,7 @@ import {FormsModule} from '@angular/forms';
         DropdownComponent,
         InputComponent,
         InputsComponent,
-        LocalizedInputComponent,
+        InputsLocalizedComponent,
         MultiselectComponent,
         RadioComponent,
         TextComponent
