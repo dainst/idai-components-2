@@ -1,4 +1,5 @@
 import {Component, Input} from '@angular/core';
+import {Resource} from "../../core-services/resource";
 
 /**
  * @author Fabian Z.
@@ -37,7 +38,7 @@ export class InputsLocalizedComponent {
     public addLanguage() {
         var newLocale = prompt("Enter new language");
 
-        if (this.languages().includes(newLocale)) {
+        if (this.languages().indexOf(newLocale) != -1) {
             alert("Locale already included!");
             return;
         }

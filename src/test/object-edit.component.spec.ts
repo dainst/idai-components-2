@@ -12,7 +12,7 @@ import {CheckboxesComponent} from '../../src/app/object-edit/forms/checkboxes.co
 import {DropdownComponent} from '../../src/app/object-edit/forms/dropdown.component';
 import {InputComponent} from '../../src/app/object-edit/forms/input.component';
 import {InputsComponent} from '../../src/app/object-edit/forms/inputs.component';
-import {LocalizedInputComponent} from '../../src/app/object-edit/forms/localized-input.component';
+import {InputsLocalizedComponent} from '../../src/app/object-edit/forms/inputs-localized.component';
 import {MultiselectComponent} from '../../src/app/object-edit/forms/multiselect.component';
 import {RadioComponent} from '../../src/app/object-edit/forms/radio.component';
 import {TextComponent} from '../../src/app/object-edit/forms/text.component';
@@ -86,7 +86,7 @@ export function main() {
                     DropdownComponent,
                     InputComponent,
                     InputsComponent,
-                    LocalizedInputComponent,
+                    InputsLocalizedComponent,
                     MultiselectComponent,
                     RadioComponent,
                     TextComponent,
