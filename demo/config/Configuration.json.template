@@ -5,30 +5,25 @@
       "label": "Object",
       "fields": [
         {
-          "name" : "localized_multiple_input",
-          "label": "Localized Multiple Input",
-          "inner" : {
-            "inputType" : "inputs"
-          },
-          "inputType" : "inputs_localized"
-        },
-        {
-          "name" : "multiple_input",
-          "label": "Multiple Input",
-          "inputType" : "input"
+          "name": "minimalist_default"
         },
         {
           "name": "single_input",
           "label": "Simple Input",
-          "inputType": "input"
+          "inputType": "input",
+          "description" : "this is a simple input field"
         },
         {
-          "name": "minimalist_default"
+          "name" : "multiple_input",
+          "label": "Multiple Input",
+          "inputType" : "input",
+          "description" : "multiple inputs"
         },
         {
           "name": "text",
           "label": "Multiline, Text",
-          "inputType": "text"
+          "inputType": "text",
+          "description" : "a simple text field"
         },
         {
           "name": "single_select_dropdown",
@@ -37,7 +32,8 @@
             "Alabaster",
             "Amber",
             "Antler"
-          ]
+          ],
+          "description" : "a simple dropdown menu where you can select a single item"
         },
         {
           "name": "single_select_radio",
@@ -47,7 +43,8 @@
             "CD",
             "Television",
             "Internets"
-          ]
+          ],
+          "description" : "a simple radio button menu where you can select a single item"
         },
         {
           "name": "multiselect_checkbox",
@@ -85,9 +82,16 @@
             "Trad Jazz"
           ],
           "expandable": "true"
+        },
+        {
+          "name" : "localized_multiple_input",
+          "label": "Localized Multiple Input",
+          "inner" : {
+            "inputType" : "inputs"
+          },
+          "inputType" : "inputs_localized",
+          "description" : "a localized multi input"
         }
-
-
       ]
     },
     {
