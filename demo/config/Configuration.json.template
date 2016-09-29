@@ -16,7 +16,7 @@
         {
           "name" : "multiple_input",
           "label": "Multiple Input",
-          "inputType" : "input",
+          "inputType" : "inputs",
           "description" : "multiple inputs"
         },
         {
