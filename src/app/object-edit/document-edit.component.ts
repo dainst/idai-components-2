@@ -2,7 +2,6 @@ import {Component, Input, OnInit} from '@angular/core';
 import {PersistenceManager} from "./persistence-manager";
 import {ProjectConfiguration} from "./project-configuration";
 import {OnChanges} from "@angular/core";
-import {RelationsConfiguration} from "./relations-configuration";
 import {ConfigLoader} from "./config-loader";
 
 /**
@@ -22,8 +21,6 @@ export class DocumentEditComponent implements OnChanges,OnInit {
     @Input() primary: string;
 
     private projectConfiguration: ProjectConfiguration;
-    private relationsConfiguration: RelationsConfiguration;
-
 
     public relationFields : any[];
     public types : any[];
@@ -41,10 +38,7 @@ export class DocumentEditComponent implements OnChanges,OnInit {
                 this.projectConfiguration = result.projectConfiguration;
                 this.setFieldsForObjectType(this.document, this.projectConfiguration);
                 this.setObjectTypeLabel(this.document, this.projectConfiguration);
-
-                this.relationsConfiguration = result.relationsConfiguration;
-                this.persistenceManager.setRelationsConfiguration(this.relationsConfiguration);
-                this.relationFields = this.relationsConfiguration.getRelationFields();
+                this.relationFields = this.projectConfiguration.getRelationFields();
             }
         });
     }

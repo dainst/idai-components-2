@@ -21,6 +21,9 @@ export class ProjectConfiguration {
 
     private typesList: any[] = undefined;
 
+    private relationFields: any[] = undefined;
+
+
     /**
      * @param configuration
      */
@@ -28,7 +31,25 @@ export class ProjectConfiguration {
         this.initTypeMap(configuration);
         this.expandTypesWithParentFields(configuration['types']);
         this.excavation=configuration['excavation'];
+        this.relationFields = configuration['relations'];
+    }
 
+    public getRelationFields() {
+        return this.relationFields;
+    }
+
+    public getInverseRelations(prop) {
+        for (var p of this.relationFields) {
+            if (p["name"]==prop) return p["inverse"];
+        }
+        return undefined;
+    }
+
+    public isRelationProperty(propertyName:string):boolean {
+        for (var p of this.relationFields) {
+            if (p["name"]==propertyName) return true;
+        }
+        return false;
     }
 
     /**

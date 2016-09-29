@@ -12,8 +12,7 @@ import {PersistenceManager} from "../../src/app/object-edit/persistence-manager"
 export class DocumentEditDemoComponent implements OnInit {
 
     private static PROJECT_CONFIGURATION_PATH='demo/config/Configuration.json';
-    private static RELATIONS_CONFIGURATION_PATH='demo/config/Relations.json';
-    
+
     private documents = new Array();
     private selectedDocument : Document;
 
@@ -43,9 +42,7 @@ export class DocumentEditDemoComponent implements OnInit {
     ngOnInit() {
         this.loadSampleData();
         
-        this.configLoader.setConfigurationPaths(
-            DocumentEditDemoComponent.PROJECT_CONFIGURATION_PATH,
-            DocumentEditDemoComponent.RELATIONS_CONFIGURATION_PATH);
+        this.configLoader.setConfigurationPath(DocumentEditDemoComponent.PROJECT_CONFIGURATION_PATH);
     }
 
     loadSampleData(): void {
