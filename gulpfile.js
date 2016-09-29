@@ -79,12 +79,9 @@ function createConfig(path) {
 	});
 }
 
-// Creates configfiles if the do not exist already
+// Creates configfile if the do not exist already
 //
 gulp.task('create-configs', function (callback) {
-
 	createConfig('./demo/config/Configuration.json');
-	createConfig('./demo/config/Relations.json');
-	
 });
 
