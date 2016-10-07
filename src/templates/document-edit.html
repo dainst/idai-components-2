@@ -1,28 +1,30 @@
 <div *ngIf="document">
 
     <div *ngIf="document['resource'].type"
-         id="object-edit" >
+         id="object-edit">
 
         <h1>
             {{objectTypeLabel}}
-            <div *ngIf="document['resource'].type"><small>Typ: {{document['resource'].type}}</small></div>
+            <div *ngIf="document['resource'].type">
+                <small>Typ: {{document['resource'].type}}</small>
+            </div>
 
         </h1>
 
-        <div class="row">
+        <div class="container">
+            <div class="row flex-items-md-top">
 
-            <form>
-                <div class="col-md-7">
-                    <edit-form [(document)]="document"
-                           [fieldsForObjectType]="fieldsForObjectType"></edit-form>
-                </div>
-                <div class="col-md-5">
-                    <relations-form [(document)]="document"
-                                [primary]="primary"
-                                [relationFields]="relationFields"></relations-form>
-                </div>
-            </form>
+                    <div class="col-md">
+                        <edit-form [(document)]="document"
+                                   [fieldsForObjectType]="fieldsForObjectType"></edit-form>
+                    </div>
+                    <div class="col-md">
+                        <relations-form [(document)]="document"
+                                        [primary]="primary"
+                                        [relationFields]="relationFields"></relations-form>
+                    </div>
 
+            </div>
         </div>
     </div>
 </div>
