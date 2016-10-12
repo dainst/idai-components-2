@@ -1,6 +1,6 @@
 /// <reference path="../../typings/globals/jasmine/index.d.ts" />
 import {PersistenceManager} from "../app/object-edit/persistence-manager";
-import {RelationsConfiguration} from "../app/object-edit/relations-configuration";
+import {ProjectConfiguration} from "../app/object-edit/project-configuration";
 import {Messages} from "../app/core-services/messages";
 import {MD} from "../app/core-services/md";
 import {TestBed} from "@angular/core/testing";
@@ -60,8 +60,27 @@ export function main() {
             mockDatastore = jasmine.createSpyObj('mockDatastore', ['get', 'create', 'update', 'refresh']);
             persistenceManager = new PersistenceManager(mockDatastore);
             persistenceManager.setOldVersion({"resource":{}});
-            persistenceManager.setRelationsConfiguration(new RelationsConfiguration(
-                [
+            persistenceManager.setProjectConfiguration(new ProjectConfiguration({
+                "types": [
+                    {
+                        "type": "FirstLevelType",
+                        "fields": [
+                            {
+                                "field": "fieldA"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "SecondLevelType",
+                        "parent" : "FirstLevelType",
+                        "fields": [
+                            {
+                                "field": "fieldB"
+                            }
+                        ]
+                    }
+                ],
+                "relations": [
                     {
                         "name":"BelongsTo",
                         "inverse":"Contains",
@@ -72,7 +91,8 @@ export function main() {
                         "inverse":"BelongsTo",
                         "label":"Enthält"
                     }
-                ]));
+                ]})
+            );
             mockDatastore.get.and.callFake(getFunction);
             mockDatastore.update.and.callFake(successFunction);
             mockDatastore.create.and.callFake(successFunction);

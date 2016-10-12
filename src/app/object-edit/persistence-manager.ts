@@ -1,8 +1,8 @@
 import {Injectable} from "@angular/core";
 import {Datastore} from "../datastore/datastore";
-import {RelationsConfiguration} from "./relations-configuration";
 import {Document} from "../core-services/document";
 import {Resource} from "../core-services/resource";
+import {ProjectConfiguration} from "./project-configuration";
 
 /**
  * With a document to persist, it determines which other documents are 
@@ -23,10 +23,10 @@ import {Resource} from "../core-services/resource";
     ) {}
 
     private oldVersion : Document = undefined;
-    private relationsConfiguration : RelationsConfiguration = undefined;
+    private projectConfiguration : ProjectConfiguration = undefined;
 
-    public setRelationsConfiguration(relationsConfiguration) {
-        this.relationsConfiguration = relationsConfiguration;
+    public setProjectConfiguration(projectConfiguration:ProjectConfiguration) {
+        this.projectConfiguration = projectConfiguration;
     }
 
     /**
@@ -52,7 +52,7 @@ import {Resource} from "../core-services/resource";
         var resource=document['resource'];
 
         return new Promise<any>((resolve, reject) => {
-            if (!this.relationsConfiguration) return reject("no relations configuration available");
+            if (!this.projectConfiguration) return reject("no project configuration available");
 
                 if (document==undefined) return resolve();
 
@@ -95,7 +95,7 @@ import {Resource} from "../core-services/resource";
 
     private pruneInverseRelations(id,targetRelations) {
         for (var relation in targetRelations) {
-            if (!this.relationsConfiguration.isRelationProperty(relation)) continue;
+            if (!this.projectConfiguration.isRelationProperty(relation)) continue;
 
             var index=targetRelations[relation].indexOf(id);
             if (index!=-1) {
@@ -110,12 +110,12 @@ import {Resource} from "../core-services/resource";
     private setInverseRelations(resource, targetResource) {
 
         for (var relation in resource['relations']) {
-            if (!this.relationsConfiguration.isRelationProperty(relation)) continue;
+            if (!this.projectConfiguration.isRelationProperty(relation)) continue;
 
             for (var id of resource['relations'][relation]) {
                 if (id!=targetResource['id']) continue;
 
-                var inverse = this.relationsConfiguration.getInverse(relation);
+                var inverse = this.projectConfiguration.getInverseRelations(relation);
 
                 if (targetResource['relations'][inverse]==undefined)
                     targetResource['relations'][inverse]=[];
@@ -136,7 +136,7 @@ import {Resource} from "../core-services/resource";
 
         for (var prop in resource['relations']) {
             if (!resource['relations'].hasOwnProperty(prop)) continue;
-            if (!this.relationsConfiguration.isRelationProperty(prop)) continue;
+            if (!this.projectConfiguration.isRelationProperty(prop)) continue;
 
             for (var id of resource['relations'][prop]) {
                 relatedObjectIDs.push(id);

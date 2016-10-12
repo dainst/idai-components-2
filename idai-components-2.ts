@@ -6,7 +6,6 @@ export {Resource} from './src/app/core-services/resource';
 export {Datastore} from './src/app/datastore/datastore';
 export {ReadDatastore} from './src/app/datastore/read-datastore';
 export {ProjectConfiguration} from './src/app/object-edit/project-configuration';
-export {RelationsConfiguration} from './src/app/object-edit/relations-configuration';
 export {DocumentEditChangeMonitor} from './src/app/object-edit/document-edit-change-monitor';
 export {PersistenceManager} from './src/app/object-edit/persistence-manager';
 export {Messages} from './src/app/core-services/messages';
