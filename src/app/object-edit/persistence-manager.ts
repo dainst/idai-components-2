@@ -52,7 +52,7 @@ import {ProjectConfiguration} from "./project-configuration";
         var resource=document['resource'];
 
         return new Promise<any>((resolve, reject) => {
-            if (!this.projectConfiguration) return reject("no project configuration available");
+            if (!this.projectConfiguration) return reject(["no project configuration available"]);
 
                 if (document==undefined) return resolve();
 
@@ -63,10 +63,10 @@ import {ProjectConfiguration} from "./project-configuration";
 
                             this.setOldVersion(document);
                             resolve();
-                        }, (err)=>reject(err));
+                        }, (err)=>reject(this.toStringArray(err)));
 
 
-                }, (err)=>reject(err))
+                }, (err)=>reject(this.toStringArray(err)))
             }, (err)=> { reject(this.toStringArray(err)); });
         });
     }
