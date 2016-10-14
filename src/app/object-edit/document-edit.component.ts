@@ -38,6 +38,7 @@ export class DocumentEditComponent implements OnChanges,OnInit {
                 this.projectConfiguration = result.projectConfiguration;
                 this.setFieldsForObjectType(this.document, this.projectConfiguration);
                 this.setObjectTypeLabel(this.document, this.projectConfiguration);
+                this.persistenceManager.setProjectConfiguration(this.projectConfiguration);
                 this.relationFields = this.projectConfiguration.getRelationFields();
             }
         });
