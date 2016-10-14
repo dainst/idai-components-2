@@ -1,4 +1,5 @@
 import {Document} from "../core-services/document";
+import {Query} from "../core-services/query";
 
 /**
  * The interface providing read access methods 
@@ -25,7 +26,7 @@ export abstract class ReadDatastore  {
      * @returns {Promise<T>} resolve -> {Document[]},
      *   reject -> the error message or a message key.
      */ 
-    abstract find(query: string): Promise<Document[]>;
+    abstract find(query: Query): Promise<Document[]>;
 
     abstract all(options: any): Promise<Document[]>;
 }
