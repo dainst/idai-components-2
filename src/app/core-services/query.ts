@@ -1,4 +1,6 @@
+import {Filter} from './filter'
+
 export interface Query {
     q: string;
-    filters?: { [key: string]: string };
+    filters?: Filter[];
 }
