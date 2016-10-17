@@ -4,6 +4,7 @@ export {ConfigLoader} from './src/app/object-edit/config-loader';
 export {Document} from './src/app/core-services/document';
 export {Resource} from './src/app/core-services/resource';
 export {Query} from './src/app/core-services/query';
+export {Filter} from './src/app/core-services/filter';
 export {Datastore} from './src/app/datastore/datastore';
 export {ReadDatastore} from './src/app/datastore/read-datastore';
 export {ProjectConfiguration} from './src/app/object-edit/project-configuration';
