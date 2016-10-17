@@ -1,6 +1,7 @@
 import {Component, Input, OnChanges, ElementRef} from '@angular/core';
 import {Document} from "../core-services/document";
 import {Resource} from "../core-services/resource";
+import {Query} from "../core-services/query";
 import {DocumentEditChangeMonitor} from "./document-edit-change-monitor";
 import {ReadDatastore} from "../datastore/read-datastore";
 
@@ -76,7 +77,9 @@ export class RelationPickerComponent implements OnChanges {
 
         this.updateSuggestionsMode = true;
 
-        this.datastore.find(this.idSearchString)
+        var query: Query = { q: this.idSearchString };
+
+        this.datastore.find(query)
             .then(documents => {
                 this.makeSuggestionsFrom(documents);
                 this.updateSuggestionsMode = false;

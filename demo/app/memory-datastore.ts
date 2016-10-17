@@ -1,4 +1,5 @@
 import {Document} from "../../src/app/core-services/document";
+import {Query} from "../../src/app/core-services/query";
 import {Datastore} from "../../src/app/datastore/datastore";
 import {Injectable} from "@angular/core";
 import {Observable} from "rxjs/Observable";
@@ -69,13 +70,13 @@ export class MemoryDatastore implements Datastore {
     }
 
     
-    public find(query:string):Promise<Document[]> {
+    public find(query: Query): Promise<Document[]> {
 
-        query = query.toLowerCase();
+        var queryString = query.q.toLowerCase();
 
         var results : Document[] = [];
         for (var i in this.objectCache) {
-            if (this.objectCache[i]['resource']['id'].indexOf(query)!=-1) results.push(this.objectCache[i]);
+            if (this.objectCache[i]['resource']['id'].indexOf(queryString) != -1) results.push(this.objectCache[i]);
         }
 
         return new Promise((resolve, reject) => {
