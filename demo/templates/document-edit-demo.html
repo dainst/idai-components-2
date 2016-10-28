@@ -11,9 +11,8 @@
         to the edited document's resource are shown by displaying their 'id'.
     </p>
 
-    <p>
-        -
-    </p>
+        <hr>
+
 
     <p>
         Click on a button to select a document and make some changes.
@@ -27,12 +26,29 @@
         the next document gets opened in the editor.
     </p>
 
-    <p>
-        -
-    </p>
+    <hr>
+
+    <ul>
+        <h3>Tree of (iDai-)Types from Configuration</h3>
+        <li *ngFor="let type of types;">
+            {{type['label']}}
+            <i *ngIf="type.isAbstract">(Abstract)</i>
+
+            <ul *ngIf="type['children']">
+                Children:
+                <li *ngFor="let childType of type['children'];">{{childType['label']}}</li>
+            </ul>
+        </li>
+    </ul>
+
+
+    <hr>
+
     <ul>
         <li *ngFor="let document of documents; let i=index"><button (click)="clicked(document['resource']['id'])">document['resource']['id']: {{document['resource']['id']}}</button></li>
     </ul>
+
+
 
     <div class="row">
         <div class="col-md-12">

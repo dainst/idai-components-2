@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {MDInternal} from "../core-services/md-internal";
-
+import {IdaiType} from "../core-services/idai-type";
 /**
  * ProjectConfiguration maintains the current projects properties.
  * Amongst them is the set of types for the current project,
@@ -15,11 +15,13 @@ import {MDInternal} from "../core-services/md-internal";
 @Injectable()
 export class ProjectConfiguration {
 
-    private typeMap: { [type: string]: any } = {};
+    private typesTree: { [type: string]: IdaiType } = {};
+
+    private typesMap: { [type: string]: IdaiType } = {};
 
     private excavation: string;
 
-    private typesList: any[] = undefined;
+    private typesList: IdaiType[] = undefined;
 
     private relationFields: any[] = undefined;
 
@@ -28,8 +30,8 @@ export class ProjectConfiguration {
      * @param configuration
      */
     constructor(configuration) {
-        this.initTypeMap(configuration);
-        this.expandTypesWithParentFields(configuration['types']);
+        this.initTypesTree(configuration);
+        this.initTypesMap();
         this.excavation=configuration['excavation'];
         this.relationFields = configuration['relations'];
     }
@@ -52,21 +54,23 @@ export class ProjectConfiguration {
         return false;
     }
 
-    /**
-     * @returns {any[]} array with objects containing the names and labels of all types of the current project.
-     */
-    public getTypes(): any[] {
+    public getTypesList(): IdaiType[] {
         if(this.typesList) return this.typesList;
 
         var types = [];
-        for (var typeKey of Object.keys(this.typeMap) ) {
-            types.push({
-                'name': this.typeMap[typeKey].name,
-                'label':this.typeMap[typeKey].label
-            });
+        for (var typeKey of Object.keys(this.typesMap)) {
+            types.push(this.typesMap[typeKey]);
         }
         this.typesList = types;
         return this.typesList;
+    }
+
+    public getTypesMap(): any {
+        return this.typesMap;
+    }
+
+    public getTypesTree() : any {
+        return this.typesTree;
     }
 
     /**
@@ -74,13 +78,13 @@ export class ProjectConfiguration {
      * @returns {any[]} the fields definitions for the type.
      */
     public getFields(typeName: string): any[] {
-        if(!this.typeMap[typeName]) return [];
-        return this.typeMap[typeName]['fields'];
+        if(!this.typesMap[typeName]) return [];
+        return this.typesMap[typeName].getFields();
     }
 
     public getLabelForType(typeName: string): string {
-        if(!this.typeMap[typeName]) return "";
-        return this.typeMap[typeName].label;
+        if(!this.typesMap[typeName]) return "";
+        return this.typesMap[typeName].label;
     }
 
     /**
@@ -91,27 +95,36 @@ export class ProjectConfiguration {
         return this.excavation;
     }
 
-    private initTypeMap(configuration) {
+    private initTypesTree(configuration) {
         for (var type of configuration['types']) {
-            var typeName = this.name(type);
-            this.typeMap[typeName] = {
-                "name": typeName,
-                "label": type["label"] || typeName,
-                "fields": type.fields
+            if (!type['parent']) this.typesTree[this.getTypeName(type)] = new IdaiType(type);
+        }
+
+        for (var type of configuration['types']) {
+            if (type['parent']) {
+                if (this.typesTree[type.parent] == undefined) {
+                    throw MDInternal.PC_GENERIC_ERROR;
+                } else
+                    var parentType = this.typesTree[type.parent]
+                    parentType.addChildType(type)
             }
         }
     }
 
-    private expandTypesWithParentFields(types) {
-        for (var type of types) {
-            if (this.hasParent(type)) {
-                this.typeMap[this.name(type)].fields
-                    = this.prependFieldsOfParentType(type);
+    private initTypesMap() {
+        var typesMap:{[type: string]: IdaiType } = {};
+
+        for (var typeKey of Object.keys(this.typesTree)) {
+            var idaiType: IdaiType = this.typesTree[typeKey];
+            typesMap[typeKey] = idaiType;
+            if (idaiType.children) {
+                for (var childType of idaiType.children) typesMap[childType.name] = childType;
             }
         }
+        this.typesMap = typesMap;
     }
 
-    private name(type) : string {
+    private getTypeName(type) : string {
         return type.type;
     }
 
@@ -119,20 +132,4 @@ export class ProjectConfiguration {
         return type['parent'];
     }
 
-    /**
-     * @param type
-     * @returns {Array[]} a new fields array, with the fields
-     *   of the parent type from the field map first,
-     *   and then the types own fields.
-     */
-    private prependFieldsOfParentType(type) {
-        var fields=[];
-
-        if (this.typeMap[type.parent]==undefined) {
-            throw MDInternal.PC_GENERIC_ERROR;
-        } else
-            fields=this.typeMap[type.parent].fields;
-
-        return fields.concat(type.fields);
-    }
 }

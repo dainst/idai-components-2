@@ -23,7 +23,6 @@ export class DocumentEditComponent implements OnChanges,OnInit {
     private projectConfiguration: ProjectConfiguration;
 
     public relationFields : any[];
-    public types : any[];
     public fieldsForObjectType : any;
     public objectTypeLabel : string;
 
@@ -48,7 +47,6 @@ export class DocumentEditComponent implements OnChanges,OnInit {
         if (document==undefined) return;
         if (!projectConfiguration) return;
         this.fieldsForObjectType=projectConfiguration.getFields(document['resource'].type);
-        this.types=this.projectConfiguration.getTypes();
     }
 
     private setObjectTypeLabel(document, projectConfiguration) {

@@ -5,6 +5,9 @@ import {OBJECTS} from "./sample-objects";
 import {Document} from "../../src/app/core-services/document"
 import {PersistenceManager} from "../../src/app/object-edit/persistence-manager";
 
+
+import {IdaiType} from "../../src/app/core-services/idai-type";
+
 @Component({
     selector: 'document-edit-demo',
     templateUrl: 'demo/templates/document-edit-demo.html'
@@ -15,6 +18,8 @@ export class DocumentEditDemoComponent implements OnInit {
 
     private documents = new Array();
     private selectedDocument : Document;
+
+    private types : IdaiType[]
 
     constructor(
         private configLoader:ConfigLoader,
@@ -43,6 +48,13 @@ export class DocumentEditDemoComponent implements OnInit {
         this.loadSampleData();
         
         this.configLoader.setConfigurationPath(DocumentEditDemoComponent.PROJECT_CONFIGURATION_PATH);
+
+        this.configLoader.configuration().subscribe((result)=>{
+            if(result.error == undefined) {
+                this.types = result.projectConfiguration.getTypesList();
+
+            }
+        });
     }
 
     loadSampleData(): void {
