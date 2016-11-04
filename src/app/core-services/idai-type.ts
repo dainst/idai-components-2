@@ -25,8 +25,7 @@ export class IdaiType {
         if (!this.parentType) {
             return this.fields;
         } else {
-            console.log("Oh parent Fields included");
-            return this.fields.concat(this.parentType.getFields());
+            return this.parentType.getFields().concat(this.fields);
         }
     }
 }
