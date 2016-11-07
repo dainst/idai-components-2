@@ -64,7 +64,7 @@ export class ProjectConfiguration {
 
         var types = [];
         for (var typeKey of Object.keys(this.typesMap)) {
-            types.push(this.typesTree[typeKey]);
+            types.push(this.typesMap[typeKey]);
         }
         this.typesList = types;
         return this.typesList;
