@@ -23,6 +23,8 @@ export class ProjectConfiguration {
 
     private typesList: IdaiType[] = undefined;
 
+    private typesTreeList: IdaiType[] = undefined;
+
     private relationFields: any[] = undefined;
 
 
@@ -54,15 +56,32 @@ export class ProjectConfiguration {
         return false;
     }
 
+    /**
+     * @returns {IdaiType[]} All types in flat array, ignoring hierarchy
+     */
     public getTypesList(): IdaiType[] {
         if(this.typesList) return this.typesList;
+
+        var types = [];
+        for (var typeKey of Object.keys(this.typesMap)) {
+            types.push(this.typesTree[typeKey]);
+        }
+        this.typesList = types;
+        return this.typesList;
+    }
+
+    /**
+     * @returns {IdaiType[]} All root types in array, including child types
+     */
+    public getTypesTreeList(): IdaiType[] {
+        if(this.typesTreeList) return this.typesTreeList;
 
         var types = [];
         for (var typeKey of Object.keys(this.typesTree)) {
             types.push(this.typesTree[typeKey]);
         }
-        this.typesList = types;
-        return this.typesList;
+        this.typesTreeList = types;
+        return this.typesTreeList;
     }
 
     public getTypesMap(): any {
@@ -127,9 +146,4 @@ export class ProjectConfiguration {
     private getTypeName(type) : string {
         return type.type;
     }
-
-    private hasParent(type) : boolean {
-        return type['parent'];
-    }
-
 }

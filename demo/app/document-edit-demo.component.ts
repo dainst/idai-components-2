@@ -51,8 +51,7 @@ export class DocumentEditDemoComponent implements OnInit {
 
         this.configLoader.configuration().subscribe((result)=>{
             if(result.error == undefined) {
-                this.types = result.projectConfiguration.getTypesList();
-
+                this.types = result.projectConfiguration.getTypesTreeList();
             }
         });
     }
