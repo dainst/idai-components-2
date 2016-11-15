@@ -37,4 +37,15 @@ Fields look like
 
 ## Relations
 
+A relation definition looks like this
+
+```
+{
+  "name": "a_relation_identifier",
+  "label": "The relation label",
+  "domain": [],
+  "range": []
+}
+```
+
 
