@@ -1,4 +1,4 @@
-import {Document} from "../core-services/document";
+import {Document} from "../model/document";
 import {ReadDatastore} from "./read-datastore";
 import {Observable} from "rxjs/Observable";
 

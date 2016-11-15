@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
-import {MD} from '../../src/app/core-services/md';
-import {Messages} from '../../src/app/core-services/messages';
+import {MD} from '../../src/app/messages/md';
+import {Messages} from '../../src/app/messages/messages';
 
 /**
  * @author Thomas Kleinke

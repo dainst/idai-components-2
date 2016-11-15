@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {Resource} from "../core-services/resource";
+import {Resource} from "../model/resource";
 import {DocumentEditChangeMonitor} from "./document-edit-change-monitor";
 
 /**

@@ -1,4 +1,4 @@
-import {Resource} from "../core-services/resource";
+import {Resource} from "../model/resource";
 
 /**
  * @author Sebastian Cuy

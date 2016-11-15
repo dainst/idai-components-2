@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
-import {MDInternal} from "../core-services/md-internal";
-import {IdaiType} from "../core-services/idai-type";
+import {MDInternal} from "../messages/md-internal";
+import {IdaiType} from "./idai-type";
 /**
  * ProjectConfiguration maintains the current projects properties.
  * Amongst them is the set of types for the current project,

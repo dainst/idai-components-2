@@ -1,7 +1,7 @@
 import {Component, Input, OnChanges, ElementRef} from '@angular/core';
-import {Document} from "../core-services/document";
-import {Resource} from "../core-services/resource";
-import {Query} from "../core-services/query";
+import {Document} from "../model/document";
+import {Resource} from "../model/resource";
+import {Query} from "../datastore/query";
 import {DocumentEditChangeMonitor} from "./document-edit-change-monitor";
 import {ReadDatastore} from "../datastore/read-datastore";
 

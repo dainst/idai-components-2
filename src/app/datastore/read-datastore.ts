@@ -1,5 +1,5 @@
-import {Document} from "../core-services/document";
-import {Query} from "../core-services/query";
+import {Document} from "../model/document";
+import {Query} from "./query";
 
 /**
  * The interface providing read access methods 

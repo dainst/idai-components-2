@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {ProjectConfiguration} from "./project-configuration";
 import {Http} from "@angular/http";
-import {MDInternal} from "../core-services/md-internal";
+import {MDInternal} from "../messages/md-internal";
 import {Observable} from "rxjs/Observable";
 
 /**

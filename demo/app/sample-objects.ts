@@ -1,4 +1,4 @@
-import {Document} from '../../src/app/core-services/document';
+import {Document} from '../../src/app/model/document';
 
 export var OBJECTS: Document[] = [
     

@@ -1,5 +1,5 @@
-import {Document} from "../../src/app/core-services/document";
-import {Query} from "../../src/app/core-services/query";
+import {Document} from "../../src/app/model/document";
+import {Query} from "../../src/app/datastore/query";
 import {Datastore} from "../../src/app/datastore/datastore";
 import {Injectable} from "@angular/core";
 import {Observable} from "rxjs/Observable";

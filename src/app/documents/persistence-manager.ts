@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {Datastore} from "../datastore/datastore";
-import {Document} from "../core-services/document";
-import {Resource} from "../core-services/resource";
+import {Document} from "../model/document";
+import {Resource} from "../model/resource";
 import {ProjectConfiguration} from "./project-configuration";
 
 /**

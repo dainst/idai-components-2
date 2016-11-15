@@ -1,12 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {ConfigLoader} from '../../src/app/object-edit/config-loader'
+import {ConfigLoader} from '../../src/app/documents/config-loader'
 import {Datastore} from '../../src/app/datastore/datastore'
 import {OBJECTS} from "./sample-objects";
-import {Document} from "../../src/app/core-services/document"
-import {PersistenceManager} from "../../src/app/object-edit/persistence-manager";
-
-
-import {IdaiType} from "../../src/app/core-services/idai-type";
+import {Document} from "../../src/app/model/document"
+import {PersistenceManager} from "../../src/app/documents/persistence-manager";
+import {IdaiType} from "../../src/app/documents/idai-type";
 
 @Component({
     selector: 'document-edit-demo',

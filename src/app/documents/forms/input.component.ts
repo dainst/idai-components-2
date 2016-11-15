@@ -1,16 +1,18 @@
 import {Component, Input} from '@angular/core';
-import {Resource} from "../../core-services/resource";
+import {Resource} from "../../model/resource";
 import {DocumentEditChangeMonitor} from "../document-edit-change-monitor";
 
 /**
- * @author Fabian Z.
+ * @author Fabian Zav.
+ * @author Sebastian Cuy
  */
 @Component({
-    selector: 'dai-text',
-    template: `<textarea [(ngModel)]="resource[fieldName]" (keyup)="markAsChanged()" class="form-control"></textarea>`
+
+    selector: 'dai-input',
+    template: `<input [(ngModel)]="resource[fieldName]" (keyup)="markAsChanged()" class="form-control">`
 })
 
-export class TextComponent {
+export class InputComponent {
 
     @Input() resource: Resource;
     @Input() fieldName: string;

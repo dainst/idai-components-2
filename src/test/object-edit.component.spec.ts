@@ -1,26 +1,26 @@
 /// <reference path="../../typings/globals/jasmine/index.d.ts" />
 import {Component} from "@angular/core";
-import {PersistenceManager} from "../app/object-edit/persistence-manager";
+import {PersistenceManager} from "../app/documents/persistence-manager";
 import {Datastore} from "../app/datastore/datastore";
-import {ConfigLoader} from "../app/object-edit/config-loader";
-import {DocumentEditComponent} from '../../src/app/object-edit/document-edit.component';
-import {EditFormComponent} from '../../src/app/object-edit/edit-form.component';
-import {RelationsFormComponent} from '../../src/app/object-edit/relations-form.component';
-import {RelationPickerComponent} from '../../src/app/object-edit/relation-picker.component';
-import {RelationPickerGroupComponent} from '../../src/app/object-edit/relation-picker-group.component';
-import {CheckboxesComponent} from '../../src/app/object-edit/forms/checkboxes.component';
-import {DropdownComponent} from '../../src/app/object-edit/forms/dropdown.component';
-import {InputComponent} from '../../src/app/object-edit/forms/input.component';
-import {InputsComponent} from '../../src/app/object-edit/forms/inputs.component';
-import {InputsLocalizedComponent} from '../../src/app/object-edit/forms/inputs-localized.component';
-import {MultiselectComponent} from '../../src/app/object-edit/forms/multiselect.component';
-import {RadioComponent} from '../../src/app/object-edit/forms/radio.component';
-import {TextComponent} from '../../src/app/object-edit/forms/text.component';
-import {Messages} from "../app/core-services/messages";
+import {ConfigLoader} from "../app/documents/config-loader";
+import {DocumentEditComponent} from '../../src/app/documents/document-edit.component';
+import {EditFormComponent} from '../../src/app/documents/edit-form.component';
+import {RelationsFormComponent} from '../../src/app/documents/relations-form.component';
+import {RelationPickerComponent} from '../../src/app/documents/relation-picker.component';
+import {RelationPickerGroupComponent} from '../../src/app/documents/relation-picker-group.component';
+import {CheckboxesComponent} from '../../src/app/documents/forms/checkboxes.component';
+import {DropdownComponent} from '../../src/app/documents/forms/dropdown.component';
+import {InputComponent} from '../../src/app/documents/forms/input.component';
+import {InputsComponent} from '../../src/app/documents/forms/inputs.component';
+import {InputsLocalizedComponent} from '../../src/app/documents/forms/inputs-localized.component';
+import {MultiselectComponent} from '../../src/app/documents/forms/multiselect.component';
+import {RadioComponent} from '../../src/app/documents/forms/radio.component';
+import {TextComponent} from '../../src/app/documents/forms/text.component';
+import {Messages} from "../app/messages/messages";
 import {TestBed, ComponentFixture} from "@angular/core/testing";
 import {HttpModule} from "@angular/http";
 import {FormsModule} from "@angular/forms";
-import {MessagesComponent} from "../app/core-services/messages.component";
+import {MessagesComponent} from "../app/messages/messages.component";
 
 
 /**
