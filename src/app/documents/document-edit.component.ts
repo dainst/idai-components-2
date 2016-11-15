@@ -46,7 +46,7 @@ export class DocumentEditComponent implements OnChanges,OnInit {
     private setFieldsForObjectType(document,projectConfiguration) {
         if (document==undefined) return;
         if (!projectConfiguration) return;
-        this.fieldsForObjectType=projectConfiguration.getFields(document['resource'].type);
+        this.fieldsForObjectType=projectConfiguration.getFieldDefinitions(document['resource'].type);
     }
 
     private setObjectTypeLabel(document, projectConfiguration) {

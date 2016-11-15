@@ -1,6 +1,8 @@
-import {Injectable} from "@angular/core";
-import {MDInternal} from "../messages/md-internal";
-import {IdaiType} from "./idai-type";
+import {Injectable} from '@angular/core';
+import {MDInternal} from '../messages/md-internal';
+import {IdaiType} from './idai-type';
+import {FieldDefinition} from './field-definition';
+
 /**
  * ProjectConfiguration maintains the current projects properties.
  * Amongst them is the set of types for the current project,
@@ -96,9 +98,9 @@ export class ProjectConfiguration {
      * @param typeName
      * @returns {any[]} the fields definitions for the type.
      */
-    public getFields(typeName: string): any[] {
+    public getFieldDefinitions(typeName: string): FieldDefinition[] {
         if(!this.typesMap[typeName]) return [];
-        return this.typesMap[typeName].getFields();
+        return this.typesMap[typeName].getFieldDefinitions();
     }
 
     public getLabelForType(typeName: string): string {

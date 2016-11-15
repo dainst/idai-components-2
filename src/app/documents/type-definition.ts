@@ -1,0 +1,9 @@
+/**
+ * @author Daniel de Oliveira
+ */
+export interface TypeDefinition {
+    label? : string;
+    type: string;
+    abstract? : boolean;
+    fields? : any;
+}

@@ -12,7 +12,7 @@ export function main() {
             "type": "FirstLevelType",
             "fields": [
                 {
-                    "field": "fieldA"
+                    "name": "fieldA"
                 }
             ]
         };
@@ -22,7 +22,7 @@ export function main() {
             "parent" : "FirstLevelType",
             "fields": [
                 {
-                    "field": "fieldB"
+                    "name": "fieldB"
                 }
             ]
         };
@@ -32,9 +32,9 @@ export function main() {
 
                 var dmc = new ProjectConfiguration({"types":[ firstLevelType, secondLevelType ]});
 
-                var fields=dmc.getFields('SecondLevelType');
-                expect(fields[0].field).toBe('fieldA');
-                expect(fields[1].field).toBe('fieldB');
+                var fields=dmc.getFieldDefinitions('SecondLevelType');
+                expect(fields[0].name).toBe('fieldA');
+                expect(fields[1].name).toBe('fieldB');
             }
         );
 
@@ -44,9 +44,9 @@ export function main() {
 
                 var dmc = new ProjectConfiguration({"types":[ secondLevelType, firstLevelType ]});
 
-                var fields=dmc.getFields('SecondLevelType');
-                expect(fields[0].field).toBe('fieldA');
-                expect(fields[1].field).toBe('fieldB');
+                var fields=dmc.getFieldDefinitions('SecondLevelType');
+                expect(fields[0].name).toBe('fieldA');
+                expect(fields[1].name).toBe('fieldB');
             }
         );
 
