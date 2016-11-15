@@ -18,6 +18,8 @@ import {MultiselectComponent} from './forms/multiselect.component';
 import {RadioComponent} from './forms/radio.component';
 import {TextComponent} from './forms/text.component';
 import {FormsModule} from '@angular/forms';
+import {FieldsViewComponent} from "./fields-view.component";
+import {RelationsViewComponent} from "./relations-view.component";
 
 @NgModule({
     imports: [
@@ -25,6 +27,8 @@ import {FormsModule} from '@angular/forms';
         FormsModule
     ],
     declarations: [
+        FieldsViewComponent,
+        RelationsViewComponent,
         DocumentEditComponent,
         EditFormComponent,
         RelationsFormComponent,
@@ -45,7 +49,9 @@ import {FormsModule} from '@angular/forms';
         { provide: ReadDatastore, useExisting: Datastore }
     ],
     exports: [
-        DocumentEditComponent
+        DocumentEditComponent,
+        FieldsViewComponent,
+        RelationsViewComponent
     ]
 })
 export class IdaiDocumentsModule {};
