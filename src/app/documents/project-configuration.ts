@@ -109,6 +109,51 @@ export class ProjectConfiguration {
     }
 
     /**
+     * Should be used only from within components.
+     * 
+     * @param relationName
+     * @returns {string}
+     */
+    public getRelationDefinitionLabel(relationName: string) : string {
+
+        var relationFields = this.getRelationFields();
+        return this.getLabel(relationName, relationFields);
+    }
+
+    /**
+     * Gets the label for the field if it is defined.
+     * Otherwise it returns the fields definitions name.
+     *
+     * @param typeName
+     * @param fieldName
+     * @returns {string}
+     * @throws {string} with an error description in case the type is not defined.
+     */
+    public getFieldDefinitionLabel(typeName: string, fieldName: string) : string {
+
+        var fieldDefinitions = this.getFieldDefinitions(typeName);
+        if (fieldDefinitions.length == 0)
+            throw "No type definition found for type \'"+typeName+"\'";
+
+        return this.getLabel(fieldName, fieldDefinitions);
+    }
+
+    private getLabel(fieldName: string, fields: Array<any>) : string{
+
+        for (var i in fields) {
+            if (fields[i].name == fieldName) {
+                if (fields[i].label) {
+                    return fields[i].label;
+                } else {
+                    return fieldName;
+                }
+            }
+        }
+
+        return fieldName;
+    }
+
+    /**
      * @returns {string} the name of the excavation, if defined.
      *   <code>undefined</code> otherwise.
      */

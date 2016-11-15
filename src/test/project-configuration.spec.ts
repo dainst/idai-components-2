@@ -12,9 +12,14 @@ export function main() {
             "type": "FirstLevelType",
             "fields": [
                 {
-                    "name": "fieldA"
+                    "name": "fieldA",
+                    "label" : "Field A"
                 }
             ]
+        };
+
+        var anotherFirstLevelType = {
+
         };
 
         var secondLevelType = {
@@ -26,13 +31,42 @@ export function main() {
                 }
             ]
         };
+        
+        it('should get label for type', function(){
+            var t = { "type": "T",
+                "fields": [
+                    {
+                        "name": "aField",
+                        "label" : "A Field"
+                    }]
+            };
+            var pc = new ProjectConfiguration({"types":[ t ]});
+            expect(pc.getFieldDefinitionLabel('T',"aField")).toBe('A Field');
+        });
+
+        it('should get default label when not defined', function(){
+            var t = { "type": "T",
+                "fields": [
+                {
+                    "name": "aField",
+                }]
+            };
+            var pc = new ProjectConfiguration({"types":[ t ]});
+            expect(pc.getFieldDefinitionLabel('T',"aField")).toBe('aField');
+        });
+
+        it('should throw an error when field not defined', function(){
+            var pc = new ProjectConfiguration({"types":[ ]});
+            expect(function () { pc.getFieldDefinitionLabel('UndefinedType',"someField")})
+                .toThrow();
+        });
 
         it('should let types inherit fields from parent types',
             function() {
 
-                var dmc = new ProjectConfiguration({"types":[ firstLevelType, secondLevelType ]});
+                var pc = new ProjectConfiguration({"types":[ firstLevelType, secondLevelType ]});
 
-                var fields=dmc.getFieldDefinitions('SecondLevelType');
+                var fields=pc.getFieldDefinitions('SecondLevelType');
                 expect(fields[0].name).toBe('fieldA');
                 expect(fields[1].name).toBe('fieldB');
             }
@@ -42,9 +76,9 @@ export function main() {
         it('list parent type fields first',
             function() {
 
-                var dmc = new ProjectConfiguration({"types":[ secondLevelType, firstLevelType ]});
+                var pc = new ProjectConfiguration({"types":[ secondLevelType, firstLevelType ]});
 
-                var fields=dmc.getFieldDefinitions('SecondLevelType');
+                var fields=pc.getFieldDefinitions('SecondLevelType');
                 expect(fields[0].name).toBe('fieldA');
                 expect(fields[1].name).toBe('fieldB');
             }
