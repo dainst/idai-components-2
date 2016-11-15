@@ -50,4 +50,4 @@ Adjust the exports in [idai-components-2.ts](idai-components-2.ts).
 idai-components-2.ts <- the module exports, which you can use via system.js
 lib/css/idai-components-2.css <- for your index.html
 lib/templates <- these must be copied to your application so that they again remain at lib/templates
-``
+```
