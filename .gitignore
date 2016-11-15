@@ -9,8 +9,10 @@ src/app/**/*.js
 src/app/**/*.js.map
 src/test/**/*.js
 src/test/**/*.js.map
-idai-components-2.js
-idai-components-2.js.map
+messages.js*
+datastore.js*
+documents.js*
+core.js*
 references.js
 references.js.map
 *.DS_Store
