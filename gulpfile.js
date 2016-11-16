@@ -14,7 +14,7 @@ gulp.task('convert-sass', function() {
 
 	return gulp.src('src/scss/app.scss')
 	  	.pipe(sass({includePaths: [
-			'node_modules/bootstrap/scss/',
+			'node_modules/mdbootstrap/sass/',
 			'node_modules/mdi/scss/'
 		], precision: 8}))
 	  	.pipe(concat(pkg.name + '.css'))
@@ -34,13 +34,12 @@ gulp.task('webserver-watch', function() {
 	watch();
 });
 
-
 const tscConfig = require('./tsconfig.json');
 gulp.task('compile',['convert-sass'], function () {
     // fonts
     gulp.src([
             'node_modules/mdi/fonts/**/*',
-            'node_modules/bootstrap-sass/assets/fonts/**/*'
+            'node_modules/mdbootstrap/font/**/*'
         ])
         .pipe(gulp.dest('fonts'));
 	
@@ -67,7 +66,6 @@ gulp.task('compile',['convert-sass'], function () {
 		.pipe(gulp.dest('src/test/'));
 });
 
-
 function createConfig(path) {
 	fs.access(path, fs.F_OK, function (err) {
 
@@ -79,9 +77,7 @@ function createConfig(path) {
 	});
 }
 
-// Creates configfile if the do not exist already
-//
+// Creates config file if it doesn't exist already
 gulp.task('create-configs', function (callback) {
 	createConfig('./demo/config/Configuration.json');
 });
-
