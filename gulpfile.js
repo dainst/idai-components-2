@@ -13,7 +13,7 @@ var webserver = require('gulp-webserver');
 gulp.task('convert-sass', function () {
 
     return gulp.src([
-        'src/scss/app.scss',
+        'src/scss/idai-components-2.scss',
         'node_modules/mdbootstrap/css/bootstrap.css'
     ])
         .pipe(sass({
