@@ -25,17 +25,38 @@ export class Messages {
      * @param id used to identify the message. Must be an existing key.
      *   If it is not, the id param gets interpreted as a message content of an unknown
      *   error condition with level 'danger'.
-     * @param params (optional) contains strings which will be inserted into the message content.
+     */   
+    public add(id: string): void {
+        var msg = this._get(id);
+        if (!msg) msg = {content: id, level: 'danger', params: []};
+        this._add(msg,undefined);
+    }
+    
+    /**
+     * @param msgWithParams
+     *   msgWithParams[0] -> id. Used to identify the message. Must be an existing key.
+     *   msgWithParams[1..n] -> params. Contains strings which will be inserted into the message content.
      *   Every occurrence of "{0}", "{1}", "{2}" etc. will be replaced with the param string at the corresponding
      *   array position: {0} will be replaced with params[0] etc.
      */
-    public add(id: string, params?: Array<string>): void {
+    public addWithParams(msgWithParams: Array<string>): void {
+        var id = msgWithParams[0];
+        msgWithParams.splice(0,1);
+        var params = msgWithParams;
+        var msg = this._get(id);
+        if (!msg) throw 'No message found for key '+id;
+        this._add(msg,params);
+    }
 
+    private _get(id) : Message {
         var msg = this.internalMessagesDictionary.msgs[id];
         var providedMsg = this.messagesDictionary.msgs[id];
         if (providedMsg) msg = providedMsg;
+        return msg;
+    }
 
-        if (!msg) msg = {content: id, level: 'danger', params: []};
+    private _add(msg,params?:Array<string>) {
+        
         var isNew = true;
         this.messageList.forEach(function (message) {
             if (message.content == msg.content) {
@@ -50,7 +71,7 @@ export class Messages {
             });
         }
     }
-
+    
     /**
      * @param message to be removed
      */

@@ -21,7 +21,7 @@ export class MessagesDemoComponent {
 
     public showMessage(msgKey: string) {
         if (this.useParams) {
-            this.messages.add(msgKey, this.params);
+            this.messages.addWithParams([msgKey].concat(this.params));
         } else {
             this.messages.add(msgKey);
         }

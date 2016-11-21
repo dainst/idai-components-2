@@ -59,14 +59,6 @@ export function main() {
             }
         );
 
-        it('should add a message with parameters',
-            function(){
-                var params = ["param1", "param2"];
-                messages.add("key2", params);
-                expect(messages.getMessages()[1].params).toEqual(params);
-            }
-        );
-
         it('should add a non existing message',
             function(){
                 messages.add("notexisting");
@@ -104,6 +96,38 @@ export function main() {
                 };
                 messages.add(MDInternal.MESSAGES_NOBODY);
                 expect(messages.getMessages()[1]).toEqual(messagesDictionary.msgs[MDInternal.MESSAGES_NOBODY]);
+            }
+        );
+
+        it('should add a message with parameters',
+            function(){
+                var params = ['param1','param2'];
+                messages.addWithParams(['key2'].concat(params));
+                expect(messages.getMessages()[1].params).toEqual(params);
+            }
+        );
+
+        it('should throw an error if adding a message with parameters but id not found',
+            function(){
+                expect(function(){
+                    messages.addWithParams(['nonexisting']);
+                }).toThrow();
+            }
+        );
+
+        it('should throw an error if array is empty',
+            function(){
+                expect(function(){
+                    messages.addWithParams([]);
+                }).toThrow();
+            }
+        );
+
+        it('should throw an error if array is undefined',
+            function(){
+                expect(function(){
+                    messages.addWithParams();
+                }).toThrow();
             }
         );
     })
