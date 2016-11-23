@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {ConfigLoader} from '../../src/app/documents/config-loader'
-import {Datastore} from '../../src/app/datastore/datastore'
+import {ConfigLoader} from '../../src/app/configuration/config-loader';
+import {IdaiType} from '../../src/app/configuration/idai-type';
+import {Datastore} from '../../src/app/datastore/datastore';
 import {OBJECTS} from "./sample-objects";
-import {Document} from "../../src/app/model/document"
+import {Document} from "../../src/app/model/document";
 import {PersistenceManager} from "../../src/app/documents/persistence-manager";
-import {IdaiType} from "../../src/app/documents/idai-type";
 
 @Component({
     selector: 'document-edit-demo',
@@ -17,7 +17,7 @@ export class DocumentEditDemoComponent implements OnInit {
     private documents = new Array();
     private selectedDocument : Document;
 
-    private types : IdaiType[]
+    private types : IdaiType[];
 
     constructor(
         private configLoader:ConfigLoader,

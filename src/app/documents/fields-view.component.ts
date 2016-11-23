@@ -1,6 +1,6 @@
 import {Component, OnInit, OnChanges, Input} from "@angular/core";
 import {ReadDatastore} from "../datastore/read-datastore";
-import {ConfigLoader} from "./config-loader";
+import {ConfigLoader} from "../configuration/config-loader";
 import {WithConfiguration} from "./with-configuration";
 import {Resource} from "../model/resource";
 

@@ -2,7 +2,7 @@ import {Injectable} from "@angular/core";
 import {Datastore} from "../datastore/datastore";
 import {Document} from "../model/document";
 import {Resource} from "../model/resource";
-import {ProjectConfiguration} from "./project-configuration";
+import {ProjectConfiguration} from "../configuration/project-configuration";
 
 /**
  * With a document to persist, it determines which other documents are 

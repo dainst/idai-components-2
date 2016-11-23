@@ -12,6 +12,7 @@ src/test/**/*.js.map
 messages.js*
 datastore.js*
 documents.js*
+configuration.js*
 core.js*
 references.js
 references.js.map

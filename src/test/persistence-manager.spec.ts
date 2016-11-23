@@ -1,6 +1,6 @@
 /// <reference path="../../typings/globals/jasmine/index.d.ts" />
 import {PersistenceManager} from "../app/documents/persistence-manager";
-import {ProjectConfiguration} from "../app/documents/project-configuration";
+import {ProjectConfiguration} from "../app/configuration/project-configuration";
 import {Messages} from "../app/messages/messages";
 import {MD} from "../app/messages/md";
 import {TestBed} from "@angular/core/testing";

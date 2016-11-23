@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {Messages} from '../../src/app/messages/messages';
-import {ConfigLoader} from '../../src/app/documents/config-loader';
+import {ConfigLoader} from '../../src/app/configuration/config-loader';
 
 /**
  * @author Daniel de Oliveira

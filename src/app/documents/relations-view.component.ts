@@ -1,7 +1,7 @@
 import {Component, OnInit, OnChanges, Input, EventEmitter, Output} from "@angular/core";
 import {Resource} from "../model/resource";
 import {ReadDatastore} from "../datastore/read-datastore";
-import {ConfigLoader} from "./config-loader";
+import {ConfigLoader} from "../configuration/config-loader";
 import {WithConfiguration} from "./with-configuration";
 
 @Component({

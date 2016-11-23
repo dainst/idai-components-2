@@ -1,5 +1,5 @@
-import {ProjectConfiguration} from "./project-configuration";
-import {ConfigLoader} from "./config-loader";
+import {ProjectConfiguration} from "../configuration/project-configuration";
+import {ConfigLoader} from "../configuration/config-loader";
 
 /**
  * @author Daniel de Oliveira
