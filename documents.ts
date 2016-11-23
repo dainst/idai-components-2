@@ -1,3 +1,4 @@
+export {IdaiDocumentsModule} from './src/app/documents/idai-documents.module';
 export {FieldDefinition} from './src/app/configuration/field-definition';
 export {TypeDefinition} from './src/app/configuration/type-definition';
 export {ConfigLoader} from './src/app/configuration/config-loader';
