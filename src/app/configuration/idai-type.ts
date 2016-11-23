@@ -14,14 +14,13 @@ export class IdaiType {
         this.label = definition['label'] || this.name;
         this.fields = definition['fields'] || [];
         this.isAbstract = definition['abstract'] || false;
-
-
     }
 
     private setParentType(parent: IdaiType) {
         this.parentType = parent;
         this.fields = this.parentType.getFieldDefinitions().concat(this.fields);
     }
+
 
     public addChildType(definition: TypeDefinition) {
         if (!this.children) this.children = [];
@@ -30,15 +29,13 @@ export class IdaiType {
         this.children.push(childType)
     }
 
-    // public insertFieldAtIndex(field: FieldDefinition, index: number) {
-    //     this.fields.splice(index, 0, field);
-    // }
+    public insertFieldAtIndex(field: FieldDefinition, index: number) {
+        this.fields.splice(index, 0, field);
+    }
 
-    // public moveField(fromIndex: number, toIndex: number) {
-    //     this.fields.splice(mandatoryField.index, 0, type.fields.splice(mandatoryFieldFoundAt, 1)[0]);
-    //
-    // }
-
+    public moveField(fromIndex: number, toIndex: number) {
+        this.fields.splice(toIndex, 0, this.fields.splice(fromIndex, 1)[0]);
+    }
 
     public getFieldDefinitions(): FieldDefinition[] {
         return this.fields;
