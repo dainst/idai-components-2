@@ -7,7 +7,7 @@ import {DocumentEditChangeMonitor} from "./document-edit-change-monitor";
 @Component({
     moduleId: module.id,
     selector: 'edit-form',
-    templateUrl: '../../templates/edit-form.html'
+    templateUrl: './edit-form.html'
 })
 
 export class EditFormComponent{

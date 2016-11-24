@@ -7,7 +7,7 @@ import {WithConfiguration} from "./with-configuration";
 @Component({
     selector: 'relations-view',
     moduleId: module.id,
-    templateUrl: '../../templates/relations-view.html'
+    templateUrl: './templates/relations-view.html'
 })
 
 /**

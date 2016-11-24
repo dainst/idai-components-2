@@ -8,7 +8,7 @@ import {DocumentEditChangeMonitor} from "../document-edit-change-monitor";
 @Component({
     moduleId: module.id,
     selector: 'dai-multiselect',
-    templateUrl: '../../../templates/form-components/multiselect.html'
+    templateUrl: './multiselect.html'
 })
 
 export class MultiselectComponent {

@@ -7,7 +7,7 @@ import {Resource} from "../model/resource";
 @Component({
     selector: 'fields-view',
     moduleId: module.id,
-    templateUrl: '../../templates/fields-view.html'
+    templateUrl: './fields-view.html'
 })
 
 /**

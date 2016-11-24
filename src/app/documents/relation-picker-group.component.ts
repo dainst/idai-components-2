@@ -6,7 +6,7 @@ import {Component, Input, OnChanges} from '@angular/core';
 @Component({
     moduleId: module.id,
     selector: 'relation-picker-group',
-    templateUrl: '../../templates/relation-picker-group.html'
+    templateUrl: './relation-picker-group.html'
 })
 
 export class RelationPickerGroupComponent implements OnChanges {

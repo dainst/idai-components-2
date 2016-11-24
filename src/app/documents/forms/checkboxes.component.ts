@@ -8,7 +8,7 @@ import {DocumentEditChangeMonitor} from "../document-edit-change-monitor";
 @Component({
     moduleId: module.id,
     selector: 'dai-checkboxes',
-    templateUrl: '../../../templates/form-components/checkboxes.html'
+    templateUrl: './checkboxes.html'
 })
 
 export class CheckboxesComponent {

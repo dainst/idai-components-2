@@ -12,7 +12,7 @@ import {ConfigLoader} from "../configuration/config-loader";
 @Component({
     moduleId: module.id,
     selector: 'document-edit',
-    templateUrl: '../../templates/document-edit.html'
+    templateUrl: './document-edit.html'
 })
 
 export class DocumentEditComponent implements OnChanges,OnInit {

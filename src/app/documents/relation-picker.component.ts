@@ -13,7 +13,7 @@ import {ReadDatastore} from "../datastore/read-datastore";
 @Component({
     moduleId: module.id,
     selector: 'relation-picker',
-    templateUrl: '../../templates/relation-picker.html'
+    templateUrl: './relation-picker.html'
 })
 
 export class RelationPickerComponent implements OnChanges {
