@@ -1,3 +1,3 @@
 export interface Relations {
-    [propName: string]: string;
+    [propName: string]: string[];
 }

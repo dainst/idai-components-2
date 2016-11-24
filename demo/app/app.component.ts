@@ -17,7 +17,7 @@ export class AppComponent {
         configLoader.configuration().subscribe(
             result=>{
                 if (result.error)
-                    messages.add(result.error.msgkey, [result.error.msgparams]);
+                    messages.addWithParams([result.error.msgkey, result.error.msgparams]);
             }
         )
     }
