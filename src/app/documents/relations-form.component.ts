@@ -8,7 +8,7 @@ import {DocumentEditChangeMonitor} from "./document-edit-change-monitor";
 @Component({
     moduleId: module.id,
     selector: 'relations-form',
-    templateUrl: './templates/relations-form.html'
+    templateUrl: './relations-form.html'
 })
 
 export class RelationsFormComponent implements OnChanges {
