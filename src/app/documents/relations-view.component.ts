@@ -2,7 +2,7 @@ import {Component, OnInit, OnChanges, Input, EventEmitter, Output} from "@angula
 import {Resource} from "../model/resource";
 import {ReadDatastore} from "../datastore/read-datastore";
 import {ConfigLoader} from "../configuration/config-loader";
-import {WithConfiguration} from "./with-configuration";
+import {WithConfiguration} from "../configuration/with-configuration";
 
 @Component({
     selector: 'relations-view',
