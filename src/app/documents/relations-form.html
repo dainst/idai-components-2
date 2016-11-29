@@ -1,13 +1,13 @@
-<div *ngIf="availableRelationFields && availableRelationFields.length > 0" class="card">
+<div *ngIf="relationDefinitions && relationDefinitions.length > 0" class="card">
     <div class="card-header">
         <h3 class="card-title">Relationen</h3>
     </div>
     <ul class="list-group list-group-flush">
-        <template ngFor [ngForOf]="availableRelationFields" let-relationField="$implicit">
+        <template ngFor [ngForOf]="relationDefinitions" let-relationDefinition="$implicit">
             <li class="list-group-item">
-                <label *ngIf="relationField.label">{{relationField.label}}</label>
-                <label *ngIf="!relationField.label">{{relationField.name}}</label>
-                <relation-picker-group [(document)]="document" [field]="relationField" [primary]="primary"></relation-picker-group>
+                <label *ngIf="relationDefinition.label">{{relationDefinition.label}}</label>
+                <label *ngIf="!relationDefinition.label">{{relationDefinition.name}}</label>
+                <relation-picker-group [(document)]="document" [field]="relationDefinition" [primary]="primary"></relation-picker-group>
             </li>
         </template>
     </ul>

@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {MDInternal} from '../messages/md-internal';
 import {IdaiType} from './idai-type';
 import {FieldDefinition} from './field-definition';
+import {RelationDefinition} from './relation-definition';
 
 /**
  * ProjectConfiguration maintains the current projects properties.
@@ -38,10 +39,6 @@ export class ProjectConfiguration {
         this.initTypesMap();
         this.excavation=configuration['excavation'];
         this.relationFields = configuration['relations'];
-    }
-
-    public getRelationFields() {
-        return this.relationFields;
     }
 
     public getInverseRelations(prop) {
@@ -95,6 +92,23 @@ export class ProjectConfiguration {
     }
 
     /**
+     * Gets the relation defintions available.
+     *
+     * @param typeName the name of the type to get the relation defintions for.
+     * @returns {Array<RelationDefinition>} the definitions for the type.
+     */
+    public getRelationDefinitions(typeName: string): Array<RelationDefinition> {
+
+        var availableRelationFields = new Array<RelationDefinition>();
+        for (var i in this.relationFields) {
+            if (this.relationFields[i].domain.indexOf(typeName) > -1) {
+                availableRelationFields.push(this.relationFields[i]);
+            }
+        }
+        return availableRelationFields;
+    }
+
+    /**
      * @param typeName
      * @returns {any[]} the fields definitions for the type.
      */
@@ -116,7 +130,7 @@ export class ProjectConfiguration {
      */
     public getRelationDefinitionLabel(relationName: string) : string {
 
-        var relationFields = this.getRelationFields();
+        var relationFields = this.relationFields;
         return this.getLabel(relationName, relationFields);
     }
 
@@ -137,6 +151,7 @@ export class ProjectConfiguration {
 
         return this.getLabel(fieldName, fieldDefinitions);
     }
+
 
     private getLabel(fieldName: string, fields: Array<any>) : string{
 

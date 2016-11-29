@@ -1,4 +1,4 @@
-<div  *ngFor="let field of fieldsForObjectType; let i=index" id="edit-form-element-{{i}}">
+<div  *ngFor="let field of fieldDefinitions; let i=index" id="edit-form-element-{{i}}">
     <div *ngIf="field" class="form-group card">
         <div class="card-header">
             <span *ngIf="field.label" data-toggle="tooltip" data-placement="left" title="{{field.description}}">{{field.label}}</span>

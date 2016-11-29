@@ -1,5 +1,6 @@
-import {Component, Input, OnChanges} from '@angular/core';
-import {DocumentEditChangeMonitor} from "./document-edit-change-monitor";
+import {Component, Input} from '@angular/core';
+import {DocumentEditChangeMonitor} from './document-edit-change-monitor';
+import {RelationDefinition} from '../configuration/relation-definition';
 
 /**
  * @author Daniel de Oliveira
@@ -11,29 +12,16 @@ import {DocumentEditChangeMonitor} from "./document-edit-change-monitor";
     templateUrl: './relations-form.html'
 })
 
-export class RelationsFormComponent implements OnChanges {
+export class RelationsFormComponent {
 
     @Input() document: any;
     @Input() primary: string;
-    @Input() relationFields: any;
+    @Input() relationDefinitions: Array<RelationDefinition>;
     
-    private availableRelationFields: any;
-
     constructor(
         private saveService: DocumentEditChangeMonitor
     ) {}
     
-    ngOnChanges() {
-
-        this.availableRelationFields = [];
-
-        for (var i in this.relationFields) {
-            if (this.relationFields[i].domain.indexOf(this.document.resource.type) > -1) {
-                this.availableRelationFields.push(this.relationFields[i]);
-            }
-        }
-    }
-
     public markAsChanged() {
         this.saveService.setChanged();
     }

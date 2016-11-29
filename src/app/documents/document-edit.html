@@ -6,12 +6,12 @@
 
                 <div class="col-md">
                     <edit-form [(document)]="document"
-                               [fieldsForObjectType]="projectConfiguration.getFieldDefinitions(document.resource.type)"></edit-form>
+                       [fieldDefinitions]="projectConfiguration.getFieldDefinitions(document.resource.type)"></edit-form>
                 </div>
                 <div class="col-md">
                     <relations-form [(document)]="document"
-                                    [primary]="primary"
-                                    [relationFields]="projectConfiguration.getRelationFields()"></relations-form>
+                        [primary]="primary"
+                        [relationDefinitions]="projectConfiguration.getRelationDefinitions(document.resource.type)"></relations-form>
                 </div>
 
         </div>
