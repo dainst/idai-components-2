@@ -1,30 +1,19 @@
-<div *ngIf="document">
+<div *ngIf="projectConfiguration && document && document.resource.type"
+     id="object-edit">
 
-    <div *ngIf="document['resource'].type"
-         id="object-edit">
+    <div class="container">
+        <div class="row flex-items-md-top">
 
-        <h1>
-            {{objectTypeLabel}}
-            <div *ngIf="document['resource'].type">
-                <small>Typ: {{document['resource'].type}}</small>
-            </div>
+                <div class="col-md">
+                    <edit-form [(document)]="document"
+                               [fieldsForObjectType]="projectConfiguration.getFieldDefinitions(document.resource.type)"></edit-form>
+                </div>
+                <div class="col-md">
+                    <relations-form [(document)]="document"
+                                    [primary]="primary"
+                                    [relationFields]="projectConfiguration.getRelationFields()"></relations-form>
+                </div>
 
-        </h1>
-
-        <div class="container">
-            <div class="row flex-items-md-top">
-
-                    <div class="col-md">
-                        <edit-form [(document)]="document"
-                                   [fieldsForObjectType]="fieldsForObjectType"></edit-form>
-                    </div>
-                    <div class="col-md">
-                        <relations-form [(document)]="document"
-                                        [primary]="primary"
-                                        [relationFields]="relationFields"></relations-form>
-                    </div>
-
-            </div>
         </div>
     </div>
 </div>

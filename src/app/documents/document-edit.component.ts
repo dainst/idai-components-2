@@ -22,10 +22,6 @@ export class DocumentEditComponent implements OnChanges,OnInit {
 
     private projectConfiguration: ProjectConfiguration;
 
-    public relationFields : any[];
-    public fieldsForObjectType : any;
-    public objectTypeLabel : string;
-
     constructor(
         private persistenceManager: PersistenceManager,
         private configLoader: ConfigLoader
@@ -33,34 +29,15 @@ export class DocumentEditComponent implements OnChanges,OnInit {
 
     ngOnInit():any {
         this.configLoader.configuration().subscribe((result)=>{
-            if(result.error == undefined) {
-                this.projectConfiguration = result.projectConfiguration;
-                this.setFieldsForObjectType(this.document, this.projectConfiguration);
-                this.setObjectTypeLabel(this.document, this.projectConfiguration);
-                this.persistenceManager.setProjectConfiguration(this.projectConfiguration);
-                this.relationFields = this.projectConfiguration.getRelationFields();
-            }
+            if(result.error != undefined) return;
+            
+            this.projectConfiguration = result.projectConfiguration;
+            this.persistenceManager.setProjectConfiguration(this.projectConfiguration);
         });
     }
 
-    private setFieldsForObjectType(document,projectConfiguration) {
-        if (document==undefined) return;
-        if (!projectConfiguration) return;
-        this.fieldsForObjectType=projectConfiguration.getFieldDefinitions(document['resource'].type);
-    }
-
-    private setObjectTypeLabel(document, projectConfiguration) {
-        if (document==undefined) return;
-        if (!projectConfiguration) return;
-        this.objectTypeLabel = projectConfiguration.getLabelForType(document['resource'].type);
-    }
 
     public ngOnChanges() {
-
-        if (this.document) {
-            this.persistenceManager.setOldVersion(this.document);
-            this.setFieldsForObjectType(this.document,this.projectConfiguration);
-            this.setObjectTypeLabel(this.document,this.projectConfiguration);
-        }
+        if (this.document) this.persistenceManager.setOldVersion(this.document);
     }
 }
