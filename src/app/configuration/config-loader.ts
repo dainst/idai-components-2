@@ -3,6 +3,9 @@ import {ProjectConfiguration} from "./project-configuration";
 import {Http} from "@angular/http";
 import {MDInternal} from "../messages/md-internal";
 import {Observable} from "rxjs/Observable";
+import {TypeDefinition} from './type-definition';
+import {FieldDefinition} from './field-definition';
+import {ConfigurationPreprocessor} from './configuration-preprocessor';
 
 /**
  * Lets clients subscribe for the app
@@ -62,12 +65,25 @@ export class ConfigLoader {
     }
 
     /**
-     *
      * @param projectConfigurationPath
+     * @param extraTypes
+     * @param extraFields
      */
-    public setConfigurationPath (projectConfigurationPath: string) {
+    public load(
+        projectConfigurationPath: string,
+        extraTypes : Array<TypeDefinition>,
+        extraFields : Array<FieldDefinition>
+
+    ) {
         this.read(this.http,projectConfigurationPath).then(
             (config)=>{
+                new ConfigurationPreprocessor()
+                    .go(config,
+                        extraTypes,
+                        extraFields
+                    );
+
+
                 this.projectConfig = new ProjectConfiguration(config);
                 this.notify();
             },

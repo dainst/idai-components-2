@@ -1,5 +1,7 @@
 /// <reference path="../../../typings/globals/jasmine/index.d.ts" />
 import {ConfigurationPreprocessor} from "../../app/configuration/configuration-preprocessor";
+import {TypeDefinition} from '../../app/configuration/type-definition'
+import {ConfigurationDefinition} from "../../app/configuration/configuration-definition";
 
 /**
  * @author Daniel de Oliveira
@@ -9,13 +11,13 @@ export function main() {
 
 
 
-        var configuration;
+        var configuration : ConfigurationDefinition;
 
 
 
         beforeEach(function() {
 
-            var t =  { "type": "T",
+            var t : TypeDefinition =  { "type": "T",
                 "fields": [
                     {
                         "name": "aField"
@@ -36,8 +38,29 @@ export function main() {
             new ConfigurationPreprocessor()
                 .go(
                     configuration,
-                    [{name:'identifier'}],
-                    []
+                    [],
+                    [{name:'identifier'}]
+                );
+
+            expect(configuration['types'][0].fields[0].name).toBe('identifier');
+            expect(configuration['types'][0].fields[1].name).toBe('aField');
+        });
+
+        
+        it('should add extra fields in case extra types are also present', function(){
+
+            var et : TypeDefinition = { "type": "T2",
+                "fields": [
+                    {
+                        "name": "bField"
+                    }]
+            };
+
+            new ConfigurationPreprocessor()
+                .go(
+                    configuration,
+                    [et],
+                    [{name:'identifier'}]
                 );
 
             expect(configuration['types'][0].fields[0].name).toBe('identifier');
@@ -47,7 +70,7 @@ export function main() {
 
         it('should add extra type', function(){
 
-            var et = { "type": "T2",
+            var et : TypeDefinition = { "type": "T2",
                 "fields": [
                     {
                         "name": "bField"
@@ -57,8 +80,8 @@ export function main() {
             new ConfigurationPreprocessor()
                 .go(
                     configuration,
-                    [],
-                    [et]
+                    [et],
+                    []
                 );
 
             expect(configuration['types'][1].fields[0].name).toBe('bField');
@@ -68,7 +91,7 @@ export function main() {
         it('should add and extra field to an extra type', function(){
 
 
-            var et = { "type": "T2",
+            var et : TypeDefinition = { "type": "T2",
                 "fields": [
                     {
                         "name": "bField"
@@ -78,8 +101,8 @@ export function main() {
             new ConfigurationPreprocessor()
                 .go(
                     configuration,
-                    [{name:'identifier'}],
-                    [et]
+                    [et],
+                    [{name:'identifier'}]
                 );
 
             expect(configuration['types'][1].fields[0].name).toBe('identifier');
@@ -90,7 +113,7 @@ export function main() {
 
         it('merge fields of extra type with existing type', function(){
 
-            var et = { "type": "T",
+            var et : TypeDefinition = { "type": "T",
                 "fields": [
                     {
                         "name": "bField"
@@ -100,8 +123,8 @@ export function main() {
             new ConfigurationPreprocessor()
                 .go(
                     configuration,
-                    [],
-                    [et]
+                    [et],
+                    []
                 );
 
             expect(configuration['types'][0].fields[0].name).toBe('aField');
@@ -112,7 +135,7 @@ export function main() {
 
         it('merge fields of extra type with existing type and add extra field', function(){
 
-            var et = { "type": "T",
+            var et : TypeDefinition = { "type": "T",
                 "fields": [
                     {
                         "name": "bField"
@@ -122,8 +145,8 @@ export function main() {
             new ConfigurationPreprocessor()
                 .go(
                     configuration,
-                    [{name:'identifier'}],
-                    [et]
+                    [et],
+                    [{name:'identifier'}]
                 );
 
             expect(configuration['types'][0].fields[0].name).toBe('identifier');

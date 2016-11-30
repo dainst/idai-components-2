@@ -1,6 +1,6 @@
-import {ProjectConfiguration} from "./project-configuration";
 import {FieldDefinition} from "./field-definition";
 import {TypeDefinition} from "./type-definition";
+import {ConfigurationDefinition} from "./configuration-definition";
 
 /**
  * @author Daniel de Oliveira
@@ -10,10 +10,16 @@ export class ConfigurationPreprocessor {
     constructor() { }
 
     // TODO make it return a copy
+    /**
+     * @param configuration
+     * @param extraTypes
+     * @param extraFields
+     */
     public go(
-        configuration : any,
-        extraFields : Array<FieldDefinition>,
-        extraTypes : Array<TypeDefinition>) {
+        configuration : ConfigurationDefinition,
+        extraTypes : Array<TypeDefinition>,
+        extraFields : Array<FieldDefinition>
+        ) {
 
         if (extraTypes.length == 0) {
             for (var typeDefinition of configuration['types']) {
@@ -32,9 +38,9 @@ export class ConfigurationPreprocessor {
 
                     typeAlreadyPresent = true;
                     this.mergeFields(typeDefinition,extraType);
-                    this.addExtraFields(typeDefinition,extraFields)
                 }
 
+                this.addExtraFields(typeDefinition,extraFields)
             }
 
             if (!typeAlreadyPresent) {

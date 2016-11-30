@@ -45,7 +45,11 @@ export class DocumentEditDemoComponent implements OnInit {
     ngOnInit() {
         this.loadSampleData();
         
-        this.configLoader.setConfigurationPath(DocumentEditDemoComponent.PROJECT_CONFIGURATION_PATH);
+        this.configLoader.load(
+            DocumentEditDemoComponent.PROJECT_CONFIGURATION_PATH,
+            [{"type":"image","fields":[{"name":"dimensions"}]}],
+            [{"name":"identifier"}]
+        );
 
         this.configLoader.configuration().subscribe((result)=>{
             if(result.error == undefined) {
