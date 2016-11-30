@@ -5,29 +5,130 @@ import {ConfigurationPreprocessor} from "../../app/configuration/configuration-p
  * @author Daniel de Oliveira
  */
 export function main() {
-    fdescribe('ConfigurationPreprocessor', () => {
+    describe('ConfigurationPreprocessor', () => {
 
-        it('should add extra fields', function(){
-            var t = { "type": "T",
+
+
+        var configuration;
+
+
+
+        beforeEach(function() {
+
+            var t =  { "type": "T",
                 "fields": [
                     {
-                        "name": "aField",
-                        "label" : "A Field"
+                        "name": "aField"
                     }]
             };
-            var configuration = {
+
+            configuration = {
                 "types" : [
-                    t      
+                    t
                 ]
             };
-            
+        });
+
+
+
+        it('should add extra fields', function(){
+
             new ConfigurationPreprocessor()
                 .go(
                     configuration,
-                    [{name:'identifier'}]
+                    [{name:'identifier'}],
+                    []
                 );
 
-            expect(configuration['types'][0].fields[1].name).toBe('identifier');
+            expect(configuration['types'][0].fields[0].name).toBe('identifier');
+            expect(configuration['types'][0].fields[1].name).toBe('aField');
+        });
+
+
+        it('should add extra type', function(){
+
+            var et = { "type": "T2",
+                "fields": [
+                    {
+                        "name": "bField"
+                    }]
+            };
+
+            new ConfigurationPreprocessor()
+                .go(
+                    configuration,
+                    [],
+                    [et]
+                );
+
+            expect(configuration['types'][1].fields[0].name).toBe('bField');
+        });
+
+
+        it('should add and extra field to an extra type', function(){
+
+
+            var et = { "type": "T2",
+                "fields": [
+                    {
+                        "name": "bField"
+                    }]
+            };
+
+            new ConfigurationPreprocessor()
+                .go(
+                    configuration,
+                    [{name:'identifier'}],
+                    [et]
+                );
+
+            expect(configuration['types'][1].fields[0].name).toBe('identifier');
+            expect(configuration['types'][1].fields[1].name).toBe('bField');
+        });
+
+
+
+        it('merge fields of extra type with existing type', function(){
+
+            var et = { "type": "T",
+                "fields": [
+                    {
+                        "name": "bField"
+                    }]
+            };
+
+            new ConfigurationPreprocessor()
+                .go(
+                    configuration,
+                    [],
+                    [et]
+                );
+
+            expect(configuration['types'][0].fields[0].name).toBe('aField');
+            expect(configuration['types'][0].fields[1].name).toBe('bField');
+        });
+
+
+
+        it('merge fields of extra type with existing type and add extra field', function(){
+
+            var et = { "type": "T",
+                "fields": [
+                    {
+                        "name": "bField"
+                    }]
+            };
+
+            new ConfigurationPreprocessor()
+                .go(
+                    configuration,
+                    [{name:'identifier'}],
+                    [et]
+                );
+
+            expect(configuration['types'][0].fields[0].name).toBe('identifier');
+            expect(configuration['types'][0].fields[1].name).toBe('aField');
+            expect(configuration['types'][0].fields[2].name).toBe('bField');
         });
     });
 }
