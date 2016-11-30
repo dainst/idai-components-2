@@ -5,10 +5,6 @@ node_modules
 typings
 demo/**/*.js
 demo/**/*.js.map
-src/app/**/*.js
-src/app/**/*.js.map
-src/test/**/*.js
-src/test/**/*.js.map
 messages.js*
 datastore.js*
 documents.js*
