@@ -1,6 +1,6 @@
-/// <reference path="../../typings/globals/jasmine/index.d.ts" />
-import {ProjectConfiguration} from "../app/configuration/project-configuration";
-import {MDInternal} from "../app/messages/md-internal";
+/// <reference path="../../../typings/globals/jasmine/index.d.ts" />
+import {ProjectConfiguration} from "../../app/configuration/project-configuration";
+import {MDInternal} from "../../app/messages/md-internal";
 
 /**
  * @author Daniel de Oliveira

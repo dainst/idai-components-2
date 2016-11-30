@@ -1,5 +1,5 @@
 /// <reference path="../../typings/globals/jasmine/index.d.ts" />
-import {RelationPickerGroupComponent} from "../app/documents/relation-picker-group.component";
+import {RelationPickerGroupComponent} from "../../app/documents/relation-picker-group.component";
 
 /**
  * @author Thomas Kleinke
