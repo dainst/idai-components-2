@@ -45,29 +45,9 @@ export function main() {
             expect(configuration['types'][0].fields[0].name).toBe('identifier');
             expect(configuration['types'][0].fields[1].name).toBe('aField');
         });
-
         
-        it('should add extra fields in case extra types are also present', function(){
-
-            var et : TypeDefinition = { "type": "T2",
-                "fields": [
-                    {
-                        "name": "bField"
-                    }]
-            };
-
-            new ConfigurationPreprocessor()
-                .go(
-                    configuration,
-                    [et],
-                    [{name:'identifier'}]
-                );
-
-            expect(configuration['types'][0].fields[0].name).toBe('identifier');
-            expect(configuration['types'][0].fields[1].name).toBe('aField');
-        });
-
-
+        
+        
         it('should add extra type', function(){
 
             var et : TypeDefinition = { "type": "T2",
@@ -152,6 +132,35 @@ export function main() {
             expect(configuration['types'][0].fields[0].name).toBe('identifier');
             expect(configuration['types'][0].fields[1].name).toBe('aField');
             expect(configuration['types'][0].fields[2].name).toBe('bField');
+        });
+
+
+
+        it('should not add extra fields to subtypes', function(){
+
+            var t : TypeDefinition =  { "type": "T",
+                "parent" : "SuperT",
+                "fields": [
+                    {
+                        "name": "aField"
+                    }]
+            };
+
+            configuration = {
+                "types" : [
+                    t
+                ]
+            };
+
+            new ConfigurationPreprocessor()
+                .go(
+                    configuration,
+                    [],
+                    [{name:'identifier'}]
+                );
+
+            expect(configuration['types'][0].fields[0].name).toBe('aField');
+            expect(configuration['types'][0].fields[1]).toBe(undefined);
         });
     });
 }

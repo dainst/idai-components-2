@@ -99,20 +99,19 @@
       "parent" : "object",
       "fields": [
         {
-          "field": "Dimensions"
+          "name": "Dimensions"
         },
         {
-          "field": "Storage"
+          "name": "Storage"
         },
         {
-          "field": "Description",
-          "inputType": "input"
+          "name": "Description"
         },
         {
-          "field": "Range Start"
+          "name": "range_start"
         },
         {
-          "field": "Range End"
+          "name": "range_end"
         }
       ]
     },

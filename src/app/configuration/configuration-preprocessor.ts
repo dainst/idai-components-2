@@ -20,32 +20,13 @@ export class ConfigurationPreprocessor {
         extraTypes : Array<TypeDefinition>,
         extraFields : Array<FieldDefinition>
         ) {
+        
+        this.addExtraTypes(configuration,extraTypes);
 
-        if (extraTypes.length == 0) {
-            for (var typeDefinition of configuration['types']) {
-                this.addExtraFields(<TypeDefinition>typeDefinition,extraFields)
-            }
-            return;
-        }
 
-        for (var extraType of extraTypes) {
-            var typeAlreadyPresent = false;
-
-            for (var typeDefinition of configuration['types']) {
-
-                if ((<TypeDefinition>typeDefinition).type
-                    == (<TypeDefinition>extraType).type) {
-
-                    typeAlreadyPresent = true;
-                    this.mergeFields(typeDefinition,extraType);
-                }
-
+        for (var typeDefinition of configuration['types']) {
+            if (typeDefinition.parent == undefined) {
                 this.addExtraFields(typeDefinition,extraFields)
-            }
-
-            if (!typeAlreadyPresent) {
-                this.addExtraFields(extraType,extraFields);
-                configuration['types'].push(extraType);
             }
         }
     }
@@ -61,6 +42,29 @@ export class ConfigurationPreprocessor {
             }
             if (!alreadyPresentInTarget) {
                 target.fields.push(sourceField);
+            }
+        }
+    }
+
+    private addExtraTypes(
+        configuration : ConfigurationDefinition,
+        extraTypes : Array<TypeDefinition>) {
+
+        for (var extraType of extraTypes) {
+            var typeAlreadyPresent = false;
+
+            for (var typeDefinition of configuration['types']) {
+
+                if ((<TypeDefinition>typeDefinition).type
+                    == (<TypeDefinition>extraType).type) {
+
+                    typeAlreadyPresent = true;
+                    this.mergeFields(typeDefinition,extraType);
+                }
+            }
+
+            if (!typeAlreadyPresent) {
+                configuration['types'].push(extraType);
             }
         }
     }

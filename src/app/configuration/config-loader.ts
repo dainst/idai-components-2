@@ -83,7 +83,6 @@ export class ConfigLoader {
                         extraFields
                     );
 
-
                 this.projectConfig = new ProjectConfiguration(config);
                 this.notify();
             },

@@ -165,7 +165,7 @@ export class ProjectConfiguration {
             }
         }
 
-        return fieldName;
+        throw "no such field with name "+fieldName;
     }
 
     /**
