@@ -1,1 +1,6 @@
 css
+app/**/*.js
+app/**/*.js.map
+test/**/*.js
+test/**/*.js.map
+!test/config/karma.conf.js
