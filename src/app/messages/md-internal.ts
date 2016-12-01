@@ -56,5 +56,10 @@ export class MDInternal extends MD {
             level: 'danger',
             params: []
         };
+        this.msgs[MDInternal.VALIDATION_ERROR_IDMISSING]={
+            content: 'Objekt-Identifier fehlt.',
+            level: 'danger',
+            params: []
+        };
     }
 }
