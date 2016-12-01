@@ -43,7 +43,7 @@ export class FieldsViewComponent extends WithConfiguration implements OnInit, On
 
     private initializeFields(resource: Resource) {
 
-        const ignoredFields: Array<string> = [ "relations", "geometries" ];
+        const ignoredFields: Array<string> = [ "relations" ];
 
         for (var fieldName in resource) {
 

@@ -1,5 +1,5 @@
 /// <reference path="../../../typings/globals/jasmine/index.d.ts" />
-import {PersistenceManager} from "../../app/documents/persistence-manager";
+import {PersistenceManager} from "../../app/persist/persistence-manager";
 import {ProjectConfiguration} from "../../app/configuration/project-configuration";
 import {Messages} from "../../app/messages/messages";
 import {MD} from "../../app/messages/md";

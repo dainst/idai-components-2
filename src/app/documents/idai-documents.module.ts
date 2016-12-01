@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 import {Datastore} from "../datastore/datastore";
 import {ReadDatastore} from "../datastore/read-datastore";
 import {ConfigLoader} from "../configuration/config-loader";
-import {PersistenceManager} from "./persistence-manager";
+import {PersistenceManager} from "../persist/persistence-manager";
 import {DocumentEditComponent} from './document-edit.component';
 import {EditFormComponent} from './edit-form.component';
 import {RelationsFormComponent} from './relations-form.component';

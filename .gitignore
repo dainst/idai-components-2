@@ -5,6 +5,7 @@ node_modules
 typings
 demo/**/*.js
 demo/**/*.js.map
+persist.js*
 messages.js*
 datastore.js*
 documents.js*

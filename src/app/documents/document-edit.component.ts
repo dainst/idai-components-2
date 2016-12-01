@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {PersistenceManager} from "./persistence-manager";
+import {PersistenceManager} from "../persist/persistence-manager";
 import {ProjectConfiguration} from "../configuration/project-configuration";
 import {OnChanges} from "@angular/core";
 import {ConfigLoader} from "../configuration/config-loader";

@@ -4,7 +4,7 @@ import {IdaiType} from '../../src/app/configuration/idai-type';
 import {Datastore} from '../../src/app/datastore/datastore';
 import {OBJECTS} from "./sample-objects";
 import {Document} from "../../src/app/model/document";
-import {PersistenceManager} from "../../src/app/documents/persistence-manager";
+import {PersistenceManager} from "../../src/app/persist/persistence-manager";
 
 @Component({
     selector: 'document-edit-demo',
