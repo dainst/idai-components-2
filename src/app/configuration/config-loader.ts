@@ -66,21 +66,34 @@ export class ConfigLoader {
 
     /**
      * @param projectConfigurationPath
-     * @param extraTypes
-     * @param extraFields
+     * @param defaultTypes
+     * @param defaultFields
      */
     public load(
         projectConfigurationPath: string,
-        extraTypes : Array<TypeDefinition>,
-        extraFields : Array<FieldDefinition>
+        defaultTypes : Array<TypeDefinition>,
+        defaultFields : Array<FieldDefinition>
 
     ) {
+        defaultFields = defaultFields.concat([
+            {
+                name : "id",
+                editable : false,
+                visible : false
+            },
+            {
+                name : "type",
+                visible : false,
+                editable : false
+            }
+        ]);
+        
         this.read(this.http,projectConfigurationPath).then(
             (config)=>{
                 new ConfigurationPreprocessor()
                     .go(config,
-                        extraTypes,
-                        extraFields
+                        defaultTypes,
+                        defaultFields
                     );
 
                 this.projectConfig = new ProjectConfiguration(config);

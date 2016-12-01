@@ -49,8 +49,6 @@ export class DocumentEditDemoComponent implements OnInit {
             DocumentEditDemoComponent.PROJECT_CONFIGURATION_PATH,
             [{"type":"image","fields":[{"name":"dimensions"}]}],
             [
-                {"name":"id","visible":false,"editable":false},
-                {"name":"type","visible":false,"editable":false},
                 {"name":"identifier","visible":false},
                 {"name":"shortDescription","visible":false}
             ]

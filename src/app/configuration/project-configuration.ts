@@ -126,7 +126,7 @@ export class ProjectConfiguration {
         
         if(!this.typesMap[typeName]) return false;
         var fields = this.typesMap[typeName].getFieldDefinitions();
-        
+
         for (var i in fields) {
             if (fields[i].name == fieldName) {
                 if (fields[i].visible==true) {
