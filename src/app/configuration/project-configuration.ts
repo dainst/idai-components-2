@@ -121,21 +121,29 @@ export class ProjectConfiguration {
         if(!this.typesMap[typeName]) return "";
         return this.typesMap[typeName].label;
     }
+
+    public isMandatory(typeName: string, fieldName: string) : boolean {
+        return this.hasProperty(typeName,fieldName,'mandatory')
+    }
     
     public isVisible(typeName: string, fieldName: string) : boolean {
-        
+        return this.hasProperty(typeName,fieldName,'visible')
+    }
+
+    private hasProperty(typeName: string, fieldName: string, propertyName: string) {
         if(!this.typesMap[typeName]) return false;
         var fields = this.typesMap[typeName].getFieldDefinitions();
 
         for (var i in fields) {
             if (fields[i].name == fieldName) {
-                if (fields[i].visible==true) {
+                if (fields[i][propertyName]==true) {
                     return true;
                 }
             }
         }
         return false;
     }
+
 
     /**
      * Should be used only from within components.
@@ -197,6 +205,7 @@ export class ProjectConfiguration {
         }
 
         for (var type of configuration['types']) {
+
             if (type['parent']) {
                 if (this.typesTree[type.parent] == undefined) {
                     throw MDInternal.PC_GENERIC_ERROR;
@@ -211,6 +220,7 @@ export class ProjectConfiguration {
         var typesMap:{[type: string]: IdaiType } = {};
 
         for (var typeKey of Object.keys(this.typesTree)) {
+
             var idaiType: IdaiType = this.typesTree[typeKey];
             typesMap[typeKey] = idaiType;
             if (idaiType.children) {

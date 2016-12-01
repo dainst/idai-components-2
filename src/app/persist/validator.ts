@@ -1,7 +1,6 @@
 import {Injectable} from "@angular/core";
 import {MDInternal} from "../messages/md-internal";
 import {ConfigLoader} from '../configuration/config-loader';
-import {ProjectConfiguration} from '../configuration/project-configuration';
 import {Document} from '../model/document';
 import {WithConfiguration} from '../configuration/with-configuration';
 
@@ -24,43 +23,49 @@ export class Validator extends WithConfiguration {
      */
     public validate(doc: Document): any {
 
-        var validationReport = {
-            valid: true,
-            errorMessage: undefined,
-            errorData: []
-        };
-
         var resource = doc['resource'];
 
-        if (!this.validateIdentifier(resource)) {
-            validationReport.valid = false;
-            validationReport.errorMessage = MDInternal.VALIDATION_ERROR_IDMISSING;
-            return validationReport;
+        // if (resource.id) {
+
+        if (!this.validateType(resource)) {
+            var err = [MDInternal.VALIDATION_ERROR_INVALIDTYPE];
+            err.push(resource.id);
+            err.push("\"" + resource.type + "\"");
+            return err;
         }
 
-        if (resource.id) {
-
-            if (!this.validateType(resource)) {
-                validationReport.valid = false;
-                validationReport.errorMessage = MDInternal.VALIDATION_ERROR_INVALIDTYPE;
-                validationReport.errorData.push(resource.id);
-                validationReport.errorData.push("\"" + resource.type + "\"");
-                return validationReport;
-            }
-
-            var invalidFields;
-            if (invalidFields = this.validateFields(resource)) {
-                validationReport.valid = false;
-                validationReport.errorMessage =
-                    invalidFields.length == 1 ? MDInternal.VALIDATION_ERROR_INVALIDFIELD : MDInternal.VALIDATION_ERROR_INVALIDFIELDS;
-                validationReport.errorData.push(resource.type);
-                validationReport.errorData.push(invalidFields.join(", "));
-                return validationReport;
-            }
+        var missingProperties = this.getMissingProperties(resource);
+        if (missingProperties.length > 0) {
+            return [MDInternal.VALIDATION_ERROR_MISSINGPROPERTY,resource.type].concat(missingProperties.join((", ")))
         }
 
-        return validationReport;
+
+        var invalidFields;
+        if (invalidFields = this.validateFields(resource)) {
+            var errr = [invalidFields.length == 1 ? MDInternal.VALIDATION_ERROR_INVALIDFIELD : MDInternal.VALIDATION_ERROR_INVALIDFIELDS];
+            errr.push(resource.type);
+            errr.push(invalidFields.join(", "));
+            return errr;
+        }
+        // }
+
+        return undefined;
     }
+
+
+    private getMissingProperties(resource: any) {
+        var missingFields = [];
+        var fieldDefinitions = this.projectConfiguration.getFieldDefinitions(resource.type);
+        for (var fieldDefinition of fieldDefinitions) {
+            if (this.projectConfiguration.isMandatory(resource.type,fieldDefinition.name)) {
+                if (resource[fieldDefinition.name] == undefined || resource[fieldDefinition.name] == "") {
+                    missingFields.push(fieldDefinition.name);
+                }
+            }
+        }
+        return missingFields;
+    }
+
 
     /**
      *
@@ -110,6 +115,7 @@ export class Validator extends WithConfiguration {
         var invalidFields = [];
 
         for (var resourceField in resource) {
+
             if (resource.hasOwnProperty(resourceField)) {
                 var fieldFound = false;
                 for (var i in fields) {

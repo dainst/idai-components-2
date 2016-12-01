@@ -15,7 +15,7 @@ export class MDInternal extends MD {
     public static PC_GENERIC_ERROR : string = 'pmc/generic';
     public static PARSE_GENERIC_ERROR : string = 'parse/generic';
 
-    public static VALIDATION_ERROR_IDMISSING : string = 'validation/error/idmissing';
+    public static VALIDATION_ERROR_MISSINGPROPERTY : string = 'validation/error/missingproperty';
     public static VALIDATION_ERROR_INVALIDTYPE: string = 'validation/error/invalidtype';
     public static VALIDATION_ERROR_INVALIDFIELD: string = 'validation/error/invalidfield';
     public static VALIDATION_ERROR_INVALIDFIELDS: string = 'validation/error/invalidfields';
@@ -56,8 +56,8 @@ export class MDInternal extends MD {
             level: 'danger',
             params: []
         };
-        this.msgs[MDInternal.VALIDATION_ERROR_IDMISSING]={
-            content: 'Objekt-Identifier fehlt.',
+        this.msgs[MDInternal.VALIDATION_ERROR_MISSINGPROPERTY]={
+            content: 'Eigenschaft(en) der Ressource vom Typ \"{0}\" müssen vorhanden sein: \"{1}\."',
             level: 'danger',
             params: []
         };

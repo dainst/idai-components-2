@@ -3,7 +3,7 @@ import {Messages} from "../../app/messages/messages";
 import {MDInternal} from "../../app/messages/md-internal";
 
 /**
- * @author Daniel M. de Oliveira
+ * @author Daniel de Oliveira
  * @author Jan G. Wieners
  * @author Thomas Kleinke
  */
