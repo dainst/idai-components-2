@@ -1,5 +1,4 @@
 import {Component, OnInit, OnChanges, Input} from "@angular/core";
-import {ReadDatastore} from "../datastore/read-datastore";
 import {ConfigLoader} from "../configuration/config-loader";
 import {WithConfiguration} from "../configuration/with-configuration";
 import {Resource} from "../model/resource";
@@ -23,7 +22,6 @@ export class FieldsViewComponent extends WithConfiguration implements OnInit, On
     @Input() doc;
 
     constructor(
-        private datastore: ReadDatastore,
         configLoader: ConfigLoader
     ) {
         super(configLoader);
@@ -45,9 +43,12 @@ export class FieldsViewComponent extends WithConfiguration implements OnInit, On
 
     private initializeFields(resource: Resource) {
 
-        const ignoredFields: Array<string> = [ "id", "identifier", "shortDescription", "type", "relations", "geometries" ];
+        const ignoredFields: Array<string> = [ "relations", "geometries" ];
 
         for (var fieldName in resource) {
+
+            if (this.projectConfiguration.isVisible(resource.type,fieldName)==false) continue;
+
             if (resource.hasOwnProperty(fieldName) && ignoredFields.indexOf(fieldName) == -1) {
                 this.fields.push({
                     name: this.projectConfiguration.getFieldDefinitionLabel(resource.type, fieldName),

@@ -48,7 +48,12 @@ export class DocumentEditDemoComponent implements OnInit {
         this.configLoader.load(
             DocumentEditDemoComponent.PROJECT_CONFIGURATION_PATH,
             [{"type":"image","fields":[{"name":"dimensions"}]}],
-            [{"name":"identifier"}]
+            [
+                {"name":"id","visible":false,"editable":false},
+                {"name":"type","visible":false,"editable":false},
+                {"name":"identifier","visible":false},
+                {"name":"shortDescription","visible":false}
+            ]
         );
 
         this.configLoader.configuration().subscribe((result)=>{

@@ -22,11 +22,14 @@ export class ConfigurationPreprocessor {
         ) {
         
         this.addExtraTypes(configuration,extraTypes);
-
-
+        
         for (var typeDefinition of configuration['types']) {
             if (typeDefinition.parent == undefined) {
                 this.addExtraFields(typeDefinition,extraFields)
+            }
+            for (var fieldDefinition of typeDefinition.fields) {
+                if (fieldDefinition.editable==undefined) fieldDefinition.editable = true;
+                if (fieldDefinition.visible==undefined) fieldDefinition.visible = true;
             }
         }
     }
