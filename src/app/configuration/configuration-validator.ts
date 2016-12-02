@@ -35,9 +35,9 @@ export class ConfigurationValidator {
     }
 
     private static findDuplicateType(types: Array<TypeDefinition>) {
-        var typeNames = types.map(t=>t.type);
+
         var o = {};
-        for (var typeName of typeNames) {
+        for (var typeName of types.map(t=>t.type)) {
             if (o[typeName]) return typeName;
             o[typeName] = true;
         }
