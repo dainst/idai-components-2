@@ -6,6 +6,7 @@ import {Observable} from "rxjs/Observable";
 import {TypeDefinition} from './type-definition';
 import {FieldDefinition} from './field-definition';
 import {ConfigurationPreprocessor} from './configuration-preprocessor';
+import {ConfigurationValidator} from "./configuration-validator";
 
 /**
  * Lets clients subscribe for the app
@@ -68,11 +69,13 @@ export class ConfigLoader {
      * @param projectConfigurationPath
      * @param defaultTypes
      * @param defaultFields
+     * @param namesOfMandatoryTypes
      */
     public load(
         projectConfigurationPath: string,
         defaultTypes : Array<TypeDefinition>,
-        defaultFields : Array<FieldDefinition>
+        defaultFields : Array<FieldDefinition>,
+        namesOfMandatoryTypes : Array<string>
 
     ) {
         defaultFields = defaultFields.concat([
@@ -95,16 +98,18 @@ export class ConfigLoader {
                         defaultTypes,
                         defaultFields
                     );
-
-                this.projectConfig = new ProjectConfiguration(config);
+                
+                var configurationError = ConfigurationValidator
+                    .go(config,namesOfMandatoryTypes
+                    ); 
+                if (configurationError) {
+                    this.error = configurationError;
+                } else this.projectConfig = new ProjectConfiguration(config);
+                
                 this.notify();
             },
             (error) => {
-                console.error(error['path'], error);
-                this.error = {
-                    msgkey: MDInternal.PARSE_GENERIC_ERROR,
-                    msgparams: error['path']
-                };
+                this.error = [MDInternal.PARSE_GENERIC_ERROR].concat([error['path']]),
                 this.notify();
             }
         );

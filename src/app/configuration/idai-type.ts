@@ -1,6 +1,9 @@
 import {TypeDefinition} from './type-definition';
 import {FieldDefinition} from './field-definition';
 
+/**
+ * @author F.Z.
+ */
 export class IdaiType {
     children: Array<IdaiType>;
     parentType: IdaiType = undefined;
@@ -21,20 +24,11 @@ export class IdaiType {
         this.fields = this.parentType.getFieldDefinitions().concat(this.fields);
     }
 
-
     public addChildType(definition: TypeDefinition) {
         if (!this.children) this.children = [];
-        var childType:IdaiType = new IdaiType(definition)
+        var childType:IdaiType = new IdaiType(definition);
         childType.setParentType(this);
         this.children.push(childType)
-    }
-
-    public insertFieldAtIndex(field: FieldDefinition, index: number) {
-        this.fields.splice(index, 0, field);
-    }
-
-    public moveField(fromIndex: number, toIndex: number) {
-        this.fields.splice(toIndex, 0, this.fields.splice(fromIndex, 1)[0]);
     }
 
     public getFieldDefinitions(): FieldDefinition[] {

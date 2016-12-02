@@ -7,7 +7,7 @@ import {Message} from "./message";
  * @author Thomas Kleinke
  */
 @Component({
-    selector: 'message',
+    selector: 'messages',
     template: `<div *ngFor="let message of messages.getMessages(); let index=index"
      class="alert alert-{{message.level}}"
      role="alert"

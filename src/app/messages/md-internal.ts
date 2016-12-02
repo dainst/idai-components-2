@@ -19,6 +19,9 @@ export class MDInternal extends MD {
     public static VALIDATION_ERROR_INVALIDTYPE: string = 'validation/error/invalidtype';
     public static VALIDATION_ERROR_INVALIDFIELD: string = 'validation/error/invalidfield';
     public static VALIDATION_ERROR_INVALIDFIELDS: string = 'validation/error/invalidfields';
+    
+    public static VALIDATION_ERROR_MISSINGTYPE: string = 'validation/error/missingtype';
+    public static VALIDATION_ERROR_DUPLICATETYPE: string = 'validation/error/duplicatetype';
 
     public msgs : { [id: string]: Message } = {};
 
@@ -58,6 +61,17 @@ export class MDInternal extends MD {
         };
         this.msgs[MDInternal.VALIDATION_ERROR_MISSINGPROPERTY]={
             content: 'Eigenschaft(en) der Ressource vom Typ \"{0}\" müssen vorhanden sein: \"{1}\."',
+            level: 'danger',
+            params: []
+        };
+
+        this.msgs[MDInternal.VALIDATION_ERROR_MISSINGTYPE]={
+            content: 'Die Configuration.json benötigt eine Definition für den Typ \"{0}\".',
+            level: 'danger',
+            params: []
+        };
+        this.msgs[MDInternal.VALIDATION_ERROR_DUPLICATETYPE]={
+            content: 'Die Configuration.json enthält eine Mehrfachdefinition für den Typ \"{0}\".',
             level: 'danger',
             params: []
         };
