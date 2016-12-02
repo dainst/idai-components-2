@@ -7,7 +7,7 @@ import {MDInternal} from "../../app/messages/md-internal";
  * @author Daniel de Oliveira
  */
 export function main() {
-    describe('ConfigurationValidator', () => {
+    fdescribe('ConfigurationValidator', () => {
 
         var configuration : ConfigurationDefinition;
 

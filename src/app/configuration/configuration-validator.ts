@@ -35,16 +35,12 @@ export class ConfigurationValidator {
     }
 
     private static findDuplicateType(types: Array<TypeDefinition>) {
-        var typeNames : Array<string> = [];
-        for (var type of types) typeNames.push(type.type);
-        var typeNamesSorted = typeNames.slice().sort();
-
-        for (var i = 0; i < typeNamesSorted.length - 1; i++) {
-            if (typeNamesSorted[i + 1] == typeNamesSorted[i]) {
-                return typeNamesSorted[i];
-            }
+        var typeNames = types.map(t=>t.type);
+        var o = {};
+        for (var typeName of typeNames) {
+            if (o[typeName]) return typeName;
+            o[typeName] = true;
         }
-        return undefined;
     }
 
     private static findMissingType(
