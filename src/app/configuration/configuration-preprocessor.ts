@@ -56,8 +56,8 @@ export class ConfigurationPreprocessor {
                 configuration.relations.splice(0,0,extraRelation);
                 this.expandInherits(configuration, extraRelation, 'range');
                 this.expandInherits(configuration, extraRelation, 'domain');
-                this.expandAllMarker(configuration, extraRelation, 'range');
-                this.expandAllMarker(configuration, extraRelation, 'domain');
+                this.expandOnUndefined(configuration, extraRelation, 'range');
+                this.expandOnUndefined(configuration, extraRelation, 'domain');
             }
         }
     }
@@ -84,8 +84,8 @@ export class ConfigurationPreprocessor {
     }
 
 
-    private expandAllMarker(configuration : ConfigurationDefinition,
-                            extraRelation : RelationDefinition, itemSet: string) {
+    private expandOnUndefined(configuration : ConfigurationDefinition,
+                              extraRelation : RelationDefinition, itemSet: string) {
 
         if (extraRelation[itemSet] != undefined) return;
 
