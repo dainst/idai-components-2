@@ -26,7 +26,7 @@ export class ConfigurationPreprocessor {
         
         this.addExtraTypes(configuration,extraTypes);
         
-        for (var typeDefinition of configuration['types']) {
+        for (var typeDefinition of configuration.types) {
             if (typeDefinition.parent == undefined) {
                 this.addExtraFields(typeDefinition,extraFields)
             }
@@ -97,7 +97,7 @@ export class ConfigurationPreprocessor {
         for (var extraType of extraTypes) {
             var typeAlreadyPresent = false;
 
-            for (var typeDefinition of configuration['types']) {
+            for (var typeDefinition of configuration.types) {
 
                 if ((<TypeDefinition>typeDefinition).type
                     == (<TypeDefinition>extraType).type) {
@@ -108,7 +108,7 @@ export class ConfigurationPreprocessor {
             }
 
             if (!typeAlreadyPresent) {
-                configuration['types'].push(extraType);
+                configuration.types.push(extraType);
             }
         }
     }

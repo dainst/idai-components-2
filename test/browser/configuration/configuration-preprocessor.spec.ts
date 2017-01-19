@@ -45,8 +45,8 @@ export function main() {
                     []
                 );
 
-            expect(configuration['types'][0].fields[0].name).toBe('identifier');
-            expect(configuration['types'][0].fields[1].name).toBe('aField');
+            expect(configuration.types[0].fields[0].name).toBe('identifier');
+            expect(configuration.types[0].fields[1].name).toBe('aField');
         });
         
         
@@ -68,7 +68,7 @@ export function main() {
                     []
                 );
 
-            expect(configuration['types'][1].fields[0].name).toBe('bField');
+            expect(configuration.types[1].fields[0].name).toBe('bField');
         });
 
 
@@ -90,8 +90,8 @@ export function main() {
                     []
                 );
 
-            expect(configuration['types'][1].fields[0].name).toBe('identifier');
-            expect(configuration['types'][1].fields[1].name).toBe('bField');
+            expect(configuration.types[1].fields[0].name).toBe('identifier');
+            expect(configuration.types[1].fields[1].name).toBe('bField');
         });
 
 
@@ -113,8 +113,8 @@ export function main() {
                     []
                 );
 
-            expect(configuration['types'][0].fields[0].name).toBe('aField');
-            expect(configuration['types'][0].fields[1].name).toBe('bField');
+            expect(configuration.types[0].fields[0].name).toBe('aField');
+            expect(configuration.types[0].fields[1].name).toBe('bField');
         });
 
 
@@ -136,9 +136,9 @@ export function main() {
                     []
                 );
 
-            expect(configuration['types'][0].fields[0].name).toBe('identifier');
-            expect(configuration['types'][0].fields[1].name).toBe('aField');
-            expect(configuration['types'][0].fields[2].name).toBe('bField');
+            expect(configuration.types[0].fields[0].name).toBe('identifier');
+            expect(configuration.types[0].fields[1].name).toBe('aField');
+            expect(configuration.types[0].fields[2].name).toBe('bField');
         });
 
 
@@ -168,8 +168,8 @@ export function main() {
                     []
                 );
 
-            expect(configuration['types'][0].fields[0].name).toBe('aField');
-            expect(configuration['types'][0].fields[1]).toBe(undefined);
+            expect(configuration.types[0].fields[0].name).toBe('aField');
+            expect(configuration.types[0].fields[1]).toBe(undefined);
         });
 
 
