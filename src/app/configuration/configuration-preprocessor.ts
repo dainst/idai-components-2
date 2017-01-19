@@ -13,9 +13,9 @@ export class ConfigurationPreprocessor {
     // TODO make it return a copy
     /**
      * @param configuration
-     * @param extraTypes
-     * @param extraFields
-     * @param extraRelations
+     * @param extraTypes fields of an extra type are merged if there is a type of its name already.
+     * @param extraFields are added to every type including the extra types.
+     * @param extraRelations an extra relation is added only if there is no relation of its name defined yet.
      */
     public go(
         configuration : ConfigurationDefinition,
