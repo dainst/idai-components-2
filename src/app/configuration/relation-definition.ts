@@ -4,6 +4,6 @@
 export interface RelationDefinition {
     label? : string;
     name: string;
-    domain: any;
-    range: any;
+    domain?: any;
+    range?: any;
 }

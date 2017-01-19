@@ -206,8 +206,7 @@ export function main() {
         it('should replace range ALL with all types execpt the range types', function() {
 
             var r : RelationDefinition =  { name: 'R',
-                domain: [ 'T2', 'T3' ],
-                range: [ 'ALL' ]
+                domain: [ 'T2', 'T3' ]
             };
 
             new ConfigurationPreprocessor()
@@ -225,7 +224,6 @@ export function main() {
         it('should replace domain ALL with all types execpt the range types', function() {
 
             var r : RelationDefinition =  { name: 'R',
-                domain: [ 'ALL' ],
                 range: [ 'T2', 'T3' ]
             };
 
