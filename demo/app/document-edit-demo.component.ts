@@ -52,6 +52,7 @@ export class DocumentEditDemoComponent implements OnInit {
                 {"name":"shortDescription","visible":false},
                 {"name":"identifier","visible":false}
             ],
+            [],
             []
         );
 

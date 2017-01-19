@@ -1,6 +1,7 @@
 import {FieldDefinition} from "./field-definition";
 import {TypeDefinition} from "./type-definition";
 import {ConfigurationDefinition} from "./configuration-definition";
+import {RelationDefinition} from "./relation-definition";
 
 /**
  * @author Daniel de Oliveira
@@ -14,11 +15,13 @@ export class ConfigurationPreprocessor {
      * @param configuration
      * @param extraTypes
      * @param extraFields
+     * @param extraRelations
      */
     public go(
         configuration : ConfigurationDefinition,
         extraTypes : Array<TypeDefinition>,
-        extraFields : Array<FieldDefinition>
+        extraFields : Array<FieldDefinition>,
+        extraRelations : Array<RelationDefinition>
         ) {
         
         this.addExtraTypes(configuration,extraTypes);
@@ -32,6 +35,44 @@ export class ConfigurationPreprocessor {
                 if (fieldDefinition.visible==undefined) fieldDefinition.visible = true;
             }
         }
+
+        this.addExtraRelations(configuration, extraRelations);
+    }
+
+    private addExtraRelations(configuration : ConfigurationDefinition,
+                              extraRelations : Array<RelationDefinition>) {
+
+        for (var extraRelation of extraRelations) {
+            var relationAlreadyPresent = false;
+            for (var relationDefinition of configuration.relations) {
+                if ((<FieldDefinition>relationDefinition).name == extraRelation.name) {
+                    relationAlreadyPresent = true;
+                }
+            }
+            if (!relationAlreadyPresent) {
+
+                // ALL
+                if (extraRelation.range.indexOf("ALL") != -1) {
+                    extraRelation.range = [];
+                    for (var type of configuration.types) {
+                        if (type.type != extraRelation.domain[0]) {
+                            extraRelation.range.push(type.type)
+                        }
+                    }
+                } else if (extraRelation.domain.indexOf("ALL") != -1) {
+                    extraRelation.domain = [];
+                    for (var type of configuration.types) {
+                        if (type.type != extraRelation.range[0]) {
+                            extraRelation.domain.push(type.type)
+                        }
+                    }
+                }
+                //
+
+                configuration.relations.splice(0,0,extraRelation)
+            }
+        }
+
     }
 
     private mergeFields(target:TypeDefinition, source:TypeDefinition) {

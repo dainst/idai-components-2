@@ -1,13 +1,14 @@
 /// <reference path="../../../typings/globals/jasmine/index.d.ts" />
 import {ConfigurationPreprocessor} from "../../../src/app/configuration/configuration-preprocessor";
 import {TypeDefinition} from '../../../src/app/configuration/type-definition'
+import {RelationDefinition} from '../../../src/app/configuration/relation-definition'
 import {ConfigurationDefinition} from "../../../src/app/configuration/configuration-definition";
 
 /**
  * @author Daniel de Oliveira
  */
 export function main() {
-    describe('ConfigurationPreprocessor', () => {
+    fdescribe('ConfigurationPreprocessor', () => {
 
 
 
@@ -27,7 +28,8 @@ export function main() {
             configuration = {
                 "types" : [
                     t
-                ]
+                ],
+                "relations" : []
             };
         });
 
@@ -39,7 +41,8 @@ export function main() {
                 .go(
                     configuration,
                     [],
-                    [{name:'identifier'}]
+                    [{name:'identifier'}],
+                    []
                 );
 
             expect(configuration['types'][0].fields[0].name).toBe('identifier');
@@ -61,6 +64,7 @@ export function main() {
                 .go(
                     configuration,
                     [et],
+                    [],
                     []
                 );
 
@@ -82,7 +86,8 @@ export function main() {
                 .go(
                     configuration,
                     [et],
-                    [{name:'identifier'}]
+                    [{name:'identifier'}],
+                    []
                 );
 
             expect(configuration['types'][1].fields[0].name).toBe('identifier');
@@ -104,6 +109,7 @@ export function main() {
                 .go(
                     configuration,
                     [et],
+                    [],
                     []
                 );
 
@@ -126,7 +132,8 @@ export function main() {
                 .go(
                     configuration,
                     [et],
-                    [{name:'identifier'}]
+                    [{name:'identifier'}],
+                    []
                 );
 
             expect(configuration['types'][0].fields[0].name).toBe('identifier');
@@ -149,18 +156,84 @@ export function main() {
             configuration = {
                 "types" : [
                     t
-                ]
+                ],
+                "relations" : []
             };
 
             new ConfigurationPreprocessor()
                 .go(
                     configuration,
                     [],
-                    [{name:'identifier'}]
+                    [{name:'identifier'}],
+                    []
                 );
 
             expect(configuration['types'][0].fields[0].name).toBe('aField');
             expect(configuration['types'][0].fields[1]).toBe(undefined);
         });
+
+
+        it('should add an extra relation', function() {
+            var r : RelationDefinition =  { "name": "R",
+                "domain": [ "domainA" ],
+                "range" : [ "rangeA" ]
+            };
+
+            new ConfigurationPreprocessor()
+                .go(
+                    configuration,
+                    [],
+                    [],
+                    [r]
+                );
+
+            expect(configuration.relations[0].name).toBe('R');
+        });
+
+        it('should replace range ALL with all types execpt the range type', function() {
+            configuration.types.push({
+                type: "T2",
+                fields: []
+            });
+
+            var r : RelationDefinition =  { "name": "R",
+                domain: [ "T" ],
+                range: [ "ALL" ]
+            };
+
+            new ConfigurationPreprocessor()
+                .go(
+                    configuration,
+                    [],
+                    [],
+                    [r]
+                );
+
+            expect(configuration.relations[0].range[0]).toBe('T2');
+            expect(configuration.relations[0].range[1]).toBe(undefined); // it should exclude the domain type
+        });
+
+        it('should replace domain ALL with all types execpt the range type', function() {
+            configuration.types.push({
+                type: "T2",
+                fields: []
+            });
+
+            var r : RelationDefinition =  { "name": "R",
+                domain: [ "ALL" ],
+                range: [ "T" ]
+            };
+
+            new ConfigurationPreprocessor()
+                .go(
+                    configuration,
+                    [],
+                    [],
+                    [r]
+                );
+
+            expect(configuration.relations[0].domain[0]).toBe('T2');
+            expect(configuration.relations[0].domain[1]).toBe(undefined); // it should exclude the range type
+        })
     });
 }

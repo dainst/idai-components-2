@@ -5,6 +5,7 @@ import {MDInternal} from "../messages/md-internal";
 import {Observable} from "rxjs/Observable";
 import {TypeDefinition} from './type-definition';
 import {FieldDefinition} from './field-definition';
+import {RelationDefinition} from './relation-definition';
 import {ConfigurationPreprocessor} from './configuration-preprocessor';
 import {ConfigurationValidator} from "./configuration-validator";
 
@@ -75,6 +76,7 @@ export class ConfigLoader {
         projectConfigurationPath: string,
         defaultTypes : Array<TypeDefinition>,
         defaultFields : Array<FieldDefinition>,
+        defaultRelations : Array<RelationDefinition>,
         namesOfMandatoryTypes : Array<string>
 
     ) {
@@ -96,7 +98,8 @@ export class ConfigLoader {
                 new ConfigurationPreprocessor()
                     .go(config,
                         defaultTypes,
-                        defaultFields
+                        defaultFields,
+                        defaultRelations
                     );
                 
                 var configurationError = ConfigurationValidator
