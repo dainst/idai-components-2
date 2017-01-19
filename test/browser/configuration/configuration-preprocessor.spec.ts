@@ -33,13 +33,13 @@ export function main() {
             };
         });
 
-        function addType(configuration: ConfigurationDefinition,parent?:string) {
+        function addType(configuration: ConfigurationDefinition, parent?:string) {
             var newT : TypeDefinition = {
                 type: 'T'+(configuration.types.length+1),
                     fields: []
             };
             if (parent!=undefined) newT.parent = parent;
-            configuration.types.push();
+            configuration.types.push(newT);
             return configuration;
         }
 
@@ -239,6 +239,48 @@ export function main() {
 
             expect(configuration.relations[0].domain[0]).toBe('T1');
             expect(configuration.relations[0].domain[1]).toBe(undefined);
+        });
+
+        it('should replace range :inherit with all subtypes', function() {
+
+            var r : RelationDefinition =  { name: 'R',
+                domain: [ 'T3' ],
+                range: [ 'T1:inherit' ]
+            };
+
+            new ConfigurationPreprocessor()
+                .go(
+                    addType(addType(configuration,'T1')),
+                    [],
+                    [],
+                    [r]
+                );
+
+            expect(configuration.relations[0].range.indexOf('T1')).not.toBe(-1);
+            expect(configuration.relations[0].range.indexOf('T2')).not.toBe(-1);
+            expect(configuration.relations[0].range.indexOf('T1:inherit')).toBe(-1);
+            expect(configuration.relations[0].domain[0]).toBe('T3');
+        });
+
+        it('should replace domain :inherit with all subtypes', function() {
+
+            var r : RelationDefinition =  { name: 'R',
+                domain: [ 'T1:inherit' ],
+                range: [ 'T3' ]
+            };
+
+            new ConfigurationPreprocessor()
+                .go(
+                    addType(addType(configuration,'T1')),
+                    [],
+                    [],
+                    [r]
+                );
+
+            expect(configuration.relations[0].domain.indexOf('T1')).not.toBe(-1);
+            expect(configuration.relations[0].domain.indexOf('T2')).not.toBe(-1);
+            expect(configuration.relations[0].domain.indexOf('T1:inherit')).toBe(-1);
+            expect(configuration.relations[0].range[0]).toBe('T3');
         });
     });
 }

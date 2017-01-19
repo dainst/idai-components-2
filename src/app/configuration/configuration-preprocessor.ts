@@ -50,30 +50,52 @@ export class ConfigurationPreprocessor {
                 }
             }
             if (!relationAlreadyPresent) {
+                this.expandInherits(configuration, extraRelation, 'range');
+                this.expandInherits(configuration, extraRelation, 'domain');
+                this.expandAllMarker(configuration, extraRelation, 'range');
+                this.expandAllMarker(configuration, extraRelation, 'domain');
+            }
+        }
+    }
 
-                // ALL
-                if (extraRelation.range.indexOf("ALL") != -1) {
-                    extraRelation.range = [];
-                    for (var type of configuration.types) {
-                        if (extraRelation.domain.indexOf(type.type)==-1) {
-                            extraRelation.range.push(type.type)
-                        }
-                    }
-                } else if (extraRelation.domain.indexOf("ALL") != -1) {
-                    extraRelation.domain = [];
-                    for (var type of configuration.types) {
-                        if (extraRelation.range.indexOf(type.type)==-1) {
-                            extraRelation.domain.push(type.type)
-                        }
+    private expandInherits(configuration : ConfigurationDefinition,
+                           extraRelation : RelationDefinition, itemSet: string) {
+        var itemsNew = [];
+        for (var item of extraRelation[itemSet]) {
+            if (item.indexOf(':inherit') != -1) {
+
+                for (var type of configuration.types) {
+                    if (type.parent==item.split(':')[0]) {
+                        itemsNew.push(type.type);
                     }
                 }
-                //
+                itemsNew.push(item.split(':')[0]);
+            } else {
+                itemsNew.push(item);
+            }
+        }
+        extraRelation[itemSet] = itemsNew;
+    }
 
-                configuration.relations.splice(0,0,extraRelation)
+
+    private expandAllMarker(configuration : ConfigurationDefinition,
+                            extraRelation : RelationDefinition, itemSet: string) {
+
+        var opposite = 'range';
+        if (itemSet == 'range') opposite = 'domain';
+
+        if (extraRelation[itemSet].indexOf('ALL') != -1) {
+            extraRelation[itemSet] = [];
+            for (var type of configuration.types) {
+                if (extraRelation[opposite].indexOf(type.type) == -1) {
+                    extraRelation[itemSet].push(type.type)
+                }
             }
         }
 
+        configuration.relations.splice(0,0,extraRelation)
     }
+
 
     private mergeFields(target:TypeDefinition, source:TypeDefinition) {
         for (var sourceField of source.fields) {
