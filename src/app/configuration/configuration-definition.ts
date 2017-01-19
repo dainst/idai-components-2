@@ -6,5 +6,5 @@ import {RelationDefinition} from './relation-definition';
  */
 export interface ConfigurationDefinition {
     types: Array<TypeDefinition>;
-    relations: Array<RelationDefinition>;
+    relations?: Array<RelationDefinition>;
 }
