@@ -125,17 +125,12 @@
     },
     {
       "type": "section",
-      "label": "Sektion",
-      "fields": [
-
-      ]
+      "label": "Sektion"
     },
     {
       "type": "drawing",
       "parent" : "image",
-      "label": "Zeichnung",
-      "fields": [
-      ]
+      "label": "Zeichnung"
     }
   ],
   "relations":[
