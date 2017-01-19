@@ -1,6 +1,6 @@
-import {Filter} from './filter'
+import {FilterSet} from './filterSet'
 
 export interface Query {
     q: string;
-    filters?: Filter[];
+    filterSets?: Array<FilterSet>;
 }
