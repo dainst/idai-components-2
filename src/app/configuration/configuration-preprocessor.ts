@@ -55,14 +55,14 @@ export class ConfigurationPreprocessor {
                 if (extraRelation.range.indexOf("ALL") != -1) {
                     extraRelation.range = [];
                     for (var type of configuration.types) {
-                        if (type.type != extraRelation.domain[0]) {
+                        if (extraRelation.domain.indexOf(type.type)==-1) {
                             extraRelation.range.push(type.type)
                         }
                     }
                 } else if (extraRelation.domain.indexOf("ALL") != -1) {
                     extraRelation.domain = [];
                     for (var type of configuration.types) {
-                        if (type.type != extraRelation.range[0]) {
+                        if (extraRelation.range.indexOf(type.type)==-1) {
                             extraRelation.domain.push(type.type)
                         }
                     }

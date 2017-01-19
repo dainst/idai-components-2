@@ -8,7 +8,7 @@ import {ConfigurationDefinition} from "../../../src/app/configuration/configurat
  * @author Daniel de Oliveira
  */
 export function main() {
-    fdescribe('ConfigurationPreprocessor', () => {
+    describe('ConfigurationPreprocessor', () => {
 
 
 
@@ -32,6 +32,18 @@ export function main() {
                 "relations" : []
             };
         });
+
+        function withAdditionalTypes(configuration: ConfigurationDefinition) {
+            configuration.types.push({
+                type: "T2",
+                fields: []
+            },{
+                type: "T3",
+                fields: []
+            });
+            return configuration;
+        }
+
 
 
 
@@ -190,50 +202,42 @@ export function main() {
             expect(configuration.relations[0].name).toBe('R');
         });
 
-        it('should replace range ALL with all types execpt the range type', function() {
-            configuration.types.push({
-                type: "T2",
-                fields: []
-            });
+        it('should replace range ALL with all types execpt the range types', function() {
 
             var r : RelationDefinition =  { "name": "R",
-                domain: [ "T" ],
+                domain: [ "T2", "T3" ],
                 range: [ "ALL" ]
             };
 
             new ConfigurationPreprocessor()
                 .go(
-                    configuration,
+                    withAdditionalTypes(configuration),
                     [],
                     [],
                     [r]
                 );
 
-            expect(configuration.relations[0].range[0]).toBe('T2');
-            expect(configuration.relations[0].range[1]).toBe(undefined); // it should exclude the domain type
+            expect(configuration.relations[0].range[0]).toBe('T');
+            expect(configuration.relations[0].range[1]).toBe(undefined);
         });
 
-        it('should replace domain ALL with all types execpt the range type', function() {
-            configuration.types.push({
-                type: "T2",
-                fields: []
-            });
+        it('should replace domain ALL with all types execpt the range types', function() {
 
             var r : RelationDefinition =  { "name": "R",
                 domain: [ "ALL" ],
-                range: [ "T" ]
+                range: [ "T2", "T3" ]
             };
 
             new ConfigurationPreprocessor()
                 .go(
-                    configuration,
+                    withAdditionalTypes(configuration),
                     [],
                     [],
                     [r]
                 );
 
-            expect(configuration.relations[0].domain[0]).toBe('T2');
-            expect(configuration.relations[0].domain[1]).toBe(undefined); // it should exclude the range type
+            expect(configuration.relations[0].domain[0]).toBe('T');
+            expect(configuration.relations[0].domain[1]).toBe(undefined);
         })
     });
 }
