@@ -102,6 +102,8 @@ export class ConfigLoader {
                         defaultRelations
                     );
 
+                console.log("",config);
+
                 var configurationError = ConfigurationValidator
                     .go(config,namesOfMandatoryTypes
                     ); 

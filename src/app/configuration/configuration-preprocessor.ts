@@ -84,15 +84,15 @@ export class ConfigurationPreprocessor {
     private expandAllMarker(configuration : ConfigurationDefinition,
                             extraRelation : RelationDefinition, itemSet: string) {
 
+        if (extraRelation[itemSet] != undefined) return;
+
         var opposite = 'range';
         if (itemSet == 'range') opposite = 'domain';
 
-        if (extraRelation[itemSet] == undefined) {
-            extraRelation[itemSet] = [];
-            for (var type of configuration.types) {
-                if (extraRelation[opposite].indexOf(type.type) == -1) {
-                    extraRelation[itemSet].push(type.type)
-                }
+        extraRelation[itemSet] = [];
+        for (var type of configuration.types) {
+            if (extraRelation[opposite].indexOf(type.type) == -1) {
+                extraRelation[itemSet].push(type.type)
             }
         }
     }

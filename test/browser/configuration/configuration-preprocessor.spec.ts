@@ -281,5 +281,25 @@ export function main() {
             expect(configuration.relations[0].domain.indexOf('T1:inherit')).toBe(-1);
             expect(configuration.relations[0].range[0]).toBe('T3');
         });
+
+        // This test can detect problems coming from a wrong order of expandInherits and expandAllMarker calls
+        it('should exclude the type and subtypes when using :inherit and total range', function() {
+
+            var r : RelationDefinition =  { name: 'R',
+                domain: [ 'T1:inherit' ]
+            };
+
+            new ConfigurationPreprocessor()
+                .go(
+                    addType(addType(configuration,'T1')),
+                    [],
+                    [],
+                    [r]
+                );
+
+            expect(configuration.relations[0].range[0]).toBe('T3');
+            expect(configuration.relations[0].range.indexOf('T1')).toBe(-1);
+            expect(configuration.relations[0].range.indexOf('T2')).toBe(-1);
+        });
     });
 }
