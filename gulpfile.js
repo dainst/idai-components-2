@@ -65,9 +65,9 @@ gulp.task('compile', ['convert-sass'], function () {
 
     // test sources
     return gulp
-        .src('src/test/**/*.ts')
+        .src('test/browser/**/*.ts')
         .pipe(typescript(tscConfig.compilerOptions))
-        .pipe(gulp.dest('src/test/'));
+        .pipe(gulp.dest('test/browser/'));
 });
 
 function createConfig(path) {
