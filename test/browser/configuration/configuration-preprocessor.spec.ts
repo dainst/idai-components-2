@@ -1,7 +1,7 @@
 /// <reference path="../../../typings/globals/jasmine/index.d.ts" />
-import {ConfigurationPreprocessor} from "../../app/configuration/configuration-preprocessor";
-import {TypeDefinition} from '../../app/configuration/type-definition'
-import {ConfigurationDefinition} from "../../app/configuration/configuration-definition";
+import {ConfigurationPreprocessor} from "../../../src/app/configuration/configuration-preprocessor";
+import {TypeDefinition} from '../../../src/app/configuration/type-definition'
+import {ConfigurationDefinition} from "../../../src/app/configuration/configuration-definition";
 
 /**
  * @author Daniel de Oliveira

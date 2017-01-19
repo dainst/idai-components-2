@@ -9,10 +9,10 @@
     "build": "gulp create-configs && gulp compile",
     "start": "npm run server",
     "test:loop": "karma start src/test/config/karma.conf",
-    "test": "karma start src/test/config/karma.conf.js --single-run",
+    "test": "karma start test/browser/config/karma.conf.js --single-run",
     "server": "gulp webserver-watch",
     "postinstall": "typings install",
-    "e2e": "webdriver-manager update && protractor protractor.conf.js"
+    "e2e": "webdriver-manager update && protractor test/e2e/config/protractor.conf.js"
   },
   "repository": {
     "type": "git",
@@ -38,13 +38,13 @@
     "zone.js": "^0.6.21"
   },
   "devDependencies": {
+    "chromedriver": "2.25.1",
     "archiver": "^1.0.0",
     "gulp": "^3.9.0",
     "gulp-concat": "^2.6.0",
     "gulp-minify-css": "^1.2.3",
     "gulp-sass": "^2.1.1",
     "gulp-typescript": "^2.10.0",
-    "gulp-uglify": "^1.5.1",
     "gulp-webserver": "^0.9.1",
     "jasmine-core": "^2.4.1",
     "karma": "^0.13.21",

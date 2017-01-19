@@ -5,6 +5,9 @@ node_modules
 typings
 demo/**/*.js
 demo/**/*.js.map
+test/browser/**/*.js
+test/browser/**/*.js.map
+!test/browser/config/**/*
 persist.js*
 messages.js*
 datastore.js*

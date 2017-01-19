@@ -1,7 +1,7 @@
 /// <reference path="../../../typings/globals/jasmine/index.d.ts" />
-import {ConfigurationDefinition} from "../../app/configuration/configuration-definition";
-import {ConfigurationValidator} from "../../app/configuration/configuration-validator";
-import {MDInternal} from "../../app/messages/md-internal";
+import {ConfigurationDefinition} from "../../../src/app/configuration/configuration-definition";
+import {ConfigurationValidator} from "../../../src/app/configuration/configuration-validator";
+import {MDInternal} from "../../../src/app/messages/md-internal";
 
 /**
  * @author Daniel de Oliveira

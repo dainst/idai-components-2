@@ -1,8 +1,8 @@
 /// <reference path="../../../typings/globals/jasmine/index.d.ts" />
-import {MDInternal} from "../../app/messages/md-internal";
-import {Validator} from "../../app/persist/validator";
-import {ProjectConfiguration} from "../../app/configuration/project-configuration";
-import {ConfigLoader} from "../../app/configuration/config-loader";
+import {MDInternal} from "../../../src/app/messages/md-internal";
+import {Validator} from "../../../src/app/persist/validator";
+import {ProjectConfiguration} from "../../../src/app/configuration/project-configuration";
+import {ConfigLoader} from "../../../src/app/configuration/config-loader";
 
 
 /**
