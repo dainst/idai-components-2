@@ -45,7 +45,17 @@ export function main() {
 
 
 
-
+        it('should add missing type fields', function() {
+            delete configuration.types[0].fields;
+            new ConfigurationPreprocessor()
+                .go(
+                    configuration,
+                    [],
+                    [],
+                    []
+                );
+            expect(configuration.types[0].fields.length).toBe(0);
+        });
 
 
         it('should add extra fields', function(){

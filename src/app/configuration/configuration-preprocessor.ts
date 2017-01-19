@@ -23,10 +23,12 @@ export class ConfigurationPreprocessor {
         extraFields : Array<FieldDefinition>,
         extraRelations : Array<RelationDefinition>
         ) {
-        
+
         this.addExtraTypes(configuration,extraTypes);
         
         for (var typeDefinition of configuration.types) {
+            if (!typeDefinition.fields) typeDefinition.fields = [];
+
             if (typeDefinition.parent == undefined) {
                 this.addExtraFields(typeDefinition,extraFields)
             }
