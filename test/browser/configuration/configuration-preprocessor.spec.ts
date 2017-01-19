@@ -18,31 +18,32 @@ export function main() {
 
         beforeEach(function() {
 
-            var t : TypeDefinition =  { "type": "T",
-                "fields": [
+            var t : TypeDefinition =  { type: 'T1',
+                fields: [
                     {
-                        "name": "aField"
+                        name: 'aField'
                     }]
             };
 
             configuration = {
-                "types" : [
+                types : [
                     t
                 ],
-                "relations" : []
+                relations : []
             };
         });
 
-        function withAdditionalTypes(configuration: ConfigurationDefinition) {
-            configuration.types.push({
-                type: "T2",
-                fields: []
-            },{
-                type: "T3",
-                fields: []
-            });
+        function addType(configuration: ConfigurationDefinition,parent?:string) {
+            var newT : TypeDefinition = {
+                type: 'T'+(configuration.types.length+1),
+                    fields: []
+            };
+            if (parent!=undefined) newT.parent = parent;
+            configuration.types.push();
             return configuration;
         }
+
+
 
 
 
@@ -65,10 +66,10 @@ export function main() {
         
         it('should add extra type', function(){
 
-            var et : TypeDefinition = { "type": "T2",
-                "fields": [
+            var et : TypeDefinition = { type: 'T2',
+                fields: [
                     {
-                        "name": "bField"
+                        name: 'bField'
                     }]
             };
 
@@ -87,10 +88,10 @@ export function main() {
         it('should add and extra field to an extra type', function(){
 
 
-            var et : TypeDefinition = { "type": "T2",
-                "fields": [
+            var et : TypeDefinition = { type: 'T2',
+                fields: [
                     {
-                        "name": "bField"
+                        name: 'bField'
                     }]
             };
 
@@ -110,10 +111,10 @@ export function main() {
 
         it('merge fields of extra type with existing type', function(){
 
-            var et : TypeDefinition = { "type": "T",
-                "fields": [
+            var et : TypeDefinition = { type: 'T1',
+                fields: [
                     {
-                        "name": "bField"
+                        name: 'bField'
                     }]
             };
 
@@ -133,10 +134,10 @@ export function main() {
 
         it('merge fields of extra type with existing type and add extra field', function(){
 
-            var et : TypeDefinition = { "type": "T",
-                "fields": [
+            var et : TypeDefinition = { type: 'T1',
+                fields: [
                     {
-                        "name": "bField"
+                        name: 'bField'
                     }]
             };
 
@@ -157,16 +158,16 @@ export function main() {
 
         it('should not add extra fields to subtypes', function(){
 
-            var t : TypeDefinition =  { "type": "T",
-                "parent" : "SuperT",
-                "fields": [
+            var t : TypeDefinition =  { type: 'T1',
+                parent : 'SuperT',
+                fields: [
                     {
-                        "name": "aField"
+                        name: 'aField'
                     }]
             };
 
             configuration = {
-                "types" : [
+                types: [
                     t
                 ],
                 "relations" : []
@@ -186,9 +187,9 @@ export function main() {
 
 
         it('should add an extra relation', function() {
-            var r : RelationDefinition =  { "name": "R",
-                "domain": [ "domainA" ],
-                "range" : [ "rangeA" ]
+            var r : RelationDefinition =  { name: 'R',
+                domain: [ 'domainA' ],
+                range : [ 'rangeA' ]
             };
 
             new ConfigurationPreprocessor()
@@ -204,40 +205,40 @@ export function main() {
 
         it('should replace range ALL with all types execpt the range types', function() {
 
-            var r : RelationDefinition =  { "name": "R",
-                domain: [ "T2", "T3" ],
-                range: [ "ALL" ]
+            var r : RelationDefinition =  { name: 'R',
+                domain: [ 'T2', 'T3' ],
+                range: [ 'ALL' ]
             };
 
             new ConfigurationPreprocessor()
                 .go(
-                    withAdditionalTypes(configuration),
+                    addType(addType(configuration)),
                     [],
                     [],
                     [r]
                 );
 
-            expect(configuration.relations[0].range[0]).toBe('T');
+            expect(configuration.relations[0].range[0]).toBe('T1');
             expect(configuration.relations[0].range[1]).toBe(undefined);
         });
 
         it('should replace domain ALL with all types execpt the range types', function() {
 
-            var r : RelationDefinition =  { "name": "R",
-                domain: [ "ALL" ],
-                range: [ "T2", "T3" ]
+            var r : RelationDefinition =  { name: 'R',
+                domain: [ 'ALL' ],
+                range: [ 'T2', 'T3' ]
             };
 
             new ConfigurationPreprocessor()
                 .go(
-                    withAdditionalTypes(configuration),
+                    addType(addType(configuration)),
                     [],
                     [],
                     [r]
                 );
 
-            expect(configuration.relations[0].domain[0]).toBe('T');
+            expect(configuration.relations[0].domain[0]).toBe('T1');
             expect(configuration.relations[0].domain[1]).toBe(undefined);
-        })
+        });
     });
 }
