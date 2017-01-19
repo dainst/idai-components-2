@@ -221,7 +221,7 @@ export function main() {
             expect(configuration.relations[0].range[1]).toBe(undefined);
         });
 
-        it('should replace domain ALL with all types execpt the range types', function() {
+        fit('should replace domain ALL with all types execpt the range types', function() {
 
             var r : RelationDefinition =  { "name": "R",
                 domain: [ "ALL" ],
