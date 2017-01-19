@@ -43,7 +43,17 @@ export function main() {
             return configuration;
         }
 
-
+        it('should add missing relations', function() {
+            delete configuration.relations;
+            new ConfigurationPreprocessor()
+                .go(
+                    configuration,
+                    [],
+                    [],
+                    []
+                );
+            expect(configuration.relations.length).toBe(0);
+        });
 
         it('should add missing type fields', function() {
             delete configuration.types[0].fields;

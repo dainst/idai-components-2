@@ -38,6 +38,7 @@ export class ConfigurationPreprocessor {
             }
         }
 
+        if (!configuration.relations) configuration.relations = [];
         this.addExtraRelations(configuration, extraRelations);
     }
 
