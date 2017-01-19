@@ -129,6 +129,13 @@
       "fields": [
 
       ]
+    },
+    {
+      "type": "drawing",
+      "parent" : "image",
+      "label": "Zeichnung",
+      "fields": [
+      ]
     }
   ],
   "relations":[

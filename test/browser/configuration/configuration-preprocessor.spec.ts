@@ -201,6 +201,7 @@ export function main() {
                 );
 
             expect(configuration.relations[0].name).toBe('R');
+            expect(configuration.relations[1]).toBe(undefined); // to prevent reintroducing bug
         });
 
         it('should replace range ALL with all types execpt the range types', function() {

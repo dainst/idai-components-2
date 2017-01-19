@@ -50,6 +50,7 @@ export class ConfigurationPreprocessor {
                 }
             }
             if (!relationAlreadyPresent) {
+                configuration.relations.splice(0,0,extraRelation);
                 this.expandInherits(configuration, extraRelation, 'range');
                 this.expandInherits(configuration, extraRelation, 'domain');
                 this.expandAllMarker(configuration, extraRelation, 'range');
@@ -94,8 +95,6 @@ export class ConfigurationPreprocessor {
                 }
             }
         }
-
-        configuration.relations.splice(0,0,extraRelation)
     }
 
 

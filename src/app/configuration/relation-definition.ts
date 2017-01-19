@@ -6,4 +6,5 @@ export interface RelationDefinition {
     name: string;
     domain?: any;
     range?: any;
+    inverse?: any;
 }
