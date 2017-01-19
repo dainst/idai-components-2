@@ -28,8 +28,7 @@ export function main() {
             configuration = {
                 types : [
                     t
-                ],
-                relations : []
+                ]
             };
         });
 
@@ -44,7 +43,7 @@ export function main() {
         }
 
         it('should add missing relations', function() {
-            delete configuration.relations;
+            delete configuration.relations; // in case someone defined it in before
             new ConfigurationPreprocessor()
                 .go(
                     configuration,
@@ -189,8 +188,7 @@ export function main() {
             configuration = {
                 types: [
                     t
-                ],
-                "relations" : []
+                ]
             };
 
             new ConfigurationPreprocessor()
