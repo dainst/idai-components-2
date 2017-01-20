@@ -5,3 +5,5 @@ export {ProjectConfiguration} from "./src/app/configuration/project-configuratio
 export {TypeDefinition} from "./src/app/configuration/type-definition";
 export {RelationDefinition} from "./src/app/configuration/relation-definition";
 export {WithConfiguration} from './src/app/configuration/with-configuration';
+export {ConfigurationValidator} from './src/app/configuration/configuration-validator';
+export {ConfigurationPreprocessor} from './src/app/configuration/configuration-preprocessor';

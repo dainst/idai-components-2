@@ -8,29 +8,30 @@ import {RelationDefinition} from "./relation-definition";
  */
 export class ConfigurationPreprocessor {
 
-    constructor() { }
-
-    // TODO make it return a copy
     /**
-     * @param configuration
      * @param extraTypes fields of an extra type are merged if there is a type of its name already.
      * @param extraFields are added to every type including the extra types.
      * @param extraRelations an extra relation is added only if there is no relation of its name defined yet.
      */
+    constructor(private extraTypes : Array<TypeDefinition>,
+                private extraFields : Array<FieldDefinition>,
+                private extraRelations : Array<RelationDefinition>) { }
+
+    // TODO make it return a copy
+    /**
+     * @param configuration
+     */
     public go(
-        configuration : ConfigurationDefinition,
-        extraTypes : Array<TypeDefinition>,
-        extraFields : Array<FieldDefinition>,
-        extraRelations : Array<RelationDefinition>
+        configuration : ConfigurationDefinition
         ) {
 
-        this.addExtraTypes(configuration,extraTypes);
+        this.addExtraTypes(configuration,this.extraTypes);
         
         for (var typeDefinition of configuration.types) {
             if (!typeDefinition.fields) typeDefinition.fields = [];
 
             if (typeDefinition.parent == undefined) {
-                this.addExtraFields(typeDefinition,extraFields)
+                this.addExtraFields(typeDefinition,this.extraFields)
             }
             for (var fieldDefinition of typeDefinition.fields) {
                 if (fieldDefinition.editable==undefined) fieldDefinition.editable = true;
@@ -39,7 +40,7 @@ export class ConfigurationPreprocessor {
         }
 
         if (!configuration.relations) configuration.relations = [];
-        this.addExtraRelations(configuration, extraRelations);
+        this.addExtraRelations(configuration, this.extraRelations);
     }
 
     private addExtraRelations(configuration : ConfigurationDefinition,

@@ -72,15 +72,12 @@ export class ConfigLoader {
      * @param defaultFields
      * @param namesOfMandatoryTypes
      */
-    public load(
+    public go(
         projectConfigurationPath: string,
-        defaultTypes : Array<TypeDefinition>,
-        defaultFields : Array<FieldDefinition>,
-        defaultRelations : Array<RelationDefinition>,
-        namesOfMandatoryTypes : Array<string>
-
+        configurationPreprocessor: ConfigurationPreprocessor,
+        configurationValidator: ConfigurationValidator
     ) {
-        defaultFields = defaultFields.concat([
+        var defaultFields = [
             {
                 name : "id",
                 editable : false,
@@ -91,20 +88,16 @@ export class ConfigLoader {
                 visible : false,
                 editable : false
             }
-        ]);
+        ];
         
         this.read(this.http,projectConfigurationPath).then(
             (config)=>{
-                new ConfigurationPreprocessor()
-                    .go(config,
-                        defaultTypes,
-                        defaultFields,
-                        defaultRelations
-                    );
+                if (configurationPreprocessor) configurationPreprocessor.go(config);
+                new ConfigurationPreprocessor([],defaultFields,[]).go(config);
 
-                var configurationError = ConfigurationValidator
-                    .go(config,namesOfMandatoryTypes
-                    ); 
+                var configurationError = undefined;
+                if (configurationValidator) configurationError =
+                    configurationValidator.go(config);
                 if (configurationError) {
                     this.error = configurationError;
                 } else this.projectConfig = new ProjectConfiguration(config);

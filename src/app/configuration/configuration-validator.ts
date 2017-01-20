@@ -9,24 +9,28 @@ import {TypeDefinition} from "./type-definition";
 export class ConfigurationValidator {
 
     /**
+     * @param namesOfMandatoryTypes
+     */
+    constructor(private namesOfMandatoryTypes: Array<string>) { }
+
+    /**
      * Searches for missing mandatory types or duplicate types.
      * Returns on the first occurrence of either one.
      *
      * @param configuration
-     * @param namesOfMandatoryTypes
      * @returns {Array<string>} msgWithParams. undefined if no error.
      */
-    public static go(
+    public go(
         configuration: ConfigurationDefinition,
-        namesOfMandatoryTypes: Array<string>) : Array<string> {
+        ) : Array<string> {
 
 
-        var missingType = ConfigurationValidator
-            .findMissingType(configuration.types,namesOfMandatoryTypes);
+        var missingType = this
+            .findMissingType(configuration.types,this.namesOfMandatoryTypes);
         if (missingType)
             return [MDInternal.VALIDATION_ERROR_MISSINGTYPE,missingType];
 
-        var duplicateType = ConfigurationValidator
+        var duplicateType = this
             .findDuplicateType(configuration.types);
         if (duplicateType)
             return [MDInternal.VALIDATION_ERROR_DUPLICATETYPE,duplicateType];
@@ -34,7 +38,7 @@ export class ConfigurationValidator {
         return undefined;
     }
 
-    private static findDuplicateType(types: Array<TypeDefinition>) {
+    private findDuplicateType(types: Array<TypeDefinition>) {
 
         var o = {};
         for (var typeName of types.map(t=>t.type)) {
@@ -43,7 +47,7 @@ export class ConfigurationValidator {
         }
     }
 
-    private static findMissingType(
+    private findMissingType(
         types: Array<TypeDefinition>,
         namesOfMandatoryTypes: Array<string>
     ) {

@@ -21,11 +21,9 @@ export function main() {
                 ]
             };
 
-            expect(ConfigurationValidator
-                .go(
-                    configuration,
-                    ['Tmissing']
-                )).toEqual([MDInternal.VALIDATION_ERROR_MISSINGTYPE,'Tmissing']);
+            expect(new ConfigurationValidator(['Tmissing'])
+                .go(configuration))
+                .toEqual([MDInternal.VALIDATION_ERROR_MISSINGTYPE,'Tmissing']);
         });
 
         it('should report duplicate type', function(){
@@ -41,10 +39,9 @@ export function main() {
                 ]
             };
 
-            expect(ConfigurationValidator
-                .go(
-                    configuration, []
-                )).toEqual([MDInternal.VALIDATION_ERROR_DUPLICATETYPE,'Tduplicate']);
+            expect(new ConfigurationValidator([])
+                .go(configuration))
+                .toEqual([MDInternal.VALIDATION_ERROR_DUPLICATETYPE,'Tduplicate']);
         });
     });
 }
