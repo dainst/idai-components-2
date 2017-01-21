@@ -55,8 +55,8 @@ export class DocumentEditDemoComponent implements OnInit {
                 {"name":"identifier","visible":false}
             ],
             [
-                {name:'depicts', domain:['image:inherit'], inverse:'isDepictedBy'},
-                {name:'isDepictedBy', range:['image:inherit'], inverse: 'depicts'}
+                {name:'depicts', domain:['image:inherit'], inverse:'isDepictedBy', visible: false, editable: false},
+                {name:'isDepictedBy', range:['image:inherit'], inverse: 'depicts', visible: false, editable: false}
             ]),
             new ConfigurationValidator([])
         );

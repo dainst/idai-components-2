@@ -95,14 +95,20 @@ export class ProjectConfiguration {
      * Gets the relation defintions available.
      *
      * @param typeName the name of the type to get the relation defintions for.
+     * @param property to give only the definitions with a certain boolean property not set or set to true
      * @returns {Array<RelationDefinition>} the definitions for the type.
      */
-    public getRelationDefinitions(typeName: string): Array<RelationDefinition> {
+    public getRelationDefinitions(typeName: string,property?:string): Array<RelationDefinition> {
 
         var availableRelationFields = new Array<RelationDefinition>();
         for (var i in this.relationFields) {
             if (this.relationFields[i].domain.indexOf(typeName) > -1) {
-                availableRelationFields.push(this.relationFields[i]);
+
+                if (!property ||
+                    this.relationFields[i][property] == undefined ||
+                    this.relationFields[i][property] == true) {
+                    availableRelationFields.push(this.relationFields[i]);
+                }
             }
         }
         return availableRelationFields;
@@ -128,6 +134,18 @@ export class ProjectConfiguration {
     
     public isVisible(typeName: string, fieldName: string) : boolean {
         return this.hasProperty(typeName,fieldName,'visible')
+    }
+
+    public isVisibleRelation(relationName:string) : boolean {
+        for (var i in this.relationFields) {
+            if (this.relationFields[i].name == relationName &&
+                    (!this.relationFields[i].visible ||
+                    this.relationFields[i].visible == false)) {
+
+                return false;
+            }
+        }
+        return true;
     }
 
     private hasProperty(typeName: string, fieldName: string, propertyName: string) {

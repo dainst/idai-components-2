@@ -52,6 +52,8 @@ export class RelationsViewComponent extends WithConfiguration implements OnInit,
 
         for (var relationName in resource.relations) {
             if (resource.relations.hasOwnProperty(relationName)) {
+                if (!this.projectConfiguration.isVisibleRelation(relationName)) continue;
+
                 var relationTargets = resource.relations[relationName];
 
                 var relation = {
