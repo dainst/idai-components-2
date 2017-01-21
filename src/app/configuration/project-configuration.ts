@@ -139,8 +139,8 @@ export class ProjectConfiguration {
     public isVisibleRelation(relationName:string) : boolean {
         for (var i in this.relationFields) {
             if (this.relationFields[i].name == relationName &&
-                    (!this.relationFields[i].visible ||
-                    this.relationFields[i].visible == false)) {
+                this.relationFields[i].visible != undefined &&
+                    this.relationFields[i].visible == false) {
 
                 return false;
             }
