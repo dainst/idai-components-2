@@ -43,7 +43,7 @@ module.exports = function(config) {
 
         colors: true,
 
-        logLevel: config.LOG_INFO,
+        logLevel: config.LOG_INFO, // it must show WARN for them to be caught in ci. see build script.
         autoWatch: true,
 
         browsers: [
