@@ -22,7 +22,7 @@ module.exports = function(config) {
             { pattern: 'node_modules/angular2-uuid/**/*.js', included: false, watched: false },
             { pattern: 'node_modules/systemjs/dist/system-polyfills.js', included: false, watched: false },
 
-            //{ pattern: 'src/app/**/*.js', included: false, watched: true },
+            { pattern: 'src/app/**/*.js', included: false, watched: true },
             { pattern: 'src/app/**/*.html', included: false, watched: true },
             { pattern: 'test/browser/**/*.spec.js', included: false, watched: true },
 
