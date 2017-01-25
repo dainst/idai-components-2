@@ -36,4 +36,5 @@ export abstract class Datastore extends ReadDatastore {
      * methods defined here.
      */
     abstract documentChangesNotifications():Observable<Document>;
+
 }
