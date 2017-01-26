@@ -5,6 +5,7 @@ import {MDInternal} from "../messages/md-internal";
 import {Observable} from "rxjs/Observable";
 import {TypeDefinition} from './type-definition';
 import {FieldDefinition} from './field-definition';
+import {RelationDefinition} from './relation-definition';
 import {ConfigurationPreprocessor} from './configuration-preprocessor';
 import {ConfigurationValidator} from "./configuration-validator";
 
@@ -71,14 +72,12 @@ export class ConfigLoader {
      * @param defaultFields
      * @param namesOfMandatoryTypes
      */
-    public load(
+    public go(
         projectConfigurationPath: string,
-        defaultTypes : Array<TypeDefinition>,
-        defaultFields : Array<FieldDefinition>,
-        namesOfMandatoryTypes : Array<string>
-
+        configurationPreprocessor: ConfigurationPreprocessor,
+        configurationValidator: ConfigurationValidator
     ) {
-        defaultFields = defaultFields.concat([
+        var defaultFields = [
             {
                 name : "id",
                 editable : false,
@@ -89,19 +88,16 @@ export class ConfigLoader {
                 visible : false,
                 editable : false
             }
-        ]);
+        ];
         
         this.read(this.http,projectConfigurationPath).then(
             (config)=>{
-                new ConfigurationPreprocessor()
-                    .go(config,
-                        defaultTypes,
-                        defaultFields
-                    );
-                
-                var configurationError = ConfigurationValidator
-                    .go(config,namesOfMandatoryTypes
-                    ); 
+                if (configurationPreprocessor) configurationPreprocessor.go(config);
+                new ConfigurationPreprocessor([],defaultFields,[]).go(config);
+
+                var configurationError = undefined;
+                if (configurationValidator) configurationError =
+                    configurationValidator.go(config);
                 if (configurationError) {
                     this.error = configurationError;
                 } else this.projectConfig = new ProjectConfiguration(config);

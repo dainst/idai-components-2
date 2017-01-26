@@ -15,11 +15,11 @@ import {Query} from "./query";
 export abstract class ReadDatastore  {
 
     /**
-     * @param query
+     * @param id the desired document's id
      * @returns {Promise<T>} resolve -> {Document},
      *   reject -> the error message or a message key.
      */ 
-    abstract get(resourceId: string): Promise<Document>;
+    abstract get(id: string): Promise<Document>;
 
     /**
      * @param query
@@ -29,4 +29,13 @@ export abstract class ReadDatastore  {
     abstract find(query: Query): Promise<Document[]>;
 
     abstract all(options: any): Promise<Document[]>;
+
+    /**
+     * Gets the specified object without using the cache
+     * @param id the desired document's id
+     * @returns {Promise<T>} resolve -> {Document},
+     *   reject -> the error message or a message key.
+     */
+    abstract refresh(id: string): Promise<Document>;
+
 }

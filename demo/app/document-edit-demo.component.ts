@@ -5,6 +5,8 @@ import {Datastore} from '../../src/app/datastore/datastore';
 import {OBJECTS} from "./sample-objects";
 import {Document} from "../../src/app/model/document";
 import {PersistenceManager} from "../../src/app/persist/persistence-manager";
+import {ConfigurationPreprocessor} from "../../src/app/configuration/configuration-preprocessor";
+import {ConfigurationValidator} from "../../src/app/configuration/configuration-validator";
 
 @Component({
     selector: 'document-edit-demo',
@@ -45,14 +47,18 @@ export class DocumentEditDemoComponent implements OnInit {
     ngOnInit() {
         this.loadSampleData();
         
-        this.configLoader.load(
+        this.configLoader.go(
             DocumentEditDemoComponent.PROJECT_CONFIGURATION_PATH,
-            [{"type":"image","fields":[{"name":"dimensions"}]}],
+            new ConfigurationPreprocessor([{"type":"image","fields":[{"name":"dimensions"}]}],
             [
                 {"name":"shortDescription","visible":false},
                 {"name":"identifier","visible":false}
             ],
-            []
+            [
+                {name:'depicts', domain:['image:inherit'], inverse:'isDepictedBy', visible: false, editable: false},
+                {name:'isDepictedBy', range:['image:inherit'], inverse: 'depicts', visible: false, editable: false}
+            ]),
+            new ConfigurationValidator([])
         );
 
         this.configLoader.configuration().subscribe((result)=>{

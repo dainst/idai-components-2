@@ -1,7 +1,7 @@
 /// <reference path="../../../typings/globals/jasmine/index.d.ts" />
-import {ConfigurationDefinition} from "../../app/configuration/configuration-definition";
-import {ConfigurationValidator} from "../../app/configuration/configuration-validator";
-import {MDInternal} from "../../app/messages/md-internal";
+import {ConfigurationDefinition} from "../../../src/app/configuration/configuration-definition";
+import {ConfigurationValidator} from "../../../src/app/configuration/configuration-validator";
+import {MDInternal} from "../../../src/app/messages/md-internal";
 
 /**
  * @author Daniel de Oliveira
@@ -21,11 +21,9 @@ export function main() {
                 ]
             };
 
-            expect(ConfigurationValidator
-                .go(
-                    configuration,
-                    ['Tmissing']
-                )).toEqual([MDInternal.VALIDATION_ERROR_MISSINGTYPE,'Tmissing']);
+            expect(new ConfigurationValidator(['Tmissing'])
+                .go(configuration))
+                .toEqual([MDInternal.VALIDATION_ERROR_MISSINGTYPE,'Tmissing']);
         });
 
         it('should report duplicate type', function(){
@@ -41,10 +39,9 @@ export function main() {
                 ]
             };
 
-            expect(ConfigurationValidator
-                .go(
-                    configuration, []
-                )).toEqual([MDInternal.VALIDATION_ERROR_DUPLICATETYPE,'Tduplicate']);
+            expect(new ConfigurationValidator([])
+                .go(configuration))
+                .toEqual([MDInternal.VALIDATION_ERROR_DUPLICATETYPE,'Tduplicate']);
         });
     });
 }

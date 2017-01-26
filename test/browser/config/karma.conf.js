@@ -24,7 +24,7 @@ module.exports = function(config) {
 
             { pattern: 'src/app/**/*.js', included: false, watched: true },
             { pattern: 'src/app/**/*.html', included: false, watched: true },
-            { pattern: 'src/test/**/*.spec.js', included: false, watched: true },
+            { pattern: 'test/browser/**/*.spec.js', included: false, watched: true },
 
             'test-main.js'
         ],
@@ -43,7 +43,7 @@ module.exports = function(config) {
 
         colors: true,
 
-        logLevel: config.LOG_INFO,
+        logLevel: config.LOG_INFO, // it must show WARN for them to be caught in ci. see build script.
         autoWatch: true,
 
         browsers: [

@@ -1,6 +1,6 @@
 /// <reference path="../../../typings/globals/jasmine/index.d.ts" />
-import {Messages} from "../../app/messages/messages";
-import {MDInternal} from "../../app/messages/md-internal";
+import {Messages} from "../../../src/app/messages/messages";
+import {MDInternal} from "../../../src/app/messages/md-internal";
 
 /**
  * @author Daniel de Oliveira

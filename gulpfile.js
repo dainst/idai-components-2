@@ -1,7 +1,6 @@
 var gulp = require('gulp');
 var sass = require('gulp-sass');
 var concat = require('gulp-concat');
-var uglify = require('gulp-uglify');
 var typescript = require('gulp-typescript');
 var archiver = require('archiver');
 var fs = require('fs');
@@ -66,9 +65,9 @@ gulp.task('compile', ['convert-sass'], function () {
 
     // test sources
     return gulp
-        .src('src/test/**/*.ts')
+        .src('test/browser/**/*.ts')
         .pipe(typescript(tscConfig.compilerOptions))
-        .pipe(gulp.dest('src/test/'));
+        .pipe(gulp.dest('test/browser/'));
 });
 
 function createConfig(path) {
