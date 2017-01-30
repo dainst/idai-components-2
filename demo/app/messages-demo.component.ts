@@ -20,7 +20,7 @@ export class MessagesDemoComponent {
     }
 
     public showMessage(msgKey: string) {
-        if (this.useParams) {
+        if (this.useParams && msgKey == "with_params") {
             this.messages.addWithParams([msgKey].concat(this.params));
         } else {
             this.messages.add(msgKey);

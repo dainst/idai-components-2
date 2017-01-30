@@ -17,16 +17,17 @@ export class Messages {
 
     private internalMessagesDictionary = new MDInternal();
     
-    constructor(private messagesDictionary:MD){}
+    constructor(private messagesDictionary: MD) {}
 
-    private messageList : Message[] = [];
+    private messageList: Message[] = [];
 
     /**
      * @param id used to identify the message. Must be an existing key.
      *   If it is not, the id param gets interpreted as a message content of an unknown
      *   error condition with level 'danger'.
-     */   
+     */
     public add(id: string): void {
+
         var msg = this._get(id);
         if (!msg) msg = {content: id, level: 'danger', params: []};
         this._add(msg,undefined);
@@ -40,42 +41,46 @@ export class Messages {
      *   array position: {0} will be replaced with params[0] etc.
      */
     public addWithParams(msgWithParams: Array<string>): void {
+
         var id = msgWithParams[0];
-        msgWithParams.splice(0,1);
+        msgWithParams.splice(0, 1);
         var params = msgWithParams;
         var msg = this._get(id);
-        if (!msg) throw 'No message found for key '+id;
+        if (!msg) throw 'No message found for key ' + id;
         this._add(msg,params);
     }
 
     private _get(id) : Message {
+
         var msg = this.internalMessagesDictionary.msgs[id];
         var providedMsg = this.messagesDictionary.msgs[id];
         if (providedMsg) msg = providedMsg;
         return msg;
     }
 
-    private _add(msg,params?:Array<string>) {
+    private _add(msg, params?: Array<string>) {
+
+        var messageToAdd = {
+            content: msg.content,
+            level: msg.level,
+            params: params ? params.slice() : msg.params
+        };
         
         var isNew = true;
-        this.messageList.forEach(function (message) {
-            if (message.content == msg.content) {
+        this.messageList.forEach(function(message) {
+            if (this.isSameMessage(messageToAdd, message)) {
                 isNew = false;
             }
-        });
-        if (isNew) {
-            this.messageList.push({
-                content: msg.content,
-                level: msg.level,
-                params: params ? params.slice() : msg.params
-            });
-        }
+        }.bind(this));
+
+        if (isNew) this.messageList.push(messageToAdd);
     }
     
     /**
      * @param message to be removed
      */
     public removeMessage(message: Message) {
+
         var index:number = this.messageList.indexOf(message, 0);
         if (index > -1) {
             this.messageList.splice(index, 1);
@@ -95,4 +100,27 @@ export class Messages {
     public getMessages() : Message[] {
         return this.messageList;
     }
+
+    private isSameMessage(message1: Message, message2: Message): boolean {
+
+        if (message1.content != message2.content || message1.level != message2.level) {
+            return false;
+        }
+
+        if ((!message1.params && message2.params) || (message1.params && !message2.params)) {
+            return false;
+        }
+
+        if (message1.params.length != message2.params.length) {
+            return false;
+        }
+
+        for (let i = 0; i < message1.params.length; i++) {
+            if (message1.params[i] != message2.params[i]) {
+                return false;
+            }
+        }
+
+        return true;
+     }
 }
