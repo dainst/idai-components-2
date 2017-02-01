@@ -22,8 +22,8 @@ import {ProjectConfiguration} from "../configuration/project-configuration";
         private datastore: Datastore
     ) {}
 
-    private oldVersion : Document = undefined;
-    private projectConfiguration : ProjectConfiguration = undefined;
+    private oldVersion: Document = undefined;
+    private projectConfiguration: ProjectConfiguration = undefined;
 
     public setProjectConfiguration(projectConfiguration:ProjectConfiguration) {
         this.projectConfiguration = projectConfiguration;
@@ -35,7 +35,7 @@ import {ProjectConfiguration} from "../configuration/project-configuration";
      * @param oldVersion
      */
     setOldVersion(oldVersion) {
-        this.oldVersion=JSON.parse(JSON.stringify(oldVersion));
+        this.oldVersion = JSON.parse(JSON.stringify(oldVersion));
     }
     
     /**
@@ -48,30 +48,30 @@ import {ProjectConfiguration} from "../configuration/project-configuration";
      *   <code>string[]</code>, containing ids of M where possible,
      *   and error messages where not.
      */
-    public persist(document) {
-        var resource=document['resource'];
+    public persist(document: Document, oldVersion: Document = this.oldVersion) {
+
+        var resource = document['resource'];
 
         return new Promise<any>((resolve, reject) => {
             if (!this.projectConfiguration) return reject(["no project configuration available"]);
 
-                if (document==undefined) return resolve();
+                if (document == undefined) return resolve();
 
-                this.persistIt(document).then(()=> {
-                    Promise.all(this.makeGetPromises(document,this.oldVersion)).then((targetDocuments)=> {
+                this.persistIt(document).then(() => {
+                    Promise.all(this.makeGetPromises(document, oldVersion)).then((targetDocuments) => {
 
-                        Promise.all(this.makeSavePromises(resource,targetDocuments)).then(()=> {
-
+                        Promise.all(this.makeSavePromises(resource, targetDocuments)).then(() => {
                             this.setOldVersion(document);
                             resolve();
-                        }, (err)=>reject(this.toStringArray(err)));
+                        }, (err) => reject(this.toStringArray(err)));
 
-
-                }, (err)=>reject(this.toStringArray(err)))
-            }, (err)=> { reject(this.toStringArray(err)); });
+                }, (err) => reject(this.toStringArray(err)))
+            }, (err) => { reject(this.toStringArray(err)); });
         });
     }
 
-    private makeGetPromises(document,oldVersion) {
+    private makeGetPromises(document: Document, oldVersion: Document) {
+
         var promisesToGetObjects = new Array();
         for (var id of this.extractRelatedObjectIDs(document['resource'])) {
             promisesToGetObjects.push(this.datastore.get(id))
@@ -82,7 +82,8 @@ import {ProjectConfiguration} from "../configuration/project-configuration";
         return promisesToGetObjects;
     }
 
-    private makeSavePromises(resource,targetDocuments) {
+    private makeSavePromises(resource: Resource, targetDocuments: Document[]) {
+
         var promisesToSaveObjects = new Array();
         for (var targetDocument of targetDocuments) {
 
@@ -93,7 +94,8 @@ import {ProjectConfiguration} from "../configuration/project-configuration";
         return promisesToSaveObjects;
     }
 
-    private pruneInverseRelations(id,targetRelations) {
+    private pruneInverseRelations(id: string, targetRelations) {
+
         for (var relation in targetRelations) {
             if (!this.projectConfiguration.isRelationProperty(relation)) continue;
 
@@ -107,7 +109,7 @@ import {ProjectConfiguration} from "../configuration/project-configuration";
         }
     }
 
-    private setInverseRelations(resource, targetResource) {
+    private setInverseRelations(resource: Resource, targetResource: Resource) {
 
         for (var relation in resource['relations']) {
             if (!this.projectConfiguration.isRelationProperty(relation)) continue;
@@ -131,7 +133,8 @@ import {ProjectConfiguration} from "../configuration/project-configuration";
     }
 
 
-    private extractRelatedObjectIDs(resource:Resource) : Array<string> {
+    private extractRelatedObjectIDs(resource: Resource) : Array<string> {
+
         var relatedObjectIDs = new Array();
 
         for (var prop in resource['relations']) {
