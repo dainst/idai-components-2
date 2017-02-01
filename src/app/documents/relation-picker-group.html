@@ -4,14 +4,14 @@
                          [primary]="primary"></relation-picker>
     </div>
 
-    <button class="btn btn-primary"
+    <button class="btn btn-primary add-relation"
             *ngIf="!relations[field.name] || relations[field.name].length == 0 || validateNewest()"
             role="button"
             (click)="createRelation()">+
     </button>
 
     <!-- Button disabled when waiting for input -->
-    <button class="btn btn-primary"
+    <button class="btn btn-primary add-relation"
             *ngIf="relations[field.name] && relations[field.name].length > 0 && !validateNewest()"
             role="button" disabled>+
     </button>
