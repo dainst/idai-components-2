@@ -1,4 +1,4 @@
-<div class="relation-picker" style="display: block !important;">
+<div>
     <div class="delete-relation small-circular-button red-button mdi mdi-delete" (click)="deleteRelation()"></div>
     <div id="relation-picker">
         <div *ngIf="!selectedTarget">
@@ -18,7 +18,7 @@
             </div>
         </div>
         <div *ngIf="selectedTarget">
-            <button class="btn btn-primary" role="button" (click)="editTarget()">
+            <button class="btn btn-default" type="button" (click)="editTarget()">
                 <span class="badge">{{selectedTarget['resource'][primary]}}</span>
             </button>
         </div>
