@@ -1,16 +1,12 @@
-<div class="relation-picker-group">
-    <div *ngFor="let relation of relations[field.name]; let i = index">
-        <relation-picker [(document)]="document" [field]="field" [relationIndex]="i"
-                         [primary]="primary"></relation-picker>
-    </div>
-
-    <button class="btn btn-primary add-relation"
-            *ngIf="!relations[field.name] || relations[field.name].length == 0 || validateNewest()"
-            role="button"
-            (click)="createRelation()">+</button>
-
-    <!-- Button disabled when waiting for input -->
-    <button class="btn btn-primary add-relation"
-            *ngIf="relations[field.name] && relations[field.name].length > 0 && !validateNewest()"
-            role="button" disabled>+</button>
+<div *ngFor="let relation of relations[field.name]; let i = index">
+    <relation-picker [(document)]="document" [field]="field" [relationIndex]="i" [primary]="primary"></relation-picker>
 </div>
+<div class="circular-button add-relation"
+     *ngIf="!relations[field.name] || relations[field.name].length == 0 || validateNewest()"
+     type="button"
+     (click)="createRelation()">+</div>
+
+<!-- Button disabled when waiting for input -->
+<div class="circular-button add-relation-disabled"
+     *ngIf="relations[field.name] && relations[field.name].length > 0 && !validateNewest()"
+     type="button">+</div>
