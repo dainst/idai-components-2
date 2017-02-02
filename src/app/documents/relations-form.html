@@ -5,14 +5,13 @@
     <ul class="list-group list-group-flush">
         <template ngFor [ngForOf]="relationDefinitions" let-relationDefinition="$implicit">
             <li class="list-group-item">
-                <label *ngIf="relationDefinition.label">{{relationDefinition.label}}</label>
-                <label *ngIf="!relationDefinition.label">{{relationDefinition.name}}</label>
-                <relation-picker-group [(document)]="document" [field]="relationDefinition" [primary]="primary"></relation-picker-group>
+                <relation-picker-group [(document)]="document"
+                                       [field]="relationDefinition"
+                                       [primary]="primary"
+                                       style="margin-right: 15px;"></relation-picker-group>
+                <span *ngIf="relationDefinition.label">{{relationDefinition.label}}</span>
+                <span *ngIf="!relationDefinition.label">{{relationDefinition.name}}</span>
             </li>
         </template>
     </ul>
 </div>
-
-
-
-
