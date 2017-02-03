@@ -1,4 +1,3 @@
-/// <reference path="../../../typings/globals/jasmine/index.d.ts" />
 import {MDInternal} from "../../../src/app/messages/md-internal";
 import {Validator} from "../../../src/app/persist/validator";
 import {ProjectConfiguration} from "../../../src/app/configuration/project-configuration";

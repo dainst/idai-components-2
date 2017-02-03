@@ -11,7 +11,6 @@
     "test:loop": "karma start src/test/config/karma.conf",
     "test": "karma start test/browser/config/karma.conf.js --single-run",
     "server": "gulp webserver-watch",
-    "postinstall": "typings install",
     "e2e": "webdriver-manager update && protractor test/e2e/config/protractor.conf.js"
   },
   "repository": {
@@ -34,17 +33,20 @@
     "reflect-metadata": "0.1.2",
     "rxjs": "5.0.0-beta.12",
     "systemjs": "^0.19.26",
-    "typings": "^1.4.0",
     "zone.js": "^0.6.21"
   },
   "devDependencies": {
+    "@types/electron": "^1.4.31",
+    "@types/es6-shim": "^0.31.32",
+    "@types/jasmine": "^2.5.41",
+    "@types/node": "^7.0.4",
     "chromedriver": "2.25.1",
     "archiver": "^1.0.0",
     "gulp": "^3.9.0",
     "gulp-concat": "^2.6.0",
     "gulp-minify-css": "^1.2.3",
     "gulp-sass": "^2.1.1",
-    "gulp-typescript": "^2.10.0",
+    "gulp-typescript": "3.1.4",
     "gulp-webserver": "^0.9.1",
     "jasmine-core": "^2.4.1",
     "karma": "^0.13.21",

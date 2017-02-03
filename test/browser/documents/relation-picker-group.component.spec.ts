@@ -1,4 +1,3 @@
-/// <reference path="../../../typings/globals/jasmine/index.d.ts" />
 import {RelationPickerGroupComponent} from "../../../src/app/documents/relation-picker-group.component";
 
 /**

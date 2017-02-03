@@ -1,4 +1,3 @@
-/// <reference path="../../../typings/globals/jasmine/index.d.ts" />
 import {ConfigurationPreprocessor} from "../../../src/app/configuration/configuration-preprocessor";
 import {TypeDefinition} from '../../../src/app/configuration/type-definition'
 import {RelationDefinition} from '../../../src/app/configuration/relation-definition'

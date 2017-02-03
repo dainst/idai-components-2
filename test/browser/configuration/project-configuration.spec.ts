@@ -1,4 +1,3 @@
-/// <reference path="../../../typings/globals/jasmine/index.d.ts" />
 import {ProjectConfiguration} from "../../../src/app/configuration/project-configuration";
 import {MDInternal} from "../../../src/app/messages/md-internal";
 
