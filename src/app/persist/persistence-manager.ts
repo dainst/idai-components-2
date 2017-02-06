@@ -15,6 +15,7 @@ import {ProjectConfiguration} from "../configuration/project-configuration";
  * to load and save objects.
  * 
  * @author Daniel de Oliveira
+ * @author Thomas Kleinke
  */
 @Injectable() export class PersistenceManager {
     
@@ -48,25 +49,43 @@ import {ProjectConfiguration} from "../configuration/project-configuration";
      *   <code>string[]</code>, containing ids of M where possible,
      *   and error messages where not.
      */
-    public persist(document: Document, oldVersion: Document = this.oldVersion) {
-
-        var resource = document['resource'];
+    public persist(document: Document, oldVersion: Document = this.oldVersion): Promise<any> {
 
         return new Promise<any>((resolve, reject) => {
             if (!this.projectConfiguration) return reject(["no project configuration available"]);
+            if (document == undefined) return resolve();
 
-                if (document == undefined) return resolve();
+            this.persistIt(document).then(() => {
+                Promise.all(this.makeGetPromises(document, oldVersion)).then((targetDocuments) => {
 
-                this.persistIt(document).then(() => {
-                    Promise.all(this.makeGetPromises(document, oldVersion)).then((targetDocuments) => {
-
-                        Promise.all(this.makeSavePromises(resource, targetDocuments)).then(() => {
-                            this.setOldVersion(document);
-                            resolve();
-                        }, (err) => reject(this.toStringArray(err)));
+                    Promise.all(this.makeSavePromises(document.resource, targetDocuments, true)).then(() => {
+                        this.setOldVersion(document);
+                        resolve();
+                    }, (err) => reject(this.toStringArray(err)));
 
                 }, (err) => reject(this.toStringArray(err)))
-            }, (err) => { reject(this.toStringArray(err)); });
+            }, (err) => reject(this.toStringArray(err)));
+        });
+    }
+
+    /**
+     * Removes the document from the datastore and deletes all corresponding reverse relations.
+     */
+    public remove(document: Document, oldVersion: Document = this.oldVersion): Promise<any> {
+
+        return new Promise<any>((resolve, reject) => {
+            if (!this.projectConfiguration) return reject(["no project configuration available"]);
+            if (document == undefined) return resolve();
+
+            Promise.all(this.makeGetPromises(document, oldVersion)).then((targetDocuments) => {
+                Promise.all(this.makeSavePromises(document.resource, targetDocuments, false)).then(() => {
+
+                    this.datastore.remove(document.resource.id).then(() => {
+                        resolve();
+                    }, (err) => reject(this.toStringArray(err)));
+
+                }, (err) => reject(this.toStringArray(err)))
+            }, (err) => reject(this.toStringArray(err)));
         });
     }
 
@@ -82,13 +101,12 @@ import {ProjectConfiguration} from "../configuration/project-configuration";
         return promisesToGetObjects;
     }
 
-    private makeSavePromises(resource: Resource, targetDocuments: Document[]) {
+    private makeSavePromises(resource: Resource, targetDocuments: Document[], setInverseRelations: boolean) {
 
         var promisesToSaveObjects = new Array();
         for (var targetDocument of targetDocuments) {
-
-            this.pruneInverseRelations(resource['id'],targetDocument['resource']['relations']);
-            this.setInverseRelations(resource, targetDocument['resource']);
+            this.pruneInverseRelations(resource['id'], targetDocument['resource']['relations']);
+            if (setInverseRelations) this.setInverseRelations(resource, targetDocument['resource']);
             promisesToSaveObjects.push(this.datastore.update(targetDocument));
         }
         return promisesToSaveObjects;
@@ -99,12 +117,12 @@ import {ProjectConfiguration} from "../configuration/project-configuration";
         for (var relation in targetRelations) {
             if (!this.projectConfiguration.isRelationProperty(relation)) continue;
 
-            var index=targetRelations[relation].indexOf(id);
-            if (index!=-1) {
-                targetRelations[relation].splice(index,1)
+            var index = targetRelations[relation].indexOf(id);
+            if (index != -1) {
+                targetRelations[relation].splice(index, 1)
             }
 
-            if (targetRelations[relation].length==0)
+            if (targetRelations[relation].length == 0)
                 delete targetRelations[relation];
         }
     }
@@ -115,12 +133,12 @@ import {ProjectConfiguration} from "../configuration/project-configuration";
             if (!this.projectConfiguration.isRelationProperty(relation)) continue;
 
             for (var id of resource['relations'][relation]) {
-                if (id!=targetResource['id']) continue;
+                if (id != targetResource['id']) continue;
 
                 var inverse = this.projectConfiguration.getInverseRelations(relation);
 
-                if (targetResource['relations'][inverse]==undefined)
-                    targetResource['relations'][inverse]=[];
+                if (targetResource['relations'][inverse] == undefined)
+                    targetResource['relations'][inverse] = [];
 
                 var index = targetResource['relations'][inverse].indexOf(resource['id']);
                 if (index != -1) {
@@ -164,7 +182,6 @@ import {ProjectConfiguration} from "../configuration/project-configuration";
             return this.datastore.create(document);
         }
     }
-    
 
     private toStringArray(str : any) : string[] {
         if ((typeof str)=="string") return [str]; else return str;
