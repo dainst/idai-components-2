@@ -91,12 +91,20 @@ import {ProjectConfiguration} from "../configuration/project-configuration";
 
     private makeGetPromises(document: Document, oldVersion: Document) {
 
-        var promisesToGetObjects = new Array();
+        var promisesToGetObjects: Promise<Document>[] = [];
+        var ids: string[] = [];
+
         for (var id of this.extractRelatedObjectIDs(document['resource'])) {
-            promisesToGetObjects.push(this.datastore.get(id))
+            if (ids.indexOf(id) == -1) {
+                promisesToGetObjects.push(this.datastore.get(id));
+                ids.push(id);
+            }
         }
         for (var id of this.extractRelatedObjectIDs(oldVersion['resource'])) {
-            promisesToGetObjects.push(this.datastore.get(id))
+            if (ids.indexOf(id) == -1) {
+                promisesToGetObjects.push(this.datastore.get(id));
+                ids.push(id);
+            }
         }
         return promisesToGetObjects;
     }
