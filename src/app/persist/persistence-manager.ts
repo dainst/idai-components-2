@@ -55,16 +55,16 @@ import {ProjectConfiguration} from "../configuration/project-configuration";
             if (!this.projectConfiguration) return reject(["no project configuration available"]);
             if (document == undefined) return resolve();
 
-            this.persistIt(document).then(() => {
-                Promise.all(this.makeGetPromises(document, oldVersion)).then((targetDocuments) => {
-
-                    Promise.all(this.makeSavePromises(document.resource, targetDocuments, true)).then(() => {
-                        this.setOldVersion(document);
-                        resolve();
-                    }, (err) => reject(this.toStringArray(err)));
-
-                }, (err) => reject(this.toStringArray(err)))
-            }, (err) => reject(this.toStringArray(err)));
+            this.persistIt(document)
+                .then(() => Promise.all(this.makeGetPromises(document, oldVersion)),
+                    (err) => reject(this.toStringArray(err)))
+                .then((targetDocuments) => Promise.all(this.makeSavePromises(document.resource, targetDocuments,
+                        true)),
+                    (err) => reject(this.toStringArray(err)))
+                .then(() => {
+                    this.setOldVersion(document);
+                    resolve();
+                }, (err) => reject(this.toStringArray(err)));
         });
     }
 
@@ -77,15 +77,14 @@ import {ProjectConfiguration} from "../configuration/project-configuration";
             if (!this.projectConfiguration) return reject(["no project configuration available"]);
             if (document == undefined) return resolve();
 
-            Promise.all(this.makeGetPromises(document, oldVersion)).then((targetDocuments) => {
-                Promise.all(this.makeSavePromises(document.resource, targetDocuments, false)).then(() => {
-
-                    this.datastore.remove(document.resource.id).then(() => {
-                        resolve();
-                    }, (err) => reject(this.toStringArray(err)));
-
-                }, (err) => reject(this.toStringArray(err)))
-            }, (err) => reject(this.toStringArray(err)));
+            Promise.all(this.makeGetPromises(document, oldVersion))
+                .then((targetDocuments) => Promise.all(this.makeSavePromises(document.resource, targetDocuments,
+                        false)),
+                    (err) => reject(this.toStringArray(err)))
+                .then(() => this.datastore.remove(document.resource.id),
+                    (err) => reject(this.toStringArray(err)))
+                .then(() => resolve(),
+                    (err) => reject(this.toStringArray(err)));
         });
     }
 
