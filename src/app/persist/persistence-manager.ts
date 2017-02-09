@@ -56,15 +56,12 @@ import {ProjectConfiguration} from "../configuration/project-configuration";
             if (document == undefined) return resolve();
 
             this.persistIt(document)
-                .then(() => Promise.all(this.makeGetPromises(document, oldVersion)),
-                    (err) => reject(this.toStringArray(err)))
-                .then((targetDocuments) => Promise.all(this.makeSavePromises(document.resource, targetDocuments,
-                        true)),
-                    (err) => reject(this.toStringArray(err)))
+                .then(() => Promise.all(this.makeGetPromises(document, oldVersion)))
+                .then(targetDocuments => Promise.all(this.makeSavePromises(document.resource, targetDocuments, true)))
                 .then(() => {
                     this.setOldVersion(document);
                     resolve();
-                }, (err) => reject(this.toStringArray(err)));
+                }).catch(err => reject(this.toStringArray(err)));
         });
     }
 
