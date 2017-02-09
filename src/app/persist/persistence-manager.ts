@@ -19,15 +19,23 @@ import {ProjectConfiguration} from "../configuration/project-configuration";
  */
 @Injectable() export class PersistenceManager {
     
-    constructor(
-        private datastore: Datastore
-    ) {}
-
     private oldVersion: Document = undefined;
     private projectConfiguration: ProjectConfiguration = undefined;
+    private ready: Promise<any>;
+    private resolveToGetReady: () => void;
+
+    constructor(
+        private datastore: Datastore
+    ) {
+        this.ready = new Promise<string>((resolve)=>{
+            this.resolveToGetReady = resolve;
+        });
+    }
+
 
     public setProjectConfiguration(projectConfiguration:ProjectConfiguration) {
         this.projectConfiguration = projectConfiguration;
+        this.resolveToGetReady();
     }
 
     /**
@@ -43,26 +51,22 @@ import {ProjectConfiguration} from "../configuration/project-configuration";
      * Persists the loaded object and all the objects that are or have been in relation
      * with the object before the method call.
      *
-     * @returns {Promise<string[]>} If all objects could get stored,
-     *   the promise will just resolve to <code>undefined</code>. If one or more
-     *   objects could not get stored properly, the promise will resolve to
-     *   <code>string[]</code>, containing ids of M where possible,
-     *   and error messages where not.
+     * @returns {Promise<string>} If all objects could get stored,
+     *   the promise will resolve to <code>undefined</code>. If one or more
+     *   objects could not get stored properly, the promise will get rejected
+     *   containing an id of M (or an error message).
      */
     public persist(document: Document, oldVersion: Document = this.oldVersion): Promise<any> {
 
-        return new Promise<any>((resolve, reject) => {
-            if (!this.projectConfiguration) return reject(["no project configuration available"]);
-            if (document == undefined) return resolve();
+        if (document == undefined) return Promise.resolve();
 
-            this.persistIt(document)
-                .then(() => Promise.all(this.makeGetPromises(document, oldVersion)))
-                .then(targetDocuments => Promise.all(this.makeSavePromises(document.resource, targetDocuments, true)))
+        return this.ready
+                .then(() => this.persistIt(document))
+                .then(() => Promise.all(this.getConnectedDocs(document, oldVersion)))
+                .then(connectedDocs => Promise.all(this.updateConnectedDocs(document.resource, connectedDocs, true)))
                 .then(() => {
                     this.setOldVersion(document);
-                    resolve();
-                }).catch(err => reject(this.toStringArray(err)));
-        });
+                });
     }
 
     /**
@@ -70,22 +74,15 @@ import {ProjectConfiguration} from "../configuration/project-configuration";
      */
     public remove(document: Document, oldVersion: Document = this.oldVersion): Promise<any> {
 
-        return new Promise<any>((resolve, reject) => {
-            if (!this.projectConfiguration) return reject(["no project configuration available"]);
-            if (document == undefined) return resolve();
+        if (document == undefined) return Promise.resolve();
 
-            Promise.all(this.makeGetPromises(document, oldVersion))
-                .then((targetDocuments) => Promise.all(this.makeSavePromises(document.resource, targetDocuments,
-                        false)),
-                    (err) => reject(this.toStringArray(err)))
-                .then(() => this.datastore.remove(document.resource.id),
-                    (err) => reject(this.toStringArray(err)))
-                .then(() => resolve(),
-                    (err) => reject(this.toStringArray(err)));
-        });
+        return this.ready
+                .then(() => Promise.all(this.getConnectedDocs(document, oldVersion)))
+                .then(connectedDocs => Promise.all(this.updateConnectedDocs(document.resource, connectedDocs, false)))
+                .then(() => this.datastore.remove(document.resource.id));
     }
 
-    private makeGetPromises(document: Document, oldVersion: Document) {
+    private getConnectedDocs(document: Document, oldVersion: Document) {
 
         var promisesToGetObjects: Promise<Document>[] = [];
         var ids: string[] = [];
@@ -105,7 +102,7 @@ import {ProjectConfiguration} from "../configuration/project-configuration";
         return promisesToGetObjects;
     }
 
-    private makeSavePromises(resource: Resource, targetDocuments: Document[], setInverseRelations: boolean) {
+    private updateConnectedDocs(resource: Resource, targetDocuments: Document[], setInverseRelations: boolean) {
 
         var promisesToSaveObjects = new Array();
         for (var targetDocument of targetDocuments) {

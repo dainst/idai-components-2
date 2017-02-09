@@ -181,19 +181,5 @@ export function main() {
                 },(err)=>{fail(err);done();});
             }
         );
-
-        it('should return an array of error messages when projectConfiguration was not set',
-            function (done) {
-                persistenceManager.setProjectConfiguration(undefined);
-                persistenceManager.persist(doc).then(()=>{
-                    fail();
-                },(err)=>{
-                    expect(Array.isArray(err)).toBeTruthy();
-                    done();
-                });
-            }
-        );
-
-
     })
 }
