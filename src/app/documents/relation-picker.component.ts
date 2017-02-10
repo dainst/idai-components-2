@@ -212,23 +212,25 @@ export class RelationPickerComponent implements OnChanges {
 
     public keyDown(event: any) {
 
-        switch(event.keyIdentifier) {
-            case "Up":
+        console.log("keyDown",event)
+
+        switch(event.key) {
+            case "ArrowUp":
                 if (this.selectedSuggestionIndex > 0)
                     this.selectedSuggestionIndex--;
                 else
                     this.selectedSuggestionIndex = this.suggestions.length - 1;
                 event.preventDefault();
                 break;
-            case "Down":
+            case "ArrowDown":
                 if (this.selectedSuggestionIndex < this.suggestions.length - 1)
                     this.selectedSuggestionIndex++;
                 else
                     this.selectedSuggestionIndex = 0;
                 event.preventDefault();
                 break;
-            case "Left":
-            case "Right":
+            case "ArrowLeft":
+            case "ArrowRight":
                 break;
             case "Enter":
                 if (this.selectedSuggestionIndex > -1 && this.suggestions.length > 0)
@@ -239,11 +241,11 @@ export class RelationPickerComponent implements OnChanges {
 
     public keyUp(event: any) {
 
-        switch(event.keyIdentifier) {
-            case "Up":
-            case "Down":
-            case "Left":
-            case "Right":
+        switch(event.key) {
+            case "ArrowUp":
+            case "ArrowDown":
+            case "ArrowLeft":
+            case "ArrowRight":
             case "Enter":
                 break;
             default:
