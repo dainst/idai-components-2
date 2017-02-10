@@ -212,8 +212,6 @@ export class RelationPickerComponent implements OnChanges {
 
     public keyDown(event: any) {
 
-        console.log("keyDown",event)
-
         switch(event.key) {
             case "ArrowUp":
                 if (this.selectedSuggestionIndex > 0)
