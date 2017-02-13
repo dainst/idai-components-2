@@ -28,24 +28,20 @@ export function main() {
         var anotherRelatedObject : any;
 
         var getFunction = function (id) {
-            return {
-                then: function (suc, err) {
-                    if (id == relatedDoc['resource']['id']) {
-                        suc(relatedDoc);
-                    }
-                    else {
-                        suc(anotherRelatedObject);
-                    }
+            return new Promise((resolve)=>{
+                if (id == relatedDoc['resource']['id']) {
+                    resolve(relatedDoc);
                 }
-            };
+                else {
+                    resolve(anotherRelatedObject);
+                }
+            });
         };
 
         var successFunction = function () {
-            return {
-                then: function (suc, err) {
-                    suc("ok");
-                }
-            };
+            return new Promise((resolve)=>{
+                resolve("ok");
+            });
         };
 
         var errorFunction = function () {
@@ -116,7 +112,7 @@ export function main() {
 
         });
 
-        it('save the base object',
+        it('should save the base object',
             function (done) {
 
                 persistenceManager.persist(doc).then(()=>{
@@ -126,7 +122,7 @@ export function main() {
             }
         );
 
-        it('save the related object',
+        it('should save the related object',
             function (done) {
 
                 doc['resource']['relations']["BelongsTo"]=["2"];
@@ -141,7 +137,7 @@ export function main() {
             }
         );
 
-        it('add two relations of the same type',
+        it('should add two relations of the same type',
             function (done) {
 
                 doc['resource']['relations']["BelongsTo"]=["2","3"];
@@ -159,7 +155,7 @@ export function main() {
         );
 
 
-        it('delete a relation which is not present in the new version of the doc anymore',
+        it('should delete a relation which is not present in the new version of the doc anymore',
             function (done) {
 
                 var oldVersion = { "resource" : {
@@ -185,19 +181,5 @@ export function main() {
                 },(err)=>{fail(err);done();});
             }
         );
-
-        it('should return an array of error messages when projectConfiguration was not set',
-            function (done) {
-                persistenceManager.setProjectConfiguration(undefined);
-                persistenceManager.persist(doc).then(()=>{
-                    fail();
-                },(err)=>{
-                    expect(Array.isArray(err)).toBeTruthy();
-                    done();
-                });
-            }
-        );
-
-
     })
 }
