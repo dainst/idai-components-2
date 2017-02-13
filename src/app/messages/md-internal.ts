@@ -60,7 +60,7 @@ export class MDInternal extends MD {
             params: []
         };
         this.msgs[MDInternal.VALIDATION_ERROR_MISSINGPROPERTY]={
-            content: 'Eigenschaft(en) der Ressource vom Typ \"{0}\" müssen vorhanden sein: \"{1}\."',
+            content: 'Eigenschaft(en) der Ressource vom Typ \"{0}\" müssen vorhanden sein: \"{1}\".',
             level: 'danger',
             params: []
         };
