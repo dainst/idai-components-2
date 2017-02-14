@@ -61,10 +61,8 @@ export class DocumentEditDemoComponent implements OnInit {
             new ConfigurationValidator([])
         );
 
-        this.configLoader.configuration().subscribe((result)=>{
-            if(result.error == undefined) {
-                this.types = result.projectConfiguration.getTypesTreeList();
-            }
+        this.configLoader.getProjectConfiguration().then(projectConfiguration=>{
+            this.types = projectConfiguration.getTypesTreeList();
         });
     }
 

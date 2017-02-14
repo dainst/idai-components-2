@@ -1,6 +1,5 @@
 import {Component, OnInit, OnChanges, Input} from "@angular/core";
 import {ConfigLoader} from "../configuration/config-loader";
-import {WithConfiguration} from "../configuration/with-configuration";
 import {Resource} from "../model/resource";
 
 @Component({
@@ -15,16 +14,15 @@ import {Resource} from "../model/resource";
  * @author Thomas Kleinke
  * @author Sebastian Cuy
  */
-export class FieldsViewComponent extends WithConfiguration implements OnInit, OnChanges {
+export class FieldsViewComponent implements OnInit, OnChanges {
 
     protected fields: Array<any>;
 
     @Input() doc;
 
     constructor(
-        configLoader: ConfigLoader
+        private configLoader: ConfigLoader
     ) {
-        super(configLoader);
     }
 
     private init() {
@@ -43,19 +41,23 @@ export class FieldsViewComponent extends WithConfiguration implements OnInit, On
 
     private initializeFields(resource: Resource) {
 
-        const ignoredFields: Array<string> = [ "relations" ];
+        this.configLoader.getProjectConfiguration().then(
+            projectConfiguration => {
 
-        for (var fieldName in resource) {
+            const ignoredFields: Array<string> = [ "relations" ];
 
-            if (this.projectConfiguration.isVisible(resource.type,fieldName)==false) continue;
+            for (var fieldName in resource) {
 
-            if (resource.hasOwnProperty(fieldName) && ignoredFields.indexOf(fieldName) == -1) {
-                this.fields.push({
-                    name: this.projectConfiguration.getFieldDefinitionLabel(resource.type, fieldName),
-                    value: resource[fieldName],
-                    isArray: Array.isArray(resource[fieldName])
-                });
+                if (projectConfiguration.isVisible(resource.type,fieldName)==false) continue;
+
+                if (resource.hasOwnProperty(fieldName) && ignoredFields.indexOf(fieldName) == -1) {
+                    this.fields.push({
+                        name: projectConfiguration.getFieldDefinitionLabel(resource.type, fieldName),
+                        value: resource[fieldName],
+                        isArray: Array.isArray(resource[fieldName])
+                    });
+                }
             }
-        }
+        })
     }
 }

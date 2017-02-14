@@ -2,68 +2,44 @@ import {Injectable} from "@angular/core";
 import {ProjectConfiguration} from "./project-configuration";
 import {Http} from "@angular/http";
 import {MDInternal} from "../messages/md-internal";
-import {Observable} from "rxjs/Observable";
-import {TypeDefinition} from './type-definition';
-import {FieldDefinition} from './field-definition';
-import {RelationDefinition} from './relation-definition';
-import {ConfigurationPreprocessor} from './configuration-preprocessor';
+import {ConfigurationPreprocessor} from "./configuration-preprocessor";
 import {ConfigurationValidator} from "./configuration-validator";
 
+@Injectable()
 /**
  * Lets clients subscribe for the app
  * configuration. In order for this to work, they
- * have to subscribe via the <code>configuration</code>
- * as well as setting the config paths via
- * <code>setConfigurationPaths</code>.
+ * have to call <code>go</code> and <code>getProjectConfiguration</code>
+ *  (the call order does not matter).
  *
- * The code is purposely designed that the order in which
- * you call these methods does not matter. 
+ * It is recommended to handle a promise rejection of
+ * <code>getProjectConfiguration</code> at a single place in your app.
  *
  * @author Daniel de Oliveira
  * @author Thomas Kleinke
  * @author Fabian Z.
  */
-@Injectable()
 export class ConfigLoader {
 
-    private observers = [];
-
-    private projectConfig: ProjectConfiguration = undefined;
-
-    private error = undefined;
+    private projectConfig: Promise<ProjectConfiguration> = undefined;
+    private projectConfigResolveFunction = undefined;
+    private projectConfigRejectFunction = undefined;
 
     constructor(
         private http: Http){
-    }
 
-
-    private notify() {
-        if (!this.projectConfig && !this.error) return;
-        this.observers.forEach(observer => {
-            observer.next({
-                projectConfiguration: this.projectConfig,
-                error: this.error
-            });
+        this.projectConfig = new Promise<ProjectConfiguration>((resolve,reject)=>{
+           this.projectConfigResolveFunction = resolve;
+           this.projectConfigRejectFunction = reject;
         });
     }
 
     /**
-     * When the config file has been read, a subscriber is
-     * notified with an object containing further objects for 
-     * each configuration or an error report in case errors 
-     * occured during the reading process.
-     * 
-     * It is recommended that clients, who have multiple places
-     * where the configs are needed, still have exactly one common 
-     * place in their app where the errors get handled.
-     * 
-     * @returns {Observable<any>} the result, containing configs or errors.
+     * @returns resolves with the ProjectConfiguration or rejects with
+     *   a msgWithParams.
      */
-    public configuration() : Observable<any> {
-        return Observable.create( observer => {
-            this.observers.push(observer);
-            this.notify();
-        });
+    public getProjectConfiguration() : Promise<ProjectConfiguration> {
+        return this.projectConfig;
     }
 
     /**
@@ -89,9 +65,9 @@ export class ConfigLoader {
                 editable : false
             }
         ];
-        
+
         this.read(this.http,projectConfigurationPath).then(
-            (config)=>{
+            config => {
                 if (configurationPreprocessor) configurationPreprocessor.go(config);
                 new ConfigurationPreprocessor([],defaultFields,[]).go(config);
 
@@ -99,14 +75,15 @@ export class ConfigLoader {
                 if (configurationValidator) configurationError =
                     configurationValidator.go(config);
                 if (configurationError) {
-                    this.error = configurationError;
-                } else this.projectConfig = new ProjectConfiguration(config);
-                
-                this.notify();
+                    this.projectConfigRejectFunction(configurationError);
+                } else {
+                    this.projectConfigResolveFunction(new ProjectConfiguration(config));
+                }
             },
-            (error) => {
-                this.error = [MDInternal.PARSE_GENERIC_ERROR].concat([error['path']]),
-                this.notify();
+            error => {
+                this.projectConfigRejectFunction(
+                    [MDInternal.PARSE_GENERIC_ERROR].concat([error['path']])
+                );
             }
         );
     }

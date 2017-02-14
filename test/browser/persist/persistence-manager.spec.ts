@@ -19,6 +19,40 @@ export function main() {
             });
         });
 
+        var projectConfiguration = new ProjectConfiguration({
+            "types": [
+                {
+                    "type": "FirstLevelType",
+                    "fields": [
+                        {
+                            "field": "fieldA"
+                        }
+                    ]
+                },
+                {
+                    "type": "SecondLevelType",
+                    "parent": "FirstLevelType",
+                    "fields": [
+                        {
+                            "field": "fieldB"
+                        }
+                    ]
+                }
+            ],
+            "relations": [
+                {
+                    "name": "BelongsTo",
+                    "inverse": "Contains",
+                    "label": "Enthalten in"
+                },
+                {
+                    "name": "Contains",
+                    "inverse": "BelongsTo",
+                    "label": "Enthält"
+                }
+            ]
+        });
+
         var mockDatastore;
         var persistenceManager;
         var id = "abc";
@@ -26,6 +60,17 @@ export function main() {
         var doc;
         var relatedDoc : any;
         var anotherRelatedObject : any;
+
+        var configLoader = {
+            getProjectConfiguration: function() {
+                return {
+                    then: function(callback) {
+                        callback(projectConfiguration)
+                    }
+                }
+            }
+
+        };
 
         var getFunction = function (id) {
             return new Promise((resolve)=>{
@@ -53,41 +98,8 @@ export function main() {
         beforeEach(function () {
 
             mockDatastore = jasmine.createSpyObj('mockDatastore', ['get', 'create', 'update', 'refresh']);
-            persistenceManager = new PersistenceManager(mockDatastore);
+            persistenceManager = new PersistenceManager(mockDatastore,configLoader);
             persistenceManager.setOldVersion({"resource":{}});
-            persistenceManager.setProjectConfiguration(new ProjectConfiguration({
-                "types": [
-                    {
-                        "type": "FirstLevelType",
-                        "fields": [
-                            {
-                                "field": "fieldA"
-                            }
-                        ]
-                    },
-                    {
-                        "type": "SecondLevelType",
-                        "parent" : "FirstLevelType",
-                        "fields": [
-                            {
-                                "field": "fieldB"
-                            }
-                        ]
-                    }
-                ],
-                "relations": [
-                    {
-                        "name":"BelongsTo",
-                        "inverse":"Contains",
-                        "label":"Enthalten in"
-                    },
-                    {
-                        "name":"Contains",
-                        "inverse":"BelongsTo",
-                        "label":"Enthält"
-                    }
-                ]})
-            );
             mockDatastore.get.and.callFake(getFunction);
             mockDatastore.update.and.callFake(successFunction);
             mockDatastore.create.and.callFake(successFunction);

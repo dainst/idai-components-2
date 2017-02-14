@@ -39,10 +39,10 @@ export function main() {
         );
 
         var configLoader = {
-            configuration: function() {
+            getProjectConfiguration: function() {
                 return {
-                    subscribe: function(callback) {
-                        callback({ projectConfiguration: projectConfiguration })
+                    then: function(callback) {
+                        callback(projectConfiguration)
                     }
                 }
             }
@@ -55,7 +55,7 @@ export function main() {
         );
 
         it('should report nothing',
-            function(){
+            function(done){
                 var doc = {
                     "resource" : {
                         "id" : "1",
@@ -64,13 +64,13 @@ export function main() {
                         "relations" : undefined,
                     }
                 };
-                expect(new Validator(<ConfigLoader>configLoader)
-                    .validate(doc)).toEqual(undefined);
+                new Validator(<ConfigLoader>configLoader)
+                    .validate(doc).then(()=>done(),msgWithParams=>fail(msgWithParams));
             }
         );
 
         it('should report nothing when ommiting optional property',
-            function(){
+            function(done){
                 var doc = {
                     "resource" : {
                         "id" : "1",
@@ -79,13 +79,13 @@ export function main() {
                         "relations" : undefined,
                     }
                 };
-                expect(new Validator(<ConfigLoader>configLoader)
-                    .validate(doc)).toEqual(undefined);
+                new Validator(<ConfigLoader>configLoader)
+                    .validate(doc).then(()=>done(),msgWithParams=>fail(msgWithParams));
             }
         );
 
         it('should report error when ommiting mandatory property',
-            function(){
+            function(done){
                 var doc = {
                     "resource" : {
                         "id" : "1",
@@ -93,13 +93,16 @@ export function main() {
                         "relations" : undefined,
                     }
                 };
-                expect(new Validator(<ConfigLoader>configLoader)
-                    .validate(doc)).toEqual([MDInternal.VALIDATION_ERROR_MISSINGPROPERTY,'T','mandatory']);
+                new Validator(<ConfigLoader>configLoader)
+                    .validate(doc).then(()=>fail(),msgWithParams => {
+                    expect(msgWithParams).toEqual([MDInternal.VALIDATION_ERROR_MISSINGPROPERTY,'T','mandatory'])
+                    done();
+                });
             }
         );
 
         it('should report error when leaving mandatory property empty',
-            function(){
+            function(done){
                 var doc = {
                     "resource" : {
                         "id" : "1",
@@ -108,13 +111,16 @@ export function main() {
                         "relations" : undefined,
                     }
                 };
-                expect(new Validator(<ConfigLoader>configLoader)
-                    .validate(doc)).toEqual([MDInternal.VALIDATION_ERROR_MISSINGPROPERTY,'T','mandatory']);
+                new Validator(<ConfigLoader>configLoader)
+                    .validate(doc).then(()=>fail(),msgWithParams => {
+                        expect(msgWithParams).toEqual([MDInternal.VALIDATION_ERROR_MISSINGPROPERTY,'T','mandatory'])
+                        done();
+                    });
             }
         );
 
         it('should report a missing field definition',
-            function(){
+            function(done){
                 var doc = {
                     "resource" : {
                         "id" : "1",
@@ -124,13 +130,16 @@ export function main() {
                         "relations" : undefined,
                     }
                 };
-                expect(new Validator(<ConfigLoader>configLoader)
-                    .validate(doc)).toEqual([MDInternal.VALIDATION_ERROR_INVALIDFIELD,'T','a']);
+                new Validator(<ConfigLoader>configLoader)
+                    .validate(doc).then(()=>fail(),msgWithParams => {
+                    expect(msgWithParams).toEqual([MDInternal.VALIDATION_ERROR_INVALIDFIELD,'T','a']);
+                    done();
+                });
             }
         );
 
         it('should report missing field definitions',
-            function(){
+            function(done){
                 var doc = {
                     "resource" : {
                         "id" : "1",
@@ -141,8 +150,11 @@ export function main() {
                         "relations" : undefined,
                     }
                 };
-                expect(new Validator(<ConfigLoader>configLoader)
-                    .validate(doc)).toEqual([MDInternal.VALIDATION_ERROR_INVALIDFIELDS,'T','a, b']);
+                new Validator(<ConfigLoader>configLoader)
+                    .validate(doc).then(()=>fail(),msgWithParams => {
+                    expect(msgWithParams).toEqual([MDInternal.VALIDATION_ERROR_INVALIDFIELDS,'T','a, b']);
+                    done();
+                });
             }
         );
     })

@@ -3,6 +3,7 @@ import {Datastore} from "../datastore/datastore";
 import {Document} from "../model/document";
 import {Resource} from "../model/resource";
 import {ProjectConfiguration} from "../configuration/project-configuration";
+import {ConfigLoader} from "../configuration/config-loader";
 
 /**
  * With a document to persist, it determines which other documents are 
@@ -22,20 +23,17 @@ import {ProjectConfiguration} from "../configuration/project-configuration";
     private oldVersion: Document = undefined;
     private projectConfiguration: ProjectConfiguration = undefined;
     private ready: Promise<any>;
-    private resolveToGetReady: () => void;
 
     constructor(
-        private datastore: Datastore
+        private datastore: Datastore,
+        private configLoader: ConfigLoader
     ) {
         this.ready = new Promise<string>((resolve)=>{
-            this.resolveToGetReady = resolve;
+            this.configLoader.getProjectConfiguration().then(projectConfiguration => {
+                this.projectConfiguration = projectConfiguration;
+                resolve();
+            })
         });
-    }
-
-
-    public setProjectConfiguration(projectConfiguration:ProjectConfiguration) {
-        this.projectConfiguration = projectConfiguration;
-        this.resolveToGetReady();
     }
 
     /**

@@ -2,7 +2,6 @@ import {Injectable} from "@angular/core";
 import {MDInternal} from "../messages/md-internal";
 import {ConfigLoader} from '../configuration/config-loader';
 import {Document} from '../model/document';
-import {WithConfiguration} from '../configuration/with-configuration';
 
 
 /**
@@ -10,54 +9,58 @@ import {WithConfiguration} from '../configuration/with-configuration';
  * @author Thomas Kleinke
  */
 @Injectable()
-export class Validator extends WithConfiguration {
+export class Validator {
 
-    constructor(configLoader: ConfigLoader) {
-        super(configLoader);
-    }
+    constructor(private configLoader: ConfigLoader) {}
 
     /**
      * @param doc
-     * @returns {any} the validation report containing the error message as key of m and possibly additional data
-     * (e. g. the name of an invalid field)
+     * @returns resolves with () or rejects with msgsWithParams
      */
-    public validate(doc: Document): any {
+    public validate(doc: Document): Promise<any> {
 
-        var resource = doc['resource'];
+        return new Promise<any>((resolve,reject) => {
 
-        // if (resource.id) {
+            this.configLoader.getProjectConfiguration().then(projectConfiguration => {
 
-        if (!this.validateType(resource)) {
-            var err = [MDInternal.VALIDATION_ERROR_INVALIDTYPE];
-            err.push(resource.id);
-            err.push("\"" + resource.type + "\"");
-            return err;
-        }
+                var resource = doc['resource'];
 
-        var missingProperties = this.getMissingProperties(resource);
-        if (missingProperties.length > 0) {
-            return [MDInternal.VALIDATION_ERROR_MISSINGPROPERTY,resource.type].concat(missingProperties.join((", ")))
-        }
+                // if (resource.id) {
+
+                if (!this.validateType(resource,projectConfiguration)) {
+                    var err = [MDInternal.VALIDATION_ERROR_INVALIDTYPE];
+                    err.push(resource.id);
+                    err.push("\"" + resource.type + "\"");
+                    reject(err);
+                }
+
+                var missingProperties = this.getMissingProperties(resource,projectConfiguration);
+                if (missingProperties.length > 0) {
+                    reject([MDInternal.VALIDATION_ERROR_MISSINGPROPERTY,resource.type].concat(missingProperties.join((", "))));
+                }
 
 
-        var invalidFields;
-        if (invalidFields = this.validateFields(resource)) {
-            var errr = [invalidFields.length == 1 ? MDInternal.VALIDATION_ERROR_INVALIDFIELD : MDInternal.VALIDATION_ERROR_INVALIDFIELDS];
-            errr.push(resource.type);
-            errr.push(invalidFields.join(", "));
-            return errr;
-        }
-        // }
-
-        return undefined;
+                var invalidFields;
+                if (invalidFields = this.validateFields(resource,projectConfiguration)) {
+                    var errr = [invalidFields.length == 1 ? MDInternal.VALIDATION_ERROR_INVALIDFIELD : MDInternal.VALIDATION_ERROR_INVALIDFIELDS];
+                    errr.push(resource.type);
+                    errr.push(invalidFields.join(", "));
+                    reject(errr);
+                }
+                // }
+                resolve();
+            });
+        });
     }
 
 
-    private getMissingProperties(resource: any) {
+    private getMissingProperties(resource: any,projectConfiguration) {
+
+
         var missingFields = [];
-        var fieldDefinitions = this.projectConfiguration.getFieldDefinitions(resource.type);
+        var fieldDefinitions = projectConfiguration.getFieldDefinitions(resource.type);
         for (var fieldDefinition of fieldDefinitions) {
-            if (this.projectConfiguration.isMandatory(resource.type,fieldDefinition.name)) {
+            if (projectConfiguration.isMandatory(resource.type,fieldDefinition.name)) {
                 if (resource[fieldDefinition.name] == undefined || resource[fieldDefinition.name] == "") {
                     missingFields.push(fieldDefinition.name);
                 }
@@ -82,11 +85,11 @@ export class Validator extends WithConfiguration {
      * @param resource
      * @returns {boolean} true if the type of the resource is valid, otherwise false
      */
-    private validateType(resource: any): boolean {
+    private validateType(resource: any,projectConfiguration): boolean {
 
         if (!resource.type) return false;
 
-        var types = this.projectConfiguration.getTypesList();
+        var types = projectConfiguration.getTypesList();
 
         for (var i in types) {
             if (types[i].name == resource.type) return true;
@@ -101,10 +104,10 @@ export class Validator extends WithConfiguration {
      * @returns {string[]} the names of invalid fields if one ore more of the fields are invalid, otherwise
      * <code>undefined</code>
      */
-    private validateFields(resource: any): string[] {
+    private validateFields(resource: any,projectConfiguration): string[] {
 
-        var projectFields = this.projectConfiguration.getFieldDefinitions(resource.type);
-        var relationFields = this.projectConfiguration.getRelationDefinitions(resource.type);
+        var projectFields = projectConfiguration.getFieldDefinitions(resource.type);
+        var relationFields = projectConfiguration.getRelationDefinitions(resource.type);
 
 
         var defaultFields = [

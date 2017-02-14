@@ -4,17 +4,16 @@ import {ProjectConfiguration} from "../configuration/project-configuration";
 import {OnChanges} from "@angular/core";
 import {ConfigLoader} from "../configuration/config-loader";
 
-/**
- * @author Jan G. Wieners
- * @author Thomas Kleinke
- * @author Daniel de Oliveira
- */
 @Component({
     moduleId: module.id,
     selector: 'document-edit',
     templateUrl: './document-edit.html'
 })
-
+/**
+ * @author Jan G. Wieners
+ * @author Thomas Kleinke
+ * @author Daniel de Oliveira
+ */
 export class DocumentEditComponent implements OnChanges,OnInit {
 
     @Input() document: any;
@@ -28,11 +27,8 @@ export class DocumentEditComponent implements OnChanges,OnInit {
     ) {}
 
     ngOnInit():any {
-        this.configLoader.configuration().subscribe((result)=>{
-            if(result.error != undefined) return;
-            
-            this.projectConfiguration = result.projectConfiguration;
-            this.persistenceManager.setProjectConfiguration(this.projectConfiguration);
+        this.configLoader.getProjectConfiguration().then(projectConfiguration => {
+            this.projectConfiguration = projectConfiguration;
         });
     }
 

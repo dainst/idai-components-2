@@ -2,7 +2,6 @@ import {Component, OnInit, OnChanges, Input, EventEmitter, Output} from "@angula
 import {Resource} from "../model/resource";
 import {ReadDatastore} from "../datastore/read-datastore";
 import {ConfigLoader} from "../configuration/config-loader";
-import {WithConfiguration} from "../configuration/with-configuration";
 
 @Component({
     selector: 'relations-view',
@@ -16,7 +15,7 @@ import {WithConfiguration} from "../configuration/with-configuration";
  * @author Thomas Kleinke
  * @author Sebastian Cuy
  */
-export class RelationsViewComponent extends WithConfiguration implements OnInit, OnChanges {
+export class RelationsViewComponent implements OnInit, OnChanges {
 
     protected relations: Array<any>;
 
@@ -25,9 +24,8 @@ export class RelationsViewComponent extends WithConfiguration implements OnInit,
 
     constructor(
         private datastore: ReadDatastore,
-        configLoader: ConfigLoader
+        private configLoader: ConfigLoader
     ) {
-        super(configLoader);
     }
 
     private init() {
@@ -50,21 +48,25 @@ export class RelationsViewComponent extends WithConfiguration implements OnInit,
 
     private initializeRelations(resource: Resource) {
 
-        for (var relationName in resource.relations) {
-            if (resource.relations.hasOwnProperty(relationName)) {
-                if (!this.projectConfiguration.isVisibleRelation(relationName)) continue;
+        this.configLoader.getProjectConfiguration().then(projectConfiguration=>{
 
-                var relationTargets = resource.relations[relationName];
+            for (var relationName in resource.relations) {
+                if (resource.relations.hasOwnProperty(relationName)) {
+                    if (!projectConfiguration.isVisibleRelation(relationName)) continue;
 
-                var relation = {
-                    name: this.projectConfiguration.getRelationDefinitionLabel(relationName),
-                    targets: []
-                };
-                this.relations.push(relation);
+                    var relationTargets = resource.relations[relationName];
 
-                this.initializeRelation(relation, relationTargets);
+                    var relation = {
+                        name: projectConfiguration.getRelationDefinitionLabel(relationName),
+                        targets: []
+                    };
+                    this.relations.push(relation);
+
+                    this.initializeRelation(relation, relationTargets);
+                }
             }
-        }
+        });
+
     }
 
     private initializeRelation(relation: any, targets: Array<string>) {

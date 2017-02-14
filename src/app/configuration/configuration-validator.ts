@@ -21,7 +21,7 @@ export class ConfigurationValidator {
      * @returns {Array<string>} msgWithParams. undefined if no error.
      */
     public go(
-        configuration: ConfigurationDefinition,
+        configuration: ConfigurationDefinition
         ) : Array<string> {
 
 
