@@ -40,11 +40,9 @@ export function main() {
 
         var configLoader = {
             getProjectConfiguration: function() {
-                return {
-                    then: function(callback) {
-                        callback(projectConfiguration)
-                    }
-                }
+                return new Promise<any>((resolve)=>{
+                    resolve(projectConfiguration);
+                });
             }
 
         };
