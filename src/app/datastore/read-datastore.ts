@@ -26,7 +26,7 @@ export abstract class ReadDatastore  {
      * @returns {Promise<T>} resolve -> {Document[]},
      *   reject -> the error message or a message key.
      */ 
-    abstract find(query: Query): Promise<Document[]>;
+    abstract find(query: Query,fieldName?:string): Promise<Document[]>;
 
     abstract all(options: any): Promise<Document[]>;
 
