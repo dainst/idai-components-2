@@ -2,6 +2,7 @@ import {Injectable} from "@angular/core";
 import {MDInternal} from "../messages/md-internal";
 import {ConfigLoader} from '../configuration/config-loader';
 import {Document} from '../model/document';
+import {ProjectConfiguration} from "../configuration/project-configuration";
 
 
 /**
@@ -19,47 +20,46 @@ export class Validator {
      */
     public validate(doc: Document): Promise<any> {
 
-        return new Promise<any>((resolve,reject) => {
+        return this.configLoader.getProjectConfiguration().then(projectConfiguration => {
 
-            this.configLoader.getProjectConfiguration().then(projectConfiguration => {
+            let resource = doc['resource'];
 
-                var resource = doc['resource'];
+            if (!Validator.validateType(resource,projectConfiguration)) {
+                let err = [MDInternal.VALIDATION_ERROR_INVALIDTYPE];
+                err.push(resource.id);
+                err.push("\"" + resource.type + "\"");
+                return Promise.reject(err);
+            }
 
-                // if (resource.id) {
-
-                if (!this.validateType(resource,projectConfiguration)) {
-                    var err = [MDInternal.VALIDATION_ERROR_INVALIDTYPE];
-                    err.push(resource.id);
-                    err.push("\"" + resource.type + "\"");
-                    reject(err);
-                }
-
-                var missingProperties = this.getMissingProperties(resource,projectConfiguration);
-                if (missingProperties.length > 0) {
-                    reject([MDInternal.VALIDATION_ERROR_MISSINGPROPERTY,resource.type].concat(missingProperties.join((", "))));
-                }
+            let missingProperties = Validator.getMissingProperties(resource,projectConfiguration);
+            if (missingProperties.length > 0) {
+                return Promise.reject([MDInternal.VALIDATION_ERROR_MISSINGPROPERTY,resource.type].concat(missingProperties.join((", "))));
+            }
 
 
-                var invalidFields;
-                if (invalidFields = this.validateFields(resource,projectConfiguration)) {
-                    var errr = [invalidFields.length == 1 ? MDInternal.VALIDATION_ERROR_INVALIDFIELD : MDInternal.VALIDATION_ERROR_INVALIDFIELDS];
-                    errr.push(resource.type);
-                    errr.push(invalidFields.join(", "));
-                    reject(errr);
-                }
-                // }
-                resolve();
-            });
+            let invalidFields;
+            if (invalidFields = Validator.validateFields(resource,projectConfiguration)) {
+                let errr = [invalidFields.length == 1 ? MDInternal.VALIDATION_ERROR_INVALIDFIELD : MDInternal.VALIDATION_ERROR_INVALIDFIELDS];
+                errr.push(resource.type);
+                errr.push(invalidFields.join(", "));
+                return Promise.reject(errr);
+            }
+
+            return this.validateCustom(doc);
         });
     }
 
+    protected validateCustom(doc: Document): Promise<any> {
+        return Promise.resolve();
+    }
 
-    private getMissingProperties(resource: any,projectConfiguration) {
+
+    private static getMissingProperties(resource: any,projectConfiguration:ProjectConfiguration) {
 
 
-        var missingFields = [];
-        var fieldDefinitions = projectConfiguration.getFieldDefinitions(resource.type);
-        for (var fieldDefinition of fieldDefinitions) {
+        let missingFields = [];
+        let fieldDefinitions = projectConfiguration.getFieldDefinitions(resource.type);
+        for (let fieldDefinition of fieldDefinitions) {
             if (projectConfiguration.isMandatory(resource.type,fieldDefinition.name)) {
                 if (resource[fieldDefinition.name] == undefined || resource[fieldDefinition.name] == "") {
                     missingFields.push(fieldDefinition.name);
@@ -73,25 +73,16 @@ export class Validator {
     /**
      *
      * @param resource
-     * @returns {boolean} true if the identifier of the resource is valid, otherwise false
-     */
-    private validateIdentifier(resource: any): boolean {
-
-        return resource.identifier && resource.identifier.length > 0;
-    }
-
-    /**
-     *
-     * @param resource
+     * @param projectConfiguration
      * @returns {boolean} true if the type of the resource is valid, otherwise false
      */
-    private validateType(resource: any,projectConfiguration): boolean {
+    private static validateType(resource: any,projectConfiguration:ProjectConfiguration): boolean {
 
         if (!resource.type) return false;
 
-        var types = projectConfiguration.getTypesList();
+        let types = projectConfiguration.getTypesList();
 
-        for (var i in types) {
+        for (let i in types) {
             if (types[i].name == resource.type) return true;
         }
 
@@ -101,27 +92,28 @@ export class Validator {
     /**
      *
      * @param resource
+     * @param projectConfiguration
      * @returns {string[]} the names of invalid fields if one ore more of the fields are invalid, otherwise
      * <code>undefined</code>
      */
-    private validateFields(resource: any,projectConfiguration): string[] {
+    private static validateFields(resource: any,projectConfiguration:ProjectConfiguration): string[] {
 
-        var projectFields = projectConfiguration.getFieldDefinitions(resource.type);
-        var relationFields = projectConfiguration.getRelationDefinitions(resource.type);
+        let projectFields = projectConfiguration.getFieldDefinitions(resource.type);
+        let relationFields = projectConfiguration.getRelationDefinitions(resource.type);
 
 
-        var defaultFields = [
+        let defaultFields = [
             { name: "relations" } ];
 
-        var fields = projectFields.concat(relationFields).concat(defaultFields);
+        let fields = projectFields.concat(relationFields).concat(defaultFields);
 
-        var invalidFields = [];
+        let invalidFields = [];
 
-        for (var resourceField in resource) {
+        for (let resourceField in resource) {
 
             if (resource.hasOwnProperty(resourceField)) {
-                var fieldFound = false;
-                for (var i in fields) {
+                let fieldFound = false;
+                for (let i in fields) {
                     if (fields[i].name == resourceField) {
                         fieldFound = true;
                         break;
@@ -133,9 +125,11 @@ export class Validator {
             }
         }
 
-        if (invalidFields.length > 0)
+        if (invalidFields.length > 0) {
             return invalidFields;
-        else
+        }
+        else {
             return undefined;
+        }
     }
 }
