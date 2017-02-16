@@ -1,5 +1,6 @@
 import {PersistenceManager} from "../../../src/app/persist/persistence-manager";
 import {ProjectConfiguration} from "../../../src/app/configuration/project-configuration";
+import {ConfigLoader} from "../../../src/app/configuration/config-loader";
 import {Messages} from "../../../src/app/messages/messages";
 import {MD} from "../../../src/app/messages/md";
 import {TestBed} from "@angular/core/testing";
@@ -63,11 +64,9 @@ export function main() {
 
         var configLoader = {
             getProjectConfiguration: function() {
-                return {
-                    then: function(callback) {
-                        callback(projectConfiguration)
-                    }
-                }
+                return new Promise<any>((resolve)=>{
+                    resolve(projectConfiguration);
+                });
             }
 
         };
@@ -98,7 +97,7 @@ export function main() {
         beforeEach(function () {
 
             mockDatastore = jasmine.createSpyObj('mockDatastore', ['get', 'create', 'update', 'refresh']);
-            persistenceManager = new PersistenceManager(mockDatastore,configLoader);
+            persistenceManager = new PersistenceManager(mockDatastore,<ConfigLoader>configLoader);
             persistenceManager.setOldVersion({"resource":{}});
             mockDatastore.get.and.callFake(getFunction);
             mockDatastore.update.and.callFake(successFunction);
