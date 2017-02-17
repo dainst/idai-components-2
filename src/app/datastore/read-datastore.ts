@@ -15,28 +15,34 @@ import {Query} from "./query";
 export abstract class ReadDatastore  {
 
     /**
-     * @param id the desired document's id
-     * @returns {Promise<Document>} resolve -> {Document},
-     *   reject -> the error message or a message key.
+     * @param id the desired document's resource id
+     * @returns {Promise<Document|string>} either a document or an error message, possibly a key of M
      */ 
-    abstract get(id: string): Promise<Document>;
+    abstract get(id: string): Promise<Document|string>;
 
     /**
-     * @param query
+     * @param query <code>query</code> or <code>query.q</code> may be undefined,
+     *   which is the same as using <code>*</code>, <code>query.filterSets</code> may be undefined,
+     *   which is the same as using no <code>query.filterSet</code>
      * @param fieldName the field name of the documents' resources over which the search should be performed.
-     * @returns {Promise<Document[]>} resolve -> {Document[]},
-     *   reject -> the error message or a message key.
+     *   if the fieldName does not match any of the datastores documents' resources fields, or the datastore can not
+     *   perform a search over <code>fieldName</code>, <code>find</code> will resolve to [].
+     * @returns {Promise<Document[]|string>} an array of documents or an error message, possibly a key of M
      */ 
-    abstract find(query: Query,fieldName?:string): Promise<Document[]>;
-
-    abstract all(options: any): Promise<Document[]>;
+    abstract find(query: Query,fieldName?:string): Promise<Document[]|string>;
 
     /**
-     * Gets the specified object without using the cache
-     * @param doc
-     * @returns {Promise<Document>} resolve -> {Document},
-     *   reject -> the error message or a message key.
+     * @param options
+     * @returns {Promise<Document[]|string>} an array of documents or an error message, possibly a key of M
      */
-    abstract refresh(doc: Document): Promise<Document>;
+    abstract all(options: any): Promise<Document[]|string>;
+
+    /**
+     * Updates <code>doc</code> so that it reflects the current state of the doc in the database.
+     *
+     * @param doc
+     * @returns {Promise<Document|string>} an array of documents or an error message, possibly a key of M
+     */
+    abstract refresh(doc: Document): Promise<Document|string>;
 
 }

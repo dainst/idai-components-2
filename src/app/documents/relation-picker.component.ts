@@ -59,7 +59,7 @@ export class RelationPickerComponent implements OnChanges {
 
         if (relationId && relationId != "") {
             this.datastore.get(relationId).then(
-                document => { this.selectedTarget = document; },
+                document => { this.selectedTarget = document as Document; },
                 err => { console.error(err); }
             );
         } else {
@@ -176,7 +176,7 @@ export class RelationPickerComponent implements OnChanges {
                                  && this.resource['relations'][this.field.name][this.relationIndex] != "") {
             this.datastore.get(this.resource['relations'][this.field.name][this.relationIndex])
                 .then(
-                    document => { this.selectedTarget = document; },
+                    document => { this.selectedTarget = document as Document; },
                     err => { console.error(err); }
                 );
         }

@@ -13,27 +13,26 @@ export abstract class Datastore extends ReadDatastore {
 
     /**
      * @param doc
-     * @returns {Promise<Document>} resolve -> (),
-     *   reject -> the error message or a message key.
+     * @returns {Promise<Document|string>} either a document or an error message, possibly a key of M
      */
-    abstract create(doc: Document): Promise<string>;
+    abstract create(doc: Document): Promise<Document|string>;
 
     /**
      * @param doc
-     * @returns {Promise<Document>} resolve -> (),
-     *   reject -> the error message or a message key.
+     * @returns {Promise<Document|string>} either a document or an error message, possibly a key of M
      */ 
-    abstract update(doc: Document): Promise<any>;
+    abstract update(doc: Document): Promise<Document|string>;
 
     /**
      * @param doc
+     * @returns {Promise<undefined|string>} undefined or an error message, possibly a key of M
      */
-    abstract remove(doc: Document): Promise<any>;
+    abstract remove(doc: Document): Promise<undefined|any>;
 
     /**
      * Subscription enables clients to get notified
      * when documents get modified via one of the accessor
-     * methods defined here.
+     * methods defined in <code>Datastore</code>.
      */
     abstract documentChangesNotifications():Observable<Document>;
 
