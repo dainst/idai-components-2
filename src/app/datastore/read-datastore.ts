@@ -3,7 +3,7 @@ import {Query} from "./query";
 
 /**
  * The interface providing read access methods 
- * for datastores supporting the idai-components document model.
+ * for datastores supporting the idai-components-2 document model.
  * For full access see <code>Datastore</code>
  *
  * Implementations guarantee that any of methods declared here
@@ -16,14 +16,15 @@ export abstract class ReadDatastore  {
 
     /**
      * @param id the desired document's id
-     * @returns {Promise<T>} resolve -> {Document},
+     * @returns {Promise<Document>} resolve -> {Document},
      *   reject -> the error message or a message key.
      */ 
     abstract get(id: string): Promise<Document>;
 
     /**
      * @param query
-     * @returns {Promise<T>} resolve -> {Document[]},
+     * @param fieldName the field name of the documents' resources over which the search should be performed.
+     * @returns {Promise<Document[]>} resolve -> {Document[]},
      *   reject -> the error message or a message key.
      */ 
     abstract find(query: Query,fieldName?:string): Promise<Document[]>;
@@ -32,10 +33,10 @@ export abstract class ReadDatastore  {
 
     /**
      * Gets the specified object without using the cache
-     * @param id the desired document's id
-     * @returns {Promise<T>} resolve -> {Document},
+     * @param doc
+     * @returns {Promise<Document>} resolve -> {Document},
      *   reject -> the error message or a message key.
      */
-    abstract refresh(id: string): Promise<Document>;
+    abstract refresh(doc: Document): Promise<Document>;
 
 }

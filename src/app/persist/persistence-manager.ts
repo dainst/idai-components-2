@@ -77,7 +77,7 @@ import {ConfigLoader} from "../configuration/config-loader";
         return this.ready
                 .then(() => Promise.all(this.getConnectedDocs(document, oldVersion)))
                 .then(connectedDocs => Promise.all(this.updateConnectedDocs(document.resource, connectedDocs, false)))
-                .then(() => this.datastore.remove(document.resource.id));
+                .then(() => this.datastore.remove(document));
     }
 
     private getConnectedDocs(document: Document, oldVersion: Document) {

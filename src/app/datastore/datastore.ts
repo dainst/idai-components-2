@@ -13,22 +13,22 @@ export abstract class Datastore extends ReadDatastore {
 
     /**
      * @param doc
-     * @returns {Promise<T>} resolve -> (),
+     * @returns {Promise<Document>} resolve -> (),
      *   reject -> the error message or a message key.
      */
     abstract create(doc: Document): Promise<string>;
 
     /**
      * @param doc
-     * @returns {Promise<T>} resolve -> (),
+     * @returns {Promise<Document>} resolve -> (),
      *   reject -> the error message or a message key.
      */ 
     abstract update(doc: Document): Promise<any>;
 
     /**
-     * @param resourceId document['resource']['id']
+     * @param doc
      */
-    abstract remove(resourceId: string): Promise<any>;
+    abstract remove(doc: Document): Promise<any>;
 
     /**
      * Subscription enables clients to get notified

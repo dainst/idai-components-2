@@ -25,10 +25,7 @@ export class MemoryDatastore implements Datastore {
     }
 
     public create(document:Document):Promise<string> {
-
-        return new Promise((resolve, reject) => {
-            resolve();
-        });
+        return Promise.resolve('');
     }
 
     public update(document:Document):Promise<any> {
@@ -39,9 +36,9 @@ export class MemoryDatastore implements Datastore {
         });
     }
 
-    public refresh(id:string):Promise<Document>  {
+    public refresh(document:Document):Promise<Document>  {
 
-        return this.fetchObject(id);
+        return this.fetchObject(document.resource.id);
     }
 
     public get(id:string):Promise<Document> {
@@ -53,12 +50,8 @@ export class MemoryDatastore implements Datastore {
         }
     }
 
-    public remove(id:string):Promise<any> {
-        return new Promise((resolve, reject) => {
-            this.db.then(db => {
-               resolve();
-            });
-        });
+    public remove(document:Document):Promise<any> {
+        return Promise.resolve();
     }
 
     public clear():Promise<any> {
