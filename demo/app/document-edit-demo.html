@@ -1,30 +1,8 @@
 <messages></messages>
 <div class="container-fluid" id="app">
 
-
     <hr>
 
-    <ul>
-        <h3>Tree of (iDai-)Types from Configuration</h3>
-        <li *ngFor="let type of types;">
-            {{type['label']}}
-            <i *ngIf="type.isAbstract">(Abstract)</i>
-
-            <ul *ngIf="type['children']">
-                Children:
-                <li *ngFor="let childType of type['children'];">{{childType['label']}}</li>
-            </ul>
-        </li>
-    </ul>
-
-
-    <hr>
-
-
-
-    <ul>
-        <li *ngFor="let document of documents; let i=index"><button (click)="clicked(document['resource']['id'])">document['resource']['id']: {{document['resource']['id']}}</button></li>
-    </ul>
 
     <p>
         Click on a button to select a document and make some changes.
@@ -33,23 +11,14 @@
         the next document gets opened in the editor.
     </p>
 
+    <ul>
+        <li *ngFor="let document of documents; let i=index"><button (click)="clicked(document['resource']['id'])">document['resource']['id']: {{document['resource']['id']}}</button></li>
+    </ul>
+
+
 
     <div class="row">
         <div class="col-md-12">
-            <hr>
-
-            <p>
-                <code>&lt;fields-view [(doc)]="selectedDocument"&gt;&lt;/fields-view&gt;</code>
-            </p>
-
-            <fields-view [(doc)]="selectedDocument"></fields-view>
-            <hr>
-
-            <p>
-                <code>&lt;relations-view [(doc)]="selectedDocument"&gt;&lt;/relations-view&gt;</code>
-            </p>
-
-            <relations-view [(doc)]="selectedDocument"></relations-view>
             <hr>
 
             <p>

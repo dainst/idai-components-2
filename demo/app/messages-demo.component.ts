@@ -2,13 +2,14 @@ import {Component} from '@angular/core';
 import {MD} from '../../src/app/messages/md';
 import {Messages} from '../../src/app/messages/messages';
 
+@Component({
+    selector: 'messages-demo',
+    templateUrl: 'demo/app/messages-demo.html'
+})
+
 /**
  * @author Thomas Kleinke
  */
-@Component({
-    selector: 'messages-demo',
-    templateUrl: 'demo/templates/messages-demo.html'
-})
 export class MessagesDemoComponent {
 
     private messageKeys = [];

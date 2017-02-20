@@ -9,6 +9,7 @@ import {MD} from "../../src/app/messages/md";
 import {M} from "./m";
 import {LocationStrategy, HashLocationStrategy} from '@angular/common';
 import {DocumentEditDemoComponent} from './document-edit-demo.component';
+import {DocumentViewDemoComponent} from "./document-view-demo.component";
 import {MessagesDemoComponent} from './messages-demo.component';
 import {AppComponent} from './app.component';
 import {FormsModule} from '@angular/forms';
@@ -28,6 +29,7 @@ import {IdaiMessagesModule} from '../../src/app/messages/idai-messages.module';
     declarations: [
         AppComponent,
         DocumentEditDemoComponent,
+        DocumentViewDemoComponent,
         MessagesDemoComponent,
     ],
     providers: [
@@ -39,4 +41,4 @@ import {IdaiMessagesModule} from '../../src/app/messages/idai-messages.module';
     ],
     bootstrap: [ AppComponent ]
 })
-export class AppModule {};
+export class AppModule {}
