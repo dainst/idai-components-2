@@ -32,17 +32,17 @@ export class ValuelistComponent {
 
     public setValues(selectedOptions: HTMLCollection) {
     
-        this.resource[this.field.field] = [];
+        this.resource[this.field.relationDefinition] = [];
         for (var i = 0; i < selectedOptions.length; i++) {
-            this.resource[this.field.field].push(selectedOptions.item(i).childNodes[0].nodeValue);
+            this.resource[this.field.relationDefinition].push(selectedOptions.item(i).childNodes[0].nodeValue);
         }
         this.saveService.setChanged();
     }
     
     public isSelected(item: string) {
     
-        if (this.resource[this.field.field])
-            return (this.resource[this.field.field].indexOf(item) > -1);
+        if (this.resource[this.field.relationDefinition])
+            return (this.resource[this.field.relationDefinition].indexOf(item) > -1);
         else
             return false;
     }

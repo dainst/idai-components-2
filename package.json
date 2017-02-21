@@ -11,7 +11,7 @@
     "test:loop": "karma start src/test/config/karma.conf",
     "test": "karma start test/browser/config/karma.conf.js --single-run",
     "server": "gulp webserver-watch",
-    "e2e": "webdriver-manager update && protractor test/e2e/config/protractor.conf.js"
+    "e2e": "protractor test/e2e/config/protractor.conf.js"
   },
   "repository": {
     "type": "git",

@@ -7,7 +7,7 @@
             <li class="list-group-item">
                 <label *ngIf="relationDefinition.label">{{relationDefinition.label}}</label>
                 <label *ngIf="!relationDefinition.label">{{relationDefinition.name}}</label>
-                <relation-picker-group [(document)]="document" [field]="relationDefinition" [primary]="primary"></relation-picker-group>
+                <relation-picker-group [(document)]="document" [relationDefinition]="relationDefinition" [primary]="primary"></relation-picker-group>
             </li>
         </template>
     </ul>

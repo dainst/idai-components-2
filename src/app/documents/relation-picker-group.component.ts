@@ -12,7 +12,7 @@ import {Component, Input, OnChanges} from '@angular/core';
 export class RelationPickerGroupComponent implements OnChanges {
 
     @Input() document: any;
-    @Input() field: any;
+    @Input() relationDefinition: any;
     @Input() primary: string;
 
     public relations: any;
@@ -25,17 +25,17 @@ export class RelationPickerGroupComponent implements OnChanges {
     
     public createRelation() {
 
-        if (!this.relations[this.field.name])
-            this.relations[this.field.name] = [];
+        if (!this.relations[this.relationDefinition.name])
+            this.relations[this.relationDefinition.name] = [];
     
-        this.relations[this.field.name].push("")
+        this.relations[this.relationDefinition.name].push("")
     }
     
     public validateNewest(): boolean {
     
-        var index: number = this.relations[this.field.name].length - 1;
+        var index: number = this.relations[this.relationDefinition.name].length - 1;
     
-        if (!this.relations[this.field.name][index] || this.relations[this.field.name][index].length == 0) {
+        if (!this.relations[this.relationDefinition.name][index] || this.relations[this.relationDefinition.name][index].length == 0) {
             return false;
         } else {
             return true;

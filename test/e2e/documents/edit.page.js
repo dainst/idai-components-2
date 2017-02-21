@@ -20,6 +20,7 @@ EditPage.getRelation = function (relationIndex, fun) {
     return protractor_1.element(protractor_1.by.css(EditPage.relation_(relationIndex))).element(fun());
 };
 EditPage.getRelationItems = function (relationIndex) {
+    protractor_1.browser.wait(EC.visibilityOf(protractor_1.element.all(protractor_1.by.css(EditPage.relation_(relationIndex) + ' .suggestion')).first()), delays.ECWaitTime);
     return protractor_1.element.all(protractor_1.by.css(EditPage.relation_(relationIndex) + ' .suggestion'));
 };
 EditPage.selectFirstDocument = function () {

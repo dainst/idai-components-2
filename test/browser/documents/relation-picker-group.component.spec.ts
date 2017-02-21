@@ -16,7 +16,7 @@ export function main() {
 
             relationPickerGroupComponent = new RelationPickerGroupComponent();
             relationPickerGroupComponent.document = document;
-            relationPickerGroupComponent.field = { "name": "Above", "inverse": "Below" };
+            relationPickerGroupComponent.relationDefinition = { "name": "Above", "inverse": "Below" };
         });
 
         it('should create an empty relation array if no relation array exists and a new relation is created',

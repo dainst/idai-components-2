@@ -21,6 +21,7 @@ export class EditPage {
     };
 
     public static getRelationItems = function (relationIndex) {
+        browser.wait(EC.visibilityOf(element.all(by.css(EditPage.relation_(relationIndex)+' .suggestion')).first()), delays.ECWaitTime);
         return element.all(by.css(EditPage.relation_(relationIndex)+' .suggestion'))
     };
 

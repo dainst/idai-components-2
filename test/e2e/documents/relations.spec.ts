@@ -12,14 +12,15 @@ describe('documents package - - - ', function() {
         browser.get('/#/edit');
     });
 
-    it('should find a relation', function() {
+    it('should suggest relations as long as they are not already set', function() {
         EditPage.selectFirstDocument();
         EditPage.getRelation(3,EditPage._addRelation).click();
-        EditPage.getRelation(3,EditPage._input).sendKeys('/demo/5');
+        EditPage.getRelation(3,EditPage._input).sendKeys('/demo/');
+        expect(EditPage.getRelationItems(3).get(0).getText()).toBe("/demo/5");
         EditPage.getRelation(3,EditPage._input).sendKeys(protractor.Key.ENTER);
         EditPage.getRelation(3,EditPage._addRelation).click();
-        EditPage.getRelation(3,EditPage._input).sendKeys('/demo/5');
-        expect(EditPage.getRelationItems(3).get(0).getText()).toBe("/demo/5");
-        // expect(EditPage.getRelationItems(3).get(0).getText()).not.toBe("/demo/5"); TODO implement this, then remove last line and take this
+        EditPage.getRelation(3,EditPage._input).sendKeys('/demo/');
+        expect(EditPage.getRelationItems(3).get(0).getText()).toBe("/demo/6");
+        expect(EditPage.getRelationItems(3).get(1).getText()).toBe("/demo/7");
     });
 });

@@ -4,23 +4,24 @@ import {Resource} from "../model/resource";
 import {Query} from "../datastore/query";
 import {DocumentEditChangeMonitor} from "./document-edit-change-monitor";
 import {ReadDatastore} from "../datastore/read-datastore";
+import {RelationDefinition} from "../configuration/relation-definition";
 
 
-/**
- * @author Jan G. Wieners
- * @author Thomas Kleinke
- */
 @Component({
     moduleId: module.id,
     selector: 'relation-picker',
     templateUrl: './relation-picker.html'
 })
-
+/**
+ * @author Jan G. Wieners
+ * @author Thomas Kleinke
+ * @author Daniel de Oliveira
+ */
 export class RelationPickerComponent implements OnChanges {
 
     @Input() document: any;
     
-    @Input() field: any;
+    @Input() relationDefinition: any;
     @Input() relationIndex: number;
     @Input() primary: string;
 
@@ -55,7 +56,7 @@ export class RelationPickerComponent implements OnChanges {
         this.idSearchString = "";
         this.selectedTarget = undefined;
 
-        var relationId: string = this.relations[this.field.name][this.relationIndex];
+        let relationId: string = this.relations[this.relationDefinition.name][this.relationIndex];
 
         if (relationId && relationId != "") {
             this.datastore.get(relationId).then(
@@ -77,7 +78,7 @@ export class RelationPickerComponent implements OnChanges {
 
         this.updateSuggestionsMode = true;
 
-        var query: Query = { q: this.idSearchString };
+        let query: Query = { q: this.idSearchString };
 
         this.datastore.find(query)
             .then(documents => {
@@ -96,51 +97,49 @@ export class RelationPickerComponent implements OnChanges {
     }
 
     private makeSuggestionsFrom(documents) {
-        for (var i in documents) {
+        for (let i in documents) {
 
             // Show only the first five suggestions
             if (this.suggestions.length == 5)
                 break;
 
-            if (this.checkSuggestion(documents[i]['resource']))
+            if (RelationPickerComponent.checkResourceSuggestion(this.resource,documents[i].resource,this.relationDefinition))
                 this.suggestions.push(documents[i]);
         }
     }
 
     /**
-     * Checks if the given resource should be shown as a suggestion
+     * Checks if the given suggestion should be shown as a suggestion
      * @param resource
+     * @param suggestion
+     * @param relDef
+     * @return true if the suggestion should be suggested, false otherwise
      */
-    private checkSuggestion(resource: Resource) {
+    private static checkResourceSuggestion(resource:Resource, suggestion: Resource, relDef:RelationDefinition) {
 
         // Don't suggest the object itself
-        if (this.resource['id'] == resource['id'])
+        if (resource.id == suggestion.id)
             return false;
 
-        // TODO Why is this check not active anymore?
         // Don't suggest an object that is already included as a target in the relation list
-        // if (this.resource[this.field.name].indexOf(resource['id']) > -1)
-        //     return false;
+        if (resource.relations[relDef.name].indexOf(suggestion.id) > -1) return false;
 
         // Don't suggest an object that is already included as a target in the inverse relation list
-        if (this.resource['relations'][this.field.inverse]
-                && this.resource['relations'][this.field.inverse].indexOf(resource['id']) > -1)
+        if (resource.relations[relDef.inverse]
+                && resource.relations[relDef.inverse].indexOf(suggestion.id) > -1)
             return false;
 
         // Don't suggest an object whose type is not a part of the relation's range
-        if (this.field.range.indexOf(resource.type) == -1)
-            return false;
-
-        return true;
+        return relDef.range.indexOf(suggestion.type) != -1;
     }
 
     /**
      * Creates a relation to the target object.
-     * @param target
+     * @param document
      */
     public createRelation(document: Document) {
 
-        this.resource['relations'][this.field.name][this.relationIndex] = document['resource']['id'];
+        this.resource['relations'][this.relationDefinition.name][this.relationIndex] = document['resource']['id'];
         this.selectedTarget = document;
         this.idSearchString = "";
         this.suggestions = [];
@@ -165,16 +164,16 @@ export class RelationPickerComponent implements OnChanges {
 
     public leaveSuggestionMode() {
 
-        if (!this.resource['relations'][this.field.name][this.relationIndex]
-                || this.resource['relations'][this.field.name][this.relationIndex] == "") {
+        if (!this.resource['relations'][this.relationDefinition.name][this.relationIndex]
+                || this.resource['relations'][this.relationDefinition.name][this.relationIndex] == "") {
             return this.deleteRelation();
         }
 
         this.suggestionsVisible = false;
 
-        if (!this.selectedTarget && this.resource['relations'][this.field.name][this.relationIndex]
-                                 && this.resource['relations'][this.field.name][this.relationIndex] != "") {
-            this.datastore.get(this.resource['relations'][this.field.name][this.relationIndex])
+        if (!this.selectedTarget && this.resource['relations'][this.relationDefinition.name][this.relationIndex]
+                                 && this.resource['relations'][this.relationDefinition.name][this.relationIndex] != "") {
+            this.datastore.get(this.resource['relations'][this.relationDefinition.name][this.relationIndex])
                 .then(
                     document => { this.selectedTarget = document as Document; },
                     err => { console.error(err); }
@@ -184,7 +183,7 @@ export class RelationPickerComponent implements OnChanges {
 
     public focusInputField() {
 
-        var elements = this.element.nativeElement.getElementsByTagName("input");
+        let elements = this.element.nativeElement.getElementsByTagName("input");
 
         if (elements.length == 1) {
             elements.item(0).focus();
@@ -193,19 +192,19 @@ export class RelationPickerComponent implements OnChanges {
 
     public deleteRelation(): Promise<any> {
 
-        var targetId = this.resource['relations'][this.field.name][this.relationIndex];
+        let targetId = this.resource['relations'][this.relationDefinition.name][this.relationIndex];
 
         return new Promise<any>((resolve) => {
             if (targetId.length == 0) {
-                this.resource['relations'][this.field.name].splice(this.relationIndex, 1);
+                this.resource['relations'][this.relationDefinition.name].splice(this.relationIndex, 1);
             } else {
-                this.resource['relations'][this.field.name].splice(this.relationIndex, 1);
+                this.resource['relations'][this.relationDefinition.name].splice(this.relationIndex, 1);
                 // todo
                 this.saveService.setChanged();
             }
 
-            if (this.resource['relations'][this.field.name].length==0)
-                delete this.resource['relations'][this.field.name]
+            if (this.resource['relations'][this.relationDefinition.name].length==0)
+                delete this.resource['relations'][this.relationDefinition.name]
             resolve();
         });
     }
