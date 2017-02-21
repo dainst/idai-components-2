@@ -31,14 +31,14 @@ export class RelationsViewComponent implements OnChanges {
     ngOnChanges() {
         this.relations = [];
         if (!this.doc) return;
-        this.initializeRelations(this.doc.resource);
+        this.processRelations(this.doc.resource);
     }
 
     private clickRelation(doc) {
         this.relationClicked.emit(doc);
     }
 
-    private initializeRelations(resource: Resource) {
+    private processRelations(resource: Resource) {
 
         this.configLoader.getProjectConfiguration().then(projectConfiguration=>{
 
@@ -54,14 +54,14 @@ export class RelationsViewComponent implements OnChanges {
                     };
                     this.relations.push(relation);
 
-                    this.initializeRelation(relation, relationTargets);
+                    this.processRelation(relation, relationTargets);
                 }
             }
         });
 
     }
 
-    private initializeRelation(relation: any, targets: Array<string>) {
+    private processRelation(relation: any, targets: Array<string>) {
 
         for (let i in targets) {
             let targetId = targets[i];
