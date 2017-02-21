@@ -1,17 +1,12 @@
-/*
- * In order to prevent errors caused by e2e tests running too fast you can slow them down by calling the following
- * function. Use higher values for slower tests.
- *
- * utils.delayPromises(50);
- */
-describe('demo app', function() {
-
-    beforeEach(function(){
-        browser.get('/');
+"use strict";
+var protractor_1 = require("protractor");
+describe('demo app', function () {
+    beforeEach(function () {
+        protractor_1.browser.get('/');
     });
-
-    it('should find it by its identifier', function() {
-        expect(element(by.tagName('a')) // the links to the demo pages
+    it('should find it by its identifier', function () {
+        expect(protractor_1.element(protractor_1.by.tagName('a')) // the links to the demo pages
             .isPresent()).toBe(true);
     });
 });
+//# sourceMappingURL=basic-scenarios.spec.js.map

@@ -7,6 +7,9 @@ demo/**/*.js
 demo/**/*.js.map
 test/browser/**/*.js
 test/browser/**/*.js.map
+test/e2e/**/*.js
+test/e2e/**/*.js.map
+!test/e2e/config/**/*
 !test/browser/config/**/*
 persist.js*
 messages.js*
