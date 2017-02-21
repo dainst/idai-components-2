@@ -1,4 +1,4 @@
-import {Component, OnInit, OnChanges, Input, EventEmitter, Output} from "@angular/core";
+import {Component, OnChanges, Input, EventEmitter, Output} from "@angular/core";
 import {Resource} from "../model/resource";
 import {ReadDatastore} from "../datastore/read-datastore";
 import {ConfigLoader} from "../configuration/config-loader";
@@ -15,7 +15,7 @@ import {ConfigLoader} from "../configuration/config-loader";
  * @author Thomas Kleinke
  * @author Sebastian Cuy
  */
-export class RelationsViewComponent implements OnInit, OnChanges {
+export class RelationsViewComponent implements OnChanges {
 
     protected relations: Array<any>;
 
@@ -28,18 +28,10 @@ export class RelationsViewComponent implements OnInit, OnChanges {
     ) {
     }
 
-    private init() {
+    ngOnChanges() {
         this.relations = [];
         if (!this.doc) return;
         this.initializeRelations(this.doc.resource);
-    }
-
-    ngOnInit() {
-        this.init();
-    }
-
-    ngOnChanges() {
-        this.init();
     }
 
     private clickRelation(doc) {
@@ -50,13 +42,13 @@ export class RelationsViewComponent implements OnInit, OnChanges {
 
         this.configLoader.getProjectConfiguration().then(projectConfiguration=>{
 
-            for (var relationName in resource.relations) {
+            for (let relationName in resource.relations) {
                 if (resource.relations.hasOwnProperty(relationName)) {
                     if (!projectConfiguration.isVisibleRelation(relationName)) continue;
 
-                    var relationTargets = resource.relations[relationName];
+                    let relationTargets = resource.relations[relationName];
 
-                    var relation = {
+                    let relation = {
                         name: projectConfiguration.getRelationDefinitionLabel(relationName),
                         targets: []
                     };
@@ -71,8 +63,8 @@ export class RelationsViewComponent implements OnInit, OnChanges {
 
     private initializeRelation(relation: any, targets: Array<string>) {
 
-        for (var i in targets) {
-            var targetId = targets[i];
+        for (let i in targets) {
+            let targetId = targets[i];
             this.datastore.get(targetId).then(
                 targetDocument => {
                     relation.targets.push(targetDocument);
