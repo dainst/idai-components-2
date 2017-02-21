@@ -17,6 +17,8 @@ export class RelationsFormComponent {
     @Input() document: any;
     @Input() primary: string;
     @Input() relationDefinitions: Array<RelationDefinition>;
+
+    isCollapsed: boolean = false;
     
     constructor(
         private saveService: DocumentEditChangeMonitor

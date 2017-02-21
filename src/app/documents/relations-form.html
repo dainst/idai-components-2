@@ -1,13 +1,20 @@
 <div *ngIf="relationDefinitions && relationDefinitions.length > 0" class="card">
-    <div class="card-header">
-        <h3 class="card-title">Relationen</h3>
+    <div class="card-header"
+         style="cursor: pointer;"
+         (click)="isCollapsed = !isCollapsed">
+        <h3 class="card-title">Relationen
+            <span class="mdi mdi-chevron-down" *ngIf="isCollapsed"></span>
+            <span class="mdi mdi-chevron-up" *ngIf="!isCollapsed"></span>
+        </h3>
     </div>
-    <ul class="list-group list-group-flush">
+    <ul class="list-group list-group-flush"
+        *ngIf="!isCollapsed">
         <template ngFor [ngForOf]="relationDefinitions" let-relationDefinition="$implicit">
             <li class="list-group-item">
                 <label *ngIf="relationDefinition.label">{{relationDefinition.label}}</label>
                 <label *ngIf="!relationDefinition.label">{{relationDefinition.name}}</label>
-                <relation-picker-group [(document)]="document" [relationDefinition]="relationDefinition" [primary]="primary"></relation-picker-group>
+                <relation-picker-group [(document)]="document" [relationDefinition]="relationDefinition"
+                                       [primary]="primary"></relation-picker-group>
             </li>
         </template>
     </ul>
