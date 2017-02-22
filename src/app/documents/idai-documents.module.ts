@@ -51,7 +51,9 @@ import {RelationsViewComponent} from "./relations-view.component";
     exports: [
         DocumentEditComponent,
         FieldsViewComponent,
-        RelationsViewComponent
+        RelationsViewComponent,
+        RelationsFormComponent,
+        EditFormComponent
     ]
 })
 export class IdaiDocumentsModule {};
