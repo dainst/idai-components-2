@@ -35,7 +35,7 @@ export abstract class ReadDatastore  {
      * @param options
      * @returns {Promise<Document[]|string>} an array of documents or an error message, possibly a key of M
      */
-    abstract all(options: any): Promise<Document[]|string>;
+    abstract all(): Promise<Document[]|string>;
 
     /**
      * Updates <code>doc</code> so that it reflects the current state of the doc in the database.
