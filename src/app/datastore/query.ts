@@ -1,4 +1,6 @@
+import {FilterSet} from './filterSet'
+
 export interface Query {
     q: string;
-    types?: Array<string>;
+    filterSets?: Array<FilterSet>;
 }
