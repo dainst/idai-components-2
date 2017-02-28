@@ -14,12 +14,14 @@ export function main() {
                 "key1" : {
                     content: 'content1',
                     level: 'danger',
-                    params: new Array()
+                    params: new Array(),
+                    hidden: false
                 },
                 "key2" : {
                     content: 'content2',
                     level: 'danger',
-                    params: new Array()
+                    params: new Array(),
+                    hidden: false
                 }
             }
         };
@@ -41,11 +43,11 @@ export function main() {
             }
         );
 
-        it('should add only one message with the same identifier',
+        it('should add message with same identifier twice',
             function(){
                 messages.add("key1");
                 expect(messages.getMessages()[0]).toEqual(messagesDictionary.msgs["key1"]);
-                expect(messages.getMessages().length).toBe(1);
+                expect(messages.getMessages().length).toBe(2);
             }
         );
 
@@ -91,7 +93,8 @@ export function main() {
                 messagesDictionary.msgs[MDInternal.MESSAGES_NOBODY]={
                     content: 'test',
                     level: 'danger',
-                    params: new Array()
+                    params: new Array(),
+                    hidden: false
                 };
                 messages.add(MDInternal.MESSAGES_NOBODY);
                 expect(messages.getMessages()[1]).toEqual(messagesDictionary.msgs[MDInternal.MESSAGES_NOBODY]);

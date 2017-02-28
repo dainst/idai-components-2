@@ -12,17 +12,20 @@ export class M extends MD{
         this.msgs['success_msg']={
             content: 'Erfolg.',
             level: 'success',
-            params: []
+            params: [],
+            hidden: false
         };
         this.msgs['danger_msg']={
             content: 'Schwerwiegender Fehler!',
             level: 'danger',
-            params: []
+            params: [],
+            hidden: false
         };
         this.msgs['with_params']={
             content: "Hier ist ein Parameter: {0}",
             level: 'success',
-            params: [ "Standardwert" ]
+            params: [ "Standardwert" ],
+            hidden: false
         };
     }
 }

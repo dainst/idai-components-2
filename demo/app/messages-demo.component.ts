@@ -32,4 +32,8 @@ export class MessagesDemoComponent {
         this.messages.clear();
     }
 
+    public setMessagesHidden(shown) {
+        this.messages.setHidden(!shown);
+    }
+
 }

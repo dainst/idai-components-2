@@ -8,15 +8,16 @@ import {Message} from "./message";
  */
 @Component({
     selector: 'messages',
-    template: `<div *ngFor="let message of messages.getMessages(); let index=index"
-     class="alert alert-{{message.level}}"
-     role="alert"
-     id="message-{{index}}">
-     <button type="button" class="close" (click)="closeAlert(message)" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-     </button>
-    {{getMessageContent(message)}}
-</div>`
+    template: `<ng-container *ngFor="let message of messages.getMessages().reverse(); let index=index">
+        <div class="alert alert-{{message.level}}"
+            *ngIf="message.hidden==false || message.overrideHidden == true"
+            id="message-{{index}}">
+            <button *ngIf="message.level == 'danger'" type="button" class="close" (click)="closeAlert(message)" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            {{getMessageContent(message)}}
+        </div>
+    </ng-container>`
 })
 
 export class MessagesComponent {
@@ -31,11 +32,11 @@ export class MessagesComponent {
                 content = content.replace("{" + i + "}", message.params[i]);
             }
         }
-        
+
         return content;
     }
 
     public closeAlert(message: Message) {
-        this.messages.removeMessage(message)
+        this.messages.hideMessage(message);
     }
 }

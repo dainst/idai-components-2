@@ -29,7 +29,7 @@ export class Messages {
     public add(id: string): void {
 
         var msg = this._get(id);
-        if (!msg) msg = {content: id, level: 'danger', params: []};
+        if (!msg) msg = {content: id, level: 'danger', params: [], hidden: false};
         this._add(msg,undefined);
     }
     
@@ -59,21 +59,19 @@ export class Messages {
     }
 
     private _add(msg, params?: Array<string>) {
-
         var messageToAdd = {
             content: msg.content,
             level: msg.level,
-            params: params ? params.slice() : msg.params
+            params: params ? params.slice() : msg.params,
+            hidden: false
         };
-        
-        var isNew = true;
-        this.messageList.forEach(function(message) {
-            if (this.isSameMessage(messageToAdd, message)) {
-                isNew = false;
-            }
-        }.bind(this));
 
-        if (isNew) this.messageList.push(messageToAdd);
+        if (messageToAdd.level != 'danger') {
+            setTimeout(() => {
+                messageToAdd.hidden = true;
+            }, 2000);
+        }
+        this.messageList.push(messageToAdd);
     }
     
     /**
@@ -86,6 +84,16 @@ export class Messages {
             this.messageList.splice(index, 1);
         }
     }
+    public hideMessage(message: Message) {
+        message.hidden = true;
+    }
+
+    public setHidden(hidden: boolean) {
+        this.messageList.forEach(function (msg) {
+            msg.hidden = hidden;
+        })
+    }
+
     
     /**
      * Removes all messages.

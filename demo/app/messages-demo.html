@@ -33,7 +33,10 @@
     <div *ngFor="let msgKey of messageKeys">
         <button (click)="showMessage(msgKey)">Message: {{msgKey}}</button>
     </div>
-    <div><button (click)="clearMessages()">Delete all messages</button></div>
+    <div>
+        <button (click)="clearMessages()">Delete all messages</button><br>
+        <input type="checkbox" (change)="setMessagesHidden($event.target.checked)"> Message-History
+    </div>
 
     <div class="well" style="margin-top: 15px;"><messages></messages></div>
 </div>
