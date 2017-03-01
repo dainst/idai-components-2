@@ -15,7 +15,7 @@ import {Message} from "./message";
             <button *ngIf="message.level == 'danger'" type="button" class="close" (click)="closeAlert(message)" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
-            {{getMessageContent(message)}}
+            <span class="content">{{getMessageContent(message)}}</span>
         </div>
     </ng-container>`
 })
