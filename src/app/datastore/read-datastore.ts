@@ -16,32 +16,47 @@ export abstract class ReadDatastore  {
 
     /**
      * @param id the desired document's resource id
-     * @returns {Promise<Document|string>} either a document or an error message, possibly a key of M
+     * @returns {Promise<Document|string>} either a document or
+     *   an error message, possibly a key of M
      */ 
     abstract get(id: string): Promise<Document|string>;
 
     /**
-     * @param query <code>query</code> or <code>query.q</code> may be undefined,
-     *   which is the same as using <code>*</code>, <code>query.filterSets</code> may be undefined,
+     * perform a fulltext query
+     * @param query the query string
+     *   <code>query</code> may be undefined,
      *   which is the same as using no <code>query.filterSet</code>
-     * @param fieldName the field name of the documents' resources over which the search should be performed.
-     *   if the fieldName does not match any of the datastores documents' resources fields, or the datastore can not
-     *   perform a search over <code>fieldName</code>, <code>find</code> will resolve to [].
-     * @returns {Promise<Document[]|string>} an array of documents or an error message, possibly a key of M
-     */ 
-    abstract find(query: Query,fieldName?:string): Promise<Document[]|string>;
-
-    /**
-     * @param options
-     * @returns {Promise<Document[]|string>} an array of documents or an error message, possibly a key of M
+     * @param sets the names of the sets of documents
+     *   the result should be restricted to
+     * @param prefix determines that prefix matching should be performed
+     *   instead of exactly matching the query string to full words
+     * @param offset the number of documents to skip before returning
+     * @param limit the maximum number of documents to be returned
+     * @returns {Promise<Document[]|string>} an array of documents or
+     *   an error message, possibly a key of M
      */
-    abstract all(): Promise<Document[]|string>;
+    abstract find(query: string, sets?:string[], prefix?:boolean,
+                  offset?:number, limit?:number): Promise<Document[]|string>;
 
     /**
-     * Updates <code>doc</code> so that it reflects the current state of the doc in the database.
+     * return all documents ordered by modification date (descending)
+     * @param sets the names of the sets of documents
+     *   the result should be restricted to
+     * @param offset the number of documents to skip before returning
+     * @param limit the maximum number of documents to be returned
+     * @returns {Promise<Document[]|string>} an array of documents or
+     *   an error message, possibly a key of M
+     */
+    abstract all(sets?:string[], offset?:number,
+                 limit?:number): Promise<Document[]|string>;
+
+    /**
+     * Updates <code>doc</code> so that it reflects
+     * the current state of the doc in the database.
      *
      * @param doc
-     * @returns {Promise<Document|string>} an array of documents or an error message, possibly a key of M
+     * @returns {Promise<Document|string>} an array of documents or
+     *   an error message, possibly a key of M
      */
     abstract refresh(doc: Document): Promise<Document|string>;
 
