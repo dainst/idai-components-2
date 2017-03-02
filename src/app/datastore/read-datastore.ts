@@ -16,13 +16,13 @@ export abstract class ReadDatastore  {
 
     /**
      * @param id the desired document's resource id
-     * @returns {Promise<Document|string>} either a document or
-     *   an error message, possibly a key of M
+     * @returns {Promise<Document|string>} a document | a key of M for an error desription
      */ 
     abstract get(id: string): Promise<Document|string>;
 
     /**
-     * perform a fulltext query
+     * Perform a fulltext query
+     
      * @param query the query string
      *   <code>query</code> may be undefined,
      *   which is the same as using no <code>query.filterSet</code>
@@ -32,19 +32,18 @@ export abstract class ReadDatastore  {
      *   instead of exactly matching the query string to full words
      * @param offset the number of documents to skip before returning
      * @param limit the maximum number of documents to be returned
-     * @returns {Promise<Document[]|string>} an array of documents or
-     *   an error message, possibly a key of M
+     * @returns {Promise<Document[]|string>} an array of documents | a key of M for an error desription
      */
     abstract find(query: Query, offset?:number, limit?:number): Promise<Document[]|string>;
 
     /**
-     * return all documents ordered by modification date (descending)
+     * Returns all documents ordered by modification date (descending)
+     
      * @param sets the names of the sets of documents
      *   the result should be restricted to
      * @param offset the number of documents to skip before returning
      * @param limit the maximum number of documents to be returned
-     * @returns {Promise<Document[]|string>} an array of documents or
-     *   an error message, possibly a key of M
+     * @returns {Promise<Document[]|string>} an array of documents | a key of M for an error desription
      */
     abstract all(sets?:string[], offset?:number,
                  limit?:number): Promise<Document[]|string>;
@@ -54,8 +53,7 @@ export abstract class ReadDatastore  {
      * the current state of the doc in the database.
      *
      * @param doc
-     * @returns {Promise<Document|string>} an array of documents or
-     *   an error message, possibly a key of M
+     * @returns {Promise<Document|string>} an array of documents | a key of M for an error desription
      */
     abstract refresh(doc: Document): Promise<Document|string>;
 
