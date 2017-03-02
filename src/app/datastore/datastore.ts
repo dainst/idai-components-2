@@ -12,6 +12,12 @@ import {Observable} from "rxjs/Observable";
 export abstract class Datastore extends ReadDatastore {
 
     /**
+     * Persists a given document. If document.resource.id is not set,
+     * it will be set to a generated value.
+     *
+     * In case of a successful call, document.modified and document.created get set,
+     * otherwise they remain undefined.
+     *
      * @param doc
      * @returns {Promise<Document|string>} either a document or an error message, possibly a key of M
      */
