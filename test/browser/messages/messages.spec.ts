@@ -117,7 +117,7 @@ export function main() {
             }
         );
 
-        it('should throw an error if adding anything else than an array',
+        it('should throw an error if adding undefined instead of array',
             function(){
                 expect(function(){
                     messages.addWithParams(undefined);
@@ -125,10 +125,18 @@ export function main() {
             }
         );
 
-        it('should throw an error if any part of the array is not a string',
+        it('should throw an error if adding string else than an array',
             function(){
                 expect(function(){
-                    messages.addWithParams([undefined,undefined]);
+                    messages.addWithParams('a');
+                }).toThrow("msgWithParams must be an array, but is a");
+            }
+        );
+
+        it('should throw an error if any part of the array is not a string or a number',
+            function(){
+                expect(function(){
+                    messages.addWithParams(['a',0,undefined,undefined]);
                 }).toThrow('msgWithParams must be an array of strings, but found undefined,undefined');
             }
         );
