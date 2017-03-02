@@ -24,11 +24,10 @@ export class IdaiType {
         this.fields = this.parentType.getFieldDefinitions().concat(this.fields);
     }
 
-    public addChildType(definition: TypeDefinition) {
+    public addChildType(child: IdaiType) {
         if (!this.children) this.children = [];
-        var childType:IdaiType = new IdaiType(definition);
-        childType.setParentType(this);
-        this.children.push(childType)
+        child.setParentType(this);
+        this.children.push(child)
     }
 
     public getFieldDefinitions(): FieldDefinition[] {

@@ -17,16 +17,22 @@ export function main() {
             ]
         };
 
-        var anotherFirstLevelType = {
-
-        };
-
         var secondLevelType = {
             "type": "SecondLevelType",
             "parent" : "FirstLevelType",
             "fields": [
                 {
                     "name": "fieldB"
+                }
+            ]
+        };
+
+        var thirdLevelType = {
+            "type": "ThirdLevelType",
+            "parent" : "SecondLevelType",
+            "fields": [
+                {
+                    "name": "fieldC"
                 }
             ]
         };
@@ -86,6 +92,18 @@ export function main() {
         it('should fail if parent type is not defined',
             function() {
                 expect(function(){new ProjectConfiguration({"types":[ secondLevelType ]})}).toThrow(MDInternal.PC_GENERIC_ERROR)
+            }
+        );
+
+        it('should return parent types',
+            function() {
+                let pc = new ProjectConfiguration({"types":[ firstLevelType, secondLevelType, thirdLevelType ]});
+                let parents = pc.getParentTypes('ThirdLevelType');
+                expect(parents).toEqual(['SecondLevelType', 'FirstLevelType']);
+                parents = pc.getParentTypes('SecondLevelType');
+                expect(parents).toEqual(['FirstLevelType']);
+                parents = pc.getParentTypes('FirstLevelType');
+                expect(parents).toEqual([]);
             }
         );
     });

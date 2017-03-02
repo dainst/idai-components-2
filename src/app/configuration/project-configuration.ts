@@ -3,6 +3,7 @@ import {MDInternal} from '../messages/md-internal';
 import {IdaiType} from './idai-type';
 import {FieldDefinition} from './field-definition';
 import {RelationDefinition} from './relation-definition';
+import {ConfigurationDefinition} from "./configuration-definition";
 
 /**
  * ProjectConfiguration maintains the current projects properties.
@@ -35,9 +36,8 @@ export class ProjectConfiguration {
      * @param configuration
      */
     constructor(configuration) {
-        this.initTypesTree(configuration);
-        this.initTypesMap();
-        this.excavation=configuration['excavation'];
+        this.initTypes(configuration);
+        this.excavation = configuration['excavation'];
         this.relationFields = configuration['relations'];
     }
 
@@ -89,6 +89,16 @@ export class ProjectConfiguration {
 
     public getTypesTree() : any {
         return this.typesTree;
+    }
+
+    public getParentTypes(typeName: string): string[] {
+        let parentTypes:string[] = [];
+        let type = this.typesMap[typeName];
+        while (type.parentType) {
+            parentTypes.push(type.parentType.name);
+            type = type.parentType;
+        }
+        return parentTypes;
     }
 
     /**
@@ -217,35 +227,27 @@ export class ProjectConfiguration {
         return this.excavation;
     }
 
-    private initTypesTree(configuration) {
-        for (var type of configuration['types']) {
-            if (!type['parent']) this.typesTree[this.getTypeName(type)] = new IdaiType(type);
+    private initTypes(configuration: ConfigurationDefinition) {
+
+        for (let type of configuration.types) {
+            let typeName = this.getTypeName(type);
+            this.typesMap[typeName] = new IdaiType(type);
         }
 
-        for (var type of configuration['types']) {
-
-            if (type['parent']) {
-                if (this.typesTree[type.parent] == undefined) {
+        for (let type of configuration.types) {
+            let typeName = this.getTypeName(type);
+            if (!type['parent']) {
+                this.typesTree[typeName] = this.typesMap[typeName];
+            } else {
+                if (this.typesMap[type.parent] == undefined) {
                     throw MDInternal.PC_GENERIC_ERROR;
-                } else
-                    var parentType = this.typesTree[type.parent]
-                    parentType.addChildType(type)
+                } else {
+                    var parentType = this.typesMap[type.parent];
+                }
+                parentType.addChildType(this.typesMap[typeName]);
             }
         }
-    }
 
-    private initTypesMap() {
-        var typesMap:{[type: string]: IdaiType } = {};
-
-        for (var typeKey of Object.keys(this.typesTree)) {
-
-            var idaiType: IdaiType = this.typesTree[typeKey];
-            typesMap[typeKey] = idaiType;
-            if (idaiType.children) {
-                for (var childType of idaiType.children) typesMap[childType.name] = childType;
-            }
-        }
-        this.typesMap = typesMap;
     }
 
     private getTypeName(type) : string {
