@@ -15,10 +15,10 @@ import {Query} from "./query";
 export abstract class ReadDatastore  {
 
     /**
-     * @param id the desired document's resource id
+     * @param resourceId the desired document's resource id
      * @returns {Promise<Document|string>} a document | a key of M for an error desription
      */ 
-    abstract get(id: string): Promise<Document|string>;
+    abstract get(resourceId: string): Promise<Document|string>;
 
     /**
      * Perform a fulltext query
