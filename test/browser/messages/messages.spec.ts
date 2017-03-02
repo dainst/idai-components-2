@@ -117,6 +117,22 @@ export function main() {
             }
         );
 
+        it('should throw an error if adding anything else than an array',
+            function(){
+                expect(function(){
+                    messages.addWithParams(undefined);
+                }).toThrow("msgWithParams must be an array, but is undefined");
+            }
+        );
+
+        it('should throw an error if any part of the array is not a string',
+            function(){
+                expect(function(){
+                    messages.addWithParams([undefined,undefined]);
+                }).toThrow('msgWithParams must be an array of strings, but found undefined,undefined');
+            }
+        );
+
         it('should throw an error if array is empty',
             function(){
                 expect(function(){

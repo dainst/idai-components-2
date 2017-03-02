@@ -34,7 +34,7 @@ export class Messages {
     }
     
     /**
-     * @param msgWithParams
+     * @param msgWithParams an array of strings
      *   msgWithParams[0] -> id. Used to identify the message. Must be an existing key.
      *   msgWithParams[1..n] -> params. Contains strings which will be inserted into the message content.
      *   Every occurrence of "{0}", "{1}", "{2}" etc. will be replaced with the param string at the corresponding
@@ -42,10 +42,23 @@ export class Messages {
      */
     public addWithParams(msgWithParams: Array<string>): void {
 
-        var id = msgWithParams[0];
+        if (!Array.isArray(msgWithParams)) throw "msgWithParams must be an array, but is "+msgWithParams;
+        let errs = [];
+        for (let i in msgWithParams) {
+            if ((typeof msgWithParams[i])!='string') {
+                if (!msgWithParams[i]) errs.push('undefined');
+                else errs.push(msgWithParams[i]);
+            }
+        }
+        if (errs.length > 0) {
+            throw 'msgWithParams must be an array of strings, but found '+errs.join(',')
+        }
+
+        let id = msgWithParams[0];
         msgWithParams.splice(0, 1);
-        var params = msgWithParams;
-        var msg = this._get(id);
+
+        let params = msgWithParams;
+        let msg = this._get(id);
         if (!msg) throw 'No message found for key ' + id;
         this._add(msg,params);
     }
