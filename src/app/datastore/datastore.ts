@@ -13,7 +13,7 @@ export abstract class Datastore extends ReadDatastore {
 
     /**
      * Persists a given document. If document.resource.id is not set,
-     * it will be set to a generated value.
+     * it will be set to a generated value. In case of an error it remains undefined.
      *
      * In case of a successful call, document.modified and document.created get set,
      * otherwise they remain undefined.
