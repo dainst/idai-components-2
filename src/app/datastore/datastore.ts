@@ -19,13 +19,13 @@ export abstract class Datastore extends ReadDatastore {
      * otherwise they remain undefined.
      *
      * @param doc
-     * @returns {Promise<Document|string>} either a document | a key of M for an error desription
+     * @returns {Promise<Document|string>} a document | a key of M for an error desription
      */
     abstract create(doc: Document): Promise<Document|string>;
 
     /**
      * @param doc
-     * @returns {Promise<Document|string>} either a document | a key of M for an error desription
+     * @returns {Promise<Document|string>} a document | a key of M for an error desription
      */ 
     abstract update(doc: Document): Promise<Document|string>;
 
