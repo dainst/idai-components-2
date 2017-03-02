@@ -35,8 +35,7 @@ export abstract class ReadDatastore  {
      * @returns {Promise<Document[]|string>} an array of documents or
      *   an error message, possibly a key of M
      */
-    abstract find(query: string, sets?:string[], prefix?:boolean,
-                  offset?:number, limit?:number): Promise<Document[]|string>;
+    abstract find(query: Query, offset?:number, limit?:number): Promise<Document[]|string>;
 
     /**
      * return all documents ordered by modification date (descending)

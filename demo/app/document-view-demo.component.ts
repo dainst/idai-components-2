@@ -43,7 +43,7 @@ export class DocumentViewDemoComponent implements OnInit {
             this.types = projectConfiguration.getTypesTreeList();
         });
 
-        this.datastore.find('').then(docs => {
+        this.datastore.find({q:''}).then(docs => {
             this.documents = docs as Document[];
         })
     }

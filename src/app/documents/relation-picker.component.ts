@@ -78,7 +78,7 @@ export class RelationPickerComponent implements OnChanges {
 
         this.updateSuggestionsMode = true;
 
-        this.datastore.find(this.idSearchString, [''], true)
+        this.datastore.find({q: this.idSearchString, prefix: true})
             .then(documents => {
                 this.makeSuggestionsFrom(documents);
                 this.updateSuggestionsMode = false;
