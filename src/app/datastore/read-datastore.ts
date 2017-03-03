@@ -24,8 +24,6 @@ export abstract class ReadDatastore  {
      * Perform a fulltext query
      
      * @param query the query string
-     *   <code>query</code> may be undefined,
-     *   which is the same as using no <code>query.filterSet</code>
      * @param sets the names of the sets of documents
      *   the result should be restricted to
      * @param prefix determines that prefix matching should be performed
