@@ -43,7 +43,7 @@ export abstract class ReadDatastore  {
      * @param limit the maximum number of documents to be returned
      * @returns {Promise<Document[]|string>} an array of documents | a key of M for an error desription
      */
-    abstract all(sets?:string[], offset?:number,
+    abstract all(type?:string, offset?:number,
                  limit?:number): Promise<Document[]|string>;
 
     /**
