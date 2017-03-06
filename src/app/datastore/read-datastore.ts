@@ -23,11 +23,7 @@ export abstract class ReadDatastore  {
     /**
      * Perform a fulltext query
      
-     * @param query the query string
-     * @param sets the names of the sets of documents
-     *   the result should be restricted to
-     * @param prefix determines that prefix matching should be performed
-     *   instead of exactly matching the query string to full words
+     * @param query the query object
      * @param offset the number of documents to skip before returning
      * @param limit the maximum number of documents to be returned
      * @returns {Promise<Document[]|string>} an array of documents | a key of M for an error desription
@@ -37,8 +33,7 @@ export abstract class ReadDatastore  {
     /**
      * Returns all documents ordered by modification date (descending)
      
-     * @param sets the names of the sets of documents
-     *   the result should be restricted to
+     * @param type only return documents for the given type
      * @param offset the number of documents to skip before returning
      * @param limit the maximum number of documents to be returned
      * @returns {Promise<Document[]|string>} an array of documents | a key of M for an error desription
