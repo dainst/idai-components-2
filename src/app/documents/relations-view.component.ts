@@ -19,6 +19,8 @@ export class RelationsViewComponent implements OnChanges {
 
     protected relations: Array<any>;
 
+    isCollapsed: boolean = false;
+
     @Input() doc;
     @Output() relationClicked = new EventEmitter();
 

@@ -15,6 +15,10 @@ html {
   margin-top: 60px;
 }
 
+.collapse {
+	cursor: pointer;
+}
+
 /* override needed for buttons to look good in chrome with bootstrap 4 */
 button,
 html [type="button"],
