@@ -1,11 +1,6 @@
 <div *ngIf="relationDefinitions && relationDefinitions.length > 0" class="card">
-    <div class="card-header"
-         style="cursor: pointer;"
-         (click)="isCollapsed = !isCollapsed">
-        <h3 class="card-title">Relationen
-            <span class="mdi mdi-chevron-down" *ngIf="isCollapsed" style="float: right;"></span>
-            <span class="mdi mdi-chevron-up" *ngIf="!isCollapsed" style="float: right;"></span>
-        </h3>
+    <div class="card-header">
+        <h3 class="card-title">Relationen</h3>
     </div>
     <ul class="list-group list-group-flush"
         *ngIf="!isCollapsed">
