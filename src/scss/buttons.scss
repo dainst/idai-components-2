@@ -18,7 +18,7 @@ $lightgraybgr: #eeeeee;
   font-size: 23px;
   position: absolute;
   box-shadow: 0 3px 5px 1px rgba(0, 0, 0, 0.24), 0 1px 1px 0 rgba(0, 0, 0, 0.24);
-  -webkit-appearance: inherit;
+  -webkit-appearance: inherit !important;
 }
 
 .circular-button:hover {
@@ -37,7 +37,7 @@ $lightgraybgr: #eeeeee;
   z-index: 1;
   position: absolute;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.24), 0 1px 1px 0 rgba(0, 0, 0, 0.24);
-  -webkit-appearance: inherit;
+  -webkit-appearance: inherit !important;
 }
 
 .small-circular-button:hover {
