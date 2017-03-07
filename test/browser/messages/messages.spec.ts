@@ -25,10 +25,16 @@ export function main() {
         }
     };
 
+    function verifyUnkownError(consoleError) {
+        expect(messages.getMessages()[1].content).toEqual((new MDInternal().msgs[MDInternal.UNKOWN_ERROR]).content);
+        expect(console.error).toHaveBeenCalledWith(consoleError);
+    }
+
     let messages;
 
     beforeEach(
         function(){
+            spyOn(console, 'error');
             messages = new Messages(messagesDictionary);
             messages.add(["key1"]);
         }
@@ -36,14 +42,6 @@ export function main() {
 
     describe('Messages', () => {
 
-
-        // it('should add a non existing message',
-        //     function(){
-        //         messages.add("notexisting");
-        //         expect(messages.getMessages()[1].content).toBe('notexisting');
-        //         expect(messages.getMessages()[1].level).toBe('danger');
-        //     }
-        // );
 
         it('should store, retrieve and delete a message',
             function(){
@@ -114,49 +112,43 @@ export function main() {
 
         it('should throw an error if adding a message with parameters but id not found',
             function(){
-                expect(function(){
-                    messages.add(['nonexisting']);
-                }).toThrow();
+                messages.add(['nonexisting']);
+                verifyUnkownError('no msg found for key of M with id: "nonexisting"');
             }
         );
 
         it('should throw an error if adding undefined instead of array',
             function(){
-                expect(function(){
-                    messages.add(undefined);
-                }).toThrow("msgWithParams must be an array, but is undefined");
+                messages.add(undefined);
+                verifyUnkownError('msgWithParams must be an array, but is "undefined"');
             }
         );
 
         it('should throw an error if adding string else than an array',
             function(){
-                expect(function(){
-                    messages.add('a');
-                }).toThrow("msgWithParams must be an array, but is a");
+                messages.add('a');
+                verifyUnkownError('msgWithParams must be an array, but is "a"');
             }
         );
 
         it('should throw an error if any part of the array is not a string or a number',
             function(){
-                expect(function(){
-                    messages.add(['a',0,undefined,undefined]);
-                }).toThrow('msgWithParams must be an array of strings, but found undefined,undefined');
+                messages.add(['a',0,undefined,undefined]);
+                verifyUnkownError('msgWithParams must be an array of strings, but found "undefined,undefined"');
             }
         );
 
         it('should throw an error if array is empty',
             function(){
-                expect(function(){
-                    messages.add([]);
-                }).toThrow();
+                messages.add([]);
+                verifyUnkownError('no msg found for key of M with id: "undefined"');
             }
         );
 
         it('should throw an error if array is undefined',
             function(){
-                expect(function(){
-                    messages.add();
-                }).toThrow();
+                messages.add();
+                verifyUnkownError('msgWithParams must be an array, but is "undefined"');
             }
         );
     })

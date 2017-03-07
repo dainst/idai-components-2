@@ -30,7 +30,25 @@ export class Messages {
      */
     public add(msgWithParams: Array<string>): void {
 
-        if (!Array.isArray(msgWithParams)) throw "msgWithParams must be an array, but is "+msgWithParams;
+        if (!this.isArrayOfStrings(msgWithParams)) return;
+
+        let id = msgWithParams[0];
+        msgWithParams.splice(0, 1);
+
+        let params = msgWithParams;
+        let msg = this._get(id);
+        if (!msg) this.addUnkownErr('no msg found for key of M with id: "'+id+'"');
+        else this._add(msg,params);
+    }
+
+    /**
+     * @returns {boolean} false and adds an unknown error if not, true otherwiese
+     */
+    private isArrayOfStrings(msgWithParams) {
+        if (!Array.isArray(msgWithParams)) {
+            this.addUnkownErr('msgWithParams must be an array, but is "'+msgWithParams+'"');
+            return false;
+        }
         let errs = [];
         for (let i in msgWithParams) {
             if ((typeof msgWithParams[i])!='string' && (typeof msgWithParams[i])!='number') {
@@ -39,16 +57,15 @@ export class Messages {
             }
         }
         if (errs.length > 0) {
-            throw 'msgWithParams must be an array of strings, but found '+errs.join(',')
+            this.addUnkownErr('msgWithParams must be an array of strings, but found "'+errs.join(',')+'"');
+            return false;
         }
+        return true;
+    }
 
-        let id = msgWithParams[0];
-        msgWithParams.splice(0, 1);
-
-        let params = msgWithParams;
-        let msg = this._get(id);
-        if (!msg) throw 'No message found for key ' + id;
-        this._add(msg,params);
+    private addUnkownErr(consoleError: string) {
+        console.error(consoleError);
+        this._add(this.internalMessagesDictionary.msgs[MDInternal.UNKOWN_ERROR],undefined);
     }
 
     private _get(id) : Message {

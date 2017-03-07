@@ -11,6 +11,8 @@ import {MD} from "./md"
 @Injectable()
 export class MDInternal extends MD {
 
+    public static UNKOWN_ERROR : string = 'unknown-error';
+
     public static MESSAGES_NOBODY : string = 'messages/nobody';
     public static PC_GENERIC_ERROR : string = 'pmc/generic';
     public static PARSE_GENERIC_ERROR : string = 'parse/generic';
@@ -27,6 +29,12 @@ export class MDInternal extends MD {
 
     constructor() {
         super();
+        this.msgs[MDInternal.UNKOWN_ERROR]={
+            content: "Ein unbekannter Fehler ist aufgetreten. Details können in der Developer Console eingesehen werden.",
+            level: 'danger',
+            params: [],
+            hidden: false
+        };
         this.msgs[MDInternal.MESSAGES_NOBODY]={
             content: "Keine Message gefunden für Schlüssel 'id'.",
             level: 'danger',
