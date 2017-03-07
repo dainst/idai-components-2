@@ -94,7 +94,7 @@ export class ProjectConfiguration {
     public getParentTypes(typeName: string): string[] {
         let parentTypes:string[] = [];
         let type = this.typesMap[typeName];
-        while (type.parentType) {
+        while (type && type.parentType) {
             parentTypes.push(type.parentType.name);
             type = type.parentType;
         }
