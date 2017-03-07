@@ -22,9 +22,9 @@ export class MessagesDemoComponent {
 
     public showMessage(msgKey: string) {
         if (this.useParams && msgKey == "with_params") {
-            this.messages.addWithParams([msgKey].concat(this.params));
+            this.messages.add([msgKey].concat(this.params));
         } else {
-            this.messages.add(msgKey);
+            this.messages.add([msgKey]);
         }
     }
 

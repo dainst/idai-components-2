@@ -39,7 +39,7 @@ export class AppComponent implements OnInit {
 
         configLoader.getProjectConfiguration().catch(
             msgWithParams => {
-                messages.addWithParams(msgWithParams);
+                messages.add(msgWithParams);
             }
         )
     }

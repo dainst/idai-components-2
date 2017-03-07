@@ -7,33 +7,43 @@ import {MDInternal} from "../../../src/app/messages/md-internal";
  * @author Thomas Kleinke
  */
 export function main() {
+
+    let messagesDictionary = {
+        msgs: {
+            "key1" : {
+                content: 'content1',
+                level: 'danger',
+                params: new Array(),
+                hidden: false
+            },
+            "key2" : {
+                content: 'content2',
+                level: 'danger',
+                params: new Array(),
+                hidden: false
+            }
+        }
+    };
+
+    let messages;
+
+    beforeEach(
+        function(){
+            messages = new Messages(messagesDictionary);
+            messages.add(["key1"]);
+        }
+    );
+
     describe('Messages', () => {
 
-        var messagesDictionary = {
-            msgs: {
-                "key1" : {
-                    content: 'content1',
-                    level: 'danger',
-                    params: new Array(),
-                    hidden: false
-                },
-                "key2" : {
-                    content: 'content2',
-                    level: 'danger',
-                    params: new Array(),
-                    hidden: false
-                }
-            }
-        };
 
-        var messages;
-
-        beforeEach(
-            function(){
-                messages = new Messages(messagesDictionary);
-                messages.add("key1");
-            }
-        );
+        // it('should add a non existing message',
+        //     function(){
+        //         messages.add("notexisting");
+        //         expect(messages.getMessages()[1].content).toBe('notexisting');
+        //         expect(messages.getMessages()[1].level).toBe('danger');
+        //     }
+        // );
 
         it('should store, retrieve and delete a message',
             function(){
@@ -45,7 +55,7 @@ export function main() {
 
         it('should add message with same identifier twice',
             function(){
-                messages.add("key1");
+                messages.add(["key1"]);
                 expect(messages.getMessages()[0]).toEqual(messagesDictionary.msgs["key1"]);
                 expect(messages.getMessages().length).toBe(2);
             }
@@ -53,20 +63,13 @@ export function main() {
 
         it('should add two messages with different identifiers',
             function(){
-                messages.add("key2");
+                messages.add(["key2"]);
                 expect(messages.getMessages()[0]).toEqual(messagesDictionary.msgs["key1"]);
                 expect(messages.getMessages()[1]).toEqual(messagesDictionary.msgs["key2"]);
                 expect(messages.getMessages().length).toBe(2);
             }
         );
 
-        it('should add a non existing message',
-            function(){
-                messages.add("notexisting");
-                expect(messages.getMessages()[1].content).toBe('notexisting');
-                expect(messages.getMessages()[1].level).toBe('danger');
-            }
-        );
 
         it('should return always the same instance',
             function(){
@@ -83,7 +86,7 @@ export function main() {
 
         it('should show a msg from the internal message dictionary',
             function(){
-                messages.add(MDInternal.MESSAGES_NOBODY);
+                messages.add([MDInternal.MESSAGES_NOBODY]);
                 expect(messages.getMessages()[1]).toEqual((new MDInternal()).msgs[MDInternal.MESSAGES_NOBODY]);
             }
         );
@@ -96,15 +99,15 @@ export function main() {
                     params: new Array(),
                     hidden: false
                 };
-                messages.add(MDInternal.MESSAGES_NOBODY);
+                messages.add([MDInternal.MESSAGES_NOBODY]);
                 expect(messages.getMessages()[1]).toEqual(messagesDictionary.msgs[MDInternal.MESSAGES_NOBODY]);
             }
         );
 
         it('should add a message with parameters',
             function(){
-                var params = ['param1','param2'];
-                messages.addWithParams(['key2'].concat(params));
+                let params = ['param1','param2'];
+                messages.add(['key2'].concat(params));
                 expect(messages.getMessages()[1].params).toEqual(params);
             }
         );
@@ -112,7 +115,7 @@ export function main() {
         it('should throw an error if adding a message with parameters but id not found',
             function(){
                 expect(function(){
-                    messages.addWithParams(['nonexisting']);
+                    messages.add(['nonexisting']);
                 }).toThrow();
             }
         );
@@ -120,7 +123,7 @@ export function main() {
         it('should throw an error if adding undefined instead of array',
             function(){
                 expect(function(){
-                    messages.addWithParams(undefined);
+                    messages.add(undefined);
                 }).toThrow("msgWithParams must be an array, but is undefined");
             }
         );
@@ -128,7 +131,7 @@ export function main() {
         it('should throw an error if adding string else than an array',
             function(){
                 expect(function(){
-                    messages.addWithParams('a');
+                    messages.add('a');
                 }).toThrow("msgWithParams must be an array, but is a");
             }
         );
@@ -136,7 +139,7 @@ export function main() {
         it('should throw an error if any part of the array is not a string or a number',
             function(){
                 expect(function(){
-                    messages.addWithParams(['a',0,undefined,undefined]);
+                    messages.add(['a',0,undefined,undefined]);
                 }).toThrow('msgWithParams must be an array of strings, but found undefined,undefined');
             }
         );
@@ -144,7 +147,7 @@ export function main() {
         it('should throw an error if array is empty',
             function(){
                 expect(function(){
-                    messages.addWithParams([]);
+                    messages.add([]);
                 }).toThrow();
             }
         );
@@ -152,7 +155,7 @@ export function main() {
         it('should throw an error if array is undefined',
             function(){
                 expect(function(){
-                    messages.addWithParams();
+                    messages.add();
                 }).toThrow();
             }
         );

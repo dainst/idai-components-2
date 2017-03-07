@@ -25,10 +25,10 @@ export class MessagesComponent {
     constructor(private messages: Messages) {}
     
     public getMessageContent(message: Message): string {
-        var content = message.content;
+        let content = message.content;
 
         if (message.params) {
-            for (var i in message.params) {
+            for (let i in message.params) {
                 content = content.replace("{" + i + "}", message.params[i]);
             }
         }
