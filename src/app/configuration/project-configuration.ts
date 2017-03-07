@@ -239,11 +239,9 @@ export class ProjectConfiguration {
             if (!type['parent']) {
                 this.typesTree[typeName] = this.typesMap[typeName];
             } else {
-                if (this.typesMap[type.parent] == undefined) {
+                let parentType = this.typesMap[type.parent];
+                if (parentType == undefined)
                     throw MDInternal.PC_GENERIC_ERROR;
-                } else {
-                    var parentType = this.typesMap[type.parent];
-                }
                 parentType.addChildType(this.typesMap[typeName]);
             }
         }
