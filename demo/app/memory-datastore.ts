@@ -20,32 +20,32 @@ export class MemoryDatastore implements Datastore {
     constructor(){};
 
     // NOT IMPLEMENTED
-    public documentChangesNotifications():Observable<Document> {
+    public documentChangesNotifications(): Observable<Document> {
         return undefined;
     }
 
-    public create(document:Document):Promise<string> {
+    public create(document: Document): Promise<any> {
         return Promise.resolve('');
     }
 
-    public update(document:Document):Promise<any> {
-        this.objectCache[document['resource']['id']]=document;
+    public update(document: Document): Promise<any> {
+        this.objectCache[document['resource']['id']] = document;
         return Promise.resolve();
     }
 
-    public refresh(document:Document):Promise<Document>  {
+    public refresh(document: Document): Promise<Document>  {
         return Promise.resolve(undefined);
     }
 
-    public get(id:string):Promise<Document> {
+    public get(id: string): Promise<Document> {
         return Promise.resolve(this.objectCache[id]);
     }
 
-    public remove(document:Document):Promise<any> {
+    public remove(document: Document): Promise<any> {
         return Promise.resolve();
     }
 
-    public clear():Promise<any> {
+    public clear(): Promise<any> {
         return new Promise((resolve, reject) => {
             this.db.then(db => {
                 resolve();
@@ -58,7 +58,7 @@ export class MemoryDatastore implements Datastore {
 
         var queryString = query.q.toLowerCase();
 
-        var results : Document[] = [];
+        var results: Document[] = [];
         for (var i in this.objectCache) {
             if (this.objectCache[i]['resource']['id'].indexOf(queryString) != -1) results.push(this.objectCache[i]);
         }
@@ -68,21 +68,21 @@ export class MemoryDatastore implements Datastore {
         });
     }
 
-    public all():Promise<Document[]> {
+    public all(): Promise<Document[]> {
 
         return new Promise<Document[]>((resolve, reject) => {
             resolve();
         });
     }
 
-    private saveObject(document:Document):Promise<any> {
+    private saveObject(document: Document): Promise<any> {
 
         return new Promise((resolve, reject) => {
             resolve();
         });
     }
 
-    private saveFulltext(document:Document):Promise<any> {
+    private saveFulltext(document: Document): Promise<any> {
 
         return new Promise((resolve, reject) => {
             resolve();
