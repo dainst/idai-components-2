@@ -4,7 +4,7 @@
     <span class="mdi mdi-chevron-up" *ngIf="!isCollapsed"></span>
 </h3>
 
-<div *ngIf="!isCollapsed">
+<div *ngIf="isCollapsed">
     <div *ngFor="let relation of relations">
         <div class="document-view-field">
             <div class="fieldname">{{relation.name}}</div>
