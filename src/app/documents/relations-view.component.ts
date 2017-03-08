@@ -19,12 +19,11 @@ export class RelationsViewComponent implements OnChanges {
 
     protected relations: Array<any>;
 
-    isCollapsed: boolean = false;
-
     @Input() doc;
     @Output() relationClicked = new EventEmitter();
 
     constructor(
+        private collapsed: false,
         private datastore: ReadDatastore,
         private configLoader: ConfigLoader
     ) {

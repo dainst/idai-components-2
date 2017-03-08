@@ -1,10 +1,10 @@
-<h3 class="fieldname relations" (click)="isCollapsed = !isCollapsed">
+<h3 class="fieldcollapse" (click)="collapsed = !collapsed">
     Relationen
-    <span class="mdi mdi-chevron-down" *ngIf="isCollapsed"></span>
-    <span class="mdi mdi-chevron-up" *ngIf="!isCollapsed"></span>
+    <span class="mdi mdi-chevron-down" *ngIf="collapsed"></span>
+    <span class="mdi mdi-chevron-up" *ngIf="!collapsed"></span>
 </h3>
 
-<div *ngIf="isCollapsed">
+<div *ngIf="!collapsed">
     <div *ngFor="let relation of relations">
         <div class="document-view-field">
             <div class="fieldname">{{relation.name}}</div>
