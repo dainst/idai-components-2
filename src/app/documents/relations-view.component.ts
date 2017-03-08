@@ -22,11 +22,13 @@ export class RelationsViewComponent implements OnChanges {
     @Input() doc;
     @Output() relationClicked = new EventEmitter();
 
+    public collapsed: boolean;
+
     constructor(
-        private collapsed: false,
         private datastore: ReadDatastore,
         private configLoader: ConfigLoader
     ) {
+        this.collapsed = false;
     }
 
     ngOnChanges() {
