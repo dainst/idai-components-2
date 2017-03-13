@@ -1,7 +1,6 @@
 import {Component, Input, OnChanges, ElementRef} from '@angular/core';
 import {Document} from "../model/document";
 import {Resource} from "../model/resource";
-import {Query} from "../datastore/query";
 import {DocumentEditChangeMonitor} from "./document-edit-change-monitor";
 import {ReadDatastore} from "../datastore/read-datastore";
 import {RelationDefinition} from "../configuration/relation-definition";
@@ -34,6 +33,8 @@ export class RelationPickerComponent implements OnChanges {
     private idSearchString: string;
     private suggestionsVisible: boolean;
 
+    private disabled: boolean = false;
+
     // This is to compensate for an issue where it is possible
     // to call updateSuggestions repeatedly in short time.
     // It is intended to be only used as guard in updateSuggestions.
@@ -61,7 +62,7 @@ export class RelationPickerComponent implements OnChanges {
         if (relationId && relationId != "") {
             this.datastore.get(relationId).then(
                 document => { this.selectedTarget = document as Document; },
-                err => { console.error(err); }
+                err => { this.disabled = true; console.error(err); }
             );
         } else {
             setTimeout(this.focusInputField.bind(this), 100);
