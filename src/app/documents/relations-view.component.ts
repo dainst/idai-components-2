@@ -49,32 +49,43 @@ export class RelationsViewComponent implements OnChanges {
                 if (resource.relations.hasOwnProperty(relationName)) {
                     if (!projectConfiguration.isVisibleRelation(relationName)) continue;
 
-                    let relationTargets = resource.relations[relationName];
+                    let targetIds = resource.relations[relationName];
 
-                    let relation = {
+                    let relationGroup = {
                         name: projectConfiguration.getRelationDefinitionLabel(relationName),
                         targets: []
                     };
-                    this.relations.push(relation);
 
-                    this.processRelation(relation, relationTargets);
+                    this.getTargetDocuments(targetIds).then(
+                        targets => {
+                            relationGroup.targets = targets;
+                            if (relationGroup.targets.length > 0) this.relations.push(relationGroup);
+                        }
+                    );
                 }
             }
         });
 
     }
 
-    private processRelation(relation: any, targets: Array<string>) {
+    private getTargetDocuments(targetIds: Array<string>): Promise<Array<Document>> {
 
-        for (let i in targets) {
-            let targetId = targets[i];
-            this.datastore.get(targetId).then(
+        const promises = [];
+        const targetDocuments = [];
+
+        for (let i in targetIds) {
+            let targetId = targetIds[i];
+            promises.push(this.datastore.get(targetId).then(
                 targetDocument => {
-                    relation.targets.push(targetDocument);
+                    targetDocuments.push(targetDocument);
                 },
-                err => { console.error(err); }
-            )
+                err => console.error("Relation target not found", err)
+            ));
         }
+
+        return Promise.all(promises).then(
+            () => Promise.resolve(targetDocuments)
+        );
     }
 
 

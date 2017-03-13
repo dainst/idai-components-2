@@ -38,7 +38,10 @@ export class MemoryDatastore implements Datastore {
     }
 
     public get(id: string): Promise<Document> {
-        return Promise.resolve(this.objectCache[id]);
+        return new Promise<Document>((resolve, reject) => {
+            if (!this.objectCache[id]) reject('document not found');
+            resolve(this.objectCache[id]);
+        });
     }
 
     public remove(document: Document): Promise<any> {
