@@ -4,6 +4,7 @@ import {Document} from "../model/document";
 import {Resource} from "../model/resource";
 import {ProjectConfiguration} from "../configuration/project-configuration";
 import {ConfigLoader} from "../configuration/config-loader";
+import {MDInternal} from "../messages/md-internal";
 
 /**
  * With a document to persist, it determines which other documents are 
@@ -61,6 +62,7 @@ import {ConfigLoader} from "../configuration/config-loader";
         return this.ready
                 .then(() => this.persistIt(document))
                 .then(() => Promise.all(this.getConnectedDocs(document, oldVersion)))
+                .catch(() => { return Promise.reject(MDInternal.PERSISTENCE_ERROR_TARGETNOTFOUND); })
                 .then(connectedDocs => Promise.all(this.updateConnectedDocs(document.resource, connectedDocs, true)))
                 .then(() => {
                     this.setOldVersion(document);

@@ -25,6 +25,8 @@ export class MDInternal extends MD {
     public static VALIDATION_ERROR_MISSINGTYPE: string = 'validation/error/missingtype';
     public static VALIDATION_ERROR_DUPLICATETYPE: string = 'validation/error/duplicatetype';
 
+    public static PERSISTENCE_ERROR_TARGETNOTFOUND: string = 'persistence/error/targetnotfound';
+
     public msgs : { [id: string]: Message } = {};
 
     constructor() {
@@ -89,6 +91,13 @@ export class MDInternal extends MD {
         this.msgs[MDInternal.VALIDATION_ERROR_DUPLICATETYPE]={
             content: 'Die Configuration.json enthält eine Mehrfachdefinition für den Typ \"{0}\".',
             level: 'danger',
+            params: [],
+            hidden: false
+        };
+        this.msgs[MDInternal.PERSISTENCE_ERROR_TARGETNOTFOUND]={
+            content: 'Die Ressource wurde erfolgreich gespeichert. Relationen wurden aufgrund fehlender Zielressourcen '
+                + 'nicht aktualisiert.',
+            level: 'warning',
             params: [],
             hidden: false
         };

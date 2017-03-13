@@ -13,11 +13,11 @@ export var OBJECTS: Document[] = [
 
     { "resource" : { "id" : "/demo/5", "identifier": "ob5", "type": "section", "relations" : {} }},
 
-    { "resource" : { "id" : "/demo/6", "identifier": "ob5", "type": "section", "relations" : {} }},
+    { "resource" : { "id" : "/demo/6", "identifier": "ob6", "type": "section", "relations" : {} }},
 
-    { "resource" : { "id" : "/demo/7", "identifier": "ob6", "type": "section", "relations" : {} }},
+    { "resource" : { "id" : "/demo/7", "identifier": "ob7", "type": "section", "relations" : {} }},
     
-    { "resource" : { "id" : "/demo/8", "identifier": "ob7", "type": "image", "dimensions":"800x600", "relations" : {} }},
+    { "resource" : { "id" : "/demo/8", "identifier": "ob8", "type": "image", "dimensions":"800x600", "relations" : {} }},
 
-    { "resource" : { "id" : "/demo/9", "identifier": "ob8", "type": "drawing", "dimensions":"8000x6000", "relations" : {} }}
+    { "resource" : { "id" : "/demo/9", "identifier": "ob9", "type": "drawing", "dimensions":"8000x6000", "relations" : {} }}
 ];

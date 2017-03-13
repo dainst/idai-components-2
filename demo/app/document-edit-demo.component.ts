@@ -26,10 +26,11 @@ export class DocumentEditDemoComponent implements OnInit {
         if (!this.selectedDocument) return this.changeTo(id);
 
         this.persistenceManager.persist(this.selectedDocument).then(
-            ()=>{
-                this.changeTo(id)
-            },()=>{
-                console.error("error while persisting object");
+            () => {
+                this.changeTo(id);
+            }, err => {
+                console.error("error while persisting object", err);
+                this.changeTo(id);
             });
     }
 
