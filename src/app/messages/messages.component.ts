@@ -12,7 +12,8 @@ import {Message} from "./message";
         <div class="alert alert-{{message.level}}"
             *ngIf="message.hidden==false || message.overrideHidden == true"
             id="message-{{index}}">
-            <button *ngIf="message.level == 'danger'" type="button" class="close" (click)="closeAlert(message)" aria-label="Close">
+            <button *ngIf="message.level == 'danger' || message.level == 'warning'" type="button" class="close"
+                    (click)="closeAlert(message)" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
             <span class="message-content">{{getMessageContent(message)}}</span>

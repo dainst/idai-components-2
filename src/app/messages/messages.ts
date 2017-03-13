@@ -84,10 +84,10 @@ export class Messages {
             hidden: false
         };
 
-        if (messageToAdd.level != 'danger') {
+        if (messageToAdd.level == 'success') {
             setTimeout(() => {
                 messageToAdd.hidden = true;
-            }, 2000);
+            }, 3500);
         }
         this.messageList.push(messageToAdd);
     }

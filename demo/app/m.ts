@@ -15,6 +15,12 @@ export class M extends MD{
             params: [],
             hidden: false
         };
+        this.msgs['warning_msg']={
+            content: 'Warnung!',
+            level: 'warning',
+            params: [],
+            hidden: false
+        };
         this.msgs['danger_msg']={
             content: 'Schwerwiegender Fehler!',
             level: 'danger',
