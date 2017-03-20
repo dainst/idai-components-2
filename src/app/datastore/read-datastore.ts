@@ -16,7 +16,7 @@ export abstract class ReadDatastore  {
 
     /**
      * @param resourceId the desired document's resource id
-     * @returns {Promise<Document>} a document (in case of error: a key of M)
+     * @returns {Promise<Document>} a document (rejects with msgWithParams in case of error)
      */ 
     abstract get(resourceId: string): Promise<Document>;
 
@@ -26,7 +26,7 @@ export abstract class ReadDatastore  {
      * @param query the query object
      * @param offset the number of documents to skip before returning
      * @param limit the maximum number of documents to be returned
-     * @returns {Promise<Document[]>} an array of documents (in case of error: a key of M)
+     * @returns {Promise<Document[]>} an array of documents (rejects with msgWithParams in case of error)
      */
     abstract find(query: Query, offset?: number, limit?: number): Promise<Document[]>;
 
@@ -36,7 +36,7 @@ export abstract class ReadDatastore  {
      * @param type only return documents for the given type
      * @param offset the number of documents to skip before returning
      * @param limit the maximum number of documents to be returned
-     * @returns {Promise<Document[]>} an array of documents (in case of error: a key of M)
+     * @returns {Promise<Document[]>} an array of documents (rejects with msgWithParams in case of error)
      */
     abstract all(type?: string, offset?: number,
                  limit?: number): Promise<Document[]>;
@@ -46,7 +46,7 @@ export abstract class ReadDatastore  {
      * the current state of the doc in the database.
      *
      * @param doc
-     * @returns {Promise<Document>} an array of documents (in case of error: a key of M)
+     * @returns {Promise<Document>} an array of documents (rejects with msgWithParams in case of error)
      */
     abstract refresh(doc: Document): Promise<Document>;
 

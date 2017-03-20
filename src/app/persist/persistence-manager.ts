@@ -53,7 +53,7 @@ import {MDInternal} from "../messages/md-internal";
      * @returns {Promise<string>} If all objects could get stored,
      *   the promise will resolve to <code>undefined</code>. If one or more
      *   objects could not get stored properly, the promise will get rejected
-     *   containing an id of M (or an error message).
+     *   with msgWithParams.
      */
     public persist(document: Document, oldVersion: Document = this.oldVersion): Promise<any> {
 

@@ -19,19 +19,19 @@ export abstract class Datastore extends ReadDatastore {
      * otherwise they remain undefined.
      *
      * @param doc
-     * @returns {Promise<Document>} a document (in case of error: a key of M)
+     * @returns {Promise<Document>} a document (rejects with msgWithParams in case of error)
      */
     abstract create(doc: Document): Promise<Document>;
 
     /**
      * @param doc
-     * @returns {Promise<Document>} a document (in case of error: a key of M)
+     * @returns {Promise<Document>} a document (rejects with msgWithParams in case of error)
      */ 
     abstract update(doc: Document): Promise<Document>;
 
     /**
      * @param doc
-     * @returns {Promise<undefined>} undefined (in case of error: a key of M)
+     * @returns {Promise<undefined>} undefined (rejects with msgWithParams in case of error)
      */
     abstract remove(doc: Document): Promise<undefined>;
 
