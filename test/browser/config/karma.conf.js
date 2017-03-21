@@ -39,7 +39,7 @@ module.exports = function(config) {
 
         reporters: ['dots'],
 
-        port: 9876,
+        port: 9878,
 
         colors: true,
 
