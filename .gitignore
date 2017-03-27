@@ -15,6 +15,7 @@ persist.js*
 messages.js*
 datastore.js*
 documents.js*
+widgets.js*
 configuration.js*
 core.js*
 references.js
