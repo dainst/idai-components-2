@@ -29,7 +29,6 @@
     "angular2-uuid": "1.0.6",
     "es6-promise": "3.1.2",
     "es6-shim": "0.35.0",
-    "mdbootstrap": "4.2.0",
     "reflect-metadata": "0.1.2",
     "rxjs": "5.0.0-beta.12",
     "systemjs": "0.19.31",
@@ -53,7 +52,7 @@
     "karma": "0.13.21",
     "karma-chrome-launcher": "0.2.2",
     "karma-jasmine": "0.3.7",
-    "mdi": "1.5.54",
+    "mdi": "1.8.36",
     "protractor": "5.1.1",
     "rimraf": "2.5.2",
     "typescript": "2.0.2"

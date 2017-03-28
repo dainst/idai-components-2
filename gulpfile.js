@@ -12,12 +12,10 @@ var webserver = require('gulp-webserver');
 gulp.task('convert-sass', function () {
 
     return gulp.src([
-        'src/scss/idai-components-2.scss',
-        'node_modules/mdbootstrap/css/bootstrap.css'
+        'src/scss/idai-components-2.scss'
     ])
         .pipe(sass({
             includePaths: [
-                'node_modules/mdbootstrap/sass/',
                 'node_modules/mdi/scss/'
             ], precision: 8
         }))
@@ -42,8 +40,7 @@ const tscConfig = require('./tsconfig.json');
 gulp.task('compile', ['convert-sass'], function () {
     // fonts
     gulp.src([
-        'node_modules/mdi/fonts/**/*',
-        'node_modules/mdbootstrap/font/**/*'
+        'node_modules/mdi/fonts/**/*'
     ])
         .pipe(gulp.dest('fonts'));
 

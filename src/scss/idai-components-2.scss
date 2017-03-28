@@ -1,10 +1,7 @@
 @import "variables";
-@import "mdb";
-@import "messages";
-@import "relation-picker";
+@import "../app/messages/messages";
+@import "../app/documents/relation-picker";
 @import "materialdesignicons";
-@import "buttons";
-@import "cards";
 
 html {
   position: relative;
