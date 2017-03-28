@@ -61,9 +61,10 @@ import {MDInternal} from "../messages/md-internal";
 
         return this.ready
             .then(() => this.persistIt(document))
-            .catch(err => Promise.reject(err))
-            .then(() => Promise.all(this.getConnectedDocs(document, oldVersion)))
-            .catch(() => Promise.reject(MDInternal.PERSISTENCE_ERROR_TARGETNOTFOUND))
+            .then(() => {
+                return Promise.all(this.getConnectedDocs(document, oldVersion))
+                    .catch(() => Promise.reject(MDInternal.PERSISTENCE_ERROR_TARGETNOTFOUND));
+            })
             .then(connectedDocs => Promise.all(this.updateConnectedDocs(document.resource, connectedDocs, true)))
             .then(() => this.setOldVersion(document));
     }
