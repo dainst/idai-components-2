@@ -1,7 +1,10 @@
+@import "bootstrap";
+@import "materialdesignicons";
+
 @import "variables";
+@import "buttons";
 @import "../app/messages/messages";
 @import "../app/documents/relation-picker";
-@import "materialdesignicons";
 
 html {
   position: relative;
