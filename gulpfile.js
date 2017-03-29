@@ -16,6 +16,7 @@ gulp.task('convert-sass', function () {
     ])
         .pipe(sass({
             includePaths: [
+                'node_modules/bootstrap/scss',
                 'node_modules/mdi/scss/'
             ], precision: 8
         }))
@@ -42,7 +43,7 @@ gulp.task('compile', ['convert-sass'], function () {
     gulp.src([
         'node_modules/mdi/fonts/**/*'
     ])
-        .pipe(gulp.dest('fonts'));
+        .pipe(gulp.dest('src/fonts'));
 
     // sources
     gulp
