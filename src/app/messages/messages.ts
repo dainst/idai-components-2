@@ -84,7 +84,7 @@ export class Messages {
             hidden: false
         };
 
-        if (messageToAdd.level == 'success') {
+        if (['warning', 'danger'].indexOf(messageToAdd.level) == -1) {
             setTimeout(() => {
                 messageToAdd.hidden = true;
             }, 3500);

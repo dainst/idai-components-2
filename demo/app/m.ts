@@ -15,6 +15,12 @@ export class M extends MD{
             params: [],
             hidden: false
         };
+        this.msgs['info_msg']={
+            content: 'Info.',
+            level: 'info',
+            params: [],
+            hidden: false
+        };
         this.msgs['warning_msg']={
             content: 'Warnung!',
             level: 'warning',
