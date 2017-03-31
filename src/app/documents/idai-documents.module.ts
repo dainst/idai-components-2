@@ -1,5 +1,6 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
+import {RouterModule} from '@angular/router';
 import {Datastore} from "../datastore/datastore";
 import {ReadDatastore} from "../datastore/read-datastore";
 import {ConfigLoader} from "../configuration/config-loader";
@@ -20,16 +21,21 @@ import {TextComponent} from './forms/text.component';
 import {FormsModule} from '@angular/forms';
 import {FieldsViewComponent} from "./fields-view.component";
 import {RelationsViewComponent} from "./relations-view.component";
+import {DocumentViewComponent} from "./document-view.component";
+import {TypeIconComponent} from "../widgets/type-icon";
 
 @NgModule({
     imports: [
         CommonModule,
-        FormsModule
+        FormsModule,
+        RouterModule
     ],
     declarations: [
+        TypeIconComponent,
         FieldsViewComponent,
         RelationsViewComponent,
         DocumentEditComponent,
+        DocumentViewComponent,
         EditFormComponent,
         RelationsFormComponent,
         RelationPickerComponent,
@@ -53,7 +59,8 @@ import {RelationsViewComponent} from "./relations-view.component";
         FieldsViewComponent,
         RelationsViewComponent,
         RelationsFormComponent,
-        EditFormComponent
+        EditFormComponent,
+        DocumentViewComponent
     ]
 })
-export class IdaiDocumentsModule {};
+export class IdaiDocumentsModule {}

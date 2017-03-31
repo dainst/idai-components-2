@@ -32,6 +32,7 @@
     "es6-shim": "0.35.0",
     "mdi": "1.8.36",
     "reflect-metadata": "0.1.2",
+    "identicon.js": "github:dainst/identicon.js",
     "rxjs": "5.0.0-beta.12",
     "systemjs": "0.19.31",
     "ts-md5": "1.2.0",

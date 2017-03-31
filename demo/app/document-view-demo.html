@@ -54,10 +54,13 @@
     <div class="row">
         <div class="col-md-6">
             <p>
-                <code>&lt;fields-view [(doc)]="selectedDocument"&gt;&lt;/fields-view&gt;</code>
+
+                <code>&lt;document-view [(document)]="selectedDocument"&gt; &lt;fields-view [(doc)]="selectedDocument"&gt;&lt;/fields-view&gt; &lt;/document-view&gt;</code>
             </p>
 
-            <fields-view [(doc)]="selectedDocument"></fields-view>
+            <document-view [(document)]="selectedDocument">
+                <fields-view [(doc)]="selectedDocument"></fields-view>
+            </document-view>
         </div>
         <div class="col-md-6">
             <p>
