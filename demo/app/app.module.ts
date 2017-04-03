@@ -16,6 +16,7 @@ import {FormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
 import {IdaiDocumentsModule} from '../../src/app/documents/idai-documents.module';
 import {IdaiMessagesModule} from '../../src/app/messages/idai-messages.module';
+import {IdaiWidgetsModule} from '../../src/app/widgets/idai-widgets.module';
 
 @NgModule({
     imports: [
@@ -24,6 +25,7 @@ import {IdaiMessagesModule} from '../../src/app/messages/idai-messages.module';
         HttpModule,
         IdaiDocumentsModule,
         IdaiMessagesModule,
+        IdaiWidgetsModule,
         routing,
     ],
     declarations: [

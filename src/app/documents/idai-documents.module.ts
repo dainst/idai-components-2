@@ -22,16 +22,16 @@ import {FormsModule} from '@angular/forms';
 import {FieldsViewComponent} from "./fields-view.component";
 import {RelationsViewComponent} from "./relations-view.component";
 import {DocumentViewComponent} from "./document-view.component";
-import {TypeIconComponent} from "../widgets/type-icon";
+import {IdaiWidgetsModule} from "../widgets/idai-widgets.module";
 
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
-        RouterModule
+        RouterModule,
+        IdaiWidgetsModule
     ],
     declarations: [
-        TypeIconComponent,
         FieldsViewComponent,
         RelationsViewComponent,
         DocumentEditComponent,
