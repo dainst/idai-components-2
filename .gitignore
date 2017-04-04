@@ -21,3 +21,4 @@ core.js*
 references.js
 references.js.map
 *.DS_Store
+npm-debug.log

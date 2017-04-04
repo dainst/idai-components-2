@@ -27,11 +27,11 @@ export class ConfigLoader {
 
     constructor(
         private http: Http){
+        this._reset();
+    }
 
-        this.projectConfig = new Promise<ProjectConfiguration>((resolve,reject)=>{
-           this.projectConfigResolveFunction = resolve;
-           this.projectConfigRejectFunction = reject;
-        });
+    public reset() {
+        this._reset();
     }
 
     /**
@@ -44,16 +44,15 @@ export class ConfigLoader {
 
     /**
      * @param projectConfigurationPath
-     * @param defaultTypes
-     * @param defaultFields
-     * @param namesOfMandatoryTypes
+     * @param configurationPreprocessor
+     * @param configurationValidator
      */
     public go(
         projectConfigurationPath: string,
         configurationPreprocessor: ConfigurationPreprocessor,
         configurationValidator: ConfigurationValidator
     ) {
-        var defaultFields = [
+        const defaultFields = [
             {
                 name : "id",
                 editable : false,
@@ -71,7 +70,7 @@ export class ConfigLoader {
                 if (configurationPreprocessor) configurationPreprocessor.go(config);
                 new ConfigurationPreprocessor([],defaultFields,[]).go(config);
 
-                var configurationError = undefined;
+                let configurationError = undefined;
                 if (configurationValidator) configurationError =
                     configurationValidator.go(config);
                 if (configurationError) {
@@ -91,7 +90,7 @@ export class ConfigLoader {
     private read(http:any, path:string): Promise<any> {
         return new Promise(function(resolve, reject) {
             http.get(path).subscribe(data_=> {
-                var data;
+                let data;
                 try {
                     data = JSON.parse(data_['_body']);
                 } catch (e) {
@@ -104,6 +103,13 @@ export class ConfigLoader {
                     console.log(e);
                 }
             });
+        });
+    }
+
+    private _reset() {
+        this.projectConfig = new Promise<ProjectConfiguration>((resolve,reject)=>{
+            this.projectConfigResolveFunction = resolve;
+            this.projectConfigRejectFunction = reject;
         });
     }
 }
