@@ -23,7 +23,7 @@ export class ProjectConfiguration {
 
     private typesMap: { [type: string]: IdaiType } = {};
 
-    private excavation: string;
+    private projectIdentifier: string;
 
     private typesList: IdaiType[] = undefined;
 
@@ -37,19 +37,19 @@ export class ProjectConfiguration {
      */
     constructor(configuration) {
         this.initTypes(configuration);
-        this.excavation = configuration['excavation'];
+        this.projectIdentifier = configuration['identifier'];
         this.relationFields = configuration['relations'];
     }
 
     public getInverseRelations(prop) {
-        for (var p of this.relationFields) {
+        for (let p of this.relationFields) {
             if (p["name"]==prop) return p["inverse"];
         }
         return undefined;
     }
 
     public isRelationProperty(propertyName:string):boolean {
-        for (var p of this.relationFields) {
+        for (let p of this.relationFields) {
             if (p["name"]==propertyName) return true;
         }
         return false;
@@ -61,8 +61,8 @@ export class ProjectConfiguration {
     public getTypesList(): IdaiType[] {
         if(this.typesList) return this.typesList;
 
-        var types = [];
-        for (var typeKey of Object.keys(this.typesMap)) {
+        const types = [];
+        for (let typeKey of Object.keys(this.typesMap)) {
             types.push(this.typesMap[typeKey]);
         }
         this.typesList = types;
@@ -75,8 +75,8 @@ export class ProjectConfiguration {
     public getTypesTreeList(): IdaiType[] {
         if(this.typesTreeList) return this.typesTreeList;
 
-        var types = [];
-        for (var typeKey of Object.keys(this.typesTree)) {
+        const types = [];
+        for (let typeKey of Object.keys(this.typesTree)) {
             types.push(this.typesTree[typeKey]);
         }
         this.typesTreeList = types;
@@ -110,8 +110,8 @@ export class ProjectConfiguration {
      */
     public getRelationDefinitions(typeName: string,property?:string): Array<RelationDefinition> {
 
-        var availableRelationFields = new Array<RelationDefinition>();
-        for (var i in this.relationFields) {
+        const availableRelationFields = new Array<RelationDefinition>();
+        for (let i in this.relationFields) {
             if (this.relationFields[i].domain.indexOf(typeName) > -1) {
 
                 if (!property ||
@@ -147,7 +147,7 @@ export class ProjectConfiguration {
     }
 
     public isVisibleRelation(relationName:string) : boolean {
-        for (var i in this.relationFields) {
+        for (let i in this.relationFields) {
             if (this.relationFields[i].name == relationName &&
                 this.relationFields[i].visible != undefined &&
                     this.relationFields[i].visible == false) {
@@ -160,9 +160,9 @@ export class ProjectConfiguration {
 
     private hasProperty(typeName: string, fieldName: string, propertyName: string) {
         if(!this.typesMap[typeName]) return false;
-        var fields = this.typesMap[typeName].getFieldDefinitions();
+        const fields = this.typesMap[typeName].getFieldDefinitions();
 
-        for (var i in fields) {
+        for (let i in fields) {
             if (fields[i].name == fieldName) {
                 if (fields[i][propertyName]==true) {
                     return true;
@@ -181,7 +181,7 @@ export class ProjectConfiguration {
      */
     public getRelationDefinitionLabel(relationName: string) : string {
 
-        var relationFields = this.relationFields;
+        const relationFields = this.relationFields;
         return this.getLabel(relationName, relationFields);
     }
 
@@ -196,7 +196,7 @@ export class ProjectConfiguration {
      */
     public getFieldDefinitionLabel(typeName: string, fieldName: string) : string {
 
-        var fieldDefinitions = this.getFieldDefinitions(typeName);
+        const fieldDefinitions = this.getFieldDefinitions(typeName);
         if (fieldDefinitions.length == 0)
             throw "No type definition found for type \'"+typeName+"\'";
 
@@ -206,7 +206,7 @@ export class ProjectConfiguration {
 
     private getLabel(fieldName: string, fields: Array<any>) : string{
 
-        for (var i in fields) {
+        for (let i in fields) {
             if (fields[i].name == fieldName) {
                 if (fields[i].label) {
                     return fields[i].label;
@@ -223,8 +223,8 @@ export class ProjectConfiguration {
      * @returns {string} the name of the excavation, if defined.
      *   <code>undefined</code> otherwise.
      */
-    public getExcavationName() : any {
-        return this.excavation;
+    public getProjectIdentifier() : any {
+        return this.projectIdentifier;
     }
 
     private initTypes(configuration: ConfigurationDefinition) {
