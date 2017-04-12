@@ -19,14 +19,19 @@ export abstract class Datastore extends ReadDatastore {
      * otherwise they remain undefined.
      *
      * @param doc
-     * @returns {Promise<Document>} a document (rejects with msgWithParams in case of error)
+     * @returns {Promise<Document>} a document
+     *   Rejects with
+     *     [GENERIC_SAVE_ERROR] - in case of error
      */
     abstract create(doc: Document): Promise<Document>;
 
     /**
      * @param doc
-     * @returns {Promise<Document>} a document (rejects with msgWithParams in case of error)
-     */ 
+     * @returns {Promise<Document>} a document
+     *    Rejects with
+     *     [GENERIC_SAVE_ERROR] - in case of error
+     *     [SAVE_CONFLICT] - in case of conflict
+     */
     abstract update(doc: Document): Promise<Document>;
 
     /**
