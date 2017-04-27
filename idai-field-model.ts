@@ -1,0 +1,1 @@
+export {AppConfigurator} from './src/app/idai-field-model/app-configurator';

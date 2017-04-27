@@ -15,6 +15,7 @@ persist.js*
 messages.js*
 datastore.js*
 documents.js*
+idai-field-model.js*
 widgets.js*
 configuration.js*
 core.js*
