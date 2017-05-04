@@ -14,12 +14,15 @@ import {ConfigLoader} from "../configuration/config-loader";
 /**
  * @author Sebastian Cuy
  * @author Thomas Kleinke
+ * @author Jan G. Wieners
  */
 export class SearchBarComponent implements OnChanges {
 
-    private type: string = 'resource';
     private q: string = '';
     private filterOptions: Array<any> = [];
+
+    // 'resource' or 'image'
+    @Input() type: string = 'resource';
 
     @Input() defaultFilterSet: Array<string>;
     @Input() showFiltersMenu: boolean;
