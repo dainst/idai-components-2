@@ -12,12 +12,12 @@ import {PersistenceManager} from "../../src/app/persist/persistence-manager";
 export class DocumentEditDemoComponent implements OnInit {
 
     private documents = new Array();
-    private selectedDocument : Document;
+    private selectedDocument: Document;
 
-    private types : IdaiType[];
+    private types: IdaiType[];
 
     constructor(
-        private configLoader:ConfigLoader,
+        private configLoader: ConfigLoader,
         private datastore: Datastore,
         private persistenceManager: PersistenceManager) {
     }
@@ -35,18 +35,18 @@ export class DocumentEditDemoComponent implements OnInit {
     }
 
     private changeTo(id) {
-        this.datastore.get(id).then((document)=> {
+        this.datastore.get(id).then((document) => {
             this.selectedDocument = JSON.parse(JSON.stringify(document));
         });
     }
 
     ngOnInit() {
-        this.configLoader.getProjectConfiguration().then(projectConfiguration=>{
+        this.configLoader.getProjectConfiguration().then(projectConfiguration => {
             this.types = projectConfiguration.getTypesTreeList();
         });
 
-        this.datastore.find({q:''}).then(docs => {
+        this.datastore.find({q: ''}).then(docs => {
             this.documents = docs as Document[];
-        })
+        });
     }
 }

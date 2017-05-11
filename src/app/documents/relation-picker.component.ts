@@ -52,7 +52,6 @@ export class RelationPickerComponent implements OnChanges {
             this.relations=this.resource['relations'];
         }
 
-
         this.suggestions = [];
         this.idSearchString = "";
         this.selectedTarget = undefined;

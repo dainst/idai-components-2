@@ -1,8 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {PersistenceManager} from "../persist/persistence-manager";
-import {ProjectConfiguration} from "../configuration/project-configuration";
-import {OnChanges} from "@angular/core";
-import {ConfigLoader} from "../configuration/config-loader";
+import {PersistenceManager} from '../persist/persistence-manager';
+import {ProjectConfiguration} from '../configuration/project-configuration';
+import {OnChanges} from '@angular/core';
+import {ConfigLoader} from '../configuration/config-loader';
 
 @Component({
     moduleId: module.id,
@@ -14,7 +14,7 @@ import {ConfigLoader} from "../configuration/config-loader";
  * @author Thomas Kleinke
  * @author Daniel de Oliveira
  */
-export class DocumentEditComponent implements OnChanges,OnInit {
+export class DocumentEditComponent implements OnChanges, OnInit {
 
     @Input() document: any;
     @Input() primary: string;
@@ -32,8 +32,7 @@ export class DocumentEditComponent implements OnChanges,OnInit {
         });
     }
 
-
     public ngOnChanges() {
-        if (this.document) this.persistenceManager.setOldVersion(this.document);
+        if (this.document) this.persistenceManager.setOldVersions([this.document]);
     }
 }

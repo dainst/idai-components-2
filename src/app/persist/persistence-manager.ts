@@ -12,16 +12,12 @@ import {MDInternal} from "../messages/md-internal";
  * When persisting, it maintains a consistent state of relations between the objects
  * by also persisting the related documents with updated target relations.
  * 
- * This class is intended to be used only from within the library. 
- * Clients outside this library are advised to use the load-and-service 
- * to load and save objects.
- * 
  * @author Daniel de Oliveira
  * @author Thomas Kleinke
  */
 @Injectable() export class PersistenceManager {
     
-    private oldVersion: Document = undefined;
+    private oldVersions: Array<Document> = [];
     private projectConfiguration: ProjectConfiguration = undefined;
     private ready: Promise<any>;
 
@@ -29,7 +25,7 @@ import {MDInternal} from "../messages/md-internal";
         private datastore: Datastore,
         private configLoader: ConfigLoader
     ) {
-        this.ready = new Promise<string>((resolve)=>{
+        this.ready = new Promise<string>((resolve) => {
             this.configLoader.getProjectConfiguration().then(projectConfiguration => {
                 this.projectConfiguration = projectConfiguration;
                 resolve();
@@ -40,10 +36,20 @@ import {MDInternal} from "../messages/md-internal";
     /**
      * Package private.
      * 
-     * @param oldVersion
+     * @param oldVersions
      */
-    setOldVersion(oldVersion) {
-        this.oldVersion = JSON.parse(JSON.stringify(oldVersion));
+    setOldVersions(oldVersions: Array<Document>) {
+
+        this.oldVersions = [];
+
+        for (let oldVersion of oldVersions) {
+            this.addOldVersion(oldVersion);
+        }
+    }
+
+    public addOldVersion(oldVersion: Document) {
+
+        this.oldVersions.push(JSON.parse(JSON.stringify(oldVersion)));
     }
     
     /**
@@ -55,50 +61,50 @@ import {MDInternal} from "../messages/md-internal";
      *   objects could not get stored properly, the promise will get rejected
      *   with msgWithParams.
      */
-    public persist(document: Document, oldVersion: Document = this.oldVersion): Promise<any> {
+    public persist(document: Document, oldVersions: Array<Document> = this.oldVersions): Promise<any> {
 
         if (document == undefined) return Promise.resolve();
 
         return this.ready
             .then(() => this.persistIt(document))
             .then(() => {
-                return Promise.all(this.getConnectedDocs(document, oldVersion))
+                return Promise.all(this.getConnectedDocs(document, oldVersions))
                     .catch(() => Promise.reject(MDInternal.PERSISTENCE_ERROR_TARGETNOTFOUND));
             })
             .then(connectedDocs => Promise.all(this.updateConnectedDocs(document.resource, connectedDocs, true)))
-            .then(() => this.setOldVersion(document));
+            .then(() => { this.oldVersions = [document]; });
     }
 
     /**
      * Removes the document from the datastore and deletes all corresponding reverse relations.
      */
-    public remove(document: Document, oldVersion: Document = this.oldVersion): Promise<any> {
+    public remove(document: Document, oldVersions: Array<Document> = this.oldVersions): Promise<any> {
 
         if (document == undefined) return Promise.resolve();
 
         return this.ready
-                .then(() => Promise.all(this.getConnectedDocs(document, oldVersion)))
+                .then(() => Promise.all(this.getConnectedDocs(document, oldVersions)))
                 .then(connectedDocs => Promise.all(this.updateConnectedDocs(document.resource, connectedDocs, false)))
-                .then(() => this.datastore.remove(document));
+                .then(() => this.datastore.remove(document))
+                .then(() => { this.oldVersions = []; });
     }
 
-    private getConnectedDocs(document: Document, oldVersion: Document) {
+    private getConnectedDocs(document: Document, oldVersions: Array<Document>) {
 
-        var promisesToGetObjects: Promise<Document>[] = [];
-        var ids: string[] = [];
+        let promisesToGetObjects: Promise<Document>[] = [];
+        let ids: string[] = [];
 
-        for (var id of this.extractRelatedObjectIDs(document['resource'])) {
-            if (ids.indexOf(id) == -1) {
-                promisesToGetObjects.push(this.datastore.get(id));
-                ids.push(id);
+        let documents = [ document ].concat(oldVersions);
+
+        for (let doc of documents) {
+            for (let id of this.extractRelatedObjectIDs(doc['resource'])) {
+                if (ids.indexOf(id) == -1) {
+                    promisesToGetObjects.push(this.datastore.get(id));
+                    ids.push(id);
+                }
             }
         }
-        for (var id of this.extractRelatedObjectIDs(oldVersion['resource'])) {
-            if (ids.indexOf(id) == -1) {
-                promisesToGetObjects.push(this.datastore.get(id));
-                ids.push(id);
-            }
-        }
+
         return promisesToGetObjects;
     }
 
@@ -152,7 +158,7 @@ import {MDInternal} from "../messages/md-internal";
     }
 
 
-    private extractRelatedObjectIDs(resource: Resource) : Array<string> {
+    private extractRelatedObjectIDs(resource: Resource): Array<string> {
 
         var relatedObjectIDs = new Array();
 
@@ -184,7 +190,7 @@ import {MDInternal} from "../messages/md-internal";
         }
     }
 
-    private toStringArray(str : any) : string[] {
+    private toStringArray(str: any): string[] {
         if ((typeof str)=="string") return [str]; else return str;
     }
 }
