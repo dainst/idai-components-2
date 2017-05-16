@@ -34,14 +34,22 @@ $buttoncolor: #657faa;
   color: $buttoncolor !important;
 }
 
-#document-view-button-edit-document {
+#document-view-button-edit-document,
+#document-view-button-solve-conflicts {
   font-size: 27px;
-  color: $buttoncolor !important;
   display: inline;
   float: right;
   padding: 0;
   margin-top: -4px;
   margin-right: 0px;
+}
+
+#document-view-button-edit-document {
+  color: $buttoncolor !important;
+}
+
+#document-view-button-solve-conflicts {
+  color: red !important;
 }
 
 .document-card .btn-link {
@@ -93,4 +101,8 @@ $buttoncolor: #657faa;
 #document-view-button-back-to-map:hover,
 #document-view-button-show-data:hover {
   color: lighten($buttoncolor, 10%) !important;
+}
+
+#document-view-button-solve-conflicts:hover {
+  color: darken(red, 10%) !important;
 }

@@ -19,8 +19,13 @@
         <div class="card-block">
             <button class="btn btn-link btn-xs"
                     id="document-view-button-edit-document"
-                    [routerLink]="['/'+basePath+'/', document.resource.id, 'edit']">
+                    [routerLink]="['/' + basePath + '/', document.resource.id, 'edit']">
                 <span class="mdi mdi-pencil-box-outline"></span>
+            </button>
+            <button *ngIf="document._conflicts" class="btn btn-link btn-xs"
+                    id="document-view-button-solve-conflicts"
+                    [routerLink]="['/' + basePath + '/', document.resource.id, 'edit', { tab: 'conflicts' }]">
+                <span class="mdi mdi-alert-outline"></span>
             </button>
 
             <ng-content></ng-content>
