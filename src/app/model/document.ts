@@ -1,7 +1,8 @@
 import {Resource} from './resource'
+import {Action} from './action'
 
 export interface Document {
     resource : Resource;
-    modified?: Date;
-    created?: Date;
+    modified?: Action[];
+    created?: Action;
 }
