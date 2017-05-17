@@ -1,5 +1,5 @@
 <div *ngIf="!disabled">
-    <div class="delete-relation small-circular-button red-button mdi mdi-delete" (click)="deleteRelation()"></div>
+    <div style="margin-top: 4px;" class="delete-relation small-circular-button red-button mdi mdi-delete" (click)="deleteRelation()"></div>
     <div id="relation-picker">
         <div *ngIf="!selectedTarget">
             <input [(ngModel)]="idSearchString" (keydown)="keyDown($event)" (keyup)="keyUp($event)"

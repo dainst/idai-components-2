@@ -7,6 +7,6 @@
      (click)="createRelation()">+</div>
 
 <!-- Button disabled when waiting for input -->
-<div class="circular-button add-relation-disabled"
+<div class="circular-button add-relation-disabled" style="display: none;"
      *ngIf="relations[relationDefinition.name] && relations[relationDefinition.name].length > 0 && !validateNewest()"
      type="button">+</div>
