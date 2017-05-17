@@ -11,6 +11,8 @@ import {MDInternal} from "../messages/md-internal";
  * affected by being related to the document in its current or previous state.
  * When persisting, it maintains a consistent state of relations between the objects
  * by also persisting the related documents with updated target relations.
+ *
+ * Also adds created and modified actions to persisted documents.
  * 
  * @author Daniel de Oliveira
  * @author Thomas Kleinke
@@ -61,12 +63,12 @@ import {MDInternal} from "../messages/md-internal";
      *   objects could not get stored properly, the promise will get rejected
      *   with msgWithParams.
      */
-    public persist(document: Document, oldVersions: Array<Document> = this.oldVersions): Promise<any> {
+    public persist(document: Document, user: string = 'anonymous', oldVersions: Array<Document> = this.oldVersions): Promise<any> {
 
         if (document == undefined) return Promise.resolve();
 
         return this.ready
-            .then(() => this.persistIt(document))
+            .then(() => this.persistIt(document, user))
             .then(() => {
                 return Promise.all(this.getConnectedDocs(document, oldVersions))
                     .catch(() => Promise.reject(MDInternal.PERSISTENCE_ERROR_TARGETNOTFOUND));
@@ -178,19 +180,20 @@ import {MDInternal} from "../messages/md-internal";
      * Saves the document to the local datastore.
      * @param document
      */
-    private persistIt(document: Document): Promise<any> {
+    private persistIt(document: Document, user: string): Promise<any> {
         
         if (document['resource']['id']) {
+            if (!document.modified || document.modified.constructor !== Array)
+                document.modified = [];
+            document.modified.push({ user: user, date: new Date() });
             return this.datastore.update(document);
         } else {
+            document.created = { user: user, date: new Date() };
+            document.modified = [];
             // TODO isn't it a problem that create resolves to object id?
             // wouldn't persistChangedObjects() interpret it as an error?
             // why does this not happen?
             return this.datastore.create(document);
         }
-    }
-
-    private toStringArray(str: any): string[] {
-        if ((typeof str)=="string") return [str]; else return str;
     }
 }
