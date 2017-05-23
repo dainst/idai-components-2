@@ -1,4 +1,4 @@
-import {Component, Input, Output, EventEmitter, OnChanges} from '@angular/core';
+import {Component, Input, Output, EventEmitter, OnChanges, SimpleChanges} from '@angular/core';
 import {IdaiFieldDocument} from '../idai-field-model/idai-field-document';
 import {IdaiFieldResource} from '../idai-field-model/idai-field-resource';
 import {IdaiFieldPolygon} from './idai-field-polygon';
@@ -71,7 +71,7 @@ export class MapComponent implements OnChanges {
         }
     }
 
-    public ngOnChanges() {
+    public ngOnChanges(changes: SimpleChanges) {
 
         if (!this.map) {
             this.map = this.createMap();
