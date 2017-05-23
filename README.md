@@ -55,6 +55,9 @@ configuration.ts
 core.ts
 datastore.ts
 documents.ts
+idai-field-map.ts
+idai-field-model.ts
 messages.ts
 persist.ts
+widgets.ts
 ```
