@@ -4,8 +4,6 @@ import {IdaiFieldResource} from '../idai-field-model/idai-field-resource';
 import {IdaiFieldPolygon} from './idai-field-polygon';
 import {IdaiFieldMarker} from './idai-field-marker';
 import {MapState} from './map-state';
-import {Datastore} from '../datastore/datastore';
-import {Messages} from '../messages/messages';
 
 @Component({
     moduleId: module.id,
@@ -56,11 +54,7 @@ export class MapComponent implements OnChanges {
         })
     };
 
-    constructor(
-        protected mapState: MapState,
-        protected datastore: Datastore,
-        protected messages: Messages
-    ) {
+    constructor(protected mapState: MapState) {
         this.bounds = [];
     }
 
