@@ -92,19 +92,9 @@ export class MapComponent implements OnChanges {
             mapComponent.clickOnMap(event.latlng);
         });
 
-        this.initializeViewport(map);
         this.initializeViewportMonitoring(map);
 
         return map;
-    }
-
-    private initializeViewport(map: L.Map) {
-
-        if (this.mapState.getCenter()) {
-            map.setView(this.mapState.getCenter(), this.mapState.getZoom());
-        } else {
-            map.setView([0, 0], 5);
-        }
     }
 
     private initializeViewportMonitoring(map: L.Map) {
@@ -125,8 +115,15 @@ export class MapComponent implements OnChanges {
             } else if (this.markers[this.selectedDocument.resource.id]) {
                 this.focusMarker(this.markers[this.selectedDocument.resource.id]);
             }
-        } else if (!this.mapState.getCenter() && this.bounds.length > 1) {
+        } else if (this.mapState.getCenter()) {
+            this.map.setView(this.mapState.getCenter(), this.mapState.getZoom());
+        } else if (this.bounds.length > 1
+                || (this.bounds.length == 1 && this.bounds[0].length > 1)) {
             this.map.fitBounds(L.latLngBounds(this.bounds));
+        } else if (this.bounds.length == 1) {
+            this.map.setView(this.bounds[0], 5);
+        } else {
+            this.map.setView([0, 0], 5);
         }
     }
 
