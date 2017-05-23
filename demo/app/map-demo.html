@@ -1,0 +1,12 @@
+<div class="container-fluid">
+
+    <map [documents]="documents" [selectedDocument]="selectedDocument"
+         (onSelectDocument)="select($event)"></map>
+
+    <div *ngFor="let document of documents" class="card" style="cursor: pointer;" (click)="select(document)">
+        <div class="card-header" [class.card-primary]="selectedDocument == document">
+            {{document.resource.shortDescription}}
+        </div>
+    </div>
+
+</div>

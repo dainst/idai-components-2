@@ -12,7 +12,8 @@ var webserver = require('gulp-webserver');
 gulp.task('convert-sass', function () {
 
     return gulp.src([
-        'src/scss/idai-components-2.scss'
+        'src/scss/idai-components-2.scss',
+        'node_modules/leaflet/dist/leaflet.css'
     ])
         .pipe(sass({
             includePaths: [

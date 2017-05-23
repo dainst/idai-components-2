@@ -11,12 +11,14 @@ import {LocationStrategy, HashLocationStrategy} from '@angular/common';
 import {DocumentEditDemoComponent} from './document-edit-demo.component';
 import {DocumentViewDemoComponent} from "./document-view-demo.component";
 import {MessagesDemoComponent} from './messages-demo.component';
+import {MapDemoComponent} from './map-demo.component';
 import {AppComponent} from './app.component';
 import {FormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
 import {IdaiDocumentsModule} from '../../src/app/documents/idai-documents.module';
 import {IdaiMessagesModule} from '../../src/app/messages/idai-messages.module';
 import {IdaiWidgetsModule} from '../../src/app/widgets/idai-widgets.module';
+import {IdaiFieldMapModule} from '../../src/app/idai-field-map/idai-field-map.module';
 
 @NgModule({
     imports: [
@@ -26,13 +28,15 @@ import {IdaiWidgetsModule} from '../../src/app/widgets/idai-widgets.module';
         IdaiDocumentsModule,
         IdaiMessagesModule,
         IdaiWidgetsModule,
-        routing,
+        IdaiFieldMapModule,
+        routing
     ],
     declarations: [
         AppComponent,
         DocumentEditDemoComponent,
         DocumentViewDemoComponent,
-        MessagesDemoComponent
+        MessagesDemoComponent,
+        MapDemoComponent
     ],
     providers: [
         { provide: LocationStrategy, useClass: HashLocationStrategy },

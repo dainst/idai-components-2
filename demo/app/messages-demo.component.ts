@@ -16,7 +16,7 @@ export class MessagesDemoComponent {
     private params = [];
     private useParams = false;
 
-    constructor(private md : MD, private messages: Messages) {
+    constructor(private md: MD, private messages: Messages) {
         this.messageKeys = Object.keys(md.msgs);
     }
 
