@@ -22,7 +22,7 @@ export class MapComponent implements OnChanges {
     @Output() onSelectDocument: EventEmitter<IdaiFieldDocument> = new EventEmitter<IdaiFieldDocument>();
 
     protected map: L.Map;
-    protected polygons: { [resourceId: string]: IdaiFieldPolygon } = {};
+    protected polygons: { [resourceId: string]: Array<IdaiFieldPolygon> } = {};
     protected markers: { [resourceId: string]: IdaiFieldMarker } = {};
 
     protected bounds: any[]; // in fact L.LatLng[], but leaflet typings are incomplete
@@ -87,7 +87,7 @@ export class MapComponent implements OnChanges {
 
         const map = L.map("map-container", { crs: L.CRS.Simple, attributionControl: false, minZoom: -1000 });
 
-        var mapComponent = this;
+        let mapComponent = this;
         map.on('click', function(event: L.MouseEvent) {
             mapComponent.clickOnMap(event.latlng);
         });
@@ -121,7 +121,7 @@ export class MapComponent implements OnChanges {
 
         if (this.selectedDocument) {
             if (this.polygons[this.selectedDocument.resource.id]) {
-                this.focusPolygon(this.polygons[this.selectedDocument.resource.id]);
+                this.focusPolygons(this.polygons[this.selectedDocument.resource.id]);
             } else if (this.markers[this.selectedDocument.resource.id]) {
                 this.focusMarker(this.markers[this.selectedDocument.resource.id]);
             }
@@ -136,11 +136,13 @@ export class MapComponent implements OnChanges {
 
     private clearMap() {
 
-        for (var i in this.polygons) {
-            this.map.removeLayer(this.polygons[i]);
+        for (let i in this.polygons) {
+            for (let polygon of this.polygons[i]) {
+                this.map.removeLayer(polygon);
+            }
         }
 
-        for (var i in this.markers) {
+        for (let i in this.markers) {
             this.map.removeLayer(this.markers[i]);
         }
 
@@ -149,32 +151,44 @@ export class MapComponent implements OnChanges {
     }
 
     protected extendBounds(latLng: L.LatLng) {
+
         this.bounds.push(latLng);
+    }
+
+    private extendBoundsForMultipleLatLngs(latLngs: Array<L.LatLng>) {
+
+        for (let latLng of latLngs) {
+            this.extendBounds(latLng);
+        }
     }
 
     private addToMap(geometry: any, document: IdaiFieldDocument) {
 
         switch(geometry.type) {
             case "Point":
-                var marker: IdaiFieldMarker = this.addMarkerToMap(geometry, document);
+                let marker: IdaiFieldMarker = this.addMarkerToMap(geometry.coordinates, document);
                 this.extendBounds(marker.getLatLng());
                 break;
             case "Polygon":
-                var polygon: IdaiFieldPolygon = this.addPolygonToMap(geometry, document);
-                for (var latLng of polygon.getLatLngs()) {
-                    this.extendBounds(latLng);
+                let polygon: IdaiFieldPolygon = this.addPolygonToMap(geometry.coordinates, document);
+                this.extendBoundsForMultipleLatLngs(polygon.getLatLngs());
+                break;
+            case "MultiPolygon":
+                for (let polygonCoordinates of geometry.coordinates) {
+                    let polygon: IdaiFieldPolygon = this.addPolygonToMap(polygonCoordinates, document);
+                    this.extendBoundsForMultipleLatLngs(polygon.getLatLngs());
                 }
                 break;
         }
     }
 
-    private addMarkerToMap(geometry: any, document: IdaiFieldDocument): IdaiFieldMarker {
+    private addMarkerToMap(coordinates: any, document: IdaiFieldDocument): IdaiFieldMarker {
 
-        var latLng = L.latLng([geometry.coordinates[1], geometry.coordinates[0]]);
+        let latLng = L.latLng([coordinates[1], coordinates[0]]);
 
-        var icon = (document == this.selectedDocument) ? this.markerIcons.red : this.markerIcons.blue;
+        let icon = (document == this.selectedDocument) ? this.markerIcons.red : this.markerIcons.blue;
 
-        var marker: IdaiFieldMarker = L.marker(latLng, {
+        let marker: IdaiFieldMarker = L.marker(latLng, {
             icon: icon
         });
         marker.document = document;
@@ -184,7 +198,7 @@ export class MapComponent implements OnChanges {
             direction: 'top',
             opacity: 1.0});
 
-        var mapComponent = this;
+        let mapComponent = this;
         marker.on('click', function() {
             mapComponent.select(this.document);
         });
@@ -195,9 +209,9 @@ export class MapComponent implements OnChanges {
         return marker;
     }
 
-    private addPolygonToMap(geometry: any, document: IdaiFieldDocument): IdaiFieldPolygon {
+    private addPolygonToMap(coordinates: any, document: IdaiFieldDocument): IdaiFieldPolygon {
 
-        var polygon: IdaiFieldPolygon = this.getPolygonFromCoordinates(geometry.coordinates);
+        let polygon: IdaiFieldPolygon = this.getPolygonFromCoordinates(coordinates);
         polygon.document = document;
 
         if (document == this.selectedDocument) {
@@ -208,13 +222,17 @@ export class MapComponent implements OnChanges {
             direction: 'center',
             opacity: 1.0});
 
-        var mapComponent = this;
+        let mapComponent = this;
         polygon.on('click', function(event: L.Event) {
             if (mapComponent.select(this.document)) L.DomEvent.stop(event);
         });
 
         polygon.addTo(this.map);
-        this.polygons[document.resource.id] = polygon;
+
+        let polygons: Array<IdaiFieldPolygon>
+            = this.polygons[document.resource.id] ? this.polygons[document.resource.id] : [];
+        polygons.push(polygon);
+        this.polygons[document.resource.id] = polygons;
 
         return polygon;
     }
@@ -224,14 +242,18 @@ export class MapComponent implements OnChanges {
         this.map.panTo(marker.getLatLng(), { animate: true, easeLinearity: 0.3 });
     }
 
-    private focusPolygon(polygon: L.Polygon) {
+    private focusPolygons(polygons: Array<L.Polygon>) {
 
-        this.map.fitBounds(polygon.getBounds(), { padding: [50, 50] });
+        let bounds = [];
+        for (let polygon of polygons) {
+            bounds.push(polygon.getLatLngs());
+        }
+        this.map.fitBounds(bounds);
     }
 
     private getShortDescription(resource: IdaiFieldResource) {
 
-        var shortDescription = resource.identifier;
+        let shortDescription = resource.identifier;
         if (resource.shortDescription && resource.shortDescription.length > 0) {
             shortDescription += " | " + resource.shortDescription;
         }
@@ -257,7 +279,7 @@ export class MapComponent implements OnChanges {
 
     private getPolygonFromCoordinates(coordinates: Array<any>): L.Polygon {
 
-        var feature = L.polygon(coordinates).toGeoJSON();
+        let feature = L.polygon(coordinates).toGeoJSON();
         return L.polygon(<any> feature.geometry.coordinates[0]);
     }
 }

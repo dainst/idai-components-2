@@ -11,7 +11,7 @@ import {IdaiFieldDocument} from '../../src/app/idai-field-model/idai-field-docum
  */
 export class MapDemoComponent {
 
-    private documents: Array<IdaiFieldDocument> = [
+    public documents: Array<IdaiFieldDocument> = [
         {
             "resource": {
                 "id": "obj1",
@@ -20,7 +20,7 @@ export class MapDemoComponent {
                 "relations": {},
                 "geometry": {
                     "type": "Point",
-                    "coordinates": [ 27.1892609283, 39.1411810096 ],
+                    "coordinates": [ 1.5, 2.5 ],
                     "crs": "local"
                 },
                 "type": "object"
@@ -35,9 +35,23 @@ export class MapDemoComponent {
                 "relations": {},
                 "geometry": {
                     "type": "Polygon",
-                    "coordinates": [[[27.189218354962215, 39.14132050335332], [27.189276375601313, 39.14133824217116],
-                        [27.18928181180254, 39.14132438323931], [27.189226035114622, 39.141306298358316],
-                        [27.189218354962215, 39.14132050335332]]],
+                    "coordinates": [[[3.0, 3.0], [4.0, 3.0], [4.5, 3.5], [4.5, 4.0], [3.5, 4.0], [3.0, 3.0]]],
+                    "crs": "local"
+                },
+                "type": "object"
+            },
+            "synced": 0
+        },
+        {
+            "resource": {
+                "id": "obj3",
+                "identifier": "object3",
+                "shortDescription": "Ressource 3",
+                "relations": {},
+                "geometry": {
+                    "type": "MultiPolygon",
+                    "coordinates": [[[[-3.0, 3.0], [-5.0, 2.5], [-4.5, 3.0], [-4.25, 3.75], [-3.5, 4.0], [-3.0, 3.0]]],
+                        [[[-3.25, 4.0], [-3.25, 4.5], [-3.5, 5.0], [-3.75, 4.0], [-3.5, 4.25], [-3.25, 4.0]]]],
                     "crs": "local"
                 },
                 "type": "object"
