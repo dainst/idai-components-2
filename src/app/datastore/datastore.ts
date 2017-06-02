@@ -31,6 +31,8 @@ export abstract class Datastore extends ReadDatastore {
      *    Rejects with
      *     [GENERIC_SAVE_ERROR] - in case of error
      *     [SAVE_CONFLICT] - in case of conflict
+     *     [DOCUMENT_NO_RESOURCE_ID] - if document has no resource id
+     *     [DOCUMENT_DOES_NOT_EXIST_ERROR] - if document has a resource id, but does not exist in the db
      */
     abstract update(doc: Document): Promise<Document>;
 
