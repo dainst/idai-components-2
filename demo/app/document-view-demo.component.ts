@@ -4,6 +4,7 @@ import {IdaiType} from '../../src/app/configuration/idai-type';
 import {Datastore} from '../../src/app/datastore/datastore';
 
 import {Document} from "../../src/app/model/document";
+import {TypeDefinition} from "../../src/app/configuration/type-definition";
 import {FieldDefinition} from "../../src/app/configuration/field-definition";
 
 @Component({
@@ -36,15 +37,6 @@ export class DocumentViewDemoComponent implements OnInit {
         });
 
     }
-
-    private startEdit(doc: Document) {
-        alert("User wants to edit the document");
-    }
-
-    private deselect() {
-        this.selectedDocument = undefined;
-    }
-
 
     ngOnInit() {
         this.configLoader.getProjectConfiguration().then(projectConfiguration=>{
