@@ -1,4 +1,4 @@
-import {Component, OnChanges, Input} from "@angular/core";
+import {Component, OnChanges, Input, Output, EventEmitter} from "@angular/core";
 import {Router} from "@angular/router";
 import {ConfigLoader} from "../configuration/config-loader";
 
@@ -16,6 +16,10 @@ export class DocumentViewComponent implements OnChanges {
 
     @Input() document: any;
     @Input() basePath: string;
+
+    @Output() onSolveConflict: EventEmitter<any> = new EventEmitter<any>();
+    @Output() onDeselect: EventEmitter<any> = new EventEmitter<any>();
+    @Output() onEdit: EventEmitter<any> = new EventEmitter<any>();
 
     private typeLabel;
 

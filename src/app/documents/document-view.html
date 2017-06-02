@@ -11,7 +11,7 @@
 
                 <button class="close-button btn btn-link btn-xs"
                         id="document-view-button-back-to-map"
-                        [routerLink]="['/'+basePath]">
+                        (click)="onDeselect.emit()">
                     <span class="mdi mdi-close-circle-outline"></span>
                 </button>
             </h4>
@@ -19,12 +19,12 @@
         <div class="card-block">
             <button class="btn btn-link btn-xs"
                     id="document-view-button-edit-document"
-                    [routerLink]="['/' + basePath + '/', document.resource.id, 'edit']">
+                    (click)="onEdit.emit(document)">
                 <span class="mdi mdi-pencil-box-outline"></span>
             </button>
             <button *ngIf="document._conflicts" class="btn btn-link btn-xs"
                     id="document-view-button-solve-conflicts"
-                    [routerLink]="['/' + basePath + '/', document.resource.id, 'edit', { tab: 'conflicts' }]">
+                    (click)="onSolveConflicts.emit(document)">
                 <span class="mdi mdi-alert-outline"></span>
             </button>
 
