@@ -207,7 +207,8 @@ export class MapComponent implements OnChanges {
 
         let latLng = L.latLng([coordinates[1], coordinates[0]]);
 
-        let icon = (document == this.selectedDocument) ? this.markerIcons.red : this.markerIcons.blue;
+        let icon = (this.selectedDocument && this.selectedDocument.resource.id == document.resource.id) ?
+            this.markerIcons.red : this.markerIcons.blue;
 
         let marker: IdaiFieldMarker = L.marker(latLng, {
             icon: icon
@@ -262,7 +263,7 @@ export class MapComponent implements OnChanges {
 
     private setPathOptions(path: L.Path, document: IdaiFieldDocument) {
 
-        if (document == this.selectedDocument) {
+        if (this.selectedDocument && this.selectedDocument.resource.id == document.resource.id) {
             path.setStyle({color: 'red'});
         }
 
