@@ -235,20 +235,7 @@ export class MapComponent implements OnChanges {
         let polyline: IdaiFieldPolyline = this.getPolylineFromCoordinates(coordinates);
         polyline.document = document;
 
-        if (document == this.selectedDocument) {
-            polyline.setStyle({color: 'red'});
-        }
-
-        polyline.bindTooltip(this.getShortDescription(document.resource), {
-            direction: 'center',
-            opacity: 1.0});
-
-        let mapComponent = this;
-        polyline.on('click', function(event: L.Event) {
-            if (mapComponent.select(this.document)) L.DomEvent.stop(event);
-        });
-
-        polyline.addTo(this.map);
+        this.setPathOptions(polyline, document);
 
         let polylines: Array<IdaiFieldPolyline>
             = this.polylines[document.resource.id] ? this.polylines[document.resource.id] : [];
@@ -263,20 +250,7 @@ export class MapComponent implements OnChanges {
         let polygon: IdaiFieldPolygon = this.getPolygonFromCoordinates(coordinates);
         polygon.document = document;
 
-        if (document == this.selectedDocument) {
-            polygon.setStyle({color: 'red'});
-        }
-
-        polygon.bindTooltip(this.getShortDescription(document.resource), {
-            direction: 'center',
-            opacity: 1.0});
-
-        let mapComponent = this;
-        polygon.on('click', function(event: L.Event) {
-            if (mapComponent.select(this.document)) L.DomEvent.stop(event);
-        });
-
-        polygon.addTo(this.map);
+        this.setPathOptions(polygon, document);
 
         let polygons: Array<IdaiFieldPolygon>
             = this.polygons[document.resource.id] ? this.polygons[document.resource.id] : [];
@@ -284,6 +258,25 @@ export class MapComponent implements OnChanges {
         this.polygons[document.resource.id] = polygons;
 
         return polygon;
+    }
+
+    private setPathOptions(path: L.Path, document: IdaiFieldDocument) {
+
+        if (document == this.selectedDocument) {
+            path.setStyle({color: 'red'});
+        }
+
+        path.bindTooltip(this.getShortDescription(document.resource), {
+            direction: 'center',
+            opacity: 1.0
+        });
+
+        let mapComponent = this;
+        path.on('click', function(event: L.Event) {
+            if (mapComponent.select(this.document)) L.DomEvent.stop(event);
+        });
+
+        path.addTo(this.map);
     }
 
     private focusMarker(marker: L.Marker) {
