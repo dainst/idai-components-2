@@ -1,6 +1,7 @@
 import {Component, Input, Output, EventEmitter, OnChanges, SimpleChanges} from '@angular/core';
 import {IdaiFieldDocument} from '../idai-field-model/idai-field-document';
 import {IdaiFieldResource} from '../idai-field-model/idai-field-resource';
+import {IdaiFieldPolyline} from './idai-field-polyline';
 import {IdaiFieldPolygon} from './idai-field-polygon';
 import {IdaiFieldMarker} from './idai-field-marker';
 import {MapState} from './map-state';
@@ -23,6 +24,7 @@ export class MapComponent implements OnChanges {
 
     protected map: L.Map;
     protected polygons: { [resourceId: string]: Array<IdaiFieldPolygon> } = {};
+    protected polylines: { [resourceId: string]: Array<IdaiFieldPolyline> } = {};
     protected markers: { [resourceId: string]: IdaiFieldMarker } = {};
 
     protected bounds: any[]; // in fact L.LatLng[], but leaflet typings are incomplete
@@ -85,7 +87,7 @@ export class MapComponent implements OnChanges {
 
     private createMap(): L.Map {
 
-        const map = L.map("map-container", { crs: L.CRS.Simple, attributionControl: false, minZoom: -1000 });
+        const map = L.map('map-container', { crs: L.CRS.Simple, attributionControl: false, minZoom: -1000 });
 
         let mapComponent = this;
         map.on('click', function(event: L.MouseEvent) {
@@ -122,6 +124,8 @@ export class MapComponent implements OnChanges {
         if (this.selectedDocument) {
             if (this.polygons[this.selectedDocument.resource.id]) {
                 this.focusPolygons(this.polygons[this.selectedDocument.resource.id]);
+            } else if (this.polylines[this.selectedDocument.resource.id]) {
+                this.focusPolylines(this.polylines[this.selectedDocument.resource.id]);
             } else if (this.markers[this.selectedDocument.resource.id]) {
                 this.focusMarker(this.markers[this.selectedDocument.resource.id]);
             }
@@ -142,11 +146,18 @@ export class MapComponent implements OnChanges {
             }
         }
 
+        for (let i in this.polylines) {
+            for (let polyline of this.polylines[i]) {
+                this.map.removeLayer(polyline);
+            }
+        }
+
         for (let i in this.markers) {
             this.map.removeLayer(this.markers[i]);
         }
 
         this.polygons = {};
+        this.polylines = {};
         this.markers = {};
     }
 
@@ -165,15 +176,25 @@ export class MapComponent implements OnChanges {
     private addToMap(geometry: any, document: IdaiFieldDocument) {
 
         switch(geometry.type) {
-            case "Point":
+            case 'Point':
                 let marker: IdaiFieldMarker = this.addMarkerToMap(geometry.coordinates, document);
                 this.extendBounds(marker.getLatLng());
                 break;
-            case "Polygon":
+            case 'LineString':
+                let polyline: IdaiFieldPolyline = this.addPolylineToMap(geometry.coordinates, document);
+                this.extendBoundsForMultipleLatLngs(polyline.getLatLngs());
+                break;
+            case 'MultiLineString':
+                for (let polylineCoordinates of geometry.coordinates) {
+                    let polyline: IdaiFieldPolyline = this.addPolylineToMap(polylineCoordinates, document);
+                    this.extendBoundsForMultipleLatLngs(polyline.getLatLngs());
+                }
+                break;
+            case 'Polygon':
                 let polygon: IdaiFieldPolygon = this.addPolygonToMap(geometry.coordinates, document);
                 this.extendBoundsForMultipleLatLngs(polygon.getLatLngs());
                 break;
-            case "MultiPolygon":
+            case 'MultiPolygon':
                 for (let polygonCoordinates of geometry.coordinates) {
                     let polygon: IdaiFieldPolygon = this.addPolygonToMap(polygonCoordinates, document);
                     this.extendBoundsForMultipleLatLngs(polygon.getLatLngs());
@@ -209,6 +230,34 @@ export class MapComponent implements OnChanges {
         return marker;
     }
 
+    private addPolylineToMap(coordinates: any, document: IdaiFieldDocument): IdaiFieldPolyline {
+
+        let polyline: IdaiFieldPolyline = this.getPolylineFromCoordinates(coordinates);
+        polyline.document = document;
+
+        if (document == this.selectedDocument) {
+            polyline.setStyle({color: 'red'});
+        }
+
+        polyline.bindTooltip(this.getShortDescription(document.resource), {
+            direction: 'center',
+            opacity: 1.0});
+
+        let mapComponent = this;
+        polyline.on('click', function(event: L.Event) {
+            if (mapComponent.select(this.document)) L.DomEvent.stop(event);
+        });
+
+        polyline.addTo(this.map);
+
+        let polylines: Array<IdaiFieldPolyline>
+            = this.polylines[document.resource.id] ? this.polylines[document.resource.id] : [];
+        polylines.push(polyline);
+        this.polylines[document.resource.id] = polylines;
+
+        return polyline;
+    }
+
     private addPolygonToMap(coordinates: any, document: IdaiFieldDocument): IdaiFieldPolygon {
 
         let polygon: IdaiFieldPolygon = this.getPolygonFromCoordinates(coordinates);
@@ -242,6 +291,15 @@ export class MapComponent implements OnChanges {
         this.map.panTo(marker.getLatLng(), { animate: true, easeLinearity: 0.3 });
     }
 
+    private focusPolylines(polylines: Array<L.Polyline>) {
+
+        let bounds = [];
+        for (let polyline of polylines) {
+            bounds.push(polyline.getLatLngs());
+        }
+        this.map.fitBounds(bounds);
+    }
+
     private focusPolygons(polygons: Array<L.Polygon>) {
 
         let bounds = [];
@@ -255,7 +313,7 @@ export class MapComponent implements OnChanges {
 
         let shortDescription = resource.identifier;
         if (resource.shortDescription && resource.shortDescription.length > 0) {
-            shortDescription += " | " + resource.shortDescription;
+            shortDescription += ' | ' + resource.shortDescription;
         }
 
         return shortDescription;
@@ -275,6 +333,12 @@ export class MapComponent implements OnChanges {
     protected deselect() {
 
         this.onSelectDocument.emit(null);
+    }
+
+    private getPolylineFromCoordinates(coordinates: Array<any>): L.Polyline {
+
+        let feature = L.polyline(coordinates).toGeoJSON();
+        return L.polyline(<any> feature.geometry.coordinates);
     }
 
     private getPolygonFromCoordinates(coordinates: Array<any>): L.Polygon {

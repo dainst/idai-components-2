@@ -3,10 +3,12 @@
     <map [documents]="documents" [selectedDocument]="selectedDocument"
          (onSelectDocument)="select($event)"></map>
 
-    <div *ngFor="let document of documents" class="card" style="cursor: pointer;" (click)="select(document)">
-        <div class="card-header" [class.card-primary]="selectedDocument == document">
+    <div *ngFor="let document of documents" (click)="select(document)" style="margin-top: 20px;">
+        <button class="btn btn" [class.btn-primary]="selectedDocument == document"
+                [class.btn-outline-primary]="selectedDocument != document"
+                style="cursor: pointer; float: left; margin-right: 10px;">
             {{document.resource.shortDescription}}
-        </div>
+        </button>
     </div>
 
 </div>
