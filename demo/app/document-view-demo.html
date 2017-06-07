@@ -58,7 +58,7 @@
                 <code>&lt;document-view [(document)]="selectedDocument"&gt; &lt;fields-view [(doc)]="selectedDocument"&gt;&lt;/fields-view&gt; &lt;/document-view&gt;</code>
             </p>
 
-            <document-view [(document)]="selectedDocument">
+            <document-view [(document)]="selectedDocument" (onEdit)="startEdit($event)" (onDeselect)="deselect()">
                 <fields-view [(doc)]="selectedDocument"></fields-view>
             </document-view>
         </div>
