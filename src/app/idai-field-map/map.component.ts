@@ -175,6 +175,8 @@ export class MapComponent implements OnChanges {
 
     private addToMap(geometry: any, document: IdaiFieldDocument) {
 
+        if (!geometry.coordinates || geometry.coordinates.length == 0) return;
+
         switch(geometry.type) {
             case 'Point':
                 let marker: IdaiFieldMarker = this.addMarkerToMap(geometry.coordinates, document);
