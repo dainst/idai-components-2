@@ -111,10 +111,14 @@ export class MapComponent implements OnChanges {
 
     private initializeViewportMonitoring(map: L.Map) {
 
-        map.on('moveend', function () {
-            this.mapState.setCenter(map.getCenter());
-            this.mapState.setZoom(map.getZoom());
-        }.bind(this));
+        map.on('dragend', function() { this.updateMapState(); }.bind(this));
+        map.on('zoomend', function() { this.updateMapState(); }.bind(this));
+    }
+
+    private updateMapState() {
+
+        this.mapState.setCenter(this.map.getCenter());
+        this.mapState.setZoom(this.map.getZoom());
     }
 
     protected setView() {
