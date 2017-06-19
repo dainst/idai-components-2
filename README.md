@@ -30,13 +30,13 @@ by `npm run build` in case they don't exist.
 Unit test the library files with
 
 ```
-npm test
+$ npm test
 ```
 
 E2E test the library by running the server, then opening another terminal and running
 
 ```
-npm run e2e
+$ npm run e2e
 ```
 
 
@@ -61,3 +61,19 @@ messages.ts
 persist.ts
 widgets.ts
 ```
+
+## Publishing via NPM
+
+To make sure the version number on github is not behind your
+local version it is recommended to maintain the following order
+of commands when publishing
+
+```
+git add . && git commit -m ""         # Commit your local changes
+npm version patch -m "New release %s" # which creates another commit
+npm publish
+git push
+```
+
+
+
