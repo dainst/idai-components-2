@@ -1,12 +1,2 @@
-!demo/**/*.js
-!test/browser/**/*.js
-!test/e2e/**/*.js
-!persist.js*
-!messages.js*
-!datastore.js*
-!documents.js*
-!idai-field-map.js*
-!idai-field-model.js*
-!widgets.js*
-!configuration.js*
+.gitignore
 
