@@ -1,4 +1,5 @@
 !demo/**/*.js
+!src/**/*.js
 !test/browser/**/*.js
 !test/e2e/**/*.js
 !persist.js*
