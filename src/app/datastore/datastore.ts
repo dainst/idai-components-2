@@ -5,7 +5,13 @@ import {Observable} from "rxjs/Observable";
 /**
  * The interface for datastores supporting 
  * the idai-components document model.
- * 
+ *
+ * The errors with which the methods reject, like GENERIC_SAVE_ERROR,
+ * are constants of {@link DatastoreErrors}, so GENERIC_SAVE_ERROR really
+ * is DatastoreErrors.GENERIC_SAVE_ERROR. The brackets [] are array indicators,
+ * so [GENERIC_SAVE_ERROR] is an array containing one element, which is the string
+ * corresponding to GENERIC_SAVE_ERROR.
+ *
  * @author Sebastian Cuy
  * @author Daniel de Oliveira
  */ 
@@ -38,7 +44,11 @@ export abstract class Datastore extends ReadDatastore {
 
     /**
      * @param doc
-     * @returns {Promise<undefined>} undefined (rejects with msgWithParams in case of error)
+     * @returns {Promise<undefined>} undefined
+     *   Rejects with
+     *     [DOCUMENT_NO_RESOURCE_ID] - if document has no resource id
+     *     [DOCUMENT_DOES_NOT_EXIST_ERROR] - if document has a resource id, but does not exist in the db
+     *     msgWithParams - in case of other error
      */
     abstract remove(doc: Document): Promise<undefined>;
 

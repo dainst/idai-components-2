@@ -6,6 +6,7 @@ import {ProjectConfiguration} from "../configuration/project-configuration";
 import {ConfigLoader} from "../configuration/config-loader";
 import {MDInternal} from "../messages/md-internal";
 
+@Injectable()
 /**
  * With a document to persist, it determines which other documents are 
  * affected by being related to the document in its current or previous state.
@@ -17,7 +18,7 @@ import {MDInternal} from "../messages/md-internal";
  * @author Daniel de Oliveira
  * @author Thomas Kleinke
  */
-@Injectable() export class PersistenceManager {
+export class PersistenceManager {
     
     private oldVersions: Array<Document> = [];
     private projectConfiguration: ProjectConfiguration = undefined;
@@ -79,6 +80,12 @@ import {MDInternal} from "../messages/md-internal";
 
     /**
      * Removes the document from the datastore and deletes all corresponding reverse relations.
+     * @param document
+     * @param oldVersions
+     * @return {any}
+     *   Rejects with
+     *     [DatastoreErrors.DOCUMENT_NO_RESOURCE_ID] - if document has no resource id
+     *     [DatastoreErrors.DOCUMENT_DOES_NOT_EXIST_ERROR] - if document has a resource id, but does not exist in the db
      */
     public remove(document: Document, oldVersions: Array<Document> = this.oldVersions): Promise<any> {
 
