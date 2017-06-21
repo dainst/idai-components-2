@@ -87,6 +87,7 @@ export class PersistenceManager {
      *   Rejects with
      *     [DatastoreErrors.DOCUMENT_NO_RESOURCE_ID] - if document has no resource id
      *     [DatastoreErrors.DOCUMENT_DOES_NOT_EXIST_ERROR] - if document has a resource id, but does not exist in the db
+     *     [DatastoreErrors.GENERIC_DELETE_ERROR] - if cannot delete for another reason
      */
     public remove(document: Document, oldVersions: Array<Document> = this.oldVersions): Promise<any> {
 

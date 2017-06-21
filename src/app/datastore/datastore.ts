@@ -48,7 +48,7 @@ export abstract class Datastore extends ReadDatastore {
      *   Rejects with
      *     [DOCUMENT_NO_RESOURCE_ID] - if document has no resource id
      *     [DOCUMENT_DOES_NOT_EXIST_ERROR] - if document has a resource id, but does not exist in the db
-     *     msgWithParams - in case of other error
+     *     [GENERIC_DELETE_ERROR] - in case of other error
      */
     abstract remove(doc: Document): Promise<undefined>;
 
