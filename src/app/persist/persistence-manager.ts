@@ -1,10 +1,10 @@
-import {Injectable} from "@angular/core";
-import {Datastore} from "../datastore/datastore";
-import {Document} from "../model/document";
-import {Resource} from "../model/resource";
-import {ProjectConfiguration} from "../configuration/project-configuration";
-import {ConfigLoader} from "../configuration/config-loader";
-import {MDInternal} from "../messages/md-internal";
+import {Injectable} from '@angular/core';
+import {Datastore} from '../datastore/datastore';
+import {Document} from '../model/document';
+import {Resource} from '../model/resource';
+import {ProjectConfiguration} from '../configuration/project-configuration';
+import {ConfigLoader} from '../configuration/config-loader';
+import {MDInternal} from '../messages/md-internal';
 
 @Injectable()
 /**
@@ -64,7 +64,8 @@ export class PersistenceManager {
      *   objects could not get stored properly, the promise will get rejected
      *   with msgWithParams.
      */
-    public persist(document: Document, user: string = 'anonymous', oldVersions: Array<Document> = this.oldVersions): Promise<any> {
+    public persist(document: Document, user: string = 'anonymous',
+                   oldVersions: Array<Document> = this.oldVersions): Promise<any> {
 
         if (document == undefined) return Promise.resolve();
 
@@ -72,7 +73,7 @@ export class PersistenceManager {
             .then(() => this.persistIt(document, user))
             .then(() => {
                 return Promise.all(this.getConnectedDocs(document, oldVersions))
-                    .catch(() => Promise.reject(MDInternal.PERSISTENCE_ERROR_TARGETNOTFOUND));
+                    .catch(() => Promise.reject([MDInternal.PERSISTENCE_ERROR_TARGETNOTFOUND]));
             })
             .then(connectedDocs => Promise.all(this.updateConnectedDocs(document.resource, connectedDocs, true)))
             .then(() => { this.oldVersions = [document]; });
@@ -166,7 +167,6 @@ export class PersistenceManager {
         }
     }
 
-
     private extractRelatedObjectIDs(resource: Resource): Array<string> {
 
         var relatedObjectIDs = new Array();
@@ -182,7 +182,6 @@ export class PersistenceManager {
         return relatedObjectIDs;
     }
     
-
     /**
      * Saves the document to the local datastore.
      * @param document

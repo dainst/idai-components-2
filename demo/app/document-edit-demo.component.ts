@@ -2,8 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {ConfigLoader} from '../../src/app/configuration/config-loader';
 import {IdaiType} from '../../src/app/configuration/idai-type';
 import {Datastore} from '../../src/app/datastore/datastore';
-import {Document} from "../../src/app/model/document";
-import {PersistenceManager} from "../../src/app/persist/persistence-manager";
+import {Document} from '../../src/app/model/document';
+import {PersistenceManager} from '../../src/app/persist/persistence-manager';
 
 @Component({
     selector: 'document-edit-demo',
@@ -28,8 +28,8 @@ export class DocumentEditDemoComponent implements OnInit {
         this.persistenceManager.persist(this.selectedDocument).then(
             () => {
                 this.changeTo(id);
-            }, err => {
-                console.error("error while persisting object", err);
+            }, msgWithParams => {
+                console.error('error while persisting object', msgWithParams);
                 this.changeTo(id);
             });
     }
