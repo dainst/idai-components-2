@@ -170,7 +170,12 @@ export class MapComponent implements OnChanges {
         this.bounds.push(latLng);
     }
 
-    private extendBoundsForMultipleLatLngs(latLngs: Array<L.LatLng>) {
+    private extendBoundsForMultipleLatLngs(latLngs: Array<any>) {
+
+        // Check if latLngs is an array of LatLng objects or an array of arrays of LatLng objects.
+        // This is necessary because getLatLngs() returns an array of LatLng objects for points and polylines but an
+        // array of arrays of LatLng objects for polygons.
+        if (!latLngs[0].lng) latLngs = latLngs[0];
 
         for (let latLng of latLngs) {
             this.extendBounds(latLng);
