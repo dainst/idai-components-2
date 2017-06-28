@@ -1,7 +1,7 @@
-import {ConfigurationPreprocessor} from "../../../src/app/configuration/configuration-preprocessor";
+import {ConfigurationPreprocessor} from '../../../src/app/configuration/configuration-preprocessor';
 import {TypeDefinition} from '../../../src/app/configuration/type-definition'
 import {RelationDefinition} from '../../../src/app/configuration/relation-definition'
-import {ConfigurationDefinition} from "../../../src/app/configuration/configuration-definition";
+import {ConfigurationDefinition} from '../../../src/app/configuration/configuration-definition';
 
 /**
  * @author Daniel de Oliveira
@@ -9,15 +9,11 @@ import {ConfigurationDefinition} from "../../../src/app/configuration/configurat
 export function main() {
     describe('ConfigurationPreprocessor', () => {
 
-
-
-        var configuration : ConfigurationDefinition;
-
-
+        var configuration: ConfigurationDefinition;
 
         beforeEach(function() {
 
-            var t : TypeDefinition =  { type: 'T1',
+            var t: TypeDefinition = { type: 'T1',
                 fields: [
                     {
                         name: 'aField'
@@ -25,52 +21,54 @@ export function main() {
             };
 
             configuration = {
-                types : [
+                identifier: 'test',
+                types: [
                     t
                 ]
             };
         });
 
-        function addType(configuration: ConfigurationDefinition, parent?:string) {
-            var newT : TypeDefinition = {
-                type: 'T'+(configuration.types.length+1),
+        function addType(configuration: ConfigurationDefinition, parent?: string) {
+
+            var newT: TypeDefinition = {
+                type: 'T'+(configuration.types.length + 1),
                     fields: []
             };
-            if (parent!=undefined) newT.parent = parent;
+            if (parent != undefined) newT.parent = parent;
             configuration.types.push(newT);
             return configuration;
         }
 
         it('should add missing relations', function() {
+
             delete configuration.relations; // in case someone defined it in before
-            new ConfigurationPreprocessor([],[],[])
+            new ConfigurationPreprocessor([], [], [])
                 .go(configuration);
             expect(configuration.relations.length).toBe(0);
         });
 
         it('should add missing type fields', function() {
+
             delete configuration.types[0].fields;
-            new ConfigurationPreprocessor([],[],[])
+            new ConfigurationPreprocessor([], [], [])
                 .go(configuration);
             expect(configuration.types[0].fields.length).toBe(0);
         });
 
 
-        it('should add extra fields', function(){
+        it('should add extra fields', function() {
 
             new ConfigurationPreprocessor([],
-                [{name:'identifier'}],
+                [{ name: 'identifier' }],
                 []).go(configuration);
 
             expect(configuration.types[0].fields[0].name).toBe('identifier');
             expect(configuration.types[0].fields[1].name).toBe('aField');
         });
         
-        
-        
-        it('should add extra type', function(){
+        it('should add extra type', function() {
 
-            var et : TypeDefinition = { type: 'T2',
+            var et: TypeDefinition = { type: 'T2',
                 fields: [
                     {
                         name: 'bField'
@@ -84,11 +82,9 @@ export function main() {
             expect(configuration.types[1].fields[0].name).toBe('bField');
         });
 
+        it('should add and extra field to an extra type', function() {
 
-        it('should add and extra field to an extra type', function(){
-
-
-            var et : TypeDefinition = { type: 'T2',
+            var et: TypeDefinition = { type: 'T2',
                 fields: [
                     {
                         name: 'bField'
@@ -104,11 +100,9 @@ export function main() {
             expect(configuration.types[1].fields[1].name).toBe('bField');
         });
 
+        it('merge fields of extra type with existing type', function() {
 
-
-        it('merge fields of extra type with existing type', function(){
-
-            var et : TypeDefinition = { type: 'T1',
+            var et: TypeDefinition = { type: 'T1',
                 fields: [
                     {
                         name: 'bField'
@@ -124,11 +118,9 @@ export function main() {
             expect(configuration.types[0].fields[1].name).toBe('bField');
         });
 
+        it('merge fields of extra type with existing type and add extra field', function() {
 
-
-        it('merge fields of extra type with existing type and add extra field', function(){
-
-            var et : TypeDefinition = { type: 'T1',
+            var et: TypeDefinition = { type: 'T1',
                 fields: [
                     {
                         name: 'bField'
@@ -145,11 +137,9 @@ export function main() {
             expect(configuration.types[0].fields[2].name).toBe('bField');
         });
 
+        it('should not add extra fields to subtypes', function() {
 
-
-        it('should not add extra fields to subtypes', function(){
-
-            var t : TypeDefinition =  { type: 'T1',
+            var t: TypeDefinition = { type: 'T1',
                 parent : 'SuperT',
                 fields: [
                     {
@@ -158,6 +148,7 @@ export function main() {
             };
 
             configuration = {
+                identifier: 'test',
                 types: [
                     t
                 ]
@@ -174,7 +165,7 @@ export function main() {
 
 
         it('should add an extra relation', function() {
-            var r : RelationDefinition =  { name: 'R',
+            var r: RelationDefinition = { name: 'R',
                 domain: [ 'domainA' ],
                 range : [ 'rangeA' ]
             };
@@ -190,7 +181,7 @@ export function main() {
 
         it('should replace range ALL with all types execpt the range types', function() {
 
-            var r : RelationDefinition =  { name: 'R',
+            var r: RelationDefinition = { name: 'R',
                 domain: [ 'T2', 'T3' ]
             };
 
@@ -205,7 +196,7 @@ export function main() {
 
         it('should replace domain ALL with all types execpt the range types', function() {
 
-            var r : RelationDefinition =  { name: 'R',
+            var r: RelationDefinition = { name: 'R',
                 range: [ 'T2', 'T3' ]
             };
 
@@ -220,7 +211,7 @@ export function main() {
 
         it('should replace range :inherit with all subtypes', function() {
 
-            var r : RelationDefinition =  { name: 'R',
+            var r: RelationDefinition = { name: 'R',
                 domain: [ 'T3' ],
                 range: [ 'T1:inherit' ]
             };
@@ -238,7 +229,7 @@ export function main() {
 
         it('should replace domain :inherit with all subtypes', function() {
 
-            var r : RelationDefinition =  { name: 'R',
+            var r: RelationDefinition = { name: 'R',
                 domain: [ 'T1:inherit' ],
                 range: [ 'T3' ]
             };
@@ -257,7 +248,7 @@ export function main() {
         // This test can detect problems coming from a wrong order of expandInherits and expandAllMarker calls
         it('should exclude the type and subtypes when using :inherit and total range', function() {
 
-            var r : RelationDefinition =  { name: 'R',
+            var r: RelationDefinition = { name: 'R',
                 domain: [ 'T1:inherit' ]
             };
 

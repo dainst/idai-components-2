@@ -1,6 +1,6 @@
-import {ConfigurationDefinition} from "../../../src/app/configuration/configuration-definition";
-import {ConfigurationValidator} from "../../../src/app/configuration/configuration-validator";
-import {MDInternal} from "../../../src/app/messages/md-internal";
+import {ConfigurationDefinition} from '../../../src/app/configuration/configuration-definition';
+import {ConfigurationValidator} from '../../../src/app/configuration/configuration-validator';
+import {MDInternal} from '../../../src/app/messages/md-internal';
 
 /**
  * @author Daniel de Oliveira
@@ -8,14 +8,15 @@ import {MDInternal} from "../../../src/app/messages/md-internal";
 export function main() {
     describe('ConfigurationValidator', () => {
 
-        var configuration : ConfigurationDefinition;
+        var configuration: ConfigurationDefinition;
 
-        it('should report missing mandatory type', function(){
+        it('should report missing mandatory type', function() {
 
             configuration = {
-                "types" : [
-                    { "type": "T",
-                        "fields": []
+                'identifier': 'test',
+                'types' : [
+                    { 'type': 'T',
+                        'fields': []
                     }
                 ]
             };
@@ -25,15 +26,16 @@ export function main() {
                 .toEqual([MDInternal.VALIDATION_ERROR_MISSINGTYPE,'Tmissing']);
         });
 
-        it('should report duplicate type', function(){
+        it('should report duplicate type', function() {
 
             configuration = {
-                "types" : [
-                    { "type": "Tduplicate",
-                        "fields": []
+                'identifier': 'test',
+                'types' : [
+                    { 'type': 'Tduplicate',
+                        'fields': []
                     },
-                    { "type": "Tduplicate",
-                        "fields": []
+                    { 'type': 'Tduplicate',
+                        'fields': []
                     }
                 ]
             };
