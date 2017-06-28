@@ -35,6 +35,10 @@ export class AppConfigurator {
                 editable: false
             }
         ]
+    },{
+        "type":"trench",
+        "label":"Schnitt",
+        "fields":[]
     }];
 
     private defaultFields = [{
@@ -56,6 +60,8 @@ export class AppConfigurator {
     private defaultRelations = [
         { name: 'depicts', domain: ['image:inherit'], inverse: 'isDepictedIn', label: 'Zeigt', editable: true },
         { name: 'isDepictedIn', range: ['image:inherit'], inverse: 'depicts', visible: false, editable: false }
+        // isRecordedIn
+        // records
     ];
 
     public go(projectConfigurationPath: string, reset: boolean = false) {
