@@ -3,7 +3,8 @@ import {MDInternal} from '../messages/md-internal';
 import {IdaiType} from './idai-type';
 import {FieldDefinition} from './field-definition';
 import {RelationDefinition} from './relation-definition';
-import {ConfigurationDefinition} from "./configuration-definition";
+import {ViewDefinition} from './view-definition';
+import {ConfigurationDefinition} from './configuration-definition';
 
 /**
  * ProjectConfiguration maintains the current projects properties.
@@ -25,32 +26,42 @@ export class ProjectConfiguration {
 
     private projectIdentifier: string;
 
-    private typesList: IdaiType[] = undefined;
+    private typesList: Array<IdaiType> = undefined;
 
-    private typesTreeList: IdaiType[] = undefined;
+    private typesTreeList: Array<IdaiType> = undefined;
 
     private relationFields: any[] = undefined;
+
+    private viewsList: Array<ViewDefinition> = [];
+
+    private viewsMap: { [name: string]: ViewDefinition } = {};
 
 
     /**
      * @param configuration
      */
     constructor(configuration) {
+
         this.initTypes(configuration);
-        this.projectIdentifier = configuration['identifier'];
-        this.relationFields = configuration['relations'];
+        this.initViewsMap(configuration);
+
+        this.projectIdentifier = configuration.identifier;
+        this.relationFields = configuration.relations;
+        this.viewsList = configuration.views;
     }
 
     public getInverseRelations(prop) {
+
         for (let p of this.relationFields) {
-            if (p["name"]==prop) return p["inverse"];
+            if (p['name'] == prop) return p['inverse'];
         }
         return undefined;
     }
 
-    public isRelationProperty(propertyName:string):boolean {
+    public isRelationProperty(propertyName: string): boolean {
+
         for (let p of this.relationFields) {
-            if (p["name"]==propertyName) return true;
+            if (p['name'] == propertyName) return true;
         }
         return false;
     }
@@ -59,6 +70,7 @@ export class ProjectConfiguration {
      * @returns {IdaiType[]} All types in flat array, ignoring hierarchy
      */
     public getTypesList(): IdaiType[] {
+
         if(this.typesList) return this.typesList;
 
         const types = [];
@@ -73,6 +85,7 @@ export class ProjectConfiguration {
      * @returns {IdaiType[]} All root types in array, including child types
      */
     public getTypesTreeList(): IdaiType[] {
+
         if(this.typesTreeList) return this.typesTreeList;
 
         const types = [];
@@ -92,7 +105,8 @@ export class ProjectConfiguration {
     }
 
     public getParentTypes(typeName: string): string[] {
-        let parentTypes:string[] = [];
+
+        let parentTypes: string[] = [];
         let type = this.typesMap[typeName];
         while (type && type.parentType) {
             parentTypes.push(type.parentType.name);
@@ -102,13 +116,13 @@ export class ProjectConfiguration {
     }
 
     /**
-     * Gets the relation defintions available.
+     * Gets the relation definitions available.
      *
-     * @param typeName the name of the type to get the relation defintions for.
+     * @param typeName the name of the type to get the relation definitions for.
      * @param property to give only the definitions with a certain boolean property not set or set to true
      * @returns {Array<RelationDefinition>} the definitions for the type.
      */
-    public getRelationDefinitions(typeName: string,property?:string): Array<RelationDefinition> {
+    public getRelationDefinitions(typeName: string, property?: string): Array<RelationDefinition> {
 
         const availableRelationFields = new Array<RelationDefinition>();
         for (let i in this.relationFields) {
@@ -129,24 +143,25 @@ export class ProjectConfiguration {
      * @returns {any[]} the fields definitions for the type.
      */
     public getFieldDefinitions(typeName: string): FieldDefinition[] {
-        if(!this.typesMap[typeName]) return [];
+        if (!this.typesMap[typeName]) return [];
         return this.typesMap[typeName].getFieldDefinitions();
     }
 
     public getLabelForType(typeName: string): string {
-        if(!this.typesMap[typeName]) return "";
+        if (!this.typesMap[typeName]) return '';
         return this.typesMap[typeName].label;
     }
 
-    public isMandatory(typeName: string, fieldName: string) : boolean {
-        return this.hasProperty(typeName,fieldName,'mandatory')
+    public isMandatory(typeName: string, fieldName: string): boolean {
+        return this.hasProperty(typeName, fieldName, 'mandatory')
     }
     
-    public isVisible(typeName: string, fieldName: string) : boolean {
-        return this.hasProperty(typeName,fieldName,'visible')
+    public isVisible(typeName: string, fieldName: string): boolean {
+        return this.hasProperty(typeName, fieldName,'visible')
     }
 
-    public isVisibleRelation(relationName:string) : boolean {
+    public isVisibleRelation(relationName:string): boolean {
+
         for (let i in this.relationFields) {
             if (this.relationFields[i].name == relationName &&
                 this.relationFields[i].visible != undefined &&
@@ -159,12 +174,13 @@ export class ProjectConfiguration {
     }
 
     private hasProperty(typeName: string, fieldName: string, propertyName: string) {
-        if(!this.typesMap[typeName]) return false;
+
+        if (!this.typesMap[typeName]) return false;
         const fields = this.typesMap[typeName].getFieldDefinitions();
 
         for (let i in fields) {
             if (fields[i].name == fieldName) {
-                if (fields[i][propertyName]==true) {
+                if (fields[i][propertyName] == true) {
                     return true;
                 }
             }
@@ -172,14 +188,13 @@ export class ProjectConfiguration {
         return false;
     }
 
-
     /**
      * Should be used only from within components.
      * 
      * @param relationName
      * @returns {string}
      */
-    public getRelationDefinitionLabel(relationName: string) : string {
+    public getRelationDefinitionLabel(relationName: string): string {
 
         const relationFields = this.relationFields;
         return this.getLabel(relationName, relationFields);
@@ -194,17 +209,16 @@ export class ProjectConfiguration {
      * @returns {string}
      * @throws {string} with an error description in case the type is not defined.
      */
-    public getFieldDefinitionLabel(typeName: string, fieldName: string) : string {
+    public getFieldDefinitionLabel(typeName: string, fieldName: string): string {
 
         const fieldDefinitions = this.getFieldDefinitions(typeName);
         if (fieldDefinitions.length == 0)
-            throw "No type definition found for type \'"+typeName+"\'";
+            throw 'No type definition found for type \'' + typeName + '\'';
 
         return this.getLabel(fieldName, fieldDefinitions);
     }
 
-
-    private getLabel(fieldName: string, fields: Array<any>) : string{
+    private getLabel(fieldName: string, fields: Array<any>): string{
 
         for (let i in fields) {
             if (fields[i].name == fieldName) {
@@ -223,7 +237,7 @@ export class ProjectConfiguration {
      * @returns {string} the name of the excavation, if defined.
      *   <code>undefined</code> otherwise.
      */
-    public getProjectIdentifier() : any {
+    public getProjectIdentifier(): any {
         return this.projectIdentifier;
     }
 
@@ -245,10 +259,27 @@ export class ProjectConfiguration {
                 parentType.addChildType(this.typesMap[typeName]);
             }
         }
-
     }
 
-    private getTypeName(type) : string {
+    private initViewsMap(configuration: ConfigurationDefinition) {
+
+        if (!configuration.views) return;
+
+        for (let view of configuration.views) {
+            this.viewsMap[view.name] = view;
+        }
+    }
+
+    private getTypeName(type): string {
         return type.type;
     }
+
+    public getViewsList(): Array<ViewDefinition> {
+        return this.viewsList;
+    }
+
+    public getView(name: string): ViewDefinition {
+        return this.viewsMap[name];
+    }
+
 }
