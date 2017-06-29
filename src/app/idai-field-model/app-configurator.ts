@@ -36,8 +36,8 @@ export class AppConfigurator {
             }
         ]
     },{
-        "type":"trench",
-        "label":"Schnitt",
+        "type":"project",
+        "label":"Projekt",
         "fields":[]
     }];
 
