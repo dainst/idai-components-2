@@ -69,14 +69,20 @@ export class PersistenceManager {
 
         if (document == undefined) return Promise.resolve();
 
+        let persistedDocument: Document;
+
         return this.ready
             .then(() => this.persistIt(document, user))
-            .then(() => {
+            .then(persistedDoc => {
+                persistedDocument = persistedDoc;
                 return Promise.all(this.getConnectedDocs(document, oldVersions))
                     .catch(() => Promise.reject([MDInternal.PERSISTENCE_ERROR_TARGETNOTFOUND]));
             })
             .then(connectedDocs => Promise.all(this.updateConnectedDocs(document.resource, connectedDocs, true)))
-            .then(() => { this.oldVersions = [document]; });
+            .then(() => {
+                this.oldVersions = [document];
+                return Promise.resolve(persistedDocument);
+            });
     }
 
     /**
