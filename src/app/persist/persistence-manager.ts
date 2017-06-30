@@ -5,6 +5,7 @@ import {Resource} from '../model/resource';
 import {ProjectConfiguration} from '../configuration/project-configuration';
 import {ConfigLoader} from '../configuration/config-loader';
 import {MDInternal} from '../messages/md-internal';
+import {ConnectedDocsResolver} from "./connected-docs-resolver";
 
 @Injectable()
 /**
@@ -24,6 +25,8 @@ export class PersistenceManager {
     private projectConfiguration: ProjectConfiguration = undefined;
     private ready: Promise<any>;
 
+    private connectedDocsResolver;
+
     constructor(
         private datastore: Datastore,
         private configLoader: ConfigLoader
@@ -31,6 +34,7 @@ export class PersistenceManager {
         this.ready = new Promise<string>((resolve) => {
             this.configLoader.getProjectConfiguration().then(projectConfiguration => {
                 this.projectConfiguration = projectConfiguration;
+                this.connectedDocsResolver = new ConnectedDocsResolver(projectConfiguration);
                 resolve();
             })
         });
@@ -59,6 +63,29 @@ export class PersistenceManager {
      * Persists the loaded object and all the objects that are or have been in relation
      * with the object before the method call.
      *
+     * If the document is
+     *
+     *   { resource: { id: 1, relations: { includes: [2] } } },
+     *
+     * this means that also another document is updated, namely
+     *
+     *   { resource: { id: 2 } } },
+     *
+     * which gets updated to
+     *
+     *   { resource: { id: 2, relations: { belongsTo: [1] } } }.
+     *
+     * This happens based on a configuration which includes
+     *
+     *   { name: includes, inverse: belongsTo }.
+     *
+     * If the configuration looks like this
+     *
+     *   { name: includes, inverse: NO-INVERSE }
+     *
+     * the other documents back relation gets not set. If no other relation gets
+     * persisted on that document, it does not get updated at all.
+     *
      * @returns {Promise<string>} If all objects could get stored,
      *   the promise will resolve to <code>undefined</code>. If one or more
      *   objects could not get stored properly, the promise will get rejected
@@ -78,15 +105,25 @@ export class PersistenceManager {
                 return Promise.all(this.getConnectedDocs(document, oldVersions))
                     .catch(() => Promise.reject([MDInternal.PERSISTENCE_ERROR_TARGETNOTFOUND]));
             })
-            .then(connectedDocs => Promise.all(this.updateConnectedDocs(document.resource, connectedDocs, true)))
+            .then(connectedDocs => this.updateDocs(document,connectedDocs,true))
             .then(() => {
                 this.oldVersions = [document];
                 return Promise.resolve(persistedDocument);
             });
     }
 
+    private updateDocs(document,connectedDocs,setInverseRelations) {
+        const promises = [];
+        const docsToUpdate = this.connectedDocsResolver.determineDocsToUpdate(document.resource, connectedDocs, setInverseRelations);
+        for (let docToUpdate of docsToUpdate) {
+            promises.push(this.datastore.update(docToUpdate));
+        }
+        return Promise.all(promises);
+    }
+
     /**
      * Removes the document from the datastore and deletes all corresponding reverse relations.
+     *
      * @param document
      * @param oldVersions
      * @return {any}
@@ -101,7 +138,7 @@ export class PersistenceManager {
 
         return this.ready
                 .then(() => Promise.all(this.getConnectedDocs(document, oldVersions)))
-                .then(connectedDocs => Promise.all(this.updateConnectedDocs(document.resource, connectedDocs, false)))
+                .then(connectedDocs => this.updateDocs(document,connectedDocs,false))
                 .then(() => this.datastore.remove(document))
                 .then(() => { this.oldVersions = []; });
     }
@@ -114,7 +151,7 @@ export class PersistenceManager {
         let documents = [ document ].concat(oldVersions);
 
         for (let doc of documents) {
-            for (let id of this.extractRelatedObjectIDs(doc['resource'])) {
+            for (let id of this.extractRelatedObjectIDs(doc.resource)) {
                 if (ids.indexOf(id) == -1) {
                     promisesToGetObjects.push(this.datastore.get(id));
                     ids.push(id);
@@ -125,77 +162,29 @@ export class PersistenceManager {
         return promisesToGetObjects;
     }
 
-    private updateConnectedDocs(resource: Resource, targetDocuments: Document[], setInverseRelations: boolean) {
-
-        var promisesToSaveObjects = new Array();
-        for (var targetDocument of targetDocuments) {
-            this.pruneInverseRelations(resource['id'], targetDocument['resource']['relations']);
-            if (setInverseRelations) this.setInverseRelations(resource, targetDocument['resource']);
-            promisesToSaveObjects.push(this.datastore.update(targetDocument));
-        }
-        return promisesToSaveObjects;
-    }
-
-    private pruneInverseRelations(id: string, targetRelations) {
-
-        for (var relation in targetRelations) {
-            if (!this.projectConfiguration.isRelationProperty(relation)) continue;
-
-            var index = targetRelations[relation].indexOf(id);
-            if (index != -1) {
-                targetRelations[relation].splice(index, 1)
-            }
-
-            if (targetRelations[relation].length == 0)
-                delete targetRelations[relation];
-        }
-    }
-
-    private setInverseRelations(resource: Resource, targetResource: Resource) {
-
-        for (var relation in resource['relations']) {
-            if (!this.projectConfiguration.isRelationProperty(relation)) continue;
-
-            for (var id of resource['relations'][relation]) {
-                if (id != targetResource['id']) continue;
-
-                var inverse = this.projectConfiguration.getInverseRelations(relation);
-
-                if (targetResource['relations'][inverse] == undefined)
-                    targetResource['relations'][inverse] = [];
-
-                var index = targetResource['relations'][inverse].indexOf(resource['id']);
-                if (index != -1) {
-                    targetResource['relations'][inverse].splice(index, 1);
-                }
-
-                targetResource['relations'][inverse].push(resource['id']);
-            }
-        }
-    }
-
     private extractRelatedObjectIDs(resource: Resource): Array<string> {
 
-        var relatedObjectIDs = new Array();
+        const relatedObjectIDs = [];
 
-        for (var prop in resource['relations']) {
-            if (!resource['relations'].hasOwnProperty(prop)) continue;
+        for (let prop in resource.relations) {
+            if (!resource.relations.hasOwnProperty(prop)) continue;
             if (!this.projectConfiguration.isRelationProperty(prop)) continue;
 
-            for (var id of resource['relations'][prop]) {
+            for (let id of resource.relations[prop]) {
                 relatedObjectIDs.push(id);
             }
         }
         return relatedObjectIDs;
     }
-    
+
     /**
      * Saves the document to the local datastore.
      * @param document
+     * @param user
      */
     private persistIt(document: Document, user: string): Promise<any> {
         
-        if (document['resource']['id']) {
+        if (document.resource.id) {
             if (!document.modified || document.modified.constructor !== Array)
                 document.modified = [];
             document.modified.push({ user: user, date: new Date() });

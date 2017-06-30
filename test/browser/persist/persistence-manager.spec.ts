@@ -4,6 +4,7 @@ import {ConfigLoader} from "../../../src/app/configuration/config-loader";
 import {Messages} from "../../../src/app/messages/messages";
 import {MD} from "../../../src/app/messages/md";
 import {TestBed} from "@angular/core/testing";
+import {Document} from "../../../src/app/model/document";
 
 /**
  * @author Daniel de Oliveira
@@ -20,7 +21,7 @@ export function main() {
             });
         });
 
-        var projectConfiguration = new ProjectConfiguration({
+        const projectConfiguration = new ProjectConfiguration({
             "types": [
                 {
                     "type": "FirstLevelType",
@@ -50,19 +51,24 @@ export function main() {
                     "name": "Contains",
                     "inverse": "BelongsTo",
                     "label": "Enthält"
+                },
+                {
+                    "name": "OneWay",
+                    "inverse": "NO-INVERSE",
+                    "label": "Einweg"
                 }
             ]
         });
 
-        var mockDatastore;
-        var persistenceManager;
-        var id = "abc";
+        let mockDatastore;
+        let persistenceManager;
+        const id = "abc";
 
-        var doc;
-        var relatedDoc : any;
-        var anotherRelatedObject : any;
+        let doc : Document;
+        let relatedDoc : any;
+        let anotherRelatedObject : any;
 
-        var configLoader = {
+        let configLoader = {
             getProjectConfiguration: function() {
                 return new Promise<any>((resolve)=>{
                     resolve(projectConfiguration);
@@ -71,7 +77,7 @@ export function main() {
 
         };
 
-        var getFunction = function (id) {
+        let getFunction = function (id) {
             return new Promise((resolve)=>{
                 if (id == relatedDoc['resource']['id']) {
                     resolve(relatedDoc);
@@ -82,32 +88,25 @@ export function main() {
             });
         };
 
-        var successFunction = function () {
-            return new Promise((resolve)=>{
-                resolve("ok");
-            });
-        };
-
-        var errorFunction = function () {
-            return new Promise<any>((resolve, reject) => {
-                reject("objectlist/idexists");
-            });
+        let successFunction = function () {
+            return Promise.resolve("ok")
         };
 
         beforeEach(function () {
 
-            mockDatastore = jasmine.createSpyObj('mockDatastore', ['get', 'create', 'update', 'refresh']);
+            mockDatastore = jasmine.createSpyObj('mockDatastore', ['get', 'create', 'update', 'refresh', 'remove']);
             persistenceManager = new PersistenceManager(mockDatastore,<ConfigLoader>configLoader);
             persistenceManager.setOldVersions([{"resource":{}}]);
             mockDatastore.get.and.callFake(getFunction);
             mockDatastore.update.and.callFake(successFunction);
             mockDatastore.create.and.callFake(successFunction);
+            mockDatastore.remove.and.callFake(successFunction);
 
             doc = { "resource" : {
                 "id" :"1", "identifier": "ob1",
                 "type": "object",
                 "relations" : {}
-            }, "synced" : 0};
+            }};
 
             relatedDoc = { "resource" : {
                 "id": "2" , "identifier": "ob2", 
@@ -133,25 +132,70 @@ export function main() {
             }
         );
 
-        it('should save the related object',
+        it('should save the related document',
             function (done) {
 
-                doc['resource']['relations']["BelongsTo"]=["2"];
+                doc.resource.relations["BelongsTo"]=["2"];
 
                 persistenceManager.persist(doc).then(()=>{
 
                     expect(mockDatastore.update).toHaveBeenCalledWith(relatedDoc);
-                    expect(relatedDoc['resource']['relations']['Contains'][0]).toBe("1");
+                    expect(relatedDoc.resource.relations['Contains'][0]).toBe("1");
                     done();
 
                 },(err)=>{fail(err);done();});
             }
         );
 
+        it ('should save an object with a one way relation',
+            function (done) {
+
+                doc.resource.relations["OneWay"]=["2"];
+
+                persistenceManager.persist(doc).then(()=>{
+
+                    expect(mockDatastore.update).not.toHaveBeenCalledWith(relatedDoc);
+                    done();
+
+                },(err)=>{fail(err);done();});
+            }
+        );
+
+        it ('should remove a document',
+            function (done) {
+
+                doc.resource.relations["BelongsTo"]=["2"];
+                relatedDoc.resource.relations["Contains"]=["1"];
+
+                persistenceManager.remove(doc).then(()=>{
+
+                    expect(mockDatastore.update).toHaveBeenCalledWith(relatedDoc);
+                    expect(relatedDoc.resource.relations['Contains']).toBe(undefined);
+                    done();
+
+                },(err)=>{fail(err);done();});
+            }
+        );
+
+        it ('should remove a document with a one way relation',
+            function (done) {
+
+                doc.resource.relations["OneWay"]=["2"];
+
+                persistenceManager.remove(doc).then(()=>{
+
+                    expect(mockDatastore.update).not.toHaveBeenCalledWith(relatedDoc);
+                    done();
+
+                },(err)=>{fail(err);done();});
+            }
+        );
+
+
         it('should add two relations of the same type',
             function (done) {
 
-                doc['resource']['relations']["BelongsTo"]=["2","3"];
+                doc.resource.relations["BelongsTo"]=["2","3"];
 
                 persistenceManager.persist(doc).then(()=>{
 
@@ -169,13 +213,13 @@ export function main() {
         it('should delete a relation which is not present in the new version of the doc anymore',
             function (done) {
 
-                var oldVersion = { "resource" : {
+                const oldVersion = { "resource" : {
                     "id" :"1", "identifier": "ob1", 
-                    "type": "Object",
+                    "type": "object",
                     "relations" : { "BelongsTo" : [ "2" ] }
-                }, "synced" : 0};
+                }};
 
-                relatedDoc['resource']['relations']['Contains']=["1"];
+                relatedDoc.resource.relations['Contains']=["1"];
 
                 persistenceManager.setOldVersions([oldVersion]);
                 persistenceManager.persist(doc).then(()=>{
@@ -183,8 +227,8 @@ export function main() {
                     expect(mockDatastore.update).toHaveBeenCalledWith(doc);
                     expect(mockDatastore.update).toHaveBeenCalledWith(relatedDoc);
 
-                    expect(doc['resource']['relations']['BelongsTo']).toBe(undefined);
-                    expect(relatedDoc['resource']['relations']['Contains']).toBe(undefined);
+                    expect(doc.resource.relations['BelongsTo']).toBe(undefined);
+                    expect(relatedDoc.resource.relations['Contains']).toBe(undefined);
 
 
                     done();
