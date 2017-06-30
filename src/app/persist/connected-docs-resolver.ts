@@ -51,6 +51,7 @@ export class ConnectedDocsResolver {
     private setInverseRelations(resource: Resource, targetDocument: Document) {
 
         for (let relation in resource.relations) {
+
             if (!this.projectConfiguration.isRelationProperty(relation)) continue;
 
             const inverse = this.projectConfiguration.getInverseRelations(relation);
