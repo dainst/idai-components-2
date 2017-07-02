@@ -119,14 +119,19 @@ export class ProjectConfiguration {
      * Gets the relation definitions available.
      *
      * @param typeName the name of the type to get the relation definitions for.
+     * @param isRangeType If true, get relation definitions where the given type is part of the relation's range
+     *                    (instead of domain)
      * @param property to give only the definitions with a certain boolean property not set or set to true
      * @returns {Array<RelationDefinition>} the definitions for the type.
      */
-    public getRelationDefinitions(typeName: string, property?: string): Array<RelationDefinition> {
+    public getRelationDefinitions(typeName: string, isRangeType: boolean = false, property?: string)
+            : Array<RelationDefinition> {
 
         const availableRelationFields = new Array<RelationDefinition>();
         for (let i in this.relationFields) {
-            if (this.relationFields[i].domain.indexOf(typeName) > -1) {
+            let types = isRangeType ? this.relationFields[i].range : this.relationFields[i].domain;
+
+            if (types.indexOf(typeName) > -1) {
 
                 if (!property ||
                     this.relationFields[i][property] == undefined ||
