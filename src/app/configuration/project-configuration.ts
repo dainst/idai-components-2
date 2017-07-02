@@ -147,13 +147,13 @@ export class ProjectConfiguration {
      * @returns {boolean} True if the given domain type is a valid domain type for a relation definition which has the
      * given range type & name
      */
-    public isAllowedRelationDomainType(domainType: IdaiType, rangeType: string, relationName: string): boolean {
+    public isAllowedRelationDomainType(domainTypeName: string, rangeTypeName: string, relationName: string): boolean {
 
-        const relationDefinitions: Array<RelationDefinition> = this.getRelationDefinitions(rangeType, true);
+        const relationDefinitions: Array<RelationDefinition> = this.getRelationDefinitions(rangeTypeName, true);
 
         for (let relationDefinition of relationDefinitions) {
             if (relationName == relationDefinition.name
-                && relationDefinition.domain.indexOf(domainType.name) > -1) return true;
+                && relationDefinition.domain.indexOf(domainTypeName) > -1) return true;
         }
 
         return false;
