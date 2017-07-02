@@ -12,7 +12,8 @@
                 <relations-form
                         [(document)]="document"
                         [primary]="primary"
-                        [relationDefinitions]="projectConfiguration.getRelationDefinitions(document.resource.type,'editable')"></relations-form>
+                        [relationDefinitions]="projectConfiguration.getRelationDefinitions(document.resource.type,
+                            false, 'editable')"></relations-form>
             </div>
 
         </div>
