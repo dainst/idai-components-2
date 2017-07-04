@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, Output, OnChanges, ViewChild} from '@angular/core';
 import {Query} from '../datastore/query';
 import {ConfigLoader} from '../configuration/config-loader';
+import {IdaiType} from '../configuration/idai-type';
 import {IdaiFieldDocument} from '../idai-field-model/idai-field-document';
 
 @Component({
@@ -20,7 +21,7 @@ import {IdaiFieldDocument} from '../idai-field-model/idai-field-document';
 export class SearchBarComponent implements OnChanges {
 
     private q: string = '';
-    private filterOptions: Array<any> = [];
+    private filterOptions: Array<IdaiType> = [];
 
     // 'resource' or 'image'
     @Input() type: string = 'resource';
@@ -62,14 +63,14 @@ export class SearchBarComponent implements OnChanges {
 
         this.configLoader.getProjectConfiguration().then(projectConfiguration => {
 
-            let types = projectConfiguration.getTypesMap();
+            let types = projectConfiguration.getTypesList();
             this.filterOptions = [];
 
             for (let type of types) {
                 let parentTypes: Array<string> = projectConfiguration.getParentTypes(type.name);
                 if (parentTypes.indexOf('image') > -1) continue;
 
-                if (this.isRecordedIn && !projectConfiguration.isAllowedRelationDomainType(type,
+                if (this.isRecordedIn && !projectConfiguration.isAllowedRelationDomainType(type.name,
                         this.isRecordedIn.resource.type, 'isRecordedIn')) {
                     continue;
                 }
