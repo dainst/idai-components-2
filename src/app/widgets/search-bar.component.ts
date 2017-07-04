@@ -66,6 +66,8 @@ export class SearchBarComponent implements OnChanges {
             this.filterOptions = [];
 
             for (let type of types) {
+                if (type.name == 'image' || type.name == 'project') continue;
+
                 let parentTypes: Array<string> = projectConfiguration.getParentTypes(type.name);
                 if (parentTypes.indexOf('image') > -1) continue;
 
