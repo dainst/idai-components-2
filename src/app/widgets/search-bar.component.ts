@@ -1,6 +1,7 @@
-import {Component, EventEmitter, Input, Output, OnChanges, ViewChild} from "@angular/core";
-import {Query} from "../datastore/query";
-import {ConfigLoader} from "../configuration/config-loader";
+import {Component, EventEmitter, Input, Output, OnChanges, ViewChild} from '@angular/core';
+import {Query} from '../datastore/query';
+import {ConfigLoader} from '../configuration/config-loader';
+import {IdaiFieldDocument} from '../idai-field-model/idai-field-document';
 
 @Component({
     moduleId: module.id,
@@ -23,8 +24,8 @@ export class SearchBarComponent implements OnChanges {
 
     // 'resource' or 'image'
     @Input() type: string = 'resource';
-
-    @Input() defaultFilterSet: Array<string>;
+    
+    @Input() isRecordedIn: IdaiFieldDocument;
     @Input() showFiltersMenu: boolean;
     @Output() onQueryChanged = new EventEmitter<Query>();
     @ViewChild('p') private popover;
@@ -64,11 +65,16 @@ export class SearchBarComponent implements OnChanges {
             let types = projectConfiguration.getTypesMap();
             this.filterOptions = [];
 
-            for (let i in types) {
-                let pTypes = projectConfiguration.getParentTypes(types[i].name);
+            for (let type of types) {
+                let parentTypes: Array<string> = projectConfiguration.getParentTypes(type.name);
+                if (parentTypes.indexOf('image') > -1) continue;
 
-                if (pTypes.indexOf('image') == -1)
-                    this.addFilterOption(types[i]);
+                if (this.isRecordedIn && !projectConfiguration.isAllowedRelationDomainType(type,
+                        this.isRecordedIn.resource.type, 'isRecordedIn')) {
+                    continue;
+                }
+
+                this.addFilterOption(type);
             }
         })
     }
@@ -81,6 +87,7 @@ export class SearchBarComponent implements OnChanges {
     }
 
     private handleClick(event) {
+
         if (!this.popover) return;
         var target = event.target;
         var inside = false;
