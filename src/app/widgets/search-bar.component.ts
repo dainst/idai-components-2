@@ -2,7 +2,6 @@ import {Component, EventEmitter, Input, Output, OnChanges, ViewChild} from '@ang
 import {Query} from '../datastore/query';
 import {ConfigLoader} from '../configuration/config-loader';
 import {IdaiType} from '../configuration/idai-type';
-import {IdaiFieldDocument} from '../idai-field-model/idai-field-document';
 
 @Component({
     moduleId: module.id,
@@ -26,7 +25,7 @@ export class SearchBarComponent implements OnChanges {
     // 'resource' or 'image'
     @Input() type: string = 'resource';
     
-    @Input() isRecordedIn: IdaiFieldDocument;
+    @Input() mainType: string;
     @Input() showFiltersMenu: boolean;
     @Output() onQueryChanged = new EventEmitter<Query>();
     @ViewChild('p') private popover;
@@ -70,8 +69,8 @@ export class SearchBarComponent implements OnChanges {
                 let parentTypes: Array<string> = projectConfiguration.getParentTypes(type.name);
                 if (parentTypes.indexOf('image') > -1) continue;
 
-                if (this.isRecordedIn && !projectConfiguration.isAllowedRelationDomainType(type.name,
-                        this.isRecordedIn.resource.type, 'isRecordedIn')) {
+                if (this.mainType && !projectConfiguration.isAllowedRelationDomainType(type.name, this.mainType,
+                        'isRecordedIn')) {
                     continue;
                 }
 
