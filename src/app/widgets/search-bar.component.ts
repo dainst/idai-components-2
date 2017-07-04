@@ -24,8 +24,12 @@ export class SearchBarComponent implements OnChanges {
 
     // 'resource' or 'image'
     @Input() type: string = 'resource';
-    
-    @Input() mainType: string;
+
+    // If these values are set, only valid domain types for the given relation name & range type are shown in the
+    // filter menu.
+    @Input() relationName: string;
+    @Input() relationRangeType: string;
+
     @Input() showFiltersMenu: boolean;
     @Output() onQueryChanged = new EventEmitter<Query>();
     @ViewChild('p') private popover;
@@ -71,8 +75,9 @@ export class SearchBarComponent implements OnChanges {
                 let parentTypes: Array<string> = projectConfiguration.getParentTypes(type.name);
                 if (parentTypes.indexOf('image') > -1) continue;
 
-                if (this.mainType && !projectConfiguration.isAllowedRelationDomainType(type.name, this.mainType,
-                        'isRecordedIn')) {
+                if (this.relationName && this.relationRangeType
+                        && !projectConfiguration.isAllowedRelationDomainType(type.name, this.relationRangeType,
+                        this.relationName)) {
                     continue;
                 }
 
