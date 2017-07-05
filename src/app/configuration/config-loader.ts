@@ -1,9 +1,9 @@
-import {Injectable} from "@angular/core";
-import {ProjectConfiguration} from "./project-configuration";
-import {Http} from "@angular/http";
-import {MDInternal} from "../messages/md-internal";
-import {ConfigurationPreprocessor} from "./configuration-preprocessor";
-import {ConfigurationValidator} from "./configuration-validator";
+import {Injectable} from '@angular/core';
+import {ProjectConfiguration} from './project-configuration';
+import {Http} from '@angular/http';
+import {MDInternal} from '../messages/md-internal';
+import {ConfigurationPreprocessor} from './configuration-preprocessor';
+import {ConfigurationValidator} from './configuration-validator';
 
 @Injectable()
 /**
@@ -38,7 +38,7 @@ export class ConfigLoader {
      * @returns resolves with the ProjectConfiguration or rejects with
      *   a msgWithParams.
      */
-    public getProjectConfiguration() : Promise<ProjectConfiguration> {
+    public getProjectConfiguration(): Promise<ProjectConfiguration> {
         return this.projectConfig;
     }
 
@@ -47,28 +47,26 @@ export class ConfigLoader {
      * @param configurationPreprocessor
      * @param configurationValidator
      */
-    public go(
-        projectConfigurationPath: string,
-        configurationPreprocessor: ConfigurationPreprocessor,
-        configurationValidator: ConfigurationValidator
-    ) {
+    public go(projectConfigurationPath: string, configurationPreprocessor: ConfigurationPreprocessor,
+              configurationValidator: ConfigurationValidator) {
+
         const defaultFields = [
             {
-                name : "id",
+                name : 'id',
                 editable : false,
                 visible : false
             },
             {
-                name : "type",
+                name : 'type',
                 visible : false,
                 editable : false
             }
         ];
 
-        this.read(this.http,projectConfigurationPath).then(
+        this.read(this.http, projectConfigurationPath).then(
             config => {
                 if (configurationPreprocessor) configurationPreprocessor.go(config);
-                new ConfigurationPreprocessor([],defaultFields,[]).go(config);
+                new ConfigurationPreprocessor([], defaultFields, []).go(config);
 
                 let configurationError = undefined;
                 if (configurationValidator) configurationError =
@@ -87,7 +85,8 @@ export class ConfigLoader {
         );
     }
 
-    private read(http:any, path:string): Promise<any> {
+    private read(http: any, path: string): Promise<any> {
+
         return new Promise(function(resolve, reject) {
             http.get(path).subscribe(data_=> {
                 let data;
@@ -107,7 +106,8 @@ export class ConfigLoader {
     }
 
     private _reset() {
-        this.projectConfig = new Promise<ProjectConfiguration>((resolve,reject)=>{
+
+        this.projectConfig = new Promise<ProjectConfiguration>((resolve, reject) => {
             this.projectConfigResolveFunction = resolve;
             this.projectConfigRejectFunction = reject;
         });
