@@ -114,7 +114,7 @@ export class PersistenceManager {
 
     private updateDocs(document,connectedDocs,setInverseRelations) {
         const promises = [];
-        const docsToUpdate = this.connectedDocsResolver.determineDocsToUpdate(document.resource, connectedDocs, setInverseRelations);
+        const docsToUpdate = this.connectedDocsResolver.determineDocsToUpdate(document, connectedDocs, setInverseRelations);
         for (let docToUpdate of docsToUpdate) {
             promises.push(this.datastore.update(docToUpdate));
         }
