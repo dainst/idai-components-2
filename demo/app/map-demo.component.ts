@@ -24,8 +24,7 @@ export class MapDemoComponent {
                     'crs': 'local'
                 },
                 'type': 'object'
-            },
-            'synced': 0
+            }
         },
         {
             'resource': {
@@ -39,8 +38,7 @@ export class MapDemoComponent {
                     'crs': 'local'
                 },
                 'type': 'object'
-            },
-            'synced': 0
+            }
         },
         {
             'resource': {
@@ -55,8 +53,7 @@ export class MapDemoComponent {
                     'crs': 'local'
                 },
                 'type': 'object'
-            },
-            'synced': 0
+            }
         },
         {
             'resource': {
@@ -70,8 +67,7 @@ export class MapDemoComponent {
                     'crs': 'local'
                 },
                 'type': 'object'
-            },
-            'synced': 0
+            }
         },
         {
             'resource': {
@@ -86,8 +82,7 @@ export class MapDemoComponent {
                     'crs': 'local'
                 },
                 'type': 'object'
-            },
-            'synced': 0
+            }
         }
     ];
 
