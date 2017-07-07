@@ -3,7 +3,10 @@
  * @property q the query string that is used to search documents in the datastore
  * @property type restricts results to the given type
  * @property contraints restricts the search result further to match some fields.
- *   it can be interpreted as additional AND queries. A given contraint of
+ *   you can think of them as search terms that must be matched exactly. They are
+ *   combined with each other and with the q term with AND, meaning that a search has to
+ *   satisfy all the constraints (if defined) as well as to match q (at least partially) and
+ *   type (if defined). A given contraint of
  *   { 'resource.relations.isRecordedIn' : 'id1' } would mean that the search result
  *   contains the results which match the other properties of the query and which
  *   also match the given search term in the given field exactly.
@@ -11,7 +14,7 @@
  *   string as a prefix that has to occur in the tokens of matching documents
  */
 export interface Query {
-    q: string;
+    q?: string;
     type?: string;
     prefix?: boolean;
     constraints?: any;
