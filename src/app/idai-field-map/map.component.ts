@@ -4,7 +4,6 @@ import {IdaiFieldResource} from '../idai-field-model/idai-field-resource';
 import {IdaiFieldPolyline} from './idai-field-polyline';
 import {IdaiFieldPolygon} from './idai-field-polygon';
 import {IdaiFieldMarker} from './idai-field-marker';
-import {MapState} from './map-state';
 
 @Component({
     moduleId: module.id,
@@ -27,7 +26,7 @@ export class MapComponent implements OnChanges {
     protected polylines: { [resourceId: string]: Array<IdaiFieldPolyline> } = {};
     protected markers: { [resourceId: string]: IdaiFieldMarker } = {};
 
-    protected bounds: any[]; // in fact L.LatLng[], but leaflet typings are incomplete
+    protected bounds: any[] = []; // in fact L.LatLng[], but leaflet typings are incomplete
 
     protected markerIcons = {
         'blue': L.icon({
@@ -56,9 +55,7 @@ export class MapComponent implements OnChanges {
         })
     };
 
-    constructor(protected mapState: MapState) {
-        this.bounds = [];
-    }
+    constructor() {}
 
     public ngAfterViewInit() {
 
@@ -88,37 +85,14 @@ export class MapComponent implements OnChanges {
     private createMap(): L.Map {
 
         const map = L.map('map-container', { crs: L.CRS.Simple, attributionControl: false, minZoom: -1000 });
+        map.setView([0, 0], 5);
 
         let mapComponent = this;
         map.on('click', function(event: L.MouseEvent) {
             mapComponent.clickOnMap(event.latlng);
         });
 
-        this.initializeViewport(map);
-        this.initializeViewportMonitoring(map);
-
         return map;
-    }
-
-    private initializeViewport(map: L.Map) {
-
-        if (this.mapState.getCenter()) {
-            map.setView(this.mapState.getCenter(), this.mapState.getZoom());
-        } else {
-            map.setView([0, 0], 5);
-        }
-    }
-
-    private initializeViewportMonitoring(map: L.Map) {
-
-        map.on('dragend', function() { this.updateMapState(); }.bind(this));
-        map.on('zoomend', function() { this.updateMapState(); }.bind(this));
-    }
-
-    private updateMapState() {
-
-        this.mapState.setCenter(this.map.getCenter());
-        this.mapState.setZoom(this.map.getZoom());
     }
 
     protected setView() {
@@ -133,12 +107,10 @@ export class MapComponent implements OnChanges {
             } else if (this.markers[this.selectedDocument.resource.id]) {
                 this.focusMarker(this.markers[this.selectedDocument.resource.id]);
             }
-        } else if (!this.mapState.getCenter()) {
-            if (this.bounds.length > 1) {
-                this.map.fitBounds(L.latLngBounds(this.bounds));
-            } else if (this.bounds.length == 1) {
-                this.map.setView(this.bounds[0], 5);
-            }
+        } else if (this.bounds.length > 1) {
+            this.map.fitBounds(L.latLngBounds(this.bounds));
+        } else if (this.bounds.length == 1) {
+            this.map.setView(this.bounds[0], 5);
         }
     }
 

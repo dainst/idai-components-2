@@ -1,6 +1,5 @@
 import {NgModule} from '@angular/core';
 import {MapComponent} from './map.component';
-import {MapState} from './map-state';
 import {CommonModule} from '@angular/common';
 
 @NgModule({
@@ -9,9 +8,6 @@ import {CommonModule} from '@angular/common';
     ],
     declarations: [
         MapComponent
-    ],
-    providers: [
-        MapState
     ],
     exports: [
         MapComponent
