@@ -1,9 +1,16 @@
 <div class="container-fluid">
 
-    <map [documents]="documents" [selectedDocument]="selectedDocument"
-         (onSelectDocument)="select($event)"></map>
+    <map [documents]="documents" [selectedDocument]="selectedDocument" [mainTypeDocument]="mainTypeDocument"
+         (onSelectDocument)="selectDocument($event)"></map>
 
-    <div *ngFor="let document of documents" (click)="select(document)" style="margin-top: 20px;">
+    <div (click)="toggleMainTypeDocument()" style="margin-top: 20px;">
+        <button class="btn btn" [class.btn-primary]="mainTypeDocument" [class.btn-outline-primary]="!mainTypeDocument"
+                style="cursor: pointer; float: left; margin-right: 10px;">
+            {{mainTypeDocumentTemplate.resource.shortDescription}}
+        </button>
+    </div>
+
+    <div *ngFor="let document of documents" (click)="toggleDocument(document)" style="margin-top: 20px;">
         <button class="btn btn" [class.btn-primary]="selectedDocument == document"
                 [class.btn-outline-primary]="selectedDocument != document"
                 style="cursor: pointer; float: left; margin-right: 10px;">

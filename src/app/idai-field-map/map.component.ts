@@ -18,6 +18,7 @@ export class MapComponent implements OnChanges {
 
     @Input() documents: Array<IdaiFieldDocument>;
     @Input() selectedDocument: IdaiFieldDocument;
+    @Input() mainTypeDocument: IdaiFieldDocument;
 
     @Output() onSelectDocument: EventEmitter<IdaiFieldDocument> = new EventEmitter<IdaiFieldDocument>();
 
@@ -72,13 +73,7 @@ export class MapComponent implements OnChanges {
             this.clearMap();
         }
 
-        this.bounds = [];
-        for (var i in this.documents) {
-            if (this.documents[i].resource.geometry) {
-                this.addToMap(this.documents[i].resource.geometry, this.documents[i]);
-            }
-        }
-
+        this.addGeometriesToMap();
         this.setView();
     }
 
@@ -154,7 +149,32 @@ export class MapComponent implements OnChanges {
         }
     }
 
-    private addToMap(geometry: any, document: IdaiFieldDocument) {
+    private addGeometriesToMap() {
+
+        this.bounds = [];
+
+        this.addMainTypeDocumentGeometryToMap();
+
+        for (let document of this.documents) {
+            if (document.resource.geometry) this.addGeometryToMap(document);
+        }
+    }
+
+    private addMainTypeDocumentGeometryToMap() {
+
+        if (!this.mainTypeDocument || !this.mainTypeDocument.resource.geometry) return;
+
+        if (['LineString', 'MultiLineString', 'Polygon', 'MultiPolygon']
+                .indexOf(this.mainTypeDocument.resource.geometry.type) == -1) {
+            return;
+        }
+
+        this.addGeometryToMap(this.mainTypeDocument);
+    }
+
+    private addGeometryToMap(document: IdaiFieldDocument) {
+
+        const geometry = document.resource.geometry;
 
         if (!geometry.coordinates || geometry.coordinates.length == 0) return;
 
@@ -219,7 +239,11 @@ export class MapComponent implements OnChanges {
         let polyline: IdaiFieldPolyline = this.getPolylineFromCoordinates(coordinates);
         polyline.document = document;
 
-        this.setPathOptions(polyline, document);
+        if (document == this.mainTypeDocument) {
+            this.setPathOptionsForMainTypeDocument(polyline);
+        } else {
+            this.setPathOptions(polyline, document);
+        }
 
         let polylines: Array<IdaiFieldPolyline>
             = this.polylines[document.resource.id] ? this.polylines[document.resource.id] : [];
@@ -234,7 +258,11 @@ export class MapComponent implements OnChanges {
         let polygon: IdaiFieldPolygon = this.getPolygonFromCoordinates(coordinates);
         polygon.document = document;
 
-        this.setPathOptions(polygon, document);
+        if (document == this.mainTypeDocument) {
+            this.setPathOptionsForMainTypeDocument(polygon);
+        } else {
+            this.setPathOptions(polygon, document);
+        }
 
         let polygons: Array<IdaiFieldPolygon>
             = this.polygons[document.resource.id] ? this.polygons[document.resource.id] : [];
@@ -247,7 +275,7 @@ export class MapComponent implements OnChanges {
     private setPathOptions(path: L.Path, document: IdaiFieldDocument) {
 
         if (this.selectedDocument && this.selectedDocument.resource.id == document.resource.id) {
-            path.setStyle({color: 'red'});
+            path.setStyle({ color: 'red' });
         }
 
         path.bindTooltip(this.getShortDescription(document.resource), {
@@ -258,6 +286,18 @@ export class MapComponent implements OnChanges {
         let mapComponent = this;
         path.on('click', function(event: L.Event) {
             if (mapComponent.select(this.document)) L.DomEvent.stop(event);
+        });
+
+        path.addTo(this.map);
+    }
+
+    private setPathOptionsForMainTypeDocument(path: L.Path) {
+
+        path.setStyle({
+            fill: false,
+            dashArray: '5, 9',
+            color: '#99ccff',
+            interactive: false
         });
 
         path.addTo(this.map);

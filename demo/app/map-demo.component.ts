@@ -86,10 +86,45 @@ export class MapDemoComponent {
         }
     ];
 
-    private selectedDocument: IdaiFieldDocument;
+    public mainTypeDocumentTemplate: IdaiFieldDocument = {
+        'resource': {
+            'id': 's1',
+            'identifier': 'section1',
+            'shortDescription': 'Maßnahme',
+            'relations': {},
+            'geometry': {
+                'type': 'Polygon',
+                'coordinates': [[[-7.0, -7.0], [-6.0, -5.0], [7.0, -7.0], [9.0, 1.0], [7.0, 7.0], [5.0, 10.0],
+                    [-7.0, 7.0]]],
+                'crs': 'local'
+            },
+            'type': 'section'
+        }
+    };
 
-    public select(document: IdaiFieldDocument) {
+    public mainTypeDocument: IdaiFieldDocument;
+    public selectedDocument: IdaiFieldDocument;
+
+    public selectDocument(document: IdaiFieldDocument) {
 
         this.selectedDocument = document;
+    }
+
+    public toggleDocument(document: IdaiFieldDocument) {
+
+        if (this.selectedDocument == document) {
+            this.selectedDocument = undefined;
+        } else {
+            this.selectedDocument = document;
+        }
+    }
+
+    public toggleMainTypeDocument() {
+
+        if (this.mainTypeDocument) {
+            this.mainTypeDocument = undefined;
+        } else {
+            this.mainTypeDocument = this.mainTypeDocumentTemplate;
+        }
     }
 }
