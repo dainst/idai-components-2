@@ -31,7 +31,7 @@
     "bootstrap": "4.0.0-alpha.6",
     "es6-promise": "3.1.2",
     "es6-shim": "0.35.0",
-    "leaflet": "1.0.2",
+    "leaflet": "1.1.0",
     "mdi": "1.8.36",
     "reflect-metadata": "0.1.2",
     "identicon.js": "github:dainst/identicon.js",
