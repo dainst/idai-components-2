@@ -19,7 +19,7 @@ export class MapComponent implements OnChanges {
     @Input() documents: Array<IdaiFieldDocument>;
     @Input() selectedDocument: IdaiFieldDocument;
     @Input() mainTypeDocument: IdaiFieldDocument;
-    @Input() updateMap: boolean;
+    @Input() update: boolean;
 
     @Output() onSelectDocument: EventEmitter<IdaiFieldDocument> = new EventEmitter<IdaiFieldDocument>();
 
@@ -72,7 +72,7 @@ export class MapComponent implements OnChanges {
             this.map = this.createMap();
         }
 
-        if (this.updateMap) {
+        if (this.update) {
             this.clearMap();
             this.addGeometriesToMap();
             this.setView();

@@ -1,7 +1,7 @@
 <div class="container-fluid">
 
     <map [documents]="documents" [selectedDocument]="selectedDocument" [mainTypeDocument]="mainTypeDocument"
-         [updateMap]="liveUpdate" (onSelectDocument)="selectDocument($event)"></map>
+         [update]="liveUpdate" (onSelectDocument)="selectDocument($event)"></map>
 
     <div (click)="toggleMainTypeDocument()" style="margin-top: 20px;">
         <button class="btn btn" [class.btn-primary]="mainTypeDocument" [class.btn-outline-primary]="!mainTypeDocument"
