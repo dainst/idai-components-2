@@ -19,6 +19,7 @@ export class MapComponent implements OnChanges {
     @Input() documents: Array<IdaiFieldDocument>;
     @Input() selectedDocument: IdaiFieldDocument;
     @Input() mainTypeDocument: IdaiFieldDocument;
+    @Input() updateMap: boolean;
 
     @Output() onSelectDocument: EventEmitter<IdaiFieldDocument> = new EventEmitter<IdaiFieldDocument>();
 
@@ -69,18 +70,18 @@ export class MapComponent implements OnChanges {
 
         if (!this.map) {
             this.map = this.createMap();
-        } else {
-            this.clearMap();
         }
 
-        this.addGeometriesToMap();
-        this.setView();
+        if (this.updateMap) {
+            this.clearMap();
+            this.addGeometriesToMap();
+            this.setView();
+        }
     }
 
     private createMap(): L.Map {
 
         const map = L.map('map-container', { crs: L.CRS.Simple, attributionControl: false, minZoom: -1000 });
-        map.setView([0, 0], 5);
 
         let mapComponent = this;
         map.on('click', function(event: L.MouseEvent) {
@@ -155,8 +156,10 @@ export class MapComponent implements OnChanges {
 
         this.addMainTypeDocumentGeometryToMap();
 
-        for (let document of this.documents) {
-            if (document.resource.geometry) this.addGeometryToMap(document);
+        if (this.documents) {
+            for (let document of this.documents) {
+                if (document.resource.geometry) this.addGeometryToMap(document);
+            }
         }
     }
 

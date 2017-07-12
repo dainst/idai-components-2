@@ -104,6 +104,7 @@ export class MapDemoComponent {
 
     public mainTypeDocument: IdaiFieldDocument;
     public selectedDocument: IdaiFieldDocument;
+    public liveUpdate: boolean = true;
 
     public selectDocument(document: IdaiFieldDocument) {
 
