@@ -105,18 +105,18 @@ export class PersistenceManager {
                 return Promise.all(this.getConnectedDocs(document, oldVersions))
                     .catch(() => Promise.reject([MDInternal.PERSISTENCE_ERROR_TARGETNOTFOUND]));
             })
-            .then(connectedDocs => this.updateDocs(document,connectedDocs,true))
+            .then(connectedDocs => this.updateDocs(document,connectedDocs,true,user))
             .then(() => {
                 this.oldVersions = [document];
                 return Promise.resolve(persistedDocument);
             });
     }
 
-    private updateDocs(document,connectedDocs,setInverseRelations) {
+    private updateDocs(document,connectedDocs,setInverseRelations,user) {
         const promises = [];
         const docsToUpdate = this.connectedDocsResolver.determineDocsToUpdate(document, connectedDocs, setInverseRelations);
         for (let docToUpdate of docsToUpdate) {
-            promises.push(this.datastore.update(docToUpdate));
+            promises.push(this.persistIt(docToUpdate,user));
         }
         return Promise.all(promises);
     }
@@ -132,13 +132,13 @@ export class PersistenceManager {
      *     [DatastoreErrors.DOCUMENT_DOES_NOT_EXIST_ERROR] - if document has a resource id, but does not exist in the db
      *     [DatastoreErrors.GENERIC_DELETE_ERROR] - if cannot delete for another reason
      */
-    public remove(document: Document, oldVersions: Array<Document> = this.oldVersions): Promise<any> {
+    public remove(document: Document, user: string = 'anonymous', oldVersions: Array<Document> = this.oldVersions): Promise<any> {
 
         if (document == undefined) return Promise.resolve();
 
         return this.ready
                 .then(() => Promise.all(this.getConnectedDocs(document, oldVersions)))
-                .then(connectedDocs => this.updateDocs(document,connectedDocs,false))
+                .then(connectedDocs => this.updateDocs(document,connectedDocs,false,user))
                 .then(() => this.datastore.remove(document))
                 .then(() => { this.oldVersions = []; });
     }
