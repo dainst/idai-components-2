@@ -107,6 +107,8 @@ export class MapComponent implements OnChanges {
             this.map.fitBounds(L.latLngBounds(this.bounds));
         } else if (this.bounds.length == 1) {
             this.map.setView(this.bounds[0], 5);
+        } else {
+            this.map.setView([0, 0], 5);
         }
     }
 
