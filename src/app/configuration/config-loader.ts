@@ -5,7 +5,6 @@ import {MDInternal} from '../messages/md-internal';
 import {ConfigurationPreprocessor} from './configuration-preprocessor';
 import {ConfigurationValidator} from './configuration-validator';
 
-@Injectable()
 /**
  * Lets clients subscribe for the app
  * configuration. In order for this to work, they
@@ -19,6 +18,7 @@ import {ConfigurationValidator} from './configuration-validator';
  * @author Thomas Kleinke
  * @author Fabian Z.
  */
+@Injectable()
 export class ConfigLoader {
 
     private projectConfig: Promise<ProjectConfiguration> = undefined;
