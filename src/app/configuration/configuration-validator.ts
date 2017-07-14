@@ -22,6 +22,9 @@ export class ConfigurationValidator {
      * @returns {Array<string>} msgWithParams. undefined if no error.
      */
     public go(configuration: ConfigurationDefinition): Array<string> {
+
+        const invalidType = this.findInvalidType(configuration.types);
+        if (invalidType) return [MDInternal.VALIDATION_ERROR_INVALIDTYPE, invalidType];
         
         const missingType = this.findMissingType(configuration.types, this.namesOfMandatoryTypes);
         if (missingType) return [MDInternal.VALIDATION_ERROR_MISSINGTYPE, missingType];
@@ -32,6 +35,21 @@ export class ConfigurationValidator {
         const missingParentType = this.findMissingParentType(configuration.types);
         if (missingParentType) return [MDInternal.VALIDATION_ERROR_MISSINGPARENTTYPE, missingParentType];
 
+        return undefined;
+    }
+
+    /**
+     * Check if all necessary fields are given and have the right type
+     * (Might be refactored to use some kind of runtime type checking)
+     *
+     * @param types
+     * @returns {string} invalidType. undefined if no error.
+     */
+    private findInvalidType(types: Array<TypeDefinition>): string {
+        for (let type of types) {
+            if (!type.type || !(typeof type.type == 'string'))
+                return JSON.stringify(type);
+        }
         return undefined;
     }
 

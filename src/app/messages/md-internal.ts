@@ -57,7 +57,7 @@ export class MDInternal extends MD {
             hidden: false
         };
         this.msgs[MDInternal.VALIDATION_ERROR_INVALIDTYPE]={
-            content: 'Der Typ der Ressource wird nicht unterstützt.',
+            content: 'Ungültige Typdefinition: \'{0}\'',
             level: 'danger',
             params: [],
             hidden: false
