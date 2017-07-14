@@ -2,6 +2,7 @@ import {ConfigurationDefinition} from './configuration-definition';
 import {MDInternal} from '../messages/md-internal';
 import {TypeDefinition} from './type-definition';
 import {ViewDefinition} from "./view-definition";
+import {RelationDefinition} from "./relation-definition";
 
 /**
  * @author F.Z.
@@ -38,6 +39,9 @@ export class ConfigurationValidator {
 
         const missingViewType = this.findMissingViewType(configuration.views, configuration.types);
         if (missingViewType) return [MDInternal.VALIDATION_ERROR_MISSINGVIEWTYPE, missingViewType];
+
+        const missingRelationType = this.findMissingRelationType(configuration.relations, configuration.types);
+        if (missingRelationType) return [MDInternal.VALIDATION_ERROR_MISSINGRELATIONTYPE, missingRelationType];
 
         return undefined;
     }
@@ -104,6 +108,19 @@ export class ConfigurationValidator {
         for (let view of views) {
             if (view.mainType == 'project') continue;
             if (typeNames.indexOf(view.mainType) == -1) return view.mainType;
+        }
+        return undefined;
+    }
+
+    private findMissingRelationType(relations: Array<RelationDefinition>, types: Array<TypeDefinition>): string {
+
+        const typeNames: Array<string> = types.map(type => type.type);
+
+        for (let relation of relations) {
+            for (let type of relation.domain)
+                if (typeNames.indexOf(type) == -1) return type;
+            for (let type of relation.range)
+                if (typeNames.indexOf(type) == -1) return type;
         }
         return undefined;
     }
