@@ -11,6 +11,11 @@ import {RelationDefinition} from "./relation-definition";
  */
 export class ConfigurationValidator {
 
+    private static VALID_INPUT_TYPES = ['input', 'inputs', 'inputs_localized',
+        'text', 'dropdown', 'radio', 'checkboxes', 'multiselect'];
+    private static VALUELIST_INPUT_TYPES = ['dropdown', 'radio', 'checkboxes',
+        'multiselect'];
+
     /**
      * @param namesOfMandatoryTypes
      */
@@ -47,6 +52,9 @@ export class ConfigurationValidator {
 
         const mandatoryRelationsError = this.validateMandatoryRelations(configuration.relations, configuration.types);
         if (mandatoryRelationsError.length) return mandatoryRelationsError;
+
+        const fieldError = this.validateFieldDefinitions(configuration.types);
+        if (fieldError.length) return fieldError;
 
         return undefined;
     }
@@ -145,7 +153,6 @@ export class ConfigurationValidator {
 
         if ('project' in recordedInRelations) {
             for (let type of recordedInRelations['project']) {
-                console.log("checking", type);
                 if (!(type in recordedInRelations) || !recordedInRelations[type]
                         || recordedInRelations[type].length == 0) {
                     return [MDInternal.VALIDATION_ERROR_INCOMPLETERECORDEDIN, type];
@@ -153,6 +160,30 @@ export class ConfigurationValidator {
             }
         } else {
             return [MDInternal.VALIDATION_ERROR_INCOMPLETERECORDEDIN, 'project'];
+        }
+
+        return [];
+    }
+
+    private validateFieldDefinitions(types: Array<TypeDefinition>): Array<string> {
+
+        const fieldDefs = [].concat(...types.map(type => type.fields));
+
+        for (let fieldDef of fieldDefs) {
+            if (!fieldDef.hasOwnProperty('name'))
+                return [MDInternal.VALIDATION_ERROR_MISSINGFIELDNAME, JSON.stringify(fieldDef)];
+            if (!fieldDef.hasOwnProperty('inputType'))
+                fieldDef.inputType = 'input';
+            if (ConfigurationValidator.VALID_INPUT_TYPES.indexOf(fieldDef.inputType) == -1)
+                return [MDInternal.VALIDATION_ERROR_INVALIDINPUTTYPE, fieldDef.name,
+                    fieldDef.inputType, ConfigurationValidator.VALID_INPUT_TYPES.join(', ')];
+            if (ConfigurationValidator.VALUELIST_INPUT_TYPES.indexOf(fieldDef.inputType) != -1
+                    && (!fieldDef.hasOwnProperty('valuelist')
+                        || !Array.isArray(fieldDef.valuelist)
+                        || fieldDef.valuelist.length == 0
+                )
+            )
+                return [MDInternal.VALIDATION_ERROR_MISSINGVALUELIST, fieldDef.name];
         }
 
         return [];
