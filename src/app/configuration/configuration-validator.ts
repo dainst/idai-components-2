@@ -37,14 +37,15 @@ export class ConfigurationValidator {
         const missingParentType = this.findMissingParentType(configuration.types);
         if (missingParentType) return [MDInternal.VALIDATION_ERROR_MISSINGPARENTTYPE, missingParentType];
 
-        const missingViewType = this.findMissingViewType(configuration.views, configuration.types);
-        if (missingViewType) return [MDInternal.VALIDATION_ERROR_MISSINGVIEWTYPE, missingViewType];
+        if (configuration.views) {
+            const missingViewType = this.findMissingViewType(configuration.views, configuration.types);
+            if (missingViewType) return [MDInternal.VALIDATION_ERROR_MISSINGVIEWTYPE, missingViewType];
+        }
 
         const missingRelationType = this.findMissingRelationType(configuration.relations, configuration.types);
         if (missingRelationType) return [MDInternal.VALIDATION_ERROR_MISSINGRELATIONTYPE, missingRelationType];
 
         const mandatoryRelationsError = this.validateMandatoryRelations(configuration.relations, configuration.types);
-        console.log(mandatoryRelationsError);
         if (mandatoryRelationsError.length) return mandatoryRelationsError;
 
         return undefined;
@@ -141,7 +142,6 @@ export class ConfigurationValidator {
                 }
             }
         }
-        console.log("recordedInRelations", recordedInRelations);
 
         if ('project' in recordedInRelations) {
             for (let type of recordedInRelations['project']) {
