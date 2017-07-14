@@ -21,6 +21,7 @@ export class MDInternal extends MD {
     public static VALIDATION_ERROR_MISSINGPARENTTYPE: string = 'validation/error/missingparenttype';
     public static VALIDATION_ERROR_MISSINGVIEWTYPE: string = 'validation/error/missingviewtype';
     public static VALIDATION_ERROR_MISSINGRELATIONTYPE: string = 'validation/error/missingrelationtype';
+    public static VALIDATION_ERROR_TOPLEVELTYPEHASPARENT: string = 'validation/error/topleveltypehasparent';
     public static VALIDATION_ERROR_INCOMPLETERECORDEDIN: string = 'validation/error/incompleterecordedin';
     public static VALIDATION_ERROR_MISSINGFIELDNAME: string = 'validation/error/missingfieldname';
     public static VALIDATION_ERROR_INVALIDINPUTTYPE: string = 'validation/error/invalidinputtype';
@@ -106,6 +107,12 @@ export class MDInternal extends MD {
         };
         this.msgs[MDInternal.VALIDATION_ERROR_MISSINGRELATIONTYPE]={
             content: 'Im Relation-Teil der Configuration.json wird auf den nicht definierten Typ \'{0}\' verwiesen.',
+            level: 'danger',
+            params: [],
+            hidden: false
+        };
+        this.msgs[MDInternal.VALIDATION_ERROR_TOPLEVELTYPEHASPARENT]={
+            content: 'Top-Level-Type \'{0}\' darf kein parent besitzen.',
             level: 'danger',
             params: [],
             hidden: false
