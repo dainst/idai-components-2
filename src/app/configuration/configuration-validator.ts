@@ -28,35 +28,37 @@ export class ConfigurationValidator {
      * @param configuration
      * @returns {Array<string>} msgWithParams. undefined if no error.
      */
-    public go(configuration: ConfigurationDefinition): Array<string> {
+    public go(configuration: ConfigurationDefinition): Array<Array<string>> {
 
-        const invalidType = this.findInvalidType(configuration.types);
-        if (invalidType) return [MDInternal.VALIDATION_ERROR_INVALIDTYPE, invalidType];
+        let msgs = [];
+
+        const invalidTypeErrors = this.findInvalidType(configuration.types);
+        if (invalidTypeErrors) msgs = msgs.concat(invalidTypeErrors);
         
-        const missingType = this.findMissingType(configuration.types, this.namesOfMandatoryTypes);
-        if (missingType) return [MDInternal.VALIDATION_ERROR_MISSINGTYPE, missingType];
+        const missingTypeErrors = this.findMissingType(configuration.types, this.namesOfMandatoryTypes);
+        if (missingTypeErrors) msgs = msgs.concat(missingTypeErrors);
 
-        const duplicateType = this.findDuplicateType(configuration.types);
-        if (duplicateType) return [MDInternal.VALIDATION_ERROR_DUPLICATETYPE, duplicateType];
+        const duplicateTypeErrors = this.findDuplicateType(configuration.types);
+        if (duplicateTypeErrors) msgs = msgs.concat(duplicateTypeErrors);
 
-        const missingParentType = this.findMissingParentType(configuration.types);
-        if (missingParentType) return [MDInternal.VALIDATION_ERROR_MISSINGPARENTTYPE, missingParentType];
+        const missingParentTypeErrors = this.findMissingParentType(configuration.types);
+        if (missingParentTypeErrors) msgs = msgs.concat(missingParentTypeErrors);
 
         if (configuration.views) {
-            const missingViewType = this.findMissingViewType(configuration.views, configuration.types);
-            if (missingViewType) return [MDInternal.VALIDATION_ERROR_MISSINGVIEWTYPE, missingViewType];
+            const missingViewTypeErrors = this.findMissingViewType(configuration.views, configuration.types);
+            if (missingViewTypeErrors) msgs = msgs.concat(missingViewTypeErrors);
         }
 
-        const missingRelationType = this.findMissingRelationType(configuration.relations, configuration.types);
-        if (missingRelationType) return [MDInternal.VALIDATION_ERROR_MISSINGRELATIONTYPE, missingRelationType];
+        const missingRelationTypeErrors = this.findMissingRelationType(configuration.relations, configuration.types);
+        if (missingRelationTypeErrors) msgs = msgs.concat(missingRelationTypeErrors);
 
         const mandatoryRelationsError = this.validateMandatoryRelations(configuration.relations, configuration.types);
-        if (mandatoryRelationsError.length) return mandatoryRelationsError;
+        if (mandatoryRelationsError.length) msgs = msgs.concat(mandatoryRelationsError);
 
         const fieldError = this.validateFieldDefinitions(configuration.types);
-        if (fieldError.length) return fieldError;
+        if (fieldError.length) msgs = msgs.concat(fieldError);
 
-        return undefined;
+        return msgs;
     }
 
     /**
@@ -66,79 +68,92 @@ export class ConfigurationValidator {
      * @param types
      * @returns {string} invalidType. undefined if no error.
      */
-    private findInvalidType(types: Array<TypeDefinition>): string {
+    private findInvalidType(types: Array<TypeDefinition>): Array<Array<string>> {
+
+        let msgs = [];
         for (let type of types) {
             if (!type.type || !(typeof type.type == 'string'))
-                return JSON.stringify(type);
+                msgs.push([MDInternal.VALIDATION_ERROR_INVALIDTYPE, JSON.stringify(type)]);
         }
-        return undefined;
+        return msgs;
     }
 
-    private findDuplicateType(types: Array<TypeDefinition>): string {
+    private findDuplicateType(types: Array<TypeDefinition>): Array<Array<string>> {
 
+        let msgs = [];
         var o = {};
         for (var typeName of types.map(type => type.type)) {
-            if (o[typeName]) return typeName;
+            if (o[typeName]) msgs.push([MDInternal.VALIDATION_ERROR_DUPLICATETYPE, typeName]);
             o[typeName] = true;
         }
         
-        return undefined;
+        return msgs;
     }
 
-    private findMissingType(types: Array<TypeDefinition>, namesOfMandatoryTypes: Array<string>): string {
+    private findMissingType(types: Array<TypeDefinition>, namesOfMandatoryTypes: Array<string>): Array<Array<string>> {
 
-        if ( !namesOfMandatoryTypes || namesOfMandatoryTypes.length == 0) return undefined;
+        let msgs = [];
 
-        let missingType: string;
+        if ( !namesOfMandatoryTypes || namesOfMandatoryTypes.length == 0) return msgs;
+
         for (var nameOfMandatoryType of namesOfMandatoryTypes) {
             let found: boolean = false;
             for (let type of types) {
                 if (type.type == nameOfMandatoryType) found = true;
             }
             if (!found) {
-                missingType = nameOfMandatoryType;
-                break;
+                msgs.push([MDInternal.VALIDATION_ERROR_MISSINGTYPE, nameOfMandatoryType]);
             }
         }
-        return missingType;
+        return msgs;
     }
 
-    private findMissingParentType(types: Array<TypeDefinition>): string {
+    private findMissingParentType(types: Array<TypeDefinition>): Array<Array<string>> {
 
+
+        let msgs = [];
         const typeNames: Array<string> = types.map(type => type.type);
 
         for (let type of types) {
-            if (type.parent && typeNames.indexOf(type.parent) == -1) return type.parent;
+            if (type.parent && typeNames.indexOf(type.parent) == -1)
+                msgs.push([MDInternal.VALIDATION_ERROR_MISSINGPARENTTYPE, type.parent]);
         }
         
-        return undefined;
+        return msgs;
     }
 
-    private findMissingViewType(views: Array<ViewDefinition>, types: Array<TypeDefinition>): string {
+    private findMissingViewType(views: Array<ViewDefinition>, types: Array<TypeDefinition>): Array<Array<string>> {
 
+        let msgs = [];
         const typeNames: Array<string> = types.map(type => type.type);
 
         for (let view of views) {
             if (view.mainType == 'project') continue;
-            if (typeNames.indexOf(view.mainType) == -1) return view.mainType;
+            if (typeNames.indexOf(view.mainType) == -1)
+                msgs.push([MDInternal.VALIDATION_ERROR_MISSINGVIEWTYPE, view.mainType]);
         }
-        return undefined;
+        return msgs;
     }
 
-    private findMissingRelationType(relations: Array<RelationDefinition>, types: Array<TypeDefinition>): string {
+    private findMissingRelationType(relations: Array<RelationDefinition>, types: Array<TypeDefinition>): Array<Array<string>> {
 
+        let msgs = [];
         const typeNames: Array<string> = types.map(type => type.type);
 
         for (let relation of relations) {
             for (let type of relation.domain)
-                if (typeNames.indexOf(type) == -1) return type;
+                if (typeNames.indexOf(type) == -1)
+                    msgs.push([MDInternal.VALIDATION_ERROR_MISSINGRELATIONTYPE, type]);
             for (let type of relation.range)
-                if (typeNames.indexOf(type) == -1 && type != 'project') return type;
+                if (typeNames.indexOf(type) == -1 && type != 'project')
+                    msgs.push([MDInternal.VALIDATION_ERROR_MISSINGRELATIONTYPE, type]);
         }
-        return undefined;
+        return msgs;
     }
 
-    private validateMandatoryRelations(relations: Array<RelationDefinition>, types: Array<TypeDefinition>): Array<string> {
+    private validateMandatoryRelations(relations: Array<RelationDefinition>, types: Array<TypeDefinition>): Array<Array<string>> {
+
+        let msgs = [];
 
         let recordedInRelations = {};
         for (let relation of relations) {
@@ -153,37 +168,39 @@ export class ConfigurationValidator {
             for (let type of recordedInRelations['project']) {
                 if (!(type in recordedInRelations) || !recordedInRelations[type]
                         || recordedInRelations[type].length == 0) {
-                    return [MDInternal.VALIDATION_ERROR_INCOMPLETERECORDEDIN, type];
+                    msgs.push([MDInternal.VALIDATION_ERROR_INCOMPLETERECORDEDIN, type]);
                 }
             }
         } else {
-            return [MDInternal.VALIDATION_ERROR_INCOMPLETERECORDEDIN, 'project'];
+            msgs.push([MDInternal.VALIDATION_ERROR_INCOMPLETERECORDEDIN, 'project']);
         }
 
-        return [];
+        return msgs;
     }
 
-    private validateFieldDefinitions(types: Array<TypeDefinition>): Array<string> {
+    private validateFieldDefinitions(types: Array<TypeDefinition>): Array<Array<string>> {
+
+        let msgs = [];
 
         const fieldDefs = [].concat(...types.map(type => type.fields));
 
         for (let fieldDef of fieldDefs) {
             if (!fieldDef.hasOwnProperty('name'))
-                return [MDInternal.VALIDATION_ERROR_MISSINGFIELDNAME, JSON.stringify(fieldDef)];
+                msgs.push([MDInternal.VALIDATION_ERROR_MISSINGFIELDNAME, JSON.stringify(fieldDef)]);
             if (!fieldDef.hasOwnProperty('inputType'))
                 fieldDef.inputType = 'input';
             if (ConfigurationValidator.VALID_INPUT_TYPES.indexOf(fieldDef.inputType) == -1)
-                return [MDInternal.VALIDATION_ERROR_INVALIDINPUTTYPE, fieldDef.name,
-                    fieldDef.inputType, ConfigurationValidator.VALID_INPUT_TYPES.join(', ')];
+                msgs.push([MDInternal.VALIDATION_ERROR_INVALIDINPUTTYPE, fieldDef.name,
+                    fieldDef.inputType, ConfigurationValidator.VALID_INPUT_TYPES.join(', ')]);
             if (ConfigurationValidator.VALUELIST_INPUT_TYPES.indexOf(fieldDef.inputType) != -1
                     && (!fieldDef.hasOwnProperty('valuelist')
                         || !Array.isArray(fieldDef.valuelist)
                         || fieldDef.valuelist.length == 0
                 )
             )
-                return [MDInternal.VALIDATION_ERROR_MISSINGVALUELIST, fieldDef.name];
+                msgs.push([MDInternal.VALIDATION_ERROR_MISSINGVALUELIST, fieldDef.name]);
         }
 
-        return [];
+        return msgs;
     }
 }
