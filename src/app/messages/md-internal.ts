@@ -19,6 +19,7 @@ export class MDInternal extends MD {
 
     public static VALIDATION_ERROR_MISSINGPROPERTY: string = 'validation/error/missingproperty';
     public static VALIDATION_ERROR_MISSINGPARENTTYPE: string = 'validation/error/missingparenttype';
+    public static VALIDATION_ERROR_MISSINGVIEWTYPE: string = 'validation/error/missingviewtype';
     public static VALIDATION_ERROR_INVALIDTYPE: string = 'validation/error/invalidtype';
     public static VALIDATION_ERROR_INVALIDFIELD: string = 'validation/error/invalidfield';
     public static VALIDATION_ERROR_INVALIDFIELDS: string = 'validation/error/invalidfields';
@@ -88,6 +89,12 @@ export class MDInternal extends MD {
         };
         this.msgs[MDInternal.VALIDATION_ERROR_MISSINGPARENTTYPE]={
             content: 'In der Configuration.json wird auf den nicht definierten Parent-Typ \'{0}\' verwiesen.',
+            level: 'danger',
+            params: [],
+            hidden: false
+        };
+        this.msgs[MDInternal.VALIDATION_ERROR_MISSINGVIEWTYPE]={
+            content: 'Im View-Teil der Configuration.json wird auf den nicht definierten Typ \'{0}\' verwiesen.',
             level: 'danger',
             params: [],
             hidden: false

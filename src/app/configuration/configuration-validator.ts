@@ -1,6 +1,7 @@
 import {ConfigurationDefinition} from './configuration-definition';
 import {MDInternal} from '../messages/md-internal';
 import {TypeDefinition} from './type-definition';
+import {ViewDefinition} from "./view-definition";
 
 /**
  * @author F.Z.
@@ -34,6 +35,9 @@ export class ConfigurationValidator {
 
         const missingParentType = this.findMissingParentType(configuration.types);
         if (missingParentType) return [MDInternal.VALIDATION_ERROR_MISSINGPARENTTYPE, missingParentType];
+
+        const missingViewType = this.findMissingViewType(configuration.views, configuration.types);
+        if (missingViewType) return [MDInternal.VALIDATION_ERROR_MISSINGVIEWTYPE, missingViewType];
 
         return undefined;
     }
@@ -90,6 +94,17 @@ export class ConfigurationValidator {
             if (type.parent && typeNames.indexOf(type.parent) == -1) return type.parent;
         }
         
+        return undefined;
+    }
+
+    private findMissingViewType(views: Array<ViewDefinition>, types: Array<TypeDefinition>): string {
+
+        const typeNames: Array<string> = types.map(type => type.type);
+
+        for (let view of views) {
+            if (view.mainType == 'project') continue;
+            if (typeNames.indexOf(view.mainType) == -1) return view.mainType;
+        }
         return undefined;
     }
 }
