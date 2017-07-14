@@ -140,7 +140,7 @@ export class ConfigurationValidator {
         let msgs = [];
         const typeNames: Array<string> = types.map(type => type.type);
 
-        for (let relation of relations) {
+        if (relations) for (let relation of relations) {
             for (let type of relation.domain)
                 if (typeNames.indexOf(type) == -1)
                     msgs.push([MDInternal.VALIDATION_ERROR_MISSINGRELATIONTYPE, type]);
@@ -156,7 +156,7 @@ export class ConfigurationValidator {
         let msgs = [];
 
         let recordedInRelations = {};
-        for (let relation of relations) {
+        if (relations) for (let relation of relations) {
             if (relation.name == 'isRecordedIn') {
                 for (let type of relation.range) {
                     recordedInRelations[type] = relation.domain;
