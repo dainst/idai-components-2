@@ -21,6 +21,7 @@ export class MDInternal extends MD {
     public static VALIDATION_ERROR_MISSINGPARENTTYPE: string = 'validation/error/missingparenttype';
     public static VALIDATION_ERROR_MISSINGVIEWTYPE: string = 'validation/error/missingviewtype';
     public static VALIDATION_ERROR_MISSINGRELATIONTYPE: string = 'validation/error/missingrelationtype';
+    public static VALIDATION_ERROR_INCOMPLETERECORDEDIN: string = 'validation/error/incompleterecordedin';
     public static VALIDATION_ERROR_INVALIDTYPE: string = 'validation/error/invalidtype';
     public static VALIDATION_ERROR_INVALIDFIELD: string = 'validation/error/invalidfield';
     public static VALIDATION_ERROR_INVALIDFIELDS: string = 'validation/error/invalidfields';
@@ -102,6 +103,12 @@ export class MDInternal extends MD {
         };
         this.msgs[MDInternal.VALIDATION_ERROR_MISSINGRELATIONTYPE]={
             content: 'Im Relation-Teil der Configuration.json wird auf den nicht definierten Typ \'{0}\' verwiesen.',
+            level: 'danger',
+            params: [],
+            hidden: false
+        };
+        this.msgs[MDInternal.VALIDATION_ERROR_INCOMPLETERECORDEDIN]={
+            content: 'Fehlende oder unvollständige Definition von \'recordedIn\' für Top-Level-Type \'{0}\'.',
             level: 'danger',
             params: [],
             hidden: false

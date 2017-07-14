@@ -43,6 +43,10 @@ export class ConfigurationValidator {
         const missingRelationType = this.findMissingRelationType(configuration.relations, configuration.types);
         if (missingRelationType) return [MDInternal.VALIDATION_ERROR_MISSINGRELATIONTYPE, missingRelationType];
 
+        const mandatoryRelationsError = this.validateMandatoryRelations(configuration.relations, configuration.types);
+        console.log(mandatoryRelationsError);
+        if (mandatoryRelationsError.length) return mandatoryRelationsError;
+
         return undefined;
     }
 
@@ -123,5 +127,34 @@ export class ConfigurationValidator {
                 if (typeNames.indexOf(type) == -1 && type != 'project') return type;
         }
         return undefined;
+    }
+
+    private validateMandatoryRelations(relations: Array<RelationDefinition>, types: Array<TypeDefinition>): Array<string> {
+
+        const typeNames: Array<string> = types.map(type => type.type);
+
+        let recordedInRelations = {};
+        for (let relation of relations) {
+            if (relation.name == 'isRecordedIn') {
+                for (let type of relation.range) {
+                    recordedInRelations[type] = relation.domain;
+                }
+            }
+        }
+        console.log("recordedInRelations", recordedInRelations);
+
+        if ('project' in recordedInRelations) {
+            for (let type of recordedInRelations['project']) {
+                console.log("checking", type);
+                if (!(type in recordedInRelations) || !recordedInRelations[type]
+                        || recordedInRelations[type].length == 0) {
+                    return [MDInternal.VALIDATION_ERROR_INCOMPLETERECORDEDIN, type];
+                }
+            }
+        } else {
+            return [MDInternal.VALIDATION_ERROR_INCOMPLETERECORDEDIN, 'project'];
+        }
+
+        return [];
     }
 }
