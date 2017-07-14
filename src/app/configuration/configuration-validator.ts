@@ -140,11 +140,6 @@ export class ConfigurationValidator {
 
     private validateMandatoryRelations(relations: Array<RelationDefinition>, types: Array<TypeDefinition>): Array<string> {
 
-        const typeMap = types.reduce((map, type) => {
-            map[type.type] = type;
-            return map;
-        }, {});
-
         let recordedInRelations = {};
         for (let relation of relations) {
             if (relation.name == 'isRecordedIn') {
@@ -156,9 +151,6 @@ export class ConfigurationValidator {
 
         if ('project' in recordedInRelations) {
             for (let type of recordedInRelations['project']) {
-                let topLevelType = typeMap[type];
-                if (topLevelType.hasOwnProperty('parent'))
-                    return [MDInternal.VALIDATION_ERROR_TOPLEVELTYPEHASPARENT, type];
                 if (!(type in recordedInRelations) || !recordedInRelations[type]
                         || recordedInRelations[type].length == 0) {
                     return [MDInternal.VALIDATION_ERROR_INCOMPLETERECORDEDIN, type];
