@@ -120,7 +120,7 @@ export class ConfigurationValidator {
             for (let type of relation.domain)
                 if (typeNames.indexOf(type) == -1) return type;
             for (let type of relation.range)
-                if (typeNames.indexOf(type) == -1) return type;
+                if (typeNames.indexOf(type) == -1 && type != 'project') return type;
         }
         return undefined;
     }
