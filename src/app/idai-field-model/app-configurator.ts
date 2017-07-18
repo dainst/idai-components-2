@@ -12,8 +12,8 @@ export class AppConfigurator {
     constructor(private configLoader: ConfigLoader) { }
 
     private defaultTypes = [{
-        'type': 'image',
-        'fields': [
+        type: 'image',
+        fields: [
             {
                 name: 'height',
                 editable: false,
@@ -35,6 +35,9 @@ export class AppConfigurator {
                 editable: false
             }
         ]
+    }, {
+        type: 'project',
+        fields: []
     }];
 
     private defaultFields = [{
