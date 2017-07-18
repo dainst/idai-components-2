@@ -265,21 +265,26 @@ export class MapComponent implements OnChanges {
 
     private setPathOptions(path: L.Path, document: IdaiFieldDocument) {
 
-        if (this.selectedDocument && this.selectedDocument.resource.id == document.resource.id) {
-            path.setStyle({ color: 'red' });
+        this.configLoader.getProjectConfiguration().then(config => {
+
+            if (this.selectedDocument && this.selectedDocument.resource.id == document.resource.id) {
+                path.setStyle({color: 'red'});
+            } else {
+                path.setStyle({color: config.getColorForType(document.resource.type)});
+            }
+
+            path.bindTooltip(this.getShortDescription(document.resource), {
+                direction: 'center',
+                opacity: 1.0
+            });
+
+            let mapComponent = this;
+            path.on('click', function (event: L.Event) {
+                if (mapComponent.select(this.document)) L.DomEvent.stop(event);
+            });
+
+            path.addTo(this.map);
         }
-
-        path.bindTooltip(this.getShortDescription(document.resource), {
-            direction: 'center',
-            opacity: 1.0
-        });
-
-        let mapComponent = this;
-        path.on('click', function(event: L.Event) {
-            if (mapComponent.select(this.document)) L.DomEvent.stop(event);
-        });
-
-        path.addTo(this.map);
     }
 
     private setPathOptionsForMainTypeDocument(path: L.Path) {
