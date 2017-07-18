@@ -284,7 +284,7 @@ export class MapComponent implements OnChanges {
             });
 
             path.addTo(this.map);
-        }
+        });
     }
 
     private setPathOptionsForMainTypeDocument(path: L.Path) {
