@@ -19,6 +19,13 @@ export class MDInternal extends MD {
 
     public static VALIDATION_ERROR_MISSINGPROPERTY: string = 'validation/error/missingproperty';
     public static VALIDATION_ERROR_MISSINGPARENTTYPE: string = 'validation/error/missingparenttype';
+    public static VALIDATION_ERROR_MISSINGVIEWTYPE: string = 'validation/error/missingviewtype';
+    public static VALIDATION_ERROR_MISSINGRELATIONTYPE: string = 'validation/error/missingrelationtype';
+    public static VALIDATION_ERROR_TOPLEVELTYPEHASPARENT: string = 'validation/error/topleveltypehasparent';
+    public static VALIDATION_ERROR_INCOMPLETERECORDEDIN: string = 'validation/error/incompleterecordedin';
+    public static VALIDATION_ERROR_MISSINGFIELDNAME: string = 'validation/error/missingfieldname';
+    public static VALIDATION_ERROR_INVALIDINPUTTYPE: string = 'validation/error/invalidinputtype';
+    public static VALIDATION_ERROR_MISSINGVALUELIST: string = 'validation/error/missingvaluelist';
     public static VALIDATION_ERROR_INVALIDTYPE: string = 'validation/error/invalidtype';
     public static VALIDATION_ERROR_INVALIDFIELD: string = 'validation/error/invalidfield';
     public static VALIDATION_ERROR_INVALIDFIELDS: string = 'validation/error/invalidfields';
@@ -57,7 +64,7 @@ export class MDInternal extends MD {
             hidden: false
         };
         this.msgs[MDInternal.VALIDATION_ERROR_INVALIDTYPE]={
-            content: 'Der Typ der Ressource wird nicht unterstützt.',
+            content: 'Ungültige Typdefinition: \'{0}\'',
             level: 'danger',
             params: [],
             hidden: false
@@ -88,6 +95,48 @@ export class MDInternal extends MD {
         };
         this.msgs[MDInternal.VALIDATION_ERROR_MISSINGPARENTTYPE]={
             content: 'In der Configuration.json wird auf den nicht definierten Parent-Typ \'{0}\' verwiesen.',
+            level: 'danger',
+            params: [],
+            hidden: false
+        };
+        this.msgs[MDInternal.VALIDATION_ERROR_MISSINGVIEWTYPE]={
+            content: 'Im View-Teil der Configuration.json wird auf den nicht definierten Typ \'{0}\' verwiesen.',
+            level: 'danger',
+            params: [],
+            hidden: false
+        };
+        this.msgs[MDInternal.VALIDATION_ERROR_MISSINGRELATIONTYPE]={
+            content: 'Im Relation-Teil der Configuration.json wird auf den nicht definierten Typ \'{0}\' verwiesen.',
+            level: 'danger',
+            params: [],
+            hidden: false
+        };
+        this.msgs[MDInternal.VALIDATION_ERROR_TOPLEVELTYPEHASPARENT]={
+            content: 'Top-Level-Type \'{0}\' darf kein parent besitzen.',
+            level: 'danger',
+            params: [],
+            hidden: false
+        };
+        this.msgs[MDInternal.VALIDATION_ERROR_INCOMPLETERECORDEDIN]={
+            content: 'Fehlende oder unvollständige Definition von \'recordedIn\' für Top-Level-Type \'{0}\'.',
+            level: 'danger',
+            params: [],
+            hidden: false
+        };
+        this.msgs[MDInternal.VALIDATION_ERROR_MISSINGFIELDNAME]={
+            content: 'Fehlender Feldname in Felddefinition: \'{0}\'.',
+            level: 'danger',
+            params: [],
+            hidden: false
+        };
+        this.msgs[MDInternal.VALIDATION_ERROR_INVALIDINPUTTYPE]={
+            content: 'Ungültiger Wert \'{1}\' für \'inputType\' in Felddefinition für \'{0}\'. Erlaubte Werte: {2}.',
+            level: 'danger',
+            params: [],
+            hidden: false
+        };
+        this.msgs[MDInternal.VALIDATION_ERROR_MISSINGVALUELIST]={
+            content: 'Fehlende Werteliste in Felddefinition für \'{0}\'.',
             level: 'danger',
             params: [],
             hidden: false

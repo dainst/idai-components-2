@@ -47,7 +47,7 @@ export class AppConfigurator {
     }, {
         name: 'identifier',
         description: 'use this to uniquely identify your object',
-        label: 'Identifier',
+        label: 'Bezeichner',
         visible: false,
         mandatory: true
     }, {

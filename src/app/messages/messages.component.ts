@@ -9,14 +9,15 @@ import {Message} from "./message";
 @Component({
     selector: 'messages',
     template: `<ng-container *ngFor="let message of messages.getMessages().reverse(); let index=index">
-        <div class="alert alert-{{message.level}}"
-            *ngIf="message.hidden==false || message.overrideHidden == true"
-            id="message-{{index}}">
-            <button *ngIf="message.level == 'danger' || message.level == 'warning'" type="button" class="close"
-                    (click)="closeAlert(message)" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-            <span class="message-content">{{getMessageContent(message)}}</span>
+        <div *ngIf="message.hidden==false || message.overrideHidden == true"
+            id="message-{{index}}" style="text-align:right;">
+            <div class="alert alert-{{message.level}}" style="display: inline-block;">
+                <button *ngIf="message.level == 'danger' || message.level == 'warning'" type="button" class="close"
+                        (click)="closeAlert(message)" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <span class="message-content">{{getMessageContent(message)}}</span>
+            </div>
         </div>
     </ng-container>`
 })

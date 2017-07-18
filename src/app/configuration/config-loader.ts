@@ -68,18 +68,18 @@ export class ConfigLoader {
                 if (configurationPreprocessor) configurationPreprocessor.go(config);
                 new ConfigurationPreprocessor([], defaultFields, []).go(config);
 
-                let configurationError = undefined;
-                if (configurationValidator) configurationError =
+                let configurationErrors = [];
+                if (configurationValidator) configurationErrors =
                     configurationValidator.go(config);
-                if (configurationError) {
-                    this.projectConfigRejectFunction(configurationError);
+                if (configurationErrors.length > 0) {
+                    this.projectConfigRejectFunction(configurationErrors);
                 } else {
                     this.projectConfigResolveFunction(new ProjectConfiguration(config));
                 }
             },
             error => {
                 this.projectConfigRejectFunction(
-                    [MDInternal.PARSE_GENERIC_ERROR].concat([error['path']])
+                    [[MDInternal.PARSE_GENERIC_ERROR].concat([error['path']])]
                 );
             }
         );

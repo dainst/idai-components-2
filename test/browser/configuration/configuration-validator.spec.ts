@@ -23,7 +23,7 @@ export function main() {
 
             expect(new ConfigurationValidator(['Tmissing'])
                 .go(configuration))
-                .toEqual([MDInternal.VALIDATION_ERROR_MISSINGTYPE,'Tmissing']);
+                .toContain([MDInternal.VALIDATION_ERROR_MISSINGTYPE,'Tmissing']);
         });
 
         it('should report duplicate type', function() {
@@ -42,7 +42,7 @@ export function main() {
 
             expect(new ConfigurationValidator([])
                 .go(configuration))
-                .toEqual([MDInternal.VALIDATION_ERROR_DUPLICATETYPE,'Tduplicate']);
+                .toContain([MDInternal.VALIDATION_ERROR_DUPLICATETYPE,'Tduplicate']);
         });
     });
 }

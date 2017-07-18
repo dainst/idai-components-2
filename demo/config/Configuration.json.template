@@ -135,6 +135,34 @@
   ],
   "relations":[
     {
+      "domain": [
+        "section"
+      ],
+      "editable": "false",
+      "inverse": "NO-INVERSE",
+      "label": "Gehört zu",
+      "name": "isRecordedIn",
+      "range": [
+        "object",
+        "object_enhanced"
+      ],
+      "visible": "false"
+    },
+    {
+      "domain": [
+        "object",
+        "object_enhanced"
+      ],
+      "editable": "false",
+      "inverse": "NO-INVERSE",
+      "label": "Gehört zu",
+      "name": "isRecordedIn",
+      "range": [
+        "project"
+      ],
+      "visible": "false"
+    },
+    {
       "name": "Belongs to",
       "inverse": "Includes",
       "label": "Enthalten in",

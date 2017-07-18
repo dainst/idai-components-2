@@ -38,8 +38,8 @@ export class AppComponent implements OnInit {
         );
 
         configLoader.getProjectConfiguration().catch(
-            msgWithParams => {
-                messages.add(msgWithParams);
+            msgsWithParams => {
+                msgsWithParams.forEach(msg => messages.add(msg));
             }
         )
     }
