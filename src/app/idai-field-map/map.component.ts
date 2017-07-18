@@ -4,6 +4,7 @@ import {IdaiFieldResource} from '../idai-field-model/idai-field-resource';
 import {IdaiFieldPolyline} from './idai-field-polyline';
 import {IdaiFieldPolygon} from './idai-field-polygon';
 import {IdaiFieldMarker} from './idai-field-marker';
+import {ConfigLoader} from "../configuration/config-loader";
 
 // no typings for VectorMarkers available
 declare global {
@@ -39,13 +40,7 @@ export class MapComponent implements OnChanges {
 
     protected bounds: any[] = []; // in fact L.LatLng[], but leaflet typings are incomplete
 
-    protected markerIcons = {
-        'blue': this.generateMarkerIcon('blue'),
-        'darkblue': this.generateMarkerIcon('darkblue'),
-        'red': this.generateMarkerIcon('red')
-    };
-
-    constructor() {}
+    constructor(private configLoader: ConfigLoader) { }
 
     public ngAfterViewInit() {
 
@@ -173,8 +168,7 @@ export class MapComponent implements OnChanges {
 
         switch(geometry.type) {
             case 'Point':
-                let marker: IdaiFieldMarker = this.addMarkerToMap(geometry.coordinates, document);
-                this.extendBounds(marker.getLatLng());
+                this.addMarkerToMap(geometry.coordinates, document);
                 break;
             case 'LineString':
                 let polyline: IdaiFieldPolyline = this.addPolylineToMap(geometry.coordinates, document);
@@ -199,32 +193,36 @@ export class MapComponent implements OnChanges {
         }
     }
 
-    private addMarkerToMap(coordinates: any, document: IdaiFieldDocument): IdaiFieldMarker {
+    private addMarkerToMap(coordinates: any, document: IdaiFieldDocument): void {
 
-        let latLng = L.latLng([coordinates[1], coordinates[0]]);
+        this.configLoader.getProjectConfiguration().then(config => {
 
-        let icon = (this.selectedDocument && this.selectedDocument.resource.id == document.resource.id) ?
-            this.markerIcons.red : this.markerIcons.blue;
+            let latLng = L.latLng([coordinates[1], coordinates[0]]);
 
-        let marker: IdaiFieldMarker = L.marker(latLng, {
-            icon: icon
+            let color = (this.selectedDocument && this.selectedDocument.resource.id == document.resource.id) ?
+                'red' : config.getColorForType(document.resource.type);
+            let icon = this.generateMarkerIcon(color);
+
+            let marker: IdaiFieldMarker = L.marker(latLng, {
+                icon: icon
+            });
+            marker.document = document;
+
+            marker.bindTooltip(this.getShortDescription(document.resource), {
+                offset: L.point(0, -40),
+                direction: 'top',
+                opacity: 1.0});
+
+            let mapComponent = this;
+            marker.on('click', function() {
+                mapComponent.select(this.document);
+            });
+
+            marker.addTo(this.map);
+            this.markers[document.resource.id] = marker;
+
+            this.extendBounds(marker.getLatLng());
         });
-        marker.document = document;
-
-        marker.bindTooltip(this.getShortDescription(document.resource), {
-            offset: L.point(0, -40),
-            direction: 'top',
-            opacity: 1.0});
-
-        let mapComponent = this;
-        marker.on('click', function() {
-            mapComponent.select(this.document);
-        });
-
-        marker.addTo(this.map);
-        this.markers[document.resource.id] = marker;
-
-        return marker;
     }
 
     private addPolylineToMap(coordinates: any, document: IdaiFieldDocument): IdaiFieldPolyline {
@@ -357,7 +355,7 @@ export class MapComponent implements OnChanges {
         return L.polygon(<any> feature.geometry.coordinates[0]);
     }
 
-    private generateMarkerIcon(color: string): L.Icon {
+    protected generateMarkerIcon(color: string): L.Icon {
         return L.VectorMarkers.icon({
             prefix: 'mdi',
             icon: 'checkbox-blank-circle',
