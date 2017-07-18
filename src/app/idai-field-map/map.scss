@@ -1,4 +1,12 @@
 #map-container {
   width: 100%;
   height: 400px;
+
+  .vector-marker {
+    filter: saturate(50%);
+
+    path {
+      stroke: white;
+    }
+  }
 }

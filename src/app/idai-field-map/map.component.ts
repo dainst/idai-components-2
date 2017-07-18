@@ -5,6 +5,15 @@ import {IdaiFieldPolyline} from './idai-field-polyline';
 import {IdaiFieldPolygon} from './idai-field-polygon';
 import {IdaiFieldMarker} from './idai-field-marker';
 
+// no typings for VectorMarkers available
+declare global {
+    namespace L {
+        module VectorMarkers {
+            function icon(option: any): any;
+        }
+    }
+}
+
 @Component({
     moduleId: module.id,
     selector: 'map',
@@ -31,30 +40,9 @@ export class MapComponent implements OnChanges {
     protected bounds: any[] = []; // in fact L.LatLng[], but leaflet typings are incomplete
 
     protected markerIcons = {
-        'blue': L.icon({
-            iconUrl: 'img/marker-icons/marker-icon-blue.png',
-            shadowUrl: 'img/marker-icons/marker-shadow.png',
-            iconSize:     [25, 41],
-            shadowSize:   [41, 41],
-            iconAnchor:   [12, 39],
-            shadowAnchor: [13, 39]
-        }),
-        'darkblue': L.icon({
-            iconUrl: 'img/marker-icons/marker-icon-darkblue.png',
-            shadowUrl: 'img/marker-icons/marker-shadow.png',
-            iconSize:     [25, 41],
-            shadowSize:   [41, 41],
-            iconAnchor:   [12, 39],
-            shadowAnchor: [13, 39]
-        }),
-        'red': L.icon({
-            iconUrl: 'img/marker-icons/marker-icon-red.png',
-            shadowUrl: 'img/marker-icons/marker-shadow.png',
-            iconSize:     [25, 41],
-            shadowSize:   [41, 41],
-            iconAnchor:   [12, 39],
-            shadowAnchor: [13, 39]
-        })
+        'blue': this.generateMarkerIcon('blue'),
+        'darkblue': this.generateMarkerIcon('darkblue'),
+        'red': this.generateMarkerIcon('red')
     };
 
     constructor() {}
@@ -367,5 +355,13 @@ export class MapComponent implements OnChanges {
 
         let feature = L.polygon(coordinates).toGeoJSON();
         return L.polygon(<any> feature.geometry.coordinates[0]);
+    }
+
+    private generateMarkerIcon(color: string): L.Icon {
+        return L.VectorMarkers.icon({
+            prefix: 'mdi',
+            icon: 'checkbox-blank-circle',
+            markerColor: color
+        });
     }
 }
