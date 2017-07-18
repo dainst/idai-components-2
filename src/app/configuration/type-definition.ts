@@ -7,4 +7,5 @@ export interface TypeDefinition {
     abstract? : boolean;
     fields? : any;
     parent? : string;
+    color? : string;
 }

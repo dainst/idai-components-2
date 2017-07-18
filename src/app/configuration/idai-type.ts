@@ -10,13 +10,15 @@ export class IdaiType {
     isAbstract: boolean;
     name: string;
     label: string;
+    color: string;
     private fields: FieldDefinition[];
     
     constructor (definition: TypeDefinition) {
-        this.name = definition['type'];
-        this.label = definition['label'] || this.name;
-        this.fields = definition['fields'] || [];
-        this.isAbstract = definition['abstract'] || false;
+        this.name = definition.type;
+        this.label = definition.label || this.name;
+        this.fields = definition.fields || [];
+        this.isAbstract = definition.abstract || false;
+        this.color = definition.color;
     }
 
     private setParentType(parent: IdaiType) {

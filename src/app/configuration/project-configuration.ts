@@ -173,6 +173,18 @@ export class ProjectConfiguration {
         return this.typesMap[typeName].label;
     }
 
+    public getColorForType(type) {
+        if (this.typesMap[type] && this.typesMap[type].color) {
+            return this.typesMap[type].color;
+        } else {
+            var hash = this.hashCode(type);
+            var r = (hash & 0xFF0000) >> 16;
+            var g = (hash & 0x00FF00) >> 8;
+            var b = hash & 0x0000FF;
+            return "#" + ("0" + r.toString(16)).substr(-2) + ("0" + g.toString(16)).substr(-2) + ("0" + b.toString(16)).substr(-2);
+        }
+    }
+
     public isMandatory(typeName: string, fieldName: string): boolean {
         return this.hasProperty(typeName, fieldName, 'mandatory')
     }
@@ -192,21 +204,6 @@ export class ProjectConfiguration {
             }
         }
         return true;
-    }
-
-    private hasProperty(typeName: string, fieldName: string, propertyName: string) {
-
-        if (!this.typesMap[typeName]) return false;
-        const fields = this.typesMap[typeName].getFieldDefinitions();
-
-        for (let i in fields) {
-            if (fields[i].name == fieldName) {
-                if (fields[i][propertyName] == true) {
-                    return true;
-                }
-            }
-        } 
-        return false;
     }
 
     /**
@@ -239,6 +236,37 @@ export class ProjectConfiguration {
         return this.getLabel(fieldName, fieldDefinitions);
     }
 
+    public getViewsList(): Array<ViewDefinition> {
+        return this.viewsList;
+    }
+
+    public getView(name: string): ViewDefinition {
+        return this.viewsMap[name];
+    }
+
+    /**
+     * @returns {string} the name of the excavation, if defined.
+     *   <code>undefined</code> otherwise.
+     */
+    public getProjectIdentifier(): any {
+        return this.projectIdentifier;
+    }
+
+    private hasProperty(typeName: string, fieldName: string, propertyName: string) {
+
+        if (!this.typesMap[typeName]) return false;
+        const fields = this.typesMap[typeName].getFieldDefinitions();
+
+        for (let i in fields) {
+            if (fields[i].name == fieldName) {
+                if (fields[i][propertyName] == true) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     private getLabel(fieldName: string, fields: Array<any>): string{
 
         for (let i in fields) {
@@ -252,14 +280,6 @@ export class ProjectConfiguration {
         }
 
         return fieldName;
-    }
-
-    /**
-     * @returns {string} the name of the excavation, if defined.
-     *   <code>undefined</code> otherwise.
-     */
-    public getProjectIdentifier(): any {
-        return this.projectIdentifier;
     }
 
     private initTypes(configuration: ConfigurationDefinition) {
@@ -295,12 +315,15 @@ export class ProjectConfiguration {
         return type.type;
     }
 
-    public getViewsList(): Array<ViewDefinition> {
-        return this.viewsList;
-    }
-
-    public getView(name: string): ViewDefinition {
-        return this.viewsMap[name];
+    private hashCode(string): number {
+        var hash = 0, i, chr;
+        if (string.length === 0) return hash;
+        for (i = 0; i < string.length; i++) {
+            chr   = string.charCodeAt(i);
+            hash  = ((hash << 5) - hash) + chr;
+            hash |= 0; // Convert to 32bit integer
+        }
+        return hash;
     }
 
 }

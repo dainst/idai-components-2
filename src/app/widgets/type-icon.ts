@@ -1,30 +1,11 @@
-import {Component, OnChanges, Input, Injectable} from "@angular/core";
-import {Md5} from 'ts-md5/dist/md5';
-
-// no typings available
-declare class Identicon {
-constructor(hash: string, size: number);
-toString(): string;
-}
-
-class TypeIconService {
-
-  private static icons = {};
-
-  public static generateIconUrl(type: string, size:number) {
-  if (!this.icons[type+size]) {
-  var hash = Md5.hashStr(type) as string;
-  var data = new Identicon(hash, size).toString();
-  this.icons[type+size] = "data:image/png;base64," + data;
-}
-  return this.icons[type+size];
-}
-
-}
+import {Component, OnChanges, Input} from "@angular/core";
+import {ConfigLoader} from "../configuration/config-loader";
 
 @Component({
   selector: 'type-icon',
-  template: '<img [attr.height]="size" [attr.width]="size" [attr.src]="url">'
+  template: '<div class="type-icon" [style.width]="pxSize" [style.height]="pxSize" [style.font-size]="pxSize" [style.background-color]="color">' +
+    '<span class="character">{{character}}</span>' +
+  '</div>'
 })
 
 /**
@@ -36,10 +17,18 @@ export class TypeIconComponent implements OnChanges {
   @Input() size: number;
   @Input() type: string;
 
-  private url: string;
+  private character: string;
+  private color: string;
+  private pxSize: string;
 
-ngOnChanges() {
-  this.url = TypeIconService.generateIconUrl(this.type, this.size);
-}
+  constructor(private configLoader: ConfigLoader) { }
+
+  ngOnChanges() {
+    this.configLoader.getProjectConfiguration().then(config => {
+      this.character = config.getLabelForType(this.type).substr(0, 1);
+      this.color = config.getColorForType(this.type);
+      this.pxSize = this.size + "px";
+    });
+  }
 
 }
