@@ -20,15 +20,17 @@ import {ConfigurationDefinition} from './configuration-definition';
 @Injectable()
 export class ProjectConfiguration {
 
-    private typesTree: { [type: string]: IdaiType } = {};
+    private typesTree: { [typeName: string]: IdaiType } = {};
 
-    private typesMap: { [type: string]: IdaiType } = {};
+    private typesMap: { [typeName: string]: IdaiType } = {};
 
     private projectIdentifier: string;
 
     private typesList: Array<IdaiType> = undefined;
 
     private typesTreeList: Array<IdaiType> = undefined;
+
+    private typesColorMap: { [typeName: string]: string } = {};
 
     private relationFields: any[] = undefined;
 
@@ -173,11 +175,12 @@ export class ProjectConfiguration {
         return this.typesMap[typeName].label;
     }
 
-    public getColorForType(type) {
-        if (this.typesMap[type] && this.typesMap[type].color) {
-            return this.typesMap[type].color;
+    private generateColorForType(typeName: string): string {
+
+        if (this.typesMap[typeName] && this.typesMap[typeName].color) {
+            return this.typesMap[typeName].color;
         } else {
-            var hash = this.hashCode(type);
+            var hash = this.hashCode(typeName);
             var r = (hash & 0xFF0000) >> 16;
             var g = (hash & 0x00FF00) >> 8;
             var b = hash & 0x0000FF;
@@ -185,12 +188,22 @@ export class ProjectConfiguration {
         }
     }
 
+    public getColorForType(typeName: string): string {
+
+        return this.typesColorMap[typeName];
+    }
+
+    public getTypeColors(): { [typeName: string]: string } {
+
+        return this.typesColorMap;
+    }
+
     public isMandatory(typeName: string, fieldName: string): boolean {
-        return this.hasProperty(typeName, fieldName, 'mandatory')
+        return this.hasProperty(typeName, fieldName, 'mandatory');
     }
     
     public isVisible(typeName: string, fieldName: string): boolean {
-        return this.hasProperty(typeName, fieldName,'visible')
+        return this.hasProperty(typeName, fieldName, 'visible');
     }
 
     public isVisibleRelation(relationName:string): boolean {
@@ -287,6 +300,7 @@ export class ProjectConfiguration {
         for (let type of configuration.types) {
             let typeName = this.getTypeName(type);
             this.typesMap[typeName] = new IdaiType(type);
+            this.typesColorMap[typeName] = this.generateColorForType(typeName);
         }
 
         for (let type of configuration.types) {

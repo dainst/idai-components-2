@@ -33,14 +33,22 @@ export class MapComponent implements OnChanges {
 
     @Output() onSelectDocument: EventEmitter<IdaiFieldDocument> = new EventEmitter<IdaiFieldDocument>();
 
+    protected ready: Promise<any>;
+
     protected map: L.Map;
     protected polygons: { [resourceId: string]: Array<IdaiFieldPolygon> } = {};
     protected polylines: { [resourceId: string]: Array<IdaiFieldPolyline> } = {};
     protected markers: { [resourceId: string]: IdaiFieldMarker } = {};
 
     protected bounds: any[] = []; // in fact L.LatLng[], but leaflet typings are incomplete
+    protected typeColors: { [typeName: string]: string } = {};
 
-    constructor(protected configLoader: ConfigLoader) { }
+    constructor(configLoader: ConfigLoader) {
+
+        this.ready = configLoader.getProjectConfiguration().then(projectConfiguration => {
+            return projectConfiguration.getTypeColors();
+        }).then(typeColors => this.typeColors = typeColors);
+    }
 
     public ngAfterViewInit() {
 
@@ -55,11 +63,7 @@ export class MapComponent implements OnChanges {
             this.map = this.createMap();
         }
 
-        if (this.update) {
-            this.clearMap();
-            this.addGeometriesToMap();
-            this.setView();
-        }
+        this.ready.then(() => this.updateMap(changes));
     }
 
     private createMap(): L.Map {
@@ -72,6 +76,15 @@ export class MapComponent implements OnChanges {
         });
 
         return map;
+    }
+
+    protected updateMap(changes: SimpleChanges) {
+
+        if (this.update) {
+            this.clearMap();
+            this.addGeometriesToMap();
+            this.setView();
+        }
     }
 
     protected setView() {
@@ -168,7 +181,8 @@ export class MapComponent implements OnChanges {
 
         switch(geometry.type) {
             case 'Point':
-                this.addMarkerToMap(geometry.coordinates, document);
+                let marker: IdaiFieldMarker = this.addMarkerToMap(geometry.coordinates, document);
+                this.extendBounds(marker.getLatLng());
                 break;
             case 'LineString':
                 let polyline: IdaiFieldPolyline = this.addPolylineToMap(geometry.coordinates, document);
@@ -193,36 +207,33 @@ export class MapComponent implements OnChanges {
         }
     }
 
-    private addMarkerToMap(coordinates: any, document: IdaiFieldDocument): void {
+    private addMarkerToMap(coordinates: any, document: IdaiFieldDocument): IdaiFieldMarker {
 
-        this.configLoader.getProjectConfiguration().then(config => {
+        let latLng = L.latLng([coordinates[1], coordinates[0]]);
 
-            let latLng = L.latLng([coordinates[1], coordinates[0]]);
-
-            let color = config.getColorForType(document.resource.type);
-            let extraClasses = (this.selectedDocument && this.selectedDocument.resource.id == document.resource.id) ?
-                'active' : '';
-            let icon = this.generateMarkerIcon(color, extraClasses);
-            let marker: IdaiFieldMarker = L.marker(latLng, {
-                icon: icon
-            });
-            marker.document = document;
-
-            marker.bindTooltip(this.getShortDescription(document.resource), {
-                offset: L.point(0, -40),
-                direction: 'top',
-                opacity: 1.0});
-
-            let mapComponent = this;
-            marker.on('click', function() {
-                mapComponent.select(this.document);
-            });
-
-            marker.addTo(this.map);
-            this.markers[document.resource.id] = marker;
-
-            this.extendBounds(marker.getLatLng());
+        let color = this.typeColors[document.resource.type];
+        let extraClasses = (this.selectedDocument && this.selectedDocument.resource.id == document.resource.id) ?
+            'active' : '';
+        let icon = this.generateMarkerIcon(color, extraClasses);
+        let marker: IdaiFieldMarker = L.marker(latLng, {
+            icon: icon
         });
+        marker.document = document;
+
+        marker.bindTooltip(this.getShortDescription(document.resource), {
+            offset: L.point(0, -40),
+            direction: 'top',
+            opacity: 1.0});
+
+        let mapComponent = this;
+        marker.on('click', function() {
+            mapComponent.select(this.document);
+        });
+
+        marker.addTo(this.map);
+        this.markers[document.resource.id] = marker;
+
+        return marker;
     }
 
     private addPolylineToMap(coordinates: any, document: IdaiFieldDocument): IdaiFieldPolyline {
@@ -265,40 +276,34 @@ export class MapComponent implements OnChanges {
 
     private setPathOptions(path: L.Path, document: IdaiFieldDocument) {
 
-        this.configLoader.getProjectConfiguration().then(config => {
+        let style = { color: this.typeColors[document.resource.type] };
+        if (this.selectedDocument && this.selectedDocument.resource.id == document.resource.id) {
+            style['className'] = 'active';
+        }
+        path.setStyle(style);
 
-            let style = { color: config.getColorForType(document.resource.type) };
-            if (this.selectedDocument && this.selectedDocument.resource.id == document.resource.id) {
-                style['className'] = 'active';
-            }
-            path.setStyle(style);
-
-            path.bindTooltip(this.getShortDescription(document.resource), {
-                direction: 'center',
-                opacity: 1.0
-            });
-
-            let mapComponent = this;
-            path.on('click', function (event: L.Event) {
-                if (mapComponent.select(this.document)) L.DomEvent.stop(event);
-            });
-
-            path.addTo(this.map);
+        path.bindTooltip(this.getShortDescription(document.resource), {
+            direction: 'center',
+            opacity: 1.0
         });
+
+        let mapComponent = this;
+        path.on('click', function (event: L.Event) {
+            if (mapComponent.select(this.document)) L.DomEvent.stop(event);
+        });
+
+        path.addTo(this.map);
     }
 
     private setPathOptionsForMainTypeDocument(path: L.Path, document: IdaiFieldDocument) {
 
-        this.configLoader.getProjectConfiguration().then(config => {
-
-            path.setStyle({
-                color: config.getColorForType(document.resource.type),
-                className: 'main',
-                interactive: false
-            });
-
-            path.addTo(this.map);
+        path.setStyle({
+            color: this.typeColors[document.resource.type],
+            className: 'main',
+            interactive: false
         });
+
+        path.addTo(this.map);
     }
 
     private focusMarker(marker: L.Marker) {
