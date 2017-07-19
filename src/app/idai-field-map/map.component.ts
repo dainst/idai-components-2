@@ -247,7 +247,7 @@ export class MapComponent implements OnChanges {
         if (document == this.mainTypeDocument) {
             this.setPathOptionsForMainTypeDocument(polyline, document);
         } else {
-            this.setPathOptions(polyline, document);
+            this.setPathOptions(polyline, document, 'polyline');
         }
 
         let polylines: Array<IdaiFieldPolyline>
@@ -266,7 +266,7 @@ export class MapComponent implements OnChanges {
         if (document == this.mainTypeDocument) {
             this.setPathOptionsForMainTypeDocument(polygon, document);
         } else {
-            this.setPathOptions(polygon, document);
+            this.setPathOptions(polygon, document, 'polygon');
         }
 
         let polygons: Array<IdaiFieldPolygon>
@@ -277,12 +277,14 @@ export class MapComponent implements OnChanges {
         return polygon;
     }
 
-    private setPathOptions(path: L.Path, document: IdaiFieldDocument) {
+    private setPathOptions(path: L.Path, document: IdaiFieldDocument, className: string) {
 
-        let style = { color: this.typeColors[document.resource.type] };
         if (this.selectedDocument && this.selectedDocument.resource.id == document.resource.id) {
-            style['className'] = 'active';
+            className = className + ' active';
         }
+
+        let style = { color: this.typeColors[document.resource.type], className: className };
+
         path.setStyle(style);
 
         path.bindTooltip(this.getShortDescription(document.resource), {

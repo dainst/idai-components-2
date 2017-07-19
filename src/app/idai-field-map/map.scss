@@ -17,33 +17,29 @@
   .leaflet-overlay-pane {
 
     path {
-      stroke-width: 0;
+
+      &.polygon {
+        stroke-width: 0px;
+
+        &.active {
+          fill-opacity: 0.5;
+        }
+      }
+
+      &.polyline {
+        stroke-width: 2px;
+        stroke-opacity: 0.5;
+
+        &.active {
+          stroke-opacity: 1.0;
+        }
+      }
 
       &.main {
         stroke-width: 1px;
         stroke-dasharray: 5;
         stroke-opacity: 0.2;
         fill: none;
-      }
-
-      &.active {
-        fill-opacity: 0.5;
-      }
-
-      &.editable {
-        stroke: blue;
-        stroke-width: 1px;
-      }
-
-      &.templine {
-        stroke: blue;
-        stroke-width: 1px;
-      }
-
-      &.hintline {
-        stroke: blue;
-        stroke-width: 1px;
-        stroke-dasharray: 5;
       }
     }
   }
