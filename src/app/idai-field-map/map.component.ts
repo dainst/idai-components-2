@@ -40,7 +40,7 @@ export class MapComponent implements OnChanges {
 
     protected bounds: any[] = []; // in fact L.LatLng[], but leaflet typings are incomplete
 
-    constructor(private configLoader: ConfigLoader) { }
+    constructor(protected configLoader: ConfigLoader) { }
 
     public ngAfterViewInit() {
 
@@ -199,10 +199,10 @@ export class MapComponent implements OnChanges {
 
             let latLng = L.latLng([coordinates[1], coordinates[0]]);
 
-            let color = (this.selectedDocument && this.selectedDocument.resource.id == document.resource.id) ?
-                'red' : config.getColorForType(document.resource.type);
-            let icon = this.generateMarkerIcon(color);
-
+            let color = config.getColorForType(document.resource.type);
+            let extraClasses = (this.selectedDocument && this.selectedDocument.resource.id == document.resource.id) ?
+                'active' : '';
+            let icon = this.generateMarkerIcon(color, extraClasses);
             let marker: IdaiFieldMarker = L.marker(latLng, {
                 icon: icon
             });
@@ -231,7 +231,7 @@ export class MapComponent implements OnChanges {
         polyline.document = document;
 
         if (document == this.mainTypeDocument) {
-            this.setPathOptionsForMainTypeDocument(polyline);
+            this.setPathOptionsForMainTypeDocument(polyline, document);
         } else {
             this.setPathOptions(polyline, document);
         }
@@ -250,7 +250,7 @@ export class MapComponent implements OnChanges {
         polygon.document = document;
 
         if (document == this.mainTypeDocument) {
-            this.setPathOptionsForMainTypeDocument(polygon);
+            this.setPathOptionsForMainTypeDocument(polygon, document);
         } else {
             this.setPathOptions(polygon, document);
         }
@@ -267,11 +267,11 @@ export class MapComponent implements OnChanges {
 
         this.configLoader.getProjectConfiguration().then(config => {
 
+            let style = { color: config.getColorForType(document.resource.type) };
             if (this.selectedDocument && this.selectedDocument.resource.id == document.resource.id) {
-                path.setStyle({color: 'red'});
-            } else {
-                path.setStyle({color: config.getColorForType(document.resource.type)});
+                style['className'] = 'active';
             }
+            path.setStyle(style);
 
             path.bindTooltip(this.getShortDescription(document.resource), {
                 direction: 'center',
@@ -287,16 +287,18 @@ export class MapComponent implements OnChanges {
         });
     }
 
-    private setPathOptionsForMainTypeDocument(path: L.Path) {
+    private setPathOptionsForMainTypeDocument(path: L.Path, document: IdaiFieldDocument) {
 
-        path.setStyle({
-            fill: false,
-            dashArray: '5, 9',
-            color: '#99ccff',
-            interactive: false
+        this.configLoader.getProjectConfiguration().then(config => {
+
+            path.setStyle({
+                color: config.getColorForType(document.resource.type),
+                className: 'main',
+                interactive: false
+            });
+
+            path.addTo(this.map);
         });
-
-        path.addTo(this.map);
     }
 
     private focusMarker(marker: L.Marker) {
@@ -360,11 +362,12 @@ export class MapComponent implements OnChanges {
         return L.polygon(<any> feature.geometry.coordinates[0]);
     }
 
-    protected generateMarkerIcon(color: string): L.Icon {
+    protected generateMarkerIcon(color: string, extraClasses: string = ''): L.Icon {
         return L.VectorMarkers.icon({
             prefix: 'mdi',
             icon: 'checkbox-blank-circle',
-            markerColor: color
+            markerColor: color,
+            extraClasses: extraClasses
         });
     }
 }
