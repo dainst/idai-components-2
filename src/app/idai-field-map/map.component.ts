@@ -78,16 +78,17 @@ export class MapComponent implements OnChanges {
         return map;
     }
 
-    protected updateMap(changes: SimpleChanges) {
+    protected updateMap(changes: SimpleChanges): Promise<any> {
 
-        if (this.update) {
-            this.clearMap();
-            this.addGeometriesToMap();
-            this.setView();
-        }
+        if (!this.update) return Promise.resolve();
+
+        this.clearMap();
+        this.addGeometriesToMap();
+
+        return this.setView();
     }
 
-    protected setView() {
+    protected setView(): Promise<any> {
 
         this.map.invalidateSize(true);
 
@@ -106,6 +107,8 @@ export class MapComponent implements OnChanges {
         } else {
             this.map.setView([0, 0], 5);
         }
+
+        return Promise.resolve();
     }
 
     private clearMap() {
