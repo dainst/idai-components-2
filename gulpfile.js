@@ -13,7 +13,8 @@ gulp.task('convert-sass', function () {
 
     return gulp.src([
         'src/scss/idai-components-2.scss',
-        'node_modules/leaflet/dist/leaflet.css'
+        'node_modules/leaflet/dist/leaflet.css',
+        'node_modules/Leaflet.vector-markers/dist/leaflet-vector-markers.css'
     ])
         .pipe(sass({
             includePaths: [

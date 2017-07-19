@@ -363,6 +363,7 @@ export class MapComponent implements OnChanges {
     }
 
     protected generateMarkerIcon(color: string, extraClasses: string = ''): L.Icon {
+
         return L.VectorMarkers.icon({
             prefix: 'mdi',
             icon: 'checkbox-blank-circle',
