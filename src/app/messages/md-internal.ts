@@ -23,6 +23,7 @@ export class MDInternal extends MD {
     public static VALIDATION_ERROR_MISSINGRELATIONTYPE: string = 'validation/error/missingrelationtype';
     public static VALIDATION_ERROR_TOPLEVELTYPEHASPARENT: string = 'validation/error/topleveltypehasparent';
     public static VALIDATION_ERROR_INCOMPLETERECORDEDIN: string = 'validation/error/incompleterecordedin';
+    public static VALIDATION_ERROR_NOPROJECTRECORDEDIN: string = 'validation/error/noprojectrecordedin';
     public static VALIDATION_ERROR_MISSINGFIELDNAME: string = 'validation/error/missingfieldname';
     public static VALIDATION_ERROR_INVALIDINPUTTYPE: string = 'validation/error/invalidinputtype';
     public static VALIDATION_ERROR_MISSINGVALUELIST: string = 'validation/error/missingvaluelist';
@@ -119,6 +120,12 @@ export class MDInternal extends MD {
         };
         this.msgs[MDInternal.VALIDATION_ERROR_INCOMPLETERECORDEDIN]={
             content: 'Fehlende oder unvollständige Definition von \'recordedIn\' für Top-Level-Type \'{0}\'.',
+            level: 'danger',
+            params: [],
+            hidden: false
+        };
+        this.msgs[MDInternal.VALIDATION_ERROR_NOPROJECTRECORDEDIN]={
+            content: 'Fehlende Definition von \'recordedIn\' für den Type \'project\'.',
             level: 'danger',
             params: [],
             hidden: false

@@ -1,8 +1,8 @@
 import {ConfigurationDefinition} from './configuration-definition';
 import {MDInternal} from '../messages/md-internal';
 import {TypeDefinition} from './type-definition';
-import {ViewDefinition} from "./view-definition";
-import {RelationDefinition} from "./relation-definition";
+import {ViewDefinition} from './view-definition';
+import {RelationDefinition} from './relation-definition';
 
 /**
  * @author F.Z.
@@ -52,7 +52,7 @@ export class ConfigurationValidator {
         const missingRelationTypeErrors = this.findMissingRelationType(configuration.relations, configuration.types);
         if (missingRelationTypeErrors) msgs = msgs.concat(missingRelationTypeErrors);
 
-        const mandatoryRelationsError = this.validateMandatoryRelations(configuration.relations, configuration.types);
+        const mandatoryRelationsError = this.validateMandatoryRelations(configuration.relations);
         if (mandatoryRelationsError.length) msgs = msgs.concat(mandatoryRelationsError);
 
         const fieldError = this.validateFieldDefinitions(configuration.types);
@@ -135,7 +135,8 @@ export class ConfigurationValidator {
         return msgs;
     }
 
-    private findMissingRelationType(relations: Array<RelationDefinition>, types: Array<TypeDefinition>): Array<Array<string>> {
+    private findMissingRelationType(relations: Array<RelationDefinition>,
+                                    types: Array<TypeDefinition>): Array<Array<string>> {
 
         let msgs = [];
         const typeNames: Array<string> = types.map(type => type.type);
@@ -151,7 +152,7 @@ export class ConfigurationValidator {
         return msgs;
     }
 
-    private validateMandatoryRelations(relations: Array<RelationDefinition>, types: Array<TypeDefinition>): Array<Array<string>> {
+    private validateMandatoryRelations(relations: Array<RelationDefinition>): Array<Array<string>> {
 
         let msgs = [];
 
@@ -172,7 +173,7 @@ export class ConfigurationValidator {
                 }
             }
         } else {
-            msgs.push([MDInternal.VALIDATION_ERROR_INCOMPLETERECORDEDIN, 'project']);
+            msgs.push([MDInternal.VALIDATION_ERROR_NOPROJECTRECORDEDIN]);
         }
 
         return msgs;

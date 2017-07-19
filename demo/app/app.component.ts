@@ -1,10 +1,10 @@
 import {Component,OnInit} from '@angular/core';
 import {Messages} from '../../src/app/messages/messages';
 import {ConfigLoader} from '../../src/app/configuration/config-loader';
-import {ConfigurationValidator} from "../../src/app/configuration/configuration-validator";
-import {ConfigurationPreprocessor} from "../../src/app/configuration/configuration-preprocessor";
-import {OBJECTS} from "./sample-objects";
-import {Datastore} from "../../src/app/datastore/datastore";
+import {ConfigurationValidator} from '../../src/app/configuration/configuration-validator';
+import {ConfigurationPreprocessor} from '../../src/app/configuration/configuration-preprocessor';
+import {OBJECTS} from './sample-objects';
+import {Datastore} from '../../src/app/datastore/datastore';
 
 @Component({
     selector: 'idai-components-demo-app',
@@ -15,7 +15,7 @@ import {Datastore} from "../../src/app/datastore/datastore";
  */
 export class AppComponent implements OnInit {
 
-    private static PROJECT_CONFIGURATION_PATH='demo/config/Configuration.json';
+    private static PROJECT_CONFIGURATION_PATH = 'demo/config/Configuration.json';
 
     constructor(
         private configLoader: ConfigLoader,
@@ -25,15 +25,21 @@ export class AppComponent implements OnInit {
 
         this.configLoader.go(
             AppComponent.PROJECT_CONFIGURATION_PATH,
-            new ConfigurationPreprocessor([{"type":"image","fields":[{"name":"dimensions"}]}],
+            new ConfigurationPreprocessor(
                 [
-                    {"name":"shortDescription"},
-                    {"name":"identifier"}
+                    { 'type': 'image', 'fields': [ { 'name': 'dimensions' } ] }
                 ],
                 [
-                    {name:'depicts', domain:['image:inherit'], inverse:'isDepictedBy', visible: false, editable: false},
-                    {name:'isDepictedBy', range:['image:inherit'], inverse: 'depicts', visible: false, editable: false}
-                ]),
+                    { 'name': 'shortDescription' },
+                    { 'name': 'identifier' }
+                ],
+                [
+                    { name: 'depicts', domain: ['image:inherit'], inverse:'isDepictedBy', visible: false,
+                        editable: false},
+                    { name: 'isDepictedBy', range: ['image:inherit'], inverse: 'depicts', visible: false,
+                        editable: false}
+                ]
+            ),
             new ConfigurationValidator([])
         );
 
