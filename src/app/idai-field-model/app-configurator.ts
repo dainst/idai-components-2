@@ -45,7 +45,7 @@ export class AppConfigurator {
             },
             {
                 name: 'coordinateReferenceSystem',
-                label: 'Koordinatenreferenzsystem',
+                label: 'Koordinatenbezugssystem',
                 inputType: 'dropdown',
                 valuelist: [
                     'Eigenes Koordinatenbezugssystem',
