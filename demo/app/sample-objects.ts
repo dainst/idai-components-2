@@ -2,7 +2,7 @@ import {Document} from '../../src/app/model/document';
 
 export var OBJECTS: Document[] = [
     
-    { "resource": { "id": "/demo/1", "identifier": "ob1", "type": "object" , "multiple_input": [ "a" , "b" ],
+    { "resource": { "id": "/demo/1", "identifier": "ob1", "type": "object" , "multiple_input": [ "a" , "b" ], "unsigned_integer_input" : 42, "unsigned_float_input" : 42.3, "float_input" : -42,
         "localized_multiple_input" : [{ "lang": "de", "content": [ "a" , "b" ]}, {"lang": "en", "content":  [ "c" , "d" ] }], "single_select_radio": "CD", "relations" : {} }},
     
     { "resource": { "id": "/demo/2", "identifier": "ob2", "non_editable" : "not editable", "type": "object", "relations" : {} }},

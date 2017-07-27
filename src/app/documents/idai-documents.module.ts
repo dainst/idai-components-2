@@ -13,6 +13,7 @@ import {RelationPickerGroupComponent} from './relation-picker-group.component';
 import {CheckboxesComponent} from './forms/checkboxes.component';
 import {DropdownComponent} from './forms/dropdown.component';
 import {InputComponent} from './forms/input.component';
+import {NumberComponent} from './forms/number.component';
 import {InputsComponent} from './forms/inputs.component';
 import {InputsLocalizedComponent} from './forms/inputs-localized.component';
 import {MultiselectComponent} from './forms/multiselect.component';
@@ -43,6 +44,7 @@ import {IdaiWidgetsModule} from "../widgets/idai-widgets.module";
         CheckboxesComponent,
         DropdownComponent,
         InputComponent,
+        NumberComponent,
         InputsComponent,
         InputsLocalizedComponent,
         MultiselectComponent,
