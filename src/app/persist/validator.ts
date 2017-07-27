@@ -45,6 +45,14 @@ export class Validator {
                 return Promise.reject(errr);
             }
 
+            let invalidNumericValues;
+            if (invalidNumericValues = Validator.validateNumericValues(resource,projectConfiguration)) {
+                let errrr = [invalidNumericValues.length == 1 ? MDInternal.VALIDATION_ERROR_INVALID_NUMERIC_VALUE : MDInternal.VALIDATION_ERROR_INVALID_NUMERIC_VALUES];
+                errrr.push(resource.type);
+                errrr.push(invalidNumericValues.join(", "));
+                return Promise.reject(errrr);
+            }
+
             return this.validateCustom(doc);
         });
     }
@@ -135,5 +143,44 @@ export class Validator {
         else {
             return undefined;
         }
+    }
+
+    public static validateNumericValues(resource: any, projectConfiguration: ProjectConfiguration): string[] {
+        let projectFields = projectConfiguration.getFieldDefinitions(resource.type);
+        let numericInputTypes = ["unsignedInt", "float", "unsignedFloat"];
+        let invalidFields = [];
+
+        for (let i in projectFields) {
+            let fieldDef = projectFields[i];
+
+            if (fieldDef.hasOwnProperty('inputType')) {
+                if (numericInputTypes.indexOf(fieldDef["inputType"]) != -1) {
+                    let valueIsValid = false;
+                    let value = resource[fieldDef.name]
+
+                    if (fieldDef["inputType"] == "unsignedInt") {
+                        valueIsValid = value >>> 0 === parseFloat(value)
+                    }
+
+                    if (fieldDef["inputType"] == "unsignedFloat") {
+                        valueIsValid = 0 < (value = parseFloat(value))
+                    }
+                    if (fieldDef["inputType"] == "float") {
+                        valueIsValid = !isNaN(value = parseFloat(value))
+                    }
+
+                    if (!valueIsValid) {
+                        invalidFields.push(fieldDef.label)
+                    }
+                }
+            }
+        }
+
+        if (invalidFields.length > 0) {
+            return invalidFields;
+        } else {
+            return undefined;
+        }
+        
     }
 }

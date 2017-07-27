@@ -30,6 +30,8 @@ export class MDInternal extends MD {
     public static VALIDATION_ERROR_INVALIDTYPE: string = 'validation/error/invalidtype';
     public static VALIDATION_ERROR_INVALIDFIELD: string = 'validation/error/invalidfield';
     public static VALIDATION_ERROR_INVALIDFIELDS: string = 'validation/error/invalidfields';
+    public static VALIDATION_ERROR_INVALID_NUMERIC_VALUE: string = 'validation/error/invalidfield';
+    public static VALIDATION_ERROR_INVALID_NUMERIC_VALUES: string = 'validation/error/invalidfields';
     
     public static VALIDATION_ERROR_MISSINGTYPE: string = 'validation/error/missingtype';
     public static VALIDATION_ERROR_DUPLICATETYPE: string = 'validation/error/duplicatetype';
@@ -78,6 +80,18 @@ export class MDInternal extends MD {
         };
         this.msgs[MDInternal.VALIDATION_ERROR_INVALIDFIELDS]={
             content: 'Fehlende Felddefinitionen für die Felder \'{1}\' der Ressource vom Typ \'{0}\'.',
+            level: 'danger',
+            params: [],
+            hidden: false
+        };
+        this.msgs[MDInternal.VALIDATION_ERROR_INVALID_NUMERIC_VALUE]={
+            content: 'Falsche Zahlenwerte für das Feld \'{1}\' der Ressource vom Typ \'{0}\'.',
+            level: 'danger',
+            params: [],
+            hidden: false
+        };
+        this.msgs[MDInternal.VALIDATION_ERROR_INVALID_NUMERIC_VALUES]={
+            content: 'Falsche Zahlenwerte für das Felder \'{1}\' der Ressource vom Typ \'{0}\'.',
             level: 'danger',
             params: [],
             hidden: false

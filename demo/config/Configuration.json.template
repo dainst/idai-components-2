@@ -22,6 +22,24 @@
           "description" : "this is a simple input field"
         },
         {
+          "name": "unsigned_integer_input",
+          "label": "Unsigned Integer Input",
+          "inputType": "unsignedInt",
+          "description" : "this is a field for an unsigned Integer"
+        },
+        {
+          "name": "float_input",
+          "label": "Float Input",
+          "inputType": "float",
+          "description" : "this is a field for a Float value"
+        },
+        {
+          "name": "unsigned_float_input",
+          "label": "Unsigned Float Input",
+          "inputType": "unsignedFloat",
+          "description" : "this is a field for an unsigned Float value"
+        },
+        {
           "name" : "multiple_input",
           "label": "Multiple Input",
           "inputType" : "inputs",

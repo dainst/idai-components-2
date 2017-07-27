@@ -1,5 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {PersistenceManager} from '../persist/persistence-manager';
+import {Validator} from '../persist/validator';
+import {Messages} from '../messages/messages';
 import {ProjectConfiguration} from '../configuration/project-configuration';
 import {OnChanges} from '@angular/core';
 import {ConfigLoader} from '../configuration/config-loader';
@@ -21,12 +23,17 @@ export class DocumentEditComponent implements OnChanges, OnInit {
 
     private projectConfiguration: ProjectConfiguration;
 
+    private validator : Validator;
+
     constructor(
         private persistenceManager: PersistenceManager,
-        private configLoader: ConfigLoader
+        private configLoader: ConfigLoader,
+        private messages: Messages
     ) {}
 
     ngOnInit():any {
+        this.validator = new Validator(this.configLoader);
+
         this.configLoader.getProjectConfiguration().then(projectConfiguration => {
             this.projectConfiguration = projectConfiguration;
         });
@@ -34,5 +41,13 @@ export class DocumentEditComponent implements OnChanges, OnInit {
 
     public ngOnChanges() {
         if (this.document) this.persistenceManager.setOldVersions([this.document]);
+    }
+
+    public validate(doc) {
+        this.validator.validate(doc).catch(
+            msgsWithParams => {
+                this.messages.add(msgsWithParams);
+            }
+        );
     }
 }
