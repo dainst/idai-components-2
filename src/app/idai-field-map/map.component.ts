@@ -29,6 +29,7 @@ export class MapComponent implements OnChanges {
     @Input() documents: Array<IdaiFieldDocument>;
     @Input() selectedDocument: IdaiFieldDocument;
     @Input() mainTypeDocument: IdaiFieldDocument;
+    @Input() coordinateReferenceSystem: string;
     @Input() update: boolean;
 
     @Output() onSelectDocument: EventEmitter<IdaiFieldDocument> = new EventEmitter<IdaiFieldDocument>();
@@ -52,23 +53,25 @@ export class MapComponent implements OnChanges {
 
     public ngAfterViewInit() {
 
-        if (this.map) {
-            this.map.invalidateSize(false);
-        }
+        if (this.map) this.map.invalidateSize(false);
     }
 
     public ngOnChanges(changes: SimpleChanges) {
 
-        if (!this.map) {
-            this.map = this.createMap();
-        }
+        if (!this.map) this.map = this.createMap();
 
         this.ready.then(() => this.updateMap(changes));
     }
 
     private createMap(): L.Map {
 
-        const map = L.map('map-container', { crs: L.CRS.Simple, attributionControl: false, minZoom: -1000 });
+        const mapOptions: L.MapOptions = {
+            crs: this.getCoordinateReferenceSystem(),
+            attributionControl: false,
+            minZoom: -1000
+        };
+
+        const map: L.Map = L.map('map-container', mapOptions);
 
         let mapComponent = this;
         map.on('click', function(event: L.MouseEvent) {
@@ -84,6 +87,8 @@ export class MapComponent implements OnChanges {
 
         this.clearMap();
         this.addGeometriesToMap();
+
+        if (changes['coordinateReferenceSystem']) this.updateCoordinateReferenceSystem();
 
         return this.setView();
     }
@@ -380,5 +385,22 @@ export class MapComponent implements OnChanges {
             markerColor: color,
             extraClasses: extraClasses
         });
+    }
+
+    private updateCoordinateReferenceSystem() {
+
+        this.map.options.crs = this.getCoordinateReferenceSystem();
+    }
+
+    private getCoordinateReferenceSystem(): L.CRS {
+
+        switch (this.coordinateReferenceSystem) {
+            case 'EPSG4326 (WGS 84)':
+                return L.CRS.EPSG4326;
+            case 'EPSG3857 (WGS 84 Web Mercator)':
+                return L.CRS.EPSG3857;
+            default:
+                return L.CRS.Simple;
+        }
     }
 }
