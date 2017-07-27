@@ -37,7 +37,23 @@ export class AppConfigurator {
         ]
     }, {
         type: 'project',
-        fields: []
+        label: 'Projekt',
+        fields: [
+            {
+                name: 'identifier',
+                editable: false
+            },
+            {
+                name: 'coordinateReferenceSystem',
+                label: 'Koordinatenbezugssystem',
+                inputType: 'dropdown',
+                valuelist: [
+                    'Eigenes Koordinatenbezugssystem',
+                    'EPSG4326 (WGS 84)',
+                    'EPSG3857 (WGS 84 Web Mercator)'
+                ]
+            }
+        ]
     }];
 
     private defaultFields = [{
