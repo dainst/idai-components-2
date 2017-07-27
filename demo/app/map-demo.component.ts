@@ -102,6 +102,17 @@ export class MapDemoComponent {
         }
     };
 
+    public projectDocument: IdaiFieldDocument = {
+        'resource': {
+            'id': 'mapdemo',
+            'identifier': 'mapdemo',
+            'shortDescription': 'Map-Demo',
+            'coordinateReferenceSystem': 'Eigenes Koordinatenbezugssystem',
+            'relations': {},
+            'type': 'project'
+        }
+    };
+
     public mainTypeDocument: IdaiFieldDocument;
     public selectedDocument: IdaiFieldDocument;
     public liveUpdate: boolean = true;

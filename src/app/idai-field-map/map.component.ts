@@ -29,7 +29,7 @@ export class MapComponent implements OnChanges {
     @Input() documents: Array<IdaiFieldDocument>;
     @Input() selectedDocument: IdaiFieldDocument;
     @Input() mainTypeDocument: IdaiFieldDocument;
-    @Input() coordinateReferenceSystem: string;
+    @Input() projectDocument: IdaiFieldDocument;
     @Input() update: boolean;
 
     @Output() onSelectDocument: EventEmitter<IdaiFieldDocument> = new EventEmitter<IdaiFieldDocument>();
@@ -87,8 +87,7 @@ export class MapComponent implements OnChanges {
 
         this.clearMap();
         this.addGeometriesToMap();
-
-        if (changes['coordinateReferenceSystem']) this.updateCoordinateReferenceSystem();
+        this.updateCoordinateReferenceSystem();
 
         return this.setView();
     }
@@ -394,7 +393,7 @@ export class MapComponent implements OnChanges {
 
     private getCoordinateReferenceSystem(): L.CRS {
 
-        switch (this.coordinateReferenceSystem) {
+        switch (this.projectDocument.resource.coordinateReferenceSystem) {
             case 'EPSG4326 (WGS 84)':
                 return L.CRS.EPSG4326;
             case 'EPSG3857 (WGS 84 Web Mercator)':
