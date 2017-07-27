@@ -393,6 +393,8 @@ export class MapComponent implements OnChanges {
 
     private getCoordinateReferenceSystem(): L.CRS {
 
+        if (!this.projectDocument) return L.CRS.Simple;
+
         switch (this.projectDocument.resource.coordinateReferenceSystem) {
             case 'EPSG4326 (WGS 84)':
                 return L.CRS.EPSG4326;
