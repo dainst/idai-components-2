@@ -37,7 +37,13 @@ export class AppConfigurator {
         ]
     }, {
         type: 'project',
-        fields: []
+        label: 'Projekt',
+        fields: [
+            {
+                name: 'identifier',
+                editable: false
+            }
+        ]
     }];
 
     private defaultFields = [{
