@@ -19,6 +19,7 @@ import {InputsLocalizedComponent} from './forms/inputs-localized.component';
 import {MultiselectComponent} from './forms/multiselect.component';
 import {RadioComponent} from './forms/radio.component';
 import {TextComponent} from './forms/text.component';
+import {DatingComponent} from './forms/dating.component';
 import {FormsModule} from '@angular/forms';
 import {FieldsViewComponent} from "./fields-view.component";
 import {RelationsViewComponent} from "./relations-view.component";
@@ -49,7 +50,8 @@ import {IdaiWidgetsModule} from "../widgets/idai-widgets.module";
         InputsLocalizedComponent,
         MultiselectComponent,
         RadioComponent,
-        TextComponent
+        TextComponent,
+        DatingComponent
     ],
     providers: [
         ConfigLoader,

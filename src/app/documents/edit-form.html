@@ -36,6 +36,9 @@
             <dai-multiselect *ngIf="field.inputType == 'multiselect'" [(resource)]="document['resource']"
                              [field]="field"></dai-multiselect>
 
+            <dai-dating *ngIf="field.inputType == 'dating'" [(resource)]="document['resource']"
+                             [field]="field"></dai-dating>
+
         </div>
     </div>
 </div>

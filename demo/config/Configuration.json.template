@@ -117,6 +117,12 @@
           },
           "inputType" : "inputs_localized",
           "description" : "a localized multi input"
+        },
+        {
+          "name" : "dating_input",
+          "label": "Dating Input",
+          "inputType" : "dating",
+          "description" : "a dating input"
         }
       ]
     },

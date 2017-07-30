@@ -46,3 +46,8 @@ html [type="button"],
 	font-weight: bold !important;;
 	cursor: pointer !important;;
 }
+
+.ng-invalid:not(form)  {
+	border-left: 5px solid;
+	border-color: #a94442 !important;
+}
