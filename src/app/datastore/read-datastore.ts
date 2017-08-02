@@ -31,17 +31,6 @@ export abstract class ReadDatastore  {
     abstract find(query: Query, offset?: number, limit?: number): Promise<Document[]>;
 
     /**
-     * Returns all documents ordered by modification date (descending)
-     
-     * @param type only return documents for the given type
-     * @param offset the number of documents to skip before returning
-     * @param limit the maximum number of documents to be returned
-     * @returns {Promise<Document[]>} an array of documents (rejects with msgWithParams in case of error)
-     */
-    abstract all(type?: string, offset?: number,
-                 limit?: number): Promise<Document[]>;
-
-    /**
      * Updates <code>doc</code> so that it reflects
      * the current state of the doc in the database.
      *
