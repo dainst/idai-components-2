@@ -21,6 +21,7 @@ export class SearchBarComponent implements OnChanges {
 
     private q: string = '';
     private filterOptions: Array<IdaiType> = [];
+    private queryTimeoutReference: number;
 
     // 'resource' or 'image'
     @Input() type: string = 'resource';
@@ -45,9 +46,14 @@ export class SearchBarComponent implements OnChanges {
 
     public qChanged(q): void {
 
-        if (q) this.q = q;
-        else this.q = '';
-        this.emitCurrentQuery();
+        if (q) {
+            this.q = q;
+        } else {
+            this.q = '';
+        }
+
+        if (this.queryTimeoutReference) clearTimeout(this.queryTimeoutReference);
+        this.queryTimeoutReference = setTimeout(this.emitCurrentQuery.bind(this), 500);
     }
 
     public setType(type): void {
@@ -83,7 +89,7 @@ export class SearchBarComponent implements OnChanges {
 
                 this.addFilterOption(type);
             }
-        })
+        });
     }
 
     private addFilterOption(type) {
