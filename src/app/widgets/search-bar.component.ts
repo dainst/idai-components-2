@@ -19,10 +19,6 @@ import {IdaiType} from '../configuration/idai-type';
  */
 export class SearchBarComponent implements OnChanges {
 
-    private q: string = '';
-    private filterOptions: Array<IdaiType> = [];
-    private queryTimeoutReference: number;
-
     // 'resource' or 'image'
     @Input() type: string = 'resource';
 
@@ -35,16 +31,23 @@ export class SearchBarComponent implements OnChanges {
     @Output() onQueryChanged = new EventEmitter<Query>();
     @ViewChild('p') private popover;
 
+    private q: string = '';
+    private filterOptions: Array<IdaiType> = [];
+    private queryTimeoutReference: number;
+    private selectedType: string;
+
+
     constructor(private configLoader: ConfigLoader) {
         this.initializeFilterOptions();
     }
 
-    public ngOnChanges(): void {
+    public ngOnChanges() {
 
+        this.resetSelectedType();
         this.initializeFilterOptions();
     }
 
-    public qChanged(q): void {
+    public qChanged(q: string) {
 
         if (q) {
             this.q = q;
@@ -56,15 +59,20 @@ export class SearchBarComponent implements OnChanges {
         this.queryTimeoutReference = setTimeout(this.emitCurrentQuery.bind(this), 500);
     }
 
-    public setType(type): void {
+    public setSelectedType(selectedType: string) {
 
-        this.type = type;
+        this.selectedType = selectedType;
         this.emitCurrentQuery();
+    }
+
+    public resetSelectedType() {
+
+        this.selectedType = this.type;
     }
 
     private emitCurrentQuery() {
 
-        let query: Query = { q: this.q, type: this.type, prefix: true };
+        let query: Query = { q: this.q, type: this.selectedType, prefix: true };
         this.onQueryChanged.emit(query);
     }
 
@@ -92,7 +100,7 @@ export class SearchBarComponent implements OnChanges {
         });
     }
 
-    private addFilterOption(type) {
+    private addFilterOption(type: IdaiType) {
 
         if (this.filterOptions.indexOf(type) == -1) {
             this.filterOptions.push(type);
