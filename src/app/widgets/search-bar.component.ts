@@ -45,6 +45,7 @@ export class SearchBarComponent implements OnChanges {
 
         this.resetSelectedType();
         this.initializeFilterOptions();
+        this.emitCurrentQuery();
     }
 
     public qChanged(q: string) {
