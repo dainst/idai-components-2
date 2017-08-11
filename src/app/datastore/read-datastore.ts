@@ -26,21 +26,9 @@ export abstract class ReadDatastore  {
      * Perform a fulltext query
      
      * @param query the query object
-     * @param offset the number of documents to skip before returning
-     * @param limit the maximum number of documents to be returned
      * @returns {Promise<Document[]>} an array of documents
      *   Rejects with
      *     [GENERIC_ERROR] - in case of error
      */
-    abstract find(query: Query, offset?: number, limit?: number): Promise<Document[]>;
-
-    /**
-     * Updates <code>doc</code> so that it reflects
-     * the current state of the doc in the database.
-     *
-     * @param doc
-     * @returns {Promise<Document>} an array of documents (rejects with msgWithParams in case of error)
-     */
-    abstract refresh(doc: Document): Promise<Document>;
-
+    abstract find(query: Query): Promise<Document[]>;
 }
