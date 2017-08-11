@@ -3,6 +3,10 @@
  */
 export class DatastoreErrors {
 
+    public static GENERIC_ERROR : string = 'idai-components-2/datastore/genericerror';
+    public static DOCUMENT_RESOUCE_ID_EXISTS : string = 'idai-components-2/datastore/documentresourceidexists';
+    public static DOCUMENT_NOT_FOUND : string = 'idai-components-2/datastore/documentnotfound';
+
     public static GENERIC_SAVE_ERROR : string = 'idai-components-2/datastore/genericsaveerror';
     public static GENERIC_DELETE_ERROR : string = 'idai-components-2/datastore/genericdeleteerror';
     public static SAVE_CONFLICT : string = 'idai-components-2/datastore/saveconflict';
