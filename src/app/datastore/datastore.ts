@@ -28,13 +28,14 @@ export abstract class Datastore extends ReadDatastore {
      * @returns {Promise<Document>} a document
      *   Rejects with
      *     [GENERIC_SAVE_ERROR] - in case of error
+     *     [DOCUMENT_RESOURCE_ID_EXISTS] - if a document with doc.resource.id already exists
      */
     abstract create(doc: Document): Promise<Document>;
 
     /**
      * @param doc
      * @returns {Promise<Document>} a document
-     *    Rejects with
+     *   Rejects with
      *     [GENERIC_SAVE_ERROR] - in case of error
      *     [SAVE_CONFLICT] - in case of conflict
      *     [DOCUMENT_NO_RESOURCE_ID] - if document has no resource id
