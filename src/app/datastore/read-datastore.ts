@@ -28,7 +28,7 @@ export abstract class ReadDatastore  {
      * @param query the query object
      * @returns {Promise<Document[]>} an array of documents
      *   Rejects with
-     *     [GENERIC_ERROR (, cause: any)] - in case of error, including cause, if possible
+     *     [GENERIC_ERROR (, cause: any)] - in case of error, optionally including a cause
      */
     abstract find(query: Query): Promise<Document[]>;
 }
