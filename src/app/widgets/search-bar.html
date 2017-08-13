@@ -1,7 +1,7 @@
 <form class="form-inline" id="search-bar">
 
     <input #searchInput
-           (keyup)="qChanged($event.target.value)"
+           (keyup)="setQ($event.target.value)"
            type="text"
            class="form-control"
            id="object-search"
@@ -26,7 +26,7 @@
                 <ul class="list-group">
                     <li id="choose-type-filter-option-all"
                         class="list-group-item popover-item"
-                        (click)="setSelectedType('resource'); p.close();"
+                        (click)="setSelectedType(undefined); p.close();"
                         [ngClass]="{ 'active': selectedType == '' }">
                         <i>Alle Typen</i>
                     </li>

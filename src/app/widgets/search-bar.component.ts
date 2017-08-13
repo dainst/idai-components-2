@@ -19,8 +19,7 @@ import {IdaiType} from '../configuration/idai-type';
  */
 export class SearchBarComponent implements OnChanges {
 
-    // 'resource' or 'image'
-    @Input() type: string = 'resource';
+    private type: string = undefined;
 
     // If these values are set, only valid domain types for the given relation name & range type are shown in the
     // filter menu.
@@ -48,14 +47,9 @@ export class SearchBarComponent implements OnChanges {
         this.emitCurrentQuery();
     }
 
-    public qChanged(q: string) {
+    public setQ(q: string) {
 
-        if (q) {
-            this.q = q;
-        } else {
-            this.q = '';
-        }
-
+        q ? this.q = q : this.q = '';
         if (this.queryTimeoutReference) clearTimeout(this.queryTimeoutReference);
         this.queryTimeoutReference = setTimeout(this.emitCurrentQuery.bind(this), 500);
     }
@@ -111,8 +105,8 @@ export class SearchBarComponent implements OnChanges {
     private handleClick(event) {
 
         if (!this.popover) return;
-        var target = event.target;
-        var inside = false;
+        let target = event.target;
+        let inside = false;
         do {
             if (target.id === 'filter-button') {
                 inside = true;
