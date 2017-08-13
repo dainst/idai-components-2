@@ -26,7 +26,7 @@ export class SearchBarComponent implements OnChanges {
     @Input() relationName: string;
     @Input() relationRangeType: string;
 
-    @Input() showFiltersMenu: boolean;
+    @Input() showFiltersMenu: boolean = true;
     @Output() onQueryChanged = new EventEmitter<Query>();
     @ViewChild('p') private popover;
 
