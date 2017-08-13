@@ -14,8 +14,8 @@
                 [ngbPopover]="filterMenu"
                 #p="ngbPopover"
                 placement="bottom">
-            <span *ngIf="selectedType" class="mdi mdi-filter"></span>
-            <span *ngIf="!selectedType">
+            <span *ngIf="!selectedType" class="mdi mdi-filter"></span>
+            <span *ngIf="selectedType">
                 <type-icon [type]="selectedType" size="30"></type-icon>
             </span>
         </button>
