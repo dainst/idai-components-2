@@ -19,8 +19,6 @@ import {IdaiType} from '../configuration/idai-type';
  */
 export class SearchBarComponent implements OnChanges {
 
-    private type: string = undefined;
-
     // If these values are set, only valid domain types for the given relation name & range type are shown in the
     // filter menu.
     @Input() relationName: string;
@@ -62,7 +60,7 @@ export class SearchBarComponent implements OnChanges {
 
     public resetSelectedType() {
 
-        this.selectedType = this.type;
+        this.selectedType = undefined;
     }
 
     private emitCurrentQuery() {
@@ -73,23 +71,16 @@ export class SearchBarComponent implements OnChanges {
 
     private initializeFilterOptions() {
 
+        this.filterOptions = [];
+
         this.configLoader.getProjectConfiguration().then(projectConfiguration => {
 
-            let types = projectConfiguration.getTypesList();
-            this.filterOptions = [];
-
-            for (let type of types) {
-                if (type.name == 'image' || type.name == 'project') continue;
-
-                let parentTypes: Array<string> = projectConfiguration.getParentTypes(type.name);
-                if (parentTypes.indexOf('image') > -1) continue;
-
+            for (let type of projectConfiguration.getTypesList()) {
                 if (this.relationName && this.relationRangeType
                         && !projectConfiguration.isAllowedRelationDomainType(type.name, this.relationRangeType,
                         this.relationName)) {
                     continue;
                 }
-
                 this.addFilterOption(type);
             }
         });
@@ -118,5 +109,4 @@ export class SearchBarComponent implements OnChanges {
             this.popover.close();
         }
     }
-
 }
