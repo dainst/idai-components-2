@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output, OnChanges, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, Output, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
 import {ConfigLoader} from '../configuration/config-loader';
 import {IdaiType} from '../configuration/idai-type';
 
@@ -40,11 +40,13 @@ export class SearchBarComponent implements OnChanges {
         this.initializeFilterOptions();
     }
 
-    public ngOnChanges() {
+    public ngOnChanges(changes: SimpleChanges) {
 
-        this.initializeFilterOptions();
-        this.q = '';
-        this.emitQueryString();
+        if (changes['relationName'] || changes['relationRangeType']) {
+            this.initializeFilterOptions();
+            this.q = '';
+            this.emitQueryString();
+        }
     }
 
     public setType(type: string) {
