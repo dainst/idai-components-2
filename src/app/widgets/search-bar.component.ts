@@ -44,13 +44,7 @@ export class SearchBarComponent implements OnChanges {
 
         this.initializeFilterOptions();
         this.q = '';
-    }
-
-    public setQueryString(q: string) {
-
-        q ? this.q = q : this.q = '';
-        if (this.queryTimeoutReference) clearTimeout(this.queryTimeoutReference);
-        this.queryTimeoutReference = setTimeout(this.emitQueryString.bind(this), 300);
+        this.emitQueryString();
     }
 
     public setType(type: string) {
@@ -62,6 +56,12 @@ export class SearchBarComponent implements OnChanges {
     public emitQueryString() {
 
         this.onQueryStringChanged.emit(this.q);
+    }
+
+    public emitQueryStringWithTimeout() {
+
+        if (this.queryTimeoutReference) clearTimeout(this.queryTimeoutReference);
+        this.queryTimeoutReference = setTimeout(this.emitQueryString.bind(this), 300);
     }
 
     private initializeFilterOptions() {

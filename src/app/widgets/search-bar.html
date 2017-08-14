@@ -1,7 +1,9 @@
 <form class="form-inline" id="search-bar">
 
     <input #searchInput
-           (keyup)="setQueryString($event.target.value)"
+           [(ngModel)]="q"
+           (keyup)="emitQueryStringWithTimeout()"
+           name="searchInput"
            type="text"
            class="form-control"
            id="object-search"
