@@ -23,6 +23,7 @@ export class SearchBarComponent implements OnChanges {
     @Input() relationName: string;
     @Input() relationRangeType: string;
 
+    @Input() q: string = '';
     @Input() type: string;
     @Input() showFiltersMenu: boolean = true;
 
@@ -31,21 +32,16 @@ export class SearchBarComponent implements OnChanges {
 
     @ViewChild('p') private popover;
 
-    private q: string = '';
     private filterOptions: Array<IdaiType> = [];
     private queryTimeoutReference: number;
 
 
-    constructor(private configLoader: ConfigLoader) {
-        this.initializeFilterOptions();
-    }
+    constructor(private configLoader: ConfigLoader) {}
 
     public ngOnChanges(changes: SimpleChanges) {
 
         if (changes['relationName'] || changes['relationRangeType']) {
             this.initializeFilterOptions();
-            this.q = '';
-            this.emitQueryString();
         }
     }
 
