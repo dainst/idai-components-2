@@ -1,7 +1,7 @@
 <form class="form-inline" id="search-bar">
 
     <input #searchInput
-           (keyup)="setQ($event.target.value)"
+           (keyup)="setQueryString($event.target.value)"
            type="text"
            class="form-control"
            id="object-search"
@@ -14,9 +14,9 @@
                 [ngbPopover]="filterMenu"
                 #p="ngbPopover"
                 placement="bottom">
-            <span *ngIf="!selectedType" class="mdi mdi-filter"></span>
-            <span *ngIf="selectedType">
-                <type-icon [type]="selectedType" size="30"></type-icon>
+            <span *ngIf="!type" class="mdi mdi-filter"></span>
+            <span *ngIf="type">
+                <type-icon [type]="type" size="30"></type-icon>
             </span>
         </button>
 
@@ -26,15 +26,15 @@
                 <ul class="list-group">
                     <li id="choose-type-filter-option-all"
                         class="list-group-item popover-item"
-                        (click)="setSelectedType(undefined); p.close();"
-                        [ngClass]="{ 'active': selectedType == '' }">
+                        (click)="setType(undefined); p.close();"
+                        [ngClass]="{ 'active': type == '' }">
                         <i>Alle Typen</i>
                     </li>
                     <li *ngFor="let f of filterOptions; let index = index"
                         id="choose-type-filter-option-{{index}}"
                         class="list-group-item popover-item"
-                        (click)="setSelectedType(f.name); p.close();"
-                        [ngClass]="{ 'active': selectedType == f.name }">
+                        (click)="setType(f.name); p.close();"
+                        [ngClass]="{ 'active': type == f.name }">
                         <type-icon [type]="f.name" size="30"></type-icon> {{f.label}}
                     </li>
                 </ul>

@@ -1,5 +1,4 @@
 import {Component, EventEmitter, Input, Output, OnChanges, ViewChild} from '@angular/core';
-import {Query} from '../datastore/query';
 import {ConfigLoader} from '../configuration/config-loader';
 import {IdaiType} from '../configuration/idai-type';
 
@@ -24,14 +23,17 @@ export class SearchBarComponent implements OnChanges {
     @Input() relationName: string;
     @Input() relationRangeType: string;
 
+    @Input() type: string;
     @Input() showFiltersMenu: boolean = true;
-    @Output() onQueryChanged = new EventEmitter<Query>();
+
+    @Output() onTypeChanged = new EventEmitter<string>();
+    @Output() onQueryStringChanged = new EventEmitter<string>();
+
     @ViewChild('p') private popover;
 
     private q: string = '';
     private filterOptions: Array<IdaiType> = [];
     private queryTimeoutReference: number;
-    private selectedType: string;
 
 
     constructor(private configLoader: ConfigLoader) {
@@ -40,35 +42,25 @@ export class SearchBarComponent implements OnChanges {
 
     public ngOnChanges() {
 
-        this.resetSelectedType();
         this.initializeFilterOptions();
-        this.emitCurrentQuery();
     }
 
-    public setQ(q: string) {
+    public setQueryString(q: string) {
 
         q ? this.q = q : this.q = '';
         if (this.queryTimeoutReference) clearTimeout(this.queryTimeoutReference);
-        this.queryTimeoutReference = setTimeout(this.emitCurrentQuery.bind(this), 500);
+        this.queryTimeoutReference = setTimeout(this.emitQueryString.bind(this), 300);
     }
 
-    public setSelectedType(selectedType: string) {
+    public setType(type: string) {
 
-        this.selectedType = selectedType;
-        this.emitCurrentQuery();
+        this.type = type;
+        this.onTypeChanged.emit(this.type);
     }
 
-    public resetSelectedType() {
+    public emitQueryString() {
 
-        this.selectedType = undefined;
-    }
-
-    private emitCurrentQuery() {
-
-        let query: Query = { q: this.q };
-        if (this.selectedType) query.types = [this.selectedType];
-
-        this.onQueryChanged.emit(query);
+        this.onQueryStringChanged.emit(this.q);
     }
 
     private initializeFilterOptions() {

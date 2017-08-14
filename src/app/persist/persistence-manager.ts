@@ -105,14 +105,15 @@ export class PersistenceManager {
                 return Promise.all(this.getConnectedDocs(document, oldVersions))
                     .catch(() => Promise.reject([MDInternal.PERSISTENCE_ERROR_TARGETNOTFOUND]));
             })
-            .then(connectedDocs => this.updateDocs(document,connectedDocs,true,user))
+            .then(connectedDocs => this.updateDocs(document, connectedDocs, true, user))
             .then(() => {
                 this.oldVersions = [document];
                 return Promise.resolve(persistedDocument);
             });
     }
 
-    private updateDocs(document,connectedDocs,setInverseRelations,user) {
+    private updateDocs(document: Document, connectedDocs: Array<Document>, setInverseRelations: boolean, user: string) {
+
         const promises = [];
         const docsToUpdate = this.connectedDocsResolver.determineDocsToUpdate(document, connectedDocs, setInverseRelations);
         for (let docToUpdate of docsToUpdate) {
