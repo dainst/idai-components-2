@@ -1,5 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {Resource} from "../../model/resource";
+import {DocumentEditChangeMonitor} from "../document-edit-change-monitor";
+
 
 /**
  * @author Fabian Z.
@@ -14,7 +16,8 @@ export class DiameterComponent {
     @Input() resource: Resource;
     @Input() field: any;
 
-
+    constructor(private documentEditChangeMonitor: DocumentEditChangeMonitor) {
+    }
     public newDiameter: {} = null;
 
     public createNewDiameter() {
@@ -49,5 +52,6 @@ export class DiameterComponent {
     	}
     	delete diameter["editing"];
     	this.newDiameter = null;
+    	this.documentEditChangeMonitor.setChanged();
     }
 }
