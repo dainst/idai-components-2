@@ -43,6 +43,7 @@ export class SearchBarComponent implements OnChanges {
     public ngOnChanges() {
 
         this.initializeFilterOptions();
+        this.q = '';
     }
 
     public setQueryString(q: string) {
