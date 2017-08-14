@@ -14,6 +14,7 @@ import {CheckboxesComponent} from './forms/checkboxes.component';
 import {DropdownComponent} from './forms/dropdown.component';
 import {InputComponent} from './forms/input.component';
 import {NumberComponent} from './forms/number.component';
+import {DiameterComponent} from './forms/diameter.component';
 import {InputsComponent} from './forms/inputs.component';
 import {InputsLocalizedComponent} from './forms/inputs-localized.component';
 import {MultiselectComponent} from './forms/multiselect.component';
@@ -51,7 +52,8 @@ import {IdaiWidgetsModule} from "../widgets/idai-widgets.module";
         MultiselectComponent,
         RadioComponent,
         TextComponent,
-        DatingComponent
+        DatingComponent,
+        DiameterComponent
     ],
     providers: [
         ConfigLoader,
