@@ -65,7 +65,7 @@ export class SearchBarComponent implements OnChanges {
 
     private emitCurrentQuery() {
 
-        let query: Query = { q: this.q, type: this.selectedType };
+        let query: Query = { q: this.q, types: [ this.selectedType ] };
         this.onQueryChanged.emit(query);
     }
 
