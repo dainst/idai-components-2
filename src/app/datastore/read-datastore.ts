@@ -16,7 +16,7 @@ export abstract class ReadDatastore  {
 
     /**
      * @param resourceId the desired document's resource id
-     * @param options options to control implementation specific behaviour
+     * @param options to control implementation specific behaviour
      * @returns {Promise<Document>} a document (rejects with msgWithParams in case of error)
      *  Rejects with
      *     [DOCUMENT_NOT_FOUND] - in case document is missing
