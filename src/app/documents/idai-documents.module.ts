@@ -26,13 +26,15 @@ import {FieldsViewComponent} from "./fields-view.component";
 import {RelationsViewComponent} from "./relations-view.component";
 import {DocumentViewComponent} from "./document-view.component";
 import {IdaiWidgetsModule} from "../widgets/idai-widgets.module";
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
         RouterModule,
-        IdaiWidgetsModule
+        IdaiWidgetsModule,
+        NgbModule.forRoot()
     ],
     declarations: [
         FieldsViewComponent,
