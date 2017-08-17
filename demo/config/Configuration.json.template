@@ -123,6 +123,17 @@
           "label": "Dating Input",
           "inputType" : "dating",
           "description" : "a dating input"
+        },
+        {
+          "name": "dimension",
+          "label": "Dimension",
+          "inputType":"dimension",
+          "description": "",
+          "position_values": [
+            "am Bruch",
+            "oben",
+            "unten"
+          ]
         }
       ]
     },
