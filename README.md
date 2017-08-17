@@ -69,6 +69,7 @@ local version it is recommended to maintain the following order
 of commands when publishing
 
 ```
+npm run build
 git add . && git commit -m ""         # Commit your local changes
 npm version patch -m "New release %s" # which creates another commit
 npm publish
