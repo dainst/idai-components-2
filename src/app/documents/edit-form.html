@@ -1,10 +1,10 @@
 <div *ngFor="let field of fieldDefinitions; let i=index" id="edit-form-element-{{i}}">
     <div *ngIf="field && (field.editable==true)" class="form-group card">
-        <div class="card-header">
-            <h3 class="card-title" *ngIf="field.label" data-toggle="tooltip" data-placement="left"
-                title="{{field.description}}">{{field.label}}</h3>
-            <h3 class="card-title" *ngIf="!field.label" data-toggle="tooltip" data-placement="left"
-                title="{{field.description}}">{{field.name}}</h3>
+        <div class="card-header h4">
+            <span class="card-title" *ngIf="field.label" data-toggle="tooltip" data-placement="left"
+                title="{{field.description}}">{{field.label}}</span>
+            <span class="card-title" *ngIf="!field.label" data-toggle="tooltip" data-placement="left"
+                title="{{field.description}}">{{field.name}}</span>
         </div>
 
         <div class="card-block">

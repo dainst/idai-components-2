@@ -44,14 +44,16 @@ export class DiameterComponent {
 
     public saveDiameter(diameter) {
     	if (!this.resource[this.field.name]) this.resource[this.field.name] = [];
+
     	this.convertInputToCm(diameter);
     	this.generateLabel(diameter);
     	if (diameter["new"]) {
     		delete diameter["new"];
     		this.resource[this.field.name].push(diameter);
-    	}
-    	delete diameter["editing"];
-    	this.newDiameter = null;
+            this.newDiameter = null;
+    	} else {
+    	    delete diameter["editing"];
+        }
     	this.documentEditChangeMonitor.setChanged();
     }
 }
