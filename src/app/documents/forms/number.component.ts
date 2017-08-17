@@ -29,6 +29,8 @@ export class NumberComponent {
 
 
     public markAsChanged() {
+        if (!this._value || this._value == "") return;
+
     	if (this.inputType == 'unsignedInt') {
     		this.valid = this._value >>> 0 === parseFloat(this._value)
     	} else {
@@ -37,7 +39,7 @@ export class NumberComponent {
 	    	}
     		
 	    	if (this.inputType == 'unsignedFloat') {
-	    		this.valid = 0 < (this._value = parseFloat(this._value))
+	    		this.valid = 0 <= (this._value = parseFloat(this._value))
 	    	}
 	    	if (this.inputType == 'float') {
 	    		this.valid = !isNaN(this._value = parseFloat(this._value))
@@ -53,6 +55,5 @@ export class NumberComponent {
     			this.valid = true
     		}, 1500)
     	}
-
     }
 }

@@ -154,16 +154,18 @@ export class Validator {
             let fieldDef = projectFields[i];
 
             if (fieldDef.hasOwnProperty('inputType')) {
-                if (numericInputTypes.indexOf(fieldDef["inputType"]) != -1) {
+                let value = resource[fieldDef.name]
+
+                if (value && numericInputTypes.indexOf(fieldDef["inputType"]) != -1) {
                     let valueIsValid = false;
-                    let value = resource[fieldDef.name]
+                    
 
                     if (fieldDef["inputType"] == "unsignedInt") {
                         valueIsValid = value >>> 0 === parseFloat(value)
                     }
 
                     if (fieldDef["inputType"] == "unsignedFloat") {
-                        valueIsValid = 0 < (value = parseFloat(value))
+                        valueIsValid = 0 <= (value = parseFloat(value))
                     }
                     if (fieldDef["inputType"] == "float") {
                         valueIsValid = !isNaN(value = parseFloat(value))
