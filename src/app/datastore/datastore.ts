@@ -27,7 +27,7 @@ export abstract class Datastore extends ReadDatastore {
      * @param doc
      * @returns {Promise<Document>} a document
      *   Rejects with
-     *     [GENERIC_SAVE_ERROR] - in case of error
+     *     [GENERIC_ERROR (, cause: any)] - in case of error, optionally including a cause
      *     [DOCUMENT_RESOURCE_ID_EXISTS] - if a document with doc.resource.id already exists
      */
     abstract create(doc: Document): Promise<Document>;
@@ -36,7 +36,7 @@ export abstract class Datastore extends ReadDatastore {
      * @param doc
      * @returns {Promise<Document>} a document
      *   Rejects with
-     *     [GENERIC_SAVE_ERROR] - in case of error
+     *     [GENERIC_ERROR (, cause: any)] - in case of error, optionally including a cause
      *     [SAVE_CONFLICT] - in case of conflict
      *     [DOCUMENT_NO_RESOURCE_ID] - if document has no resource id
      *     [DOCUMENT_DOES_NOT_EXIST_ERROR] - if document has a resource id, but does not exist in the db
@@ -49,7 +49,7 @@ export abstract class Datastore extends ReadDatastore {
      *   Rejects with
      *     [DOCUMENT_NO_RESOURCE_ID] - if document has no resource id
      *     [DOCUMENT_DOES_NOT_EXIST_ERROR] - if document has a resource id, but does not exist in the db
-     *     [GENERIC_DELETE_ERROR] - in case of other error
+     *     [GENERIC_ERROR (, cause: any)] - in case of error, optionally including a cause
      */
     abstract remove(doc: Document): Promise<undefined>;
 
