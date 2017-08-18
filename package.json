@@ -2,7 +2,7 @@
   "name": "idai-components-2",
   "description": "iDAI.components 2",
   "main": "main.js",
-  "version": "1.3.84",
+  "version": "1.3.85",
   "license": "Apache-2.0",
   "scripts": {
     "prebuild": "rimraf css/* && rimraf fonts/*",
