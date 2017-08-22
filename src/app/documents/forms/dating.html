@@ -2,8 +2,8 @@
     <input class="form-control" type="number" size="6" min="0" max="100000"
            [(ngModel)]="date.value" value="0" style="width:100px" name="value_{{index}}"
            required>
-    <select class="form-control" [(ngModel)]="date.type"
-            style="width:70px" name="type_{{index}}">
+    <select class="form-control ml-1" [(ngModel)]="date.type"
+            style="width:80px" name="type_{{index}}">
         <option value="bce">v.Chr.</option>
         <option value="ce">n.Chr.</option>
         <option value="bp">BP</option>
@@ -116,7 +116,7 @@
                 </div>
 
             </div>
-            <div class="card-footer">
+            <div class="card-footer" align="right">
                 <button type="submit" class="btn btn-primary"
                         [disabled]="!convertDating(dating)">
                     OK
@@ -134,13 +134,13 @@
 </ng-template>
 
 <div *ngFor="let item of resource[field.name]; index as i"  class="checkbox">
-    <div class="input-group">
+    <div class="input-group mb-2">
         <input value="{{item.hasLabel}}" type="text" disabled class="form-control">
         <span class="input-group-btn">
-        <button class="btn btn-danger" type="button" (click)="removeDating(i)">
-            <span class="mdi mdi-delete"></span>
-        </button>
-    </span>
+            <button class="btn btn-danger" type="button" (click)="removeDating(i)">
+                <span class="mdi mdi-delete"></span>
+            </button>
+        </span>
     </div>
 </div>
 <div class="input-group">
@@ -151,7 +151,7 @@
         </button>
     </span>
 </div>
-<div *ngIf="newDating">
+<div *ngIf="newDating" class="mt-2">
     <ng-container [ngTemplateOutlet]="editDating"
                   [ngTemplateOutletContext]="{ dating: newDating }">
     </ng-container>

@@ -23,7 +23,7 @@ export class DimensionComponent {
     public createNewDimension() {
     	this.newDimension = {
     		"new": true,
-    		"hasValue": 12,
+    		"hasValue": 0,
 			"hasMeasurementPosition": (this.field.position_values ? this.field.position_values[0] : "")  ,
 			"hasMeasurementComment": "",
 			"unit": "cm",
@@ -40,6 +40,14 @@ export class DimensionComponent {
 
     private generateLabel(dimension) {
     	dimension["hasLabel"] = (dimension["isImprecise"] ? "ca. " : "") + dimension["hasValue"] + "cm, Gemessen an " + dimension["hasMeasurementPosition"] + " (" + dimension["hasMeasurementComment"] + ")";
+    }
+
+    public cancelNewDimension() {
+        this.newDimension = null;
+    }
+
+    public removeDimensionAtIndex(dimensionIndex) {
+        this.resource[this.field.name].splice(dimensionIndex, 1);
     }
 
     public saveDimension(dimension) {

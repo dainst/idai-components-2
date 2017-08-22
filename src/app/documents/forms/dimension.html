@@ -1,12 +1,14 @@
 <div *ngFor="let dimension of resource[field.name]; index as i"  class="mb-2">
-	<div class="row" *ngIf="!dimension.editing">
-		<div class="col-8">
-			{{dimension.hasLabel}} 
-		</div>
-		<div class="col-4" align="right">
-			<button class="btn btn-sm btn-secondary">Remove</button>
-			<button class="btn btn-sm btn-secondary" (click)="dimension.editing = !dimension.editing">Edit</button>
-		</div>
+        
+
+	<div class="input-group mb-2" *ngIf="!dimension.editing">
+		<input value="{{dimension.hasLabel}}" type="text" disabled class="form-control">
+		 <span class="input-group-btn">
+			<button class="btn btn-danger" (click)="removeDimensionAtIndex(i)"><span class="mdi mdi-delete"></span></button>
+		</span>
+		 <span class="input-group-btn">
+			<button class="btn btn-info" (click)="dimension.editing = !dimension.editing"><span class="mdi mdi-pencil"></span></button>
+		</span>
 	</div>
 
 	<div *ngIf="dimension.editing">
@@ -14,12 +16,10 @@
 	                  [ngTemplateOutletContext]="{ dimension: dimension }">
 	    </ng-container>
 	</div>
-	<hr>
 </div>
 
 <div>
-    <div align="right" class="mb-3"><button class="btn btn-secondary"  *ngIf="!newDimension" (click)="createNewDimension()">+</button></div>
-    
+    <div align="right" class="mb-3"><button class="btn btn-success" *ngIf="!newDimension" (click)="createNewDimension()"><span class="mdi mdi-plus-circle"></span></button></div>
 </div>
 
 <div *ngIf="newDimension">
@@ -28,42 +28,53 @@
     </ng-container>
 </div>
 
-
-
 <ng-template #dimensionForm let-dimension="dimension">
-	<div class="form-inline mb-2 small">
-    	<input [(ngModel)]="dimension.hasValue" name="hasValue" class="form-control">
-    	
-    	<select  [(ngModel)]="dimension.unit" class="ml-2 custom-select">
-            <option value="cm">cm</option>
-            <option value="m">m</option>
-            <option value="mm">mm</option>
-		</select>
 
-		<label class="ml-2">Gemessen an:</label>
-    	<select [(ngModel)]="dimension.hasMeasurementPosition" class="ml-2 custom-select">
-            <option *ngFor="let item of field.position_values" value="{{item}}">{{item}}</option>
-		</select>
-    </div>
-    <div class="form-group small mb-2">
-    	<label for="comment" class="mb-1">Kommentar</label>
-    	<input [(ngModel)]="dimension.hasMeasurementComment" type="" class="form-control" name="hasMeasurementComment">
-    </div>
-    <div class="row">
-    	<div class="col">
-    		<div class="form-check form-check-inline" >
-		        <label class="form-check-label">
+	<div class="card">
+		<div class="card-block">
+			<div class="row mb-2 small">
+		    	<div class="col-3">
+					<label>{{field['label']}}</label>
+		    		<input [(ngModel)]="dimension.hasValue" type="number" step="0.001" min="0" name="hasValue" class="form-control">
+		    	</div>
+		    	
+		    	<div class="col-3">
+					<label>Einheit</label>
+			    	<select  [(ngModel)]="dimension.unit" class="custom-select">
+			            <option value="cm">cm</option>
+			            <option value="m">m</option>
+			            <option value="mm">mm</option>
+					</select>
+				</div>
+
+				<div class="col-6">
+					<label>Gemessen an</label>
+			    	<select *ngIf="dimension.hasMeasurementPosition != ''" [(ngModel)]="dimension.hasMeasurementPosition" class="ml-2 custom-select">
+			            <option *ngFor="let item of field.position_values" value="{{item}}">{{item}}</option>
+					</select>
+					<input *ngIf="dimension.hasMeasurementPosition == ''" class="form-control">
+				</div>
+
+		    </div>
+		    <div class="form-group mb-2">
+		    	<label for="comment" class="small">Kommentar</label>
+		    	<input [(ngModel)]="dimension.hasMeasurementComment" type="" class="form-control" name="hasMeasurementComment">
+		    </div>
+		    <div class="form-group mb-2">
+		    	<label class="form-check-label">
 		            <input class="form-check-input" type="checkbox"
 		                   [checked]="dimension.isImprecise"
 		                   (change)="dimension.isImprecise = !dimension.isImprecise">
-		            <small>Ungenau</small>
+		            Ungenau
 		        </label>
-	    	</div>
-    	</div>
-    	<div class="col" align="right">
-    	<button class="btn btn-sm btn-primary" (click)="saveDimension(dimension)">Speichern</button>
-    		
-    	</div>
-    </div>
+		    </div>
+		</div>
+		<div class="card-footer" align="right">
+
+	    	<button class="btn btn-primary" (click)="saveDimension(dimension)">OK</button>
+	    	<button class="btn btn-secondary" *ngIf="newDimension == dimension" (click)="cancelNewDimension()">Abbrechen</button>
+
+		</div>
+	</div>
 
 </ng-template>
