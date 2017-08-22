@@ -33,22 +33,26 @@ export abstract class Datastore extends ReadDatastore {
     abstract create(doc: Document): Promise<Document>;
 
     /**
+     * Updates an existing document
+     *
      * @param doc
      * @returns {Promise<Document>} a document
      *   Rejects with
      *     [GENERIC_ERROR (, cause: any)] - in case of error, optionally including a cause
      *     [SAVE_CONFLICT] - in case of conflict
      *     [DOCUMENT_NO_RESOURCE_ID] - if document has no resource id
-     *     [DOCUMENT_DOES_NOT_EXIST_ERROR] - if document has a resource id, but does not exist in the db
+     *     [DOCUMENT_NOT_FOUND] - if document has a resource id, but does not exist in the db
      */
     abstract update(doc: Document): Promise<Document>;
 
     /**
+     * Removes an existing document
+     *
      * @param doc
      * @returns {Promise<undefined>} undefined
      *   Rejects with
      *     [DOCUMENT_NO_RESOURCE_ID] - if document has no resource id
-     *     [DOCUMENT_DOES_NOT_EXIST_ERROR] - if document has a resource id, but does not exist in the db
+     *     [DOCUMENT_NOT_FOUND] - if document has a resource id, but does not exist in the db
      *     [GENERIC_ERROR (, cause: any)] - in case of error, optionally including a cause
      */
     abstract remove(doc: Document): Promise<undefined>;
