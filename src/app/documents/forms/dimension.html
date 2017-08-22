@@ -18,8 +18,11 @@
 	</div>
 </div>
 
-<div>
-    <div align="right" class="mb-3"><button class="btn btn-success" *ngIf="!newDimension" (click)="createNewDimension()"><span class="mdi mdi-plus-circle"></span></button></div>
+<div class="input-group" *ngIf="!newDimension">
+	<input placeholder="Hinzufügen ..." type="text" disabled class="form-control">
+    <span class="input-group-btn">
+    	<button class="btn btn-success" (click)="createNewDimension()"><span class="mdi mdi-plus-circle"></span></button>
+    </span>
 </div>
 
 <div *ngIf="newDimension">
@@ -35,12 +38,12 @@
 			<div class="row mb-2 small">
 		    	<div class="col-3">
 					<label>{{field['label']}}</label>
-		    		<input [(ngModel)]="dimension.hasValue" type="number" step="0.001" min="0" name="hasValue" class="form-control">
+		    		<input [(ngModel)]="dimension.hasInputValue" type="number" step="0.001" min="0" name="hasInputValue" class="form-control">
 		    	</div>
 		    	
 		    	<div class="col-3">
 					<label>Einheit</label>
-			    	<select  [(ngModel)]="dimension.unit" class="custom-select">
+			    	<select  [(ngModel)]="dimension.hasInputUnit" class="custom-select">
 			            <option value="cm">cm</option>
 			            <option value="m">m</option>
 			            <option value="mm">mm</option>
@@ -49,10 +52,10 @@
 
 				<div class="col-6">
 					<label>Gemessen an</label>
-			    	<select *ngIf="dimension.hasMeasurementPosition != ''" [(ngModel)]="dimension.hasMeasurementPosition" class="ml-2 custom-select">
+			    	<select *ngIf="this.field.position_values" [(ngModel)]="dimension.hasMeasurementPosition" class="ml-2 custom-select">
 			            <option *ngFor="let item of field.position_values" value="{{item}}">{{item}}</option>
 					</select>
-					<input *ngIf="dimension.hasMeasurementPosition == ''" class="form-control">
+					<input *ngIf="!this.field.position_values" [(ngModel)]="dimension.hasMeasurementPosition" class="form-control">
 				</div>
 
 		    </div>

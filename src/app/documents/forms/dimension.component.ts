@@ -24,22 +24,24 @@ export class DimensionComponent {
     	this.newDimension = {
     		"new": true,
     		"hasValue": 0,
+            "hasInputValue": 0,
 			"hasMeasurementPosition": (this.field.position_values ? this.field.position_values[0] : "")  ,
 			"hasMeasurementComment": "",
-			"unit": "cm",
+			"hasInputUnit": "cm",
 			"isImprecise": true,
 			"hasLabel": ""
     	}
     }
 
-    private convertInputToCm(dimension) {
-    	let _val = parseFloat(dimension["hasValue"]);
-    	if (dimension["unit"] == "m") dimension["hasValue"] = _val * 100;
-    	if (dimension["unit"] == "mm") dimension["hasValue"] = _val / 10;
+    private convertInputToMM(dimension) {
+    	let _val = parseFloat(dimension["hasInputValue"]);
+        if (dimension["hasInputUnit"] == "mm") dimension["hasValue"] = _val * 1000;
+    	if (dimension["hasInputUnit"] == "cm") dimension["hasValue"] = _val * 10000;
+    	if (dimension["hasInputUnit"] == "m") dimension["hasValue"] = _val * 1000000;
     }
 
     private generateLabel(dimension) {
-    	dimension["hasLabel"] = (dimension["isImprecise"] ? "ca. " : "") + dimension["hasValue"] + "cm, Gemessen an " + dimension["hasMeasurementPosition"] + " (" + dimension["hasMeasurementComment"] + ")";
+    	dimension["hasLabel"] = (dimension["isImprecise"] ? "ca. " : "") + dimension["hasInputValue"] + dimension["hasInputUnit"] +  ", Gemessen an " + dimension["hasMeasurementPosition"] + " (" + dimension["hasMeasurementComment"] + ")";
     }
 
     public cancelNewDimension() {
@@ -53,7 +55,7 @@ export class DimensionComponent {
     public saveDimension(dimension) {
     	if (!this.resource[this.field.name]) this.resource[this.field.name] = [];
 
-    	this.convertInputToCm(dimension);
+    	this.convertInputToMM(dimension);
     	this.generateLabel(dimension);
     	if (dimension["new"]) {
     		delete dimension["new"];
