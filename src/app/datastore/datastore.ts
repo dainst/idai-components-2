@@ -1,6 +1,7 @@
 import {Document} from "../model/document";
 import {ReadDatastore} from "./read-datastore";
 import {Observable} from "rxjs/Observable";
+import {DocumentChange} from './document-change';
 
 /**
  * The interface for datastores supporting 
@@ -62,6 +63,6 @@ export abstract class Datastore extends ReadDatastore {
      * when documents get modified via one of the accessor
      * methods defined in <code>Datastore</code>.
      */
-    abstract documentChangesNotifications(): Observable<Document>;
+    abstract documentChangesNotifications(): Observable<DocumentChange>;
 
 }
