@@ -1,9 +1,10 @@
-import {Component, Input} from '@angular/core';
-import {DocumentEditChangeMonitor} from "./document-edit-change-monitor";
+import {Component, Input, AfterViewInit, OnChanges, ElementRef} from '@angular/core';
+import {DocumentEditChangeMonitor} from './document-edit-change-monitor';
 import {FieldDefinition} from '../configuration/field-definition';
 
 /**
  * @author Daniel de Oliveira
+ * @author Thomas Kleinke
  */
 @Component({
     moduleId: module.id,
@@ -11,16 +12,31 @@ import {FieldDefinition} from '../configuration/field-definition';
     templateUrl: './edit-form.html'
 })
 
-export class EditFormComponent{
+export class EditFormComponent implements AfterViewInit, OnChanges {
 
     @Input() document: any;
     @Input() fieldDefinitions: Array<FieldDefinition>;
 
-    public types : string[];
+    public types: string[];
 
     constructor(
+        private elementRef: ElementRef,
         private saveService: DocumentEditChangeMonitor
     ) {}
+
+    ngAfterViewInit() {
+        this.focusFirstInputElement();
+    }
+
+    ngOnChanges() {
+        this.focusFirstInputElement();
+    }
+
+    private focusFirstInputElement() {
+
+        const inputElements: Array<HTMLElement> = this.elementRef.nativeElement.getElementsByTagName('input');
+        if (inputElements.length > 0) inputElements[0].focus();
+    }
     
     public markAsChanged() {
         this.saveService.setChanged();
