@@ -6,18 +6,25 @@ import {DocumentEditChangeMonitor} from "../document-edit-change-monitor";
  * @author Fabian Z.
  */
 @Component({
+    moduleId: module.id,
     selector: 'dai-radio',
-    template: `<div *ngFor="let item of field.valuelist" class="radio"><label><input value="{{item}}" type="radio" name="{{resource[field.name]}}" (click)="resource[field.name] = item; markAsChanged()" [checked]="item === resource[field.name]"> {{item}}</label></div>`
+    templateUrl: `./radio.html`
 })
 
 export class RadioComponent {
 
     @Input() resource: Resource;
-    @Input() field: String[];
+    @Input() field: any;
 
     constructor(private documentEditChangeMonitor: DocumentEditChangeMonitor) {}
 
-    public markAsChanged() {
+    public setValue(value) {
+        this.resource[this.field.name] = value;
+        this.documentEditChangeMonitor.setChanged();
+    }
+
+    public resetValue() {
+        delete this.resource[this.field.name];
         this.documentEditChangeMonitor.setChanged();
     }
 }
