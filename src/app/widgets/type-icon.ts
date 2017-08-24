@@ -3,7 +3,7 @@ import {ConfigLoader} from "../configuration/config-loader";
 
 @Component({
   selector: 'type-icon',
-  template: '<div class="type-icon" [style.width]="pxSize" [style.height]="pxSize" [style.font-size]="pxSize" [style.background-color]="color">' +
+  template: '<div class="type-icon" [style.width]="pxSize" [style.height]="pxSize" [style.font-size]="pxSize" [style.line-height]="pxSize" [style.background-color]="color">' +
     '<span class="character">{{character}}</span>' +
   '</div>'
 })
