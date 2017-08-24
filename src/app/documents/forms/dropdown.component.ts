@@ -7,19 +7,21 @@ import {DocumentEditChangeMonitor} from "../document-edit-change-monitor";
  */
 @Component({
     selector: 'dai-dropdown',
-    template: `<select [(ngModel)]="resource[field.name]" (change)="markAsChanged()" class="form-control">
-                <option *ngFor="let item of field.valuelist" value="{{item}}">{{item}}</option>
-</select>`
+    template: `<select [(ngModel)]="resource[field.name]" (change)="setValue($event.target.value)" class="form-control">
+        <option value="" [selected]="!resource.hasOwnProperty(field.name)"></option>
+        <option *ngFor="let item of field.valuelist" value="{{item}}">{{item}}</option>
+    </select>`
 })
 
 export class DropdownComponent {
 
     @Input() resource: Resource;
-    @Input() field: String[];
+    @Input() field: any;
 
     constructor(private documentEditChangeMonitor: DocumentEditChangeMonitor) {}
 
-    public markAsChanged() {
+    public setValue(value) {
+        if (value == "") delete this.resource[this.field.name];
         this.documentEditChangeMonitor.setChanged();
     }
 }
