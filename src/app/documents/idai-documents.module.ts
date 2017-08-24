@@ -27,6 +27,7 @@ import {RelationsViewComponent} from "./relations-view.component";
 import {DocumentViewComponent} from "./document-view.component";
 import {IdaiWidgetsModule} from "../widgets/idai-widgets.module";
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {BooleanComponent} from "./forms/boolean.component";
 
 @NgModule({
     imports: [
@@ -46,6 +47,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
         RelationPickerComponent,
         RelationPickerGroupComponent,
         CheckboxesComponent,
+        BooleanComponent,
         DropdownComponent,
         InputComponent,
         NumberComponent,

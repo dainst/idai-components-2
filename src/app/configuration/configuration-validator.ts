@@ -12,7 +12,8 @@ import {RelationDefinition} from './relation-definition';
 export class ConfigurationValidator {
 
     private static VALID_INPUT_TYPES = ['input', 'inputs', 'inputs_localized',
-        'text', 'dropdown', 'radio', 'checkboxes', 'multiselect', 'unsignedInt', 'float', 'unsignedFloat', 'dating', 'dimension'];
+        'text', 'dropdown', 'radio', 'checkboxes', 'multiselect', 'unsignedInt',
+        'float', 'unsignedFloat', 'dating', 'dimension', 'boolean'];
     private static VALUELIST_INPUT_TYPES = ['dropdown', 'radio', 'checkboxes',
         'multiselect'];
 

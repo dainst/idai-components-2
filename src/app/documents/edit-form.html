@@ -30,6 +30,9 @@
             <dai-radio *ngIf="field.inputType == 'radio'" [(resource)]="document['resource']"
                        [field]="field"></dai-radio>
 
+            <dai-boolean *ngIf="field.inputType == 'boolean'" [(resource)]="document['resource']"
+                       [fieldName]="field.name"></dai-boolean>
+
             <dai-checkboxes *ngIf="field.inputType == 'checkboxes'" [(resource)]="document['resource']"
                             [field]="field"></dai-checkboxes>
 
