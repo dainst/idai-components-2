@@ -1,4 +1,4 @@
-import {Component,OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Messages} from '../../src/app/messages/messages';
 import {ConfigLoader} from '../../src/app/configuration/config-loader';
 import {ConfigurationValidator} from '../../src/app/configuration/configuration-validator';
@@ -27,16 +27,16 @@ export class AppComponent implements OnInit {
             AppComponent.PROJECT_CONFIGURATION_PATH,
             new ConfigurationPreprocessor(
                 [
-                    { 'type': 'image', 'fields': [ { 'name': 'dimensions' } ] }
+                    { 'type': 'Image', 'fields': [ { 'name': 'dimensions' } ] }
                 ],
                 [
                     { 'name': 'shortDescription' },
                     { 'name': 'identifier' }
                 ],
                 [
-                    { name: 'depicts', domain: ['image:inherit'], inverse:'isDepictedBy', visible: false,
+                    { name: 'depicts', domain: ['Image:inherit'], inverse: 'isDepictedBy', visible: false,
                         editable: false},
-                    { name: 'isDepictedBy', range: ['image:inherit'], inverse: 'depicts', visible: false,
+                    { name: 'isDepictedBy', range: ['Image:inherit'], inverse: 'depicts', visible: false,
                         editable: false}
                 ]
             ),

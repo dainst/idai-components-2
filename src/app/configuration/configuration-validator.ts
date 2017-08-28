@@ -129,7 +129,7 @@ export class ConfigurationValidator {
         const typeNames: Array<string> = types.map(type => type.type);
 
         for (let view of views) {
-            if (view.mainType == 'project') continue;
+            if (view.mainType == 'Project') continue;
             if (typeNames.indexOf(view.mainType) == -1)
                 msgs.push([MDInternal.VALIDATION_ERROR_MISSINGVIEWTYPE, view.mainType]);
         }
@@ -147,7 +147,7 @@ export class ConfigurationValidator {
                 if (typeNames.indexOf(type) == -1)
                     msgs.push([MDInternal.VALIDATION_ERROR_MISSINGRELATIONTYPE, type]);
             for (let type of relation.range)
-                if (typeNames.indexOf(type) == -1 && type != 'project')
+                if (typeNames.indexOf(type) == -1 && type != 'Project')
                     msgs.push([MDInternal.VALIDATION_ERROR_MISSINGRELATIONTYPE, type]);
         }
         return msgs;
@@ -166,8 +166,8 @@ export class ConfigurationValidator {
             }
         }
 
-        if ('project' in recordedInRelations) {
-            for (let type of recordedInRelations['project']) {
+        if ('Project' in recordedInRelations) {
+            for (let type of recordedInRelations['Project']) {
                 if (!(type in recordedInRelations) || !recordedInRelations[type]
                         || recordedInRelations[type].length == 0) {
                     msgs.push([MDInternal.VALIDATION_ERROR_INCOMPLETERECORDEDIN, type]);

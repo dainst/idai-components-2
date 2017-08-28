@@ -1,7 +1,7 @@
 {
   "types": [
     {
-      "type": "object",
+      "type": "Object",
       "label": "Object",
       "fields": [
         {
@@ -138,8 +138,8 @@
       ]
     },
     {
-      "type": "object_enhanced",
-      "parent" : "object",
+      "type": "Object_enhanced",
+      "parent" : "Object",
       "fields": [
         {
           "name": "Dimensions"
@@ -159,41 +159,41 @@
       ]
     },
     {
-      "type": "section",
+      "type": "Section",
       "label": "Sektion"
     },
     {
-      "type": "drawing",
-      "parent" : "image",
+      "type": "Drawing",
+      "parent" : "Image",
       "label": "Zeichnung"
     }
   ],
   "relations":[
     {
       "domain": [
-        "section"
+        "Section"
       ],
       "editable": "false",
       "inverse": "NO-INVERSE",
       "label": "Gehört zu",
       "name": "isRecordedIn",
       "range": [
-        "object",
-        "object_enhanced"
+        "Object",
+        "Object_enhanced"
       ],
       "visible": "false"
     },
     {
       "domain": [
-        "object",
-        "object_enhanced"
+        "Object",
+        "Object_enhanced"
       ],
       "editable": "false",
       "inverse": "NO-INVERSE",
       "label": "Gehört zu",
       "name": "isRecordedIn",
       "range": [
-        "project"
+        "Project"
       ],
       "visible": "false"
     },
@@ -201,29 +201,29 @@
       "name": "Belongs to",
       "inverse": "Includes",
       "label": "Enthalten in",
-      "domain": ["object", "object_enhanced", "section"],
-      "range": ["object", "object_enhanced", "section"]
+      "domain": ["Object", "Object_enhanced", "Section"],
+      "range": ["Object", "Object_enhanced", "Section"]
     },
     {
       "name": "Includes",
       "inverse": "Belongs to",
       "label": "Enthält",
-      "domain": ["object", "object_enhanced", "section"],
-      "range": ["object", "object_enhanced", "section"]
+      "domain": ["Object", "Object_enhanced", "Section"],
+      "range": ["Object", "Object_enhanced", "Section"]
     },
     {
       "name": "Found in",
       "inverse": "Find spot of",
       "label": "Gefunden in",
-      "domain": ["object", "object_enhanced"],
-      "range": ["section"]
+      "domain": ["Object", "Object_enhanced"],
+      "range": ["Section"]
     },
     {
       "name": "Find spot of",
       "inverse": "Found in",
       "label": "Fundort von",
-      "domain": ["section"],
-      "range": ["object", "object_enhanced"]
+      "domain": ["Section"],
+      "range": ["Object", "Object_enhanced"]
     }
   ]
 }

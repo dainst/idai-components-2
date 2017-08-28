@@ -12,7 +12,7 @@ export class AppConfigurator {
     constructor(private configLoader: ConfigLoader) { }
 
     private defaultTypes = [{
-        type: 'image',
+        type: 'Image',
         fields: [
             {
                 name: 'height',
@@ -36,7 +36,7 @@ export class AppConfigurator {
             }
         ]
     }, {
-        type: 'project',
+        type: 'Project',
         label: 'Projekt',
         fields: [
             {
@@ -73,8 +73,8 @@ export class AppConfigurator {
     }];
 
     private defaultRelations = [
-        { name: 'depicts', domain: ['image:inherit'], inverse: 'isDepictedIn', label: 'Zeigt', editable: true },
-        { name: 'isDepictedIn', range: ['image:inherit'], inverse: 'depicts', visible: false, editable: false }
+        { name: 'depicts', domain: ['Image:inherit'], inverse: 'isDepictedIn', label: 'Zeigt', editable: true },
+        { name: 'isDepictedIn', range: ['Image:inherit'], inverse: 'depicts', visible: false, editable: false }
         // isRecordedIn
         // records
     ];
