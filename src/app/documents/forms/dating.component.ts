@@ -46,11 +46,14 @@ export class DatingComponent {
     }
 
     public convertDating(dating): any {
+
         for (let date of dating.dates) {
             if (date.value < 0) return false;
         }
         let converted = this.createNormalizedDating(dating);
-        if (converted['hasBegin'] && converted['hasEnd'])
+        if (dating.type != 'scientific'
+                && converted['hasBegin']
+                && converted['hasEnd'])
             if (converted['hasBegin']['year'] > converted['hasEnd']['year'])
                 return false;
 
