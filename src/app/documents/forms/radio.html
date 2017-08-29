@@ -2,7 +2,7 @@
      class="radio form-check form-check-inline">
     <label class="form-check-label">
         <input class="form-check-input" value="{{item}}" type="radio"
-               name="{{resource[field.name]}}"
+               name="{{field.name}}"
                (click)="setValue(item)"
                [checked]="item == resource[field.name]">
         {{item}}
