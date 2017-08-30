@@ -62,7 +62,7 @@ export class AppConfigurator {
         visible: false
     }, {
         name: 'identifier',
-        description: 'use this to uniquely identify your object',
+        description: 'Eindeutiger Bezeichner dieser Ressource',
         label: 'Bezeichner',
         visible: false,
         mandatory: true

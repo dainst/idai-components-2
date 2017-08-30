@@ -4,7 +4,8 @@
             <span class="card-title" *ngIf="field.label">{{field.label}}</span>
             <span class="card-title" *ngIf="!field.label">{{field.name}}</span>
 
-            <span *ngIf="field.description" placement="left" ngbTooltip="{{field.description}}" class="mdi mdi-information-outline float-right"></span> 
+            <span *ngIf="field.description" placement="left" ngbTooltip="{{field.description}}"
+                  class="mdi mdi-information-outline float-right"></span>
         </div>
 
         <div class="card-block">
@@ -12,8 +13,9 @@
             <dai-input *ngIf="field.inputType == 'input' || (field.inputType == undefined && field.inner == undefined)"
                        [(resource)]="document['resource']" [fieldName]="field.name"></dai-input>
 
-            <dai-number *ngIf="field.inputType == 'unsignedInt' || field.inputType == 'float' || field.inputType == 'unsignedFloat'"
-                       [(resource)]="document['resource']" [fieldName]="field.name" [inputType]="field.inputType"></dai-number>
+            <dai-number *ngIf="field.inputType == 'unsignedInt' || field.inputType == 'float'
+                                || field.inputType == 'unsignedFloat'" [(resource)]="document['resource']"
+                        [fieldName]="field.name" [inputType]="field.inputType"></dai-number>
 
             <dai-inputs *ngIf="field.inputType == 'inputs'" [(resource)]="document['resource']"
                         [fieldName]="field.name"></dai-inputs>
