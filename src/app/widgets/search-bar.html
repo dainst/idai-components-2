@@ -29,15 +29,31 @@
                     <li id="choose-type-filter-option-all"
                         class="list-group-item popover-item"
                         (click)="setType(undefined); p.close();"
-                        [ngClass]="{ 'active': type == '' }">
+                        [ngClass]="{ 'selected-filter': !type || type == '' }">
                         <i>Alle Typen</i>
                     </li>
-                    <li *ngFor="let f of filterOptions; let index = index"
+
+                    <li *ngFor="let filterType of filterOptions; let index = index"
                         id="choose-type-filter-option-{{index}}"
                         class="list-group-item popover-item"
-                        (click)="setType(f.name); p.close();"
-                        [ngClass]="{ 'active': type == f.name }">
-                        <type-icon [type]="f.name" size="30"></type-icon> {{f.label}}
+                        (click)="setType(filterType.name); p.close();"
+                        [ngClass]="{ 'selected-filter': type == filterType.name}">
+                        <div>
+                            <type-icon [type]="filterType.name" size="30"></type-icon>
+                            <div class="type-label">{{filterType.label}}</div>
+                        </div>
+                        <ul *ngIf="filterType.children" style="padding: 0;">
+                            <li *ngFor="let childType of filterType.children; let childIndex = index"
+                                id="choose-type-filter-option-{{index}}-{{childIndex}}"
+                                class="list-group-item popover-item"
+                                (click)="setType(childType.name); p.close();"
+                                [ngClass]="{ 'selected-filter': type == filterType.name || type == childType.name }">
+                                <div>
+                                    <type-icon [type]="childType.name" size="30"></type-icon>
+                                    <div class="type-label">{{childType.label}}</div>
+                                </div>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
             </div>
