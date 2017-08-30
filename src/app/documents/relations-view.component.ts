@@ -1,7 +1,7 @@
-import {Component, OnChanges, Input, EventEmitter, Output} from "@angular/core";
-import {Resource} from "../model/resource";
-import {ReadDatastore} from "../datastore/read-datastore";
-import {ConfigLoader} from "../configuration/config-loader";
+import {Component, OnChanges, Input, EventEmitter, Output} from '@angular/core';
+import {Resource} from '../model/resource';
+import {ReadDatastore} from '../datastore/read-datastore';
+import {ConfigLoader} from '../configuration/config-loader';
 
 @Component({
     selector: 'relations-view',
@@ -19,7 +19,7 @@ export class RelationsViewComponent implements OnChanges {
 
     protected relations: Array<any>;
 
-    @Input() doc;
+    @Input() resource: Resource;
     @Output() relationClicked = new EventEmitter();
 
     public collapsed: boolean;
@@ -32,12 +32,12 @@ export class RelationsViewComponent implements OnChanges {
     }
 
     ngOnChanges() {
+        
         this.relations = [];
-        if (!this.doc) return;
-        this.processRelations(this.doc.resource);
+        if (this.resource) this.processRelations(this.resource);
     }
 
-    private clickRelation(doc) {
+    public clickRelation(doc) {
         this.relationClicked.emit(doc);
     }
 
@@ -79,7 +79,7 @@ export class RelationsViewComponent implements OnChanges {
                 targetDocument => {
                     targetDocuments.push(targetDocument);
                 },
-                err => console.error("Relation target not found", err)
+                err => console.error('Relation target not found', err)
             ));
         }
 

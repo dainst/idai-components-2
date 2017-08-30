@@ -1,6 +1,6 @@
-import {Component, OnChanges, Input} from "@angular/core";
-import {ConfigLoader} from "../configuration/config-loader";
-import {Resource} from "../model/resource";
+import {Component, OnChanges, Input} from '@angular/core';
+import {ConfigLoader} from '../configuration/config-loader';
+import {Resource} from '../model/resource';
 
 @Component({
     selector: 'fields-view',
@@ -16,18 +16,18 @@ import {Resource} from "../model/resource";
  */
 export class FieldsViewComponent implements OnChanges {
 
-    protected fields: Array<any>;
+    @Input() resource: Resource;
 
-    @Input() doc;
+    protected fields: Array<any>;
 
     constructor(
         private configLoader: ConfigLoader
     ) { }
 
     ngOnChanges() {
+
         this.fields = [];
-        if (!this.doc) return;
-        this.processFields(this.doc.resource);
+        if (this.resource) this.processFields(this.resource);
     }
 
     private processFields(resource: Resource) {
@@ -35,7 +35,7 @@ export class FieldsViewComponent implements OnChanges {
         this.configLoader.getProjectConfiguration().then(
             projectConfiguration => {
 
-            const ignoredFields: Array<string> = [ "relations" ];
+            const ignoredFields: Array<string> = [ 'relations' ];
 
             for (let fieldName in resource) {
 
