@@ -28,7 +28,7 @@ export class DimensionComponent {
 			"hasMeasurementPosition": (this.field.position_values ? this.field.position_values[0] : "")  ,
 			"hasMeasurementComment": "",
 			"hasInputUnit": "cm",
-			"isImprecise": true,
+			"isImprecise": false,
 			"hasLabel": ""
     	}
     }
