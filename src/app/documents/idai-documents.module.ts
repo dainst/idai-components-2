@@ -1,5 +1,5 @@
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {LOCALE_ID, NgModule} from '@angular/core';
+import {CommonModule, DecimalPipe} from '@angular/common';
 import {RouterModule} from '@angular/router';
 import {Datastore} from "../datastore/datastore";
 import {ReadDatastore} from "../datastore/read-datastore";
@@ -62,6 +62,8 @@ import {BooleanComponent} from "./forms/boolean.component";
     providers: [
         ConfigLoader,
         PersistenceManager,
+        DecimalPipe,
+        { provide: LOCALE_ID, useValue: "de-DE" }, // change when i18n is implemented
         { provide: ReadDatastore, useExisting: Datastore }
     ],
     exports: [

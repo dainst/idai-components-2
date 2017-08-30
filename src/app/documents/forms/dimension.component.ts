@@ -1,6 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {Resource} from "../../model/resource";
 import {DocumentEditChangeMonitor} from "../document-edit-change-monitor";
+import {DecimalPipe} from "@angular/common";
 
 
 /**
@@ -16,7 +17,8 @@ export class DimensionComponent {
     @Input() resource: Resource;
     @Input() field: any;
 
-    constructor(private documentEditChangeMonitor: DocumentEditChangeMonitor) {
+    constructor(private documentEditChangeMonitor: DocumentEditChangeMonitor,
+        private decimalPipe: DecimalPipe) {
     }
     public newDimension: {} = null;
 
@@ -41,7 +43,14 @@ export class DimensionComponent {
     }
 
     private generateLabel(dimension) {
-    	dimension["hasLabel"] = (dimension["isImprecise"] ? "ca. " : "") + dimension["hasInputValue"] + dimension["hasInputUnit"] +  ", Gemessen an " + dimension["hasMeasurementPosition"] + " (" + dimension["hasMeasurementComment"] + ")";
+        let formattedValue = "" + this.decimalPipe.transform(dimension["hasInputValue"]);
+    	dimension["hasLabel"] = (dimension["isImprecise"] ? "ca. " : "")
+            + formattedValue
+            + " " + dimension["hasInputUnit"];
+    	if (dimension["hasMeasurementPosition"])
+            dimension['hasLabel'] += ", Gemessen an " + dimension["hasMeasurementPosition"];
+    	if (dimension["hasMeasurementComment"])
+            dimension['hasLabel'] += " (" + dimension["hasMeasurementComment"] + ")";
     }
 
     public cancelNewDimension() {
