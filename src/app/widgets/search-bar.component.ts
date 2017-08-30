@@ -24,10 +24,10 @@ export class SearchBarComponent implements OnChanges {
     @Input() relationRangeType: string;
 
     @Input() q: string = '';
-    @Input() type: string;
+    @Input() types: string[];
     @Input() showFiltersMenu: boolean = true;
 
-    @Output() onTypeChanged = new EventEmitter<string>();
+    @Output() onTypesChanged = new EventEmitter<string[]>();
     @Output() onQueryStringChanged = new EventEmitter<string>();
 
     @ViewChild('p') private popover;
@@ -45,10 +45,21 @@ export class SearchBarComponent implements OnChanges {
         }
     }
 
-    public setType(type: string) {
+    public chooseTypeFilter(type: IdaiType) {
 
-        this.type = type;
-        this.onTypeChanged.emit(this.type);
+        if (!type) {
+            this.types = undefined;
+        } else {
+            this.types = [type.name];
+
+            if (type.children) {
+                for (let childType of type.children) {
+                    this.types.push(childType.name);
+                }
+            }
+        }
+
+        this.onTypesChanged.emit(this.types);
     }
 
     public emitQueryString() {
