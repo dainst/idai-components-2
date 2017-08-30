@@ -78,14 +78,19 @@ export class SearchBarComponent implements OnChanges {
         this.filterOptions = [];
 
         this.configLoader.getProjectConfiguration().then(projectConfiguration => {
-
-            for (let type of projectConfiguration.getTypesList()) {
-                if (this.relationName && this.relationRangeType
-                        && !projectConfiguration.isAllowedRelationDomainType(type.name, this.relationRangeType,
+            for (let type of projectConfiguration.getTypesTreeList()) {
+                if ((!this.relationName && !this.relationRangeType)
+                        || projectConfiguration.isAllowedRelationDomainType(type.name, this.relationRangeType,
                         this.relationName)) {
-                    continue;
+                    this.addFilterOption(type);
+                } else if (type.children) {
+                    for (let childType of type.children) {
+                        if (projectConfiguration.isAllowedRelationDomainType(childType.name, this.relationRangeType,
+                                this.relationName)) {
+                            this.addFilterOption(childType);
+                        }
+                    }
                 }
-                this.addFilterOption(type);
             }
         });
     }

@@ -88,7 +88,7 @@ export class ProjectConfiguration {
      */
     public getTypesTreeList(): IdaiType[] {
 
-        if(this.typesTreeList) return this.typesTreeList;
+        if (this.typesTreeList) return this.typesTreeList;
 
         const types = [];
         for (let typeKey of Object.keys(this.typesTree)) {
