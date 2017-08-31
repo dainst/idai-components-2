@@ -1,5 +1,5 @@
-import {Component, OnChanges, Input} from "@angular/core";
-import {ConfigLoader} from "../configuration/config-loader";
+import {Component, OnChanges, Input} from '@angular/core';
+import {ConfigLoader} from '../configuration/config-loader';
 
 @Component({
   selector: 'type-icon',
@@ -24,10 +24,11 @@ export class TypeIconComponent implements OnChanges {
   constructor(private configLoader: ConfigLoader) { }
 
   ngOnChanges() {
+
     this.configLoader.getProjectConfiguration().then(config => {
       this.character = config.getLabelForType(this.type).substr(0, 1);
       this.color = config.getColorForType(this.type);
-      this.pxSize = this.size + "px";
+      this.pxSize = this.size + 'px';
     });
   }
 

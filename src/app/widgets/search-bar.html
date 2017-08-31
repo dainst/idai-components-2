@@ -30,7 +30,7 @@
                         class="list-group-item popover-item"
                         (click)="chooseTypeFilter(undefined); p.close();"
                         [ngClass]="{ 'selected-filter': !types || types.length == 0 }">
-                        <i>Alle Typen</i>
+                        <i class="all-types-label">Alle Typen</i>
                     </li>
 
                     <li *ngFor="let parentType of filterOptions; let index = index"

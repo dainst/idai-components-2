@@ -41,6 +41,11 @@
     margin-left: 40px;
     margin-top: 3px;
   }
+
+  .type-label,
+  .all-types-label {
+    user-select: none;
+  }
 }
 
 .filtermenu ul li ul {
