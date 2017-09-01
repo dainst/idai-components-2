@@ -37,7 +37,7 @@
                         class="list-group-item popover-item"
                         (click)="chooseTypeFilter(parentType); p.close();"
                         [ngClass]="{ 'selected-filter': types && types.indexOf(parentType.name) > -1 }">
-                        <div id="choose-type-filter-option-{{index}}">
+                        <div id="choose-type-filter-option-{{parentType.name.toLowerCase()}}">
                             <type-icon [type]="parentType.name" size="30"></type-icon>
                             <div class="type-label">{{parentType.label}}</div>
                         </div>
@@ -46,7 +46,7 @@
                                 class="list-group-item popover-item"
                                 (click)="chooseTypeFilter(childType); p.close();"
                                 [ngClass]="{ 'selected-filter': types && types.indexOf(childType.name) > -1 }">
-                                <div id="choose-type-filter-option-{{index}}-{{childIndex}}">
+                                <div id="choose-type-filter-option-{{parentType.name.toLowerCase()}}-{{childType.name.toLowerCase()}}">
                                     <type-icon [type]="childType.name" size="30"></type-icon>
                                     <div class="type-label">{{childType.label}}</div>
                                 </div>
