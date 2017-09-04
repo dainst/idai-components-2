@@ -45,7 +45,7 @@
 				</select>
 
 				<label style="margin-left: 20px">Gemessen an</label>
-				<select *ngIf="this.field.position_values" [(ngModel)]="dimension.hasMeasurementPosition" class="ml-2 custom-select">
+				<select *ngIf="this.field.position_values" [(ngModel)]="dimension.hasMeasurementPosition" class="ml-2 form-control">
 					<option value=""></option>
 					<option *ngFor="let item of field.position_values" value="{{item}}">{{item}}</option>
 				</select>
