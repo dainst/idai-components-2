@@ -4,6 +4,7 @@ import {FormsModule} from '@angular/forms';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {TypeIconComponent} from './type-icon';
 import {SearchBarComponent} from './search-bar.component';
+import {TypePickerComponent} from './type-picker.component';
 
 @NgModule({
     imports: [
@@ -13,11 +14,13 @@ import {SearchBarComponent} from './search-bar.component';
     ],
     declarations: [
         SearchBarComponent,
-        TypeIconComponent
+        TypeIconComponent,
+        TypePickerComponent
     ],
     exports: [
         SearchBarComponent,
-        TypeIconComponent
+        TypeIconComponent,
+        TypePickerComponent
     ]
 })
 export class IdaiWidgetsModule {};

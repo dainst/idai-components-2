@@ -25,35 +25,8 @@
         <ng-template #filterMenu>
             <div class="filtermenu">
                 <div class="popover-custom-title">Nach Ressourcentyp filtern:</div>
-                <ul class="list-group">
-                    <li id="choose-type-filter-option-all"
-                        class="list-group-item popover-item"
-                        (click)="chooseTypeFilter(undefined); p.close();"
-                        [ngClass]="{ 'selected-filter': !types || types.length == 0 }">
-                        <i class="all-types-label">Alle Typen</i>
-                    </li>
-
-                    <li *ngFor="let parentType of filterOptions; let index = index"
-                        class="list-group-item popover-item"
-                        (click)="chooseTypeFilter(parentType); p.close();"
-                        [ngClass]="{ 'selected-filter': types && types.indexOf(parentType.name) > -1 }">
-                        <div id="choose-type-filter-option-{{index}}">
-                            <type-icon [type]="parentType.name" size="30"></type-icon>
-                            <div class="type-label">{{parentType.label}}</div>
-                        </div>
-                        <ul *ngIf="parentType.children" style="padding: 0;">
-                            <li *ngFor="let childType of parentType.children; let childIndex = index"
-                                class="list-group-item popover-item"
-                                (click)="chooseTypeFilter(childType); p.close();"
-                                [ngClass]="{ 'selected-filter': types && types.indexOf(childType.name) > -1 }">
-                                <div id="choose-type-filter-option-{{index}}-{{childIndex}}">
-                                    <type-icon [type]="childType.name" size="30"></type-icon>
-                                    <div class="type-label">{{childType.label}}</div>
-                                </div>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
+                <type-picker [typesTreeList]="filterOptions" [allTypesOptionVisible]="true"
+                             (onTypePicked)="chooseTypeFilter($event)"></type-picker>
             </div>
         </ng-template>
     </span>
