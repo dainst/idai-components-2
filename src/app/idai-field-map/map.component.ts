@@ -4,7 +4,8 @@ import {IdaiFieldResource} from '../idai-field-model/idai-field-resource';
 import {IdaiFieldPolyline} from './idai-field-polyline';
 import {IdaiFieldPolygon} from './idai-field-polygon';
 import {IdaiFieldMarker} from './idai-field-marker';
-import {ConfigLoader} from "../configuration/config-loader";
+import {CoordinatesUtility} from './coordinates-utility';
+import {ConfigLoader} from '../configuration/config-loader';
 
 // no typings for VectorMarkers available
 declare global {
@@ -366,14 +367,12 @@ export class MapComponent implements OnChanges {
 
     private getPolylineFromCoordinates(coordinates: Array<any>): L.Polyline {
 
-        let feature = L.polyline(coordinates).toGeoJSON();
-        return L.polyline(<any> feature.geometry.coordinates);
+        return L.polyline(<any> CoordinatesUtility.convertPolylineCoordinatesFromLngLatToLatLng(coordinates));
     }
 
     private getPolygonFromCoordinates(coordinates: Array<any>): L.Polygon {
 
-        let feature = L.polygon(coordinates).toGeoJSON();
-        return L.polygon(<any> feature.geometry.coordinates[0]);
+        return L.polygon(<any> CoordinatesUtility.convertPolygonCoordinatesFromLngLatToLatLng(coordinates));
     }
 
     protected generateMarkerIcon(color: string, extraClasses: string = ''): L.Icon {
