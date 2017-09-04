@@ -58,7 +58,8 @@
                 <code>&lt;document-view [document]="selectedDocument"&gt; &lt;fields-view [resource]="selectedDocument.resource"&gt;&lt;/fields-view&gt; &lt;/document-view&gt;</code>
             </p>
 
-            <document-view [document]="selectedDocument" (onEdit)="startEdit($event)" (onDeselect)="deselect()">
+            <document-view *ngIf="selectedDocument" [document]="selectedDocument" (onEdit)="startEdit($event)"
+                           (onDeselect)="deselect()">
                 <fields-view [resource]="selectedDocument.resource"></fields-view>
             </document-view>
         </div>
@@ -67,7 +68,7 @@
                 <code>&lt;relations-view [resource]="selectedDocument.resource"&gt;&lt;/relations-view&gt;</code>
             </p>
 
-            <relations-view [resource]="selectedDocument.resource"></relations-view>
+            <relations-view *ngIf="selectedDocument" [resource]="selectedDocument.resource"></relations-view>
         </div>
     </div>
 </div>
