@@ -18,7 +18,6 @@ export class TypePickerComponent {
 
     @Output() onTypePicked: EventEmitter<IdaiType> = new EventEmitter<IdaiType>();
 
-
     public pickType(type: IdaiType) {
 
         if (type && type.isAbstract) return;
