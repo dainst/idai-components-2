@@ -1,9 +1,11 @@
-import {Injectable} from "@angular/core";
-import {MDInternal} from "../messages/md-internal";
+import {Injectable} from '@angular/core';
+import {MDInternal} from '../messages/md-internal';
 import {ConfigLoader} from '../configuration/config-loader';
+import {ProjectConfiguration} from '../configuration/project-configuration';
+import {FieldDefinition} from '../configuration/field-definition';
+import {RelationDefinition} from '../configuration/relation-definition';
+import {IdaiType} from '../configuration/idai-type';
 import {Document} from '../model/document';
-import {ProjectConfiguration} from "../configuration/project-configuration";
-
 
 /**
  * @author Daniel de Oliveira
@@ -24,32 +26,35 @@ export class Validator {
 
             let resource = doc['resource'];
 
-            if (!Validator.validateType(resource,projectConfiguration)) {
+            if (!Validator.validateType(resource, projectConfiguration)) {
                 let err = [MDInternal.VALIDATION_ERROR_INVALIDTYPE];
                 err.push(resource.id);
-                err.push("\"" + resource.type + "\"");
+                err.push('"' + resource.type + '"');
                 return Promise.reject(err);
             }
 
-            let missingProperties = Validator.getMissingProperties(resource,projectConfiguration);
+            let missingProperties = Validator.getMissingProperties(resource, projectConfiguration);
             if (missingProperties.length > 0) {
-                return Promise.reject([MDInternal.VALIDATION_ERROR_MISSINGPROPERTY,resource.type].concat(missingProperties.join((", "))));
+                return Promise.reject([MDInternal.VALIDATION_ERROR_MISSINGPROPERTY, resource.type]
+                    .concat(missingProperties.join((', '))));
             }
 
-
             let invalidFields;
-            if (invalidFields = Validator.validateFields(resource,projectConfiguration)) {
-                let errr = [invalidFields.length == 1 ? MDInternal.VALIDATION_ERROR_INVALIDFIELD : MDInternal.VALIDATION_ERROR_INVALIDFIELDS];
+            if (invalidFields = Validator.validateFields(resource, projectConfiguration)) {
+                let errr = [invalidFields.length == 1 ?
+                    MDInternal.VALIDATION_ERROR_INVALIDFIELD : MDInternal.VALIDATION_ERROR_INVALIDFIELDS];
                 errr.push(resource.type);
-                errr.push(invalidFields.join(", "));
+                errr.push(invalidFields.join(', '));
                 return Promise.reject(errr);
             }
 
             let invalidNumericValues;
-            if (invalidNumericValues = Validator.validateNumericValues(resource,projectConfiguration)) {
-                let errrr = [invalidNumericValues.length == 1 ? MDInternal.VALIDATION_ERROR_INVALID_NUMERIC_VALUE : MDInternal.VALIDATION_ERROR_INVALID_NUMERIC_VALUES];
+            if (invalidNumericValues = Validator.validateNumericValues(resource, projectConfiguration)) {
+                let errrr = [invalidNumericValues.length == 1 ?
+                    MDInternal.VALIDATION_ERROR_INVALID_NUMERIC_VALUE :
+                    MDInternal.VALIDATION_ERROR_INVALID_NUMERIC_VALUES];
                 errrr.push(resource.type);
-                errrr.push(invalidNumericValues.join(", "));
+                errrr.push(invalidNumericValues.join(', '));
                 return Promise.reject(errrr);
             }
 
@@ -62,25 +67,25 @@ export class Validator {
      * @returns {Promise<void>} resolves with () or rejects with msgsWithParams in case of validation error
      */
     protected validateCustom(doc: Document): Promise<any> {
+
         return Promise.resolve();
     }
 
+    private static getMissingProperties(resource: any, projectConfiguration: ProjectConfiguration) {
 
-    private static getMissingProperties(resource: any,projectConfiguration:ProjectConfiguration) {
+        let missingFields: string[] = [];
+        let fieldDefinitions: Array<FieldDefinition> = projectConfiguration.getFieldDefinitions(resource.type);
 
-
-        let missingFields = [];
-        let fieldDefinitions = projectConfiguration.getFieldDefinitions(resource.type);
         for (let fieldDefinition of fieldDefinitions) {
             if (projectConfiguration.isMandatory(resource.type,fieldDefinition.name)) {
-                if (resource[fieldDefinition.name] == undefined || resource[fieldDefinition.name] == "") {
+                if (resource[fieldDefinition.name] == undefined || resource[fieldDefinition.name] == '') {
                     missingFields.push(fieldDefinition.name);
                 }
             }
         }
+
         return missingFields;
     }
-
 
     /**
      *
@@ -92,7 +97,7 @@ export class Validator {
 
         if (!resource.type) return false;
 
-        let types = projectConfiguration.getTypesList();
+        let types: Array<IdaiType> = projectConfiguration.getTypesList();
 
         for (let i in types) {
             if (types[i].name == resource.type) return true;
@@ -110,16 +115,14 @@ export class Validator {
      */
     private static validateFields(resource: any,projectConfiguration:ProjectConfiguration): string[] {
 
-        let projectFields = projectConfiguration.getFieldDefinitions(resource.type);
-        let relationFields = projectConfiguration.getRelationDefinitions(resource.type);
+        let projectFields: Array<FieldDefinition> = projectConfiguration.getFieldDefinitions(resource.type);
+        let relationFields: Array<RelationDefinition> = projectConfiguration.getRelationDefinitions(resource.type);
 
+        let defaultFields: Array<FieldDefinition> = [{ name: 'relations' }];
 
-        let defaultFields = [
-            { name: "relations" } ];
+        let fields: Array<any> = projectFields.concat(relationFields).concat(defaultFields);
 
-        let fields = projectFields.concat(relationFields).concat(defaultFields);
-
-        let invalidFields = [];
+        let invalidFields: Array<any> = [];
 
         for (let resourceField in resource) {
 
@@ -146,33 +149,33 @@ export class Validator {
     }
 
     public static validateNumericValues(resource: any, projectConfiguration: ProjectConfiguration): string[] {
-        let projectFields = projectConfiguration.getFieldDefinitions(resource.type);
-        let numericInputTypes = ["unsignedInt", "float", "unsignedFloat"];
-        let invalidFields = [];
+
+        let projectFields: Array<FieldDefinition> = projectConfiguration.getFieldDefinitions(resource.type);
+        let numericInputTypes: string[] = ['unsignedInt', 'float', 'unsignedFloat'];
+        let invalidFields: string[] = [];
 
         for (let i in projectFields) {
             let fieldDef = projectFields[i];
 
             if (fieldDef.hasOwnProperty('inputType')) {
-                let value = resource[fieldDef.name]
+                let value = resource[fieldDef.name];
 
-                if (value && numericInputTypes.indexOf(fieldDef["inputType"]) != -1) {
+                if (value && numericInputTypes.indexOf(fieldDef['inputType']) != -1) {
                     let valueIsValid = false;
-                    
 
-                    if (fieldDef["inputType"] == "unsignedInt") {
-                        valueIsValid = value >>> 0 === parseFloat(value)
+                    if (fieldDef['inputType'] == 'unsignedInt') {
+                        valueIsValid = value >>> 0 === parseFloat(value);
                     }
 
-                    if (fieldDef["inputType"] == "unsignedFloat") {
-                        valueIsValid = 0 <= (value = parseFloat(value))
+                    if (fieldDef['inputType'] == 'unsignedFloat') {
+                        valueIsValid = 0 <= (value = parseFloat(value));
                     }
-                    if (fieldDef["inputType"] == "float") {
-                        valueIsValid = !isNaN(value = parseFloat(value))
+                    if (fieldDef['inputType'] == 'float') {
+                        valueIsValid = !isNaN(value = parseFloat(value));
                     }
 
                     if (!valueIsValid) {
-                        invalidFields.push(fieldDef.label)
+                        invalidFields.push(fieldDef.label);
                     }
                 }
             }
@@ -183,6 +186,5 @@ export class Validator {
         } else {
             return undefined;
         }
-        
     }
 }
