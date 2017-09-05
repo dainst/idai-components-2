@@ -51,9 +51,10 @@ export class Validator {
             let invalidRelationFields;
             if (invalidRelationFields = Validator.validateRelations(resource, projectConfiguration)) {
                 let err = [invalidRelationFields.length == 1 ?
-                    MDInternal.VALIDATION_ERROR_INVALIDFIELD : MDInternal.VALIDATION_ERROR_INVALIDFIELDS];
+                    MDInternal.VALIDATION_ERROR_INVALIDRELATIONFIELD :
+                    MDInternal.VALIDATION_ERROR_INVALIDRELATIONFIELDS];
                 err.push(resource.type);
-                err.push(invalidFields.join(', '));
+                err.push(invalidRelationFields.join(', '));
                 return Promise.reject(err);
             }
 
