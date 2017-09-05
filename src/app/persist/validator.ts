@@ -113,7 +113,7 @@ export class Validator {
      * @returns {string[]} the names of invalid fields if one ore more of the fields are invalid, otherwise
      * <code>undefined</code>
      */
-    private static validateFields(resource: any,projectConfiguration:ProjectConfiguration): string[] {
+    public static validateFields(resource: any, projectConfiguration: ProjectConfiguration): string[] {
 
         let projectFields: Array<FieldDefinition> = projectConfiguration.getFieldDefinitions(resource.type);
         let relationFields: Array<RelationDefinition> = projectConfiguration.getRelationDefinitions(resource.type);
@@ -125,9 +125,8 @@ export class Validator {
         let invalidFields: Array<any> = [];
 
         for (let resourceField in resource) {
-
             if (resource.hasOwnProperty(resourceField)) {
-                let fieldFound = false;
+                let fieldFound: boolean = false;
                 for (let i in fields) {
                     if (fields[i].name == resourceField) {
                         fieldFound = true;
@@ -135,7 +134,7 @@ export class Validator {
                     }
                 }
                 if (!fieldFound) {
-                    invalidFields.push( resourceField );
+                    invalidFields.push(resourceField);
                 }
             }
         }
