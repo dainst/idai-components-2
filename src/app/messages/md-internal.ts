@@ -30,6 +30,8 @@ export class MDInternal extends MD {
     public static VALIDATION_ERROR_INVALIDTYPE: string = 'validation/error/invalidtype';
     public static VALIDATION_ERROR_INVALIDFIELD: string = 'validation/error/invalidfield';
     public static VALIDATION_ERROR_INVALIDFIELDS: string = 'validation/error/invalidfields';
+    public static VALIDATION_ERROR_INVALIDRELATIONFIELD: string = 'validation/error/invalidrelationfield';
+    public static VALIDATION_ERROR_INVALIDRELATIONFIELDS: string = 'validation/error/invalidrelationfields';
     public static VALIDATION_ERROR_INVALID_NUMERIC_VALUE: string = 'validation/error/invalidnumericvalue';
     public static VALIDATION_ERROR_INVALID_NUMERIC_VALUES: string = 'validation/error/invalidnumericvalues';
     
@@ -80,6 +82,18 @@ export class MDInternal extends MD {
         };
         this.msgs[MDInternal.VALIDATION_ERROR_INVALIDFIELDS]={
             content: 'Fehlende Felddefinitionen für die Felder \'{1}\' der Ressource vom Typ \'{0}\'.',
+            level: 'danger',
+            params: [],
+            hidden: false
+        };
+        this.msgs[MDInternal.VALIDATION_ERROR_INVALIDRELATIONFIELD]={
+            content: 'Fehlende Definition für die Relation \'{1}\' der Ressource vom Typ \'{0}\'.',
+            level: 'danger',
+            params: [],
+            hidden: false
+        };
+        this.msgs[MDInternal.VALIDATION_ERROR_INVALIDRELATIONFIELDS]={
+            content: 'Fehlende Definitionen für die Relationen \'{1}\' der Ressource vom Typ \'{0}\'.',
             level: 'danger',
             params: [],
             hidden: false

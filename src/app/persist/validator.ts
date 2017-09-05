@@ -41,21 +41,30 @@ export class Validator {
 
             let invalidFields;
             if (invalidFields = Validator.validateFields(resource, projectConfiguration)) {
-                let errr = [invalidFields.length == 1 ?
+                let err = [invalidFields.length == 1 ?
                     MDInternal.VALIDATION_ERROR_INVALIDFIELD : MDInternal.VALIDATION_ERROR_INVALIDFIELDS];
-                errr.push(resource.type);
-                errr.push(invalidFields.join(', '));
-                return Promise.reject(errr);
+                err.push(resource.type);
+                err.push(invalidFields.join(', '));
+                return Promise.reject(err);
+            }
+
+            let invalidRelationFields;
+            if (invalidRelationFields = Validator.validateRelations(resource, projectConfiguration)) {
+                let err = [invalidRelationFields.length == 1 ?
+                    MDInternal.VALIDATION_ERROR_INVALIDFIELD : MDInternal.VALIDATION_ERROR_INVALIDFIELDS];
+                err.push(resource.type);
+                err.push(invalidFields.join(', '));
+                return Promise.reject(err);
             }
 
             let invalidNumericValues;
             if (invalidNumericValues = Validator.validateNumericValues(resource, projectConfiguration)) {
-                let errrr = [invalidNumericValues.length == 1 ?
+                let err = [invalidNumericValues.length == 1 ?
                     MDInternal.VALIDATION_ERROR_INVALID_NUMERIC_VALUE :
                     MDInternal.VALIDATION_ERROR_INVALID_NUMERIC_VALUES];
-                errrr.push(resource.type);
-                errrr.push(invalidNumericValues.join(', '));
-                return Promise.reject(errrr);
+                err.push(resource.type);
+                err.push(invalidNumericValues.join(', '));
+                return Promise.reject(err);
             }
 
             return this.validateCustom(doc);
@@ -110,19 +119,17 @@ export class Validator {
      *
      * @param resource
      * @param projectConfiguration
-     * @returns {string[]} the names of invalid fields if one ore more of the fields are invalid, otherwise
+     * @returns {string[]} the names of invalid fields if one or more of the fields are invalid, otherwise
      * <code>undefined</code>
      */
     public static validateFields(resource: any, projectConfiguration: ProjectConfiguration): string[] {
 
-        let projectFields: Array<FieldDefinition> = projectConfiguration.getFieldDefinitions(resource.type);
-        let relationFields: Array<RelationDefinition> = projectConfiguration.getRelationDefinitions(resource.type);
+        const projectFields: Array<FieldDefinition> = projectConfiguration.getFieldDefinitions(resource.type);
+        const defaultFields: Array<FieldDefinition> = [{ name: 'relations' }];
 
-        let defaultFields: Array<FieldDefinition> = [{ name: 'relations' }];
+        const fields: Array<any> = projectFields.concat(defaultFields);
 
-        let fields: Array<any> = projectFields.concat(relationFields).concat(defaultFields);
-
-        let invalidFields: Array<any> = [];
+        const invalidFields: Array<any> = [];
 
         for (let resourceField in resource) {
             if (resource.hasOwnProperty(resourceField)) {
@@ -135,6 +142,39 @@ export class Validator {
                 }
                 if (!fieldFound) {
                     invalidFields.push(resourceField);
+                }
+            }
+        }
+
+        if (invalidFields.length > 0) {
+            return invalidFields;
+        }
+        else {
+            return undefined;
+        }
+    }
+
+    /**
+     * @returns {string[]} the names of invalid relation fields if one or more of the fields are invalid, otherwise
+     * <code>undefined</code>
+     */
+    public static validateRelations(resource: any, projectConfiguration: ProjectConfiguration): string[] {
+
+        const fields: Array<RelationDefinition> = projectConfiguration.getRelationDefinitions(resource.type);
+
+        const invalidFields: Array<any> = [];
+
+        for (let relationField in resource.relations) {
+            if (resource.relations.hasOwnProperty(relationField)) {
+                let fieldFound: boolean = false;
+                for (let i in fields) {
+                    if (fields[i].name == relationField) {
+                        fieldFound = true;
+                        break;
+                    }
+                }
+                if (!fieldFound) {
+                    invalidFields.push(relationField);
                 }
             }
         }
