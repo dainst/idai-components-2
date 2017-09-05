@@ -3,11 +3,12 @@ import {Validator} from '../../../src/app/persist/validator';
 import {ProjectConfiguration} from '../../../src/app/configuration/project-configuration';
 import {ConfigLoader} from '../../../src/app/configuration/config-loader';
 
-
 /**
  * @author Daniel de Oliveira
+ * @author Thomas Kleinke
  */
 export function main() {
+
     describe('Validator', () => {
 
         var projectConfiguration = new ProjectConfiguration(
@@ -30,9 +31,33 @@ export function main() {
                                 mandatory: true
                             }
                         ]
-                    }
+                    },
+                    {
+                        type: 'T2',
+                        fields: [
+                            {
+                                name: 'id',
+                            },
+                            {
+                                name: 'type',
+                            }
+                        ]
+                    },
                 ],
-                relations: {}
+                relations: [
+                    {
+                        name: 'isRelatedTo',
+                        domain: ['T'],
+                        range: ['T'],
+                        inverse: 'NO-INVERSE'
+                    },
+                    {
+                        name: 'isDepictedIn',
+                        domain: ['T'],
+                        range: ['T2'],
+                        inverse: 'NO-INVERSE'
+                    }
+                ]
             }
         );
 
@@ -43,12 +68,15 @@ export function main() {
         };
 
         it('should report nothing', done => {
+
             const doc = {
                 resource: {
                     id: '1',
                     type: 'T',
                     mandatory: 'm',
-                    relations: {},
+                    relations: {
+                        isRelatedTo: ['2']
+                    },
                 }
             };
             new Validator(<ConfigLoader> configLoader)
@@ -56,6 +84,7 @@ export function main() {
         });
 
         it('should report nothing when omitting optional property', done => {
+
             const doc = {
                 resource: {
                     id: '1',
@@ -140,6 +169,49 @@ export function main() {
                 expect(msgWithParams).toEqual([MDInternal.VALIDATION_ERROR_INVALIDFIELDS, 'T', 'a, b']);
                 done();
             });
+        });
+
+        it('should report a missing relation field definition', done => {
+
+            const doc = {
+                resource: {
+                    id: '1',
+                    type: 'T2',
+                    relations: {
+                        isRelatedTo: ['2']
+                    }
+                }
+            };
+
+            new Validator(<ConfigLoader> configLoader).validate(doc).then(
+                () => fail(),
+                msgWithParams => {
+                    expect(msgWithParams).toEqual([MDInternal.VALIDATION_ERROR_INVALIDRELATIONFIELD, 'T2',
+                        'isRelatedTo']);
+                    done();
+                });
+        });
+
+        it('should report missing relation field definitions', done => {
+
+            const doc = {
+                resource: {
+                    id: '1',
+                    type: 'T2',
+                    relations: {
+                        isRelatedTo: ['2'],
+                        isDepictedIn: ['3']
+                    }
+                }
+            };
+
+            new Validator(<ConfigLoader> configLoader).validate(doc).then(
+                () => fail(),
+                msgWithParams => {
+                    expect(msgWithParams).toEqual([MDInternal.VALIDATION_ERROR_INVALIDRELATIONFIELDS, 'T2',
+                        'isRelatedTo, isDepictedIn']);
+                    done();
+                });
         });
     })
 }
