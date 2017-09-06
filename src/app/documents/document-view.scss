@@ -78,6 +78,11 @@ $buttoncolor: #657faa;
   margin-bottom: 10px;
 }
 
+.document-view-field ul {
+  padding: 0;
+  list-style-type: none;
+}
+
 .document-view-field .fieldname {
   font-size: 1rem;
   font-weight: bold;
@@ -85,7 +90,10 @@ $buttoncolor: #657faa;
 
 .document-view-field .fieldvalue {
   margin-left: 10px;
+  margin-bottom: 5px;
   overflow-wrap: break-word;
+  line-height: 1.2;
+  font-size: 0.9em;
 }
 
 .document-view-field .fieldvalue .relation-link {
