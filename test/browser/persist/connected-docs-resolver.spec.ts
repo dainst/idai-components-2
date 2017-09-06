@@ -1,34 +1,35 @@
-import {ProjectConfiguration} from "../../../src/app/configuration/project-configuration";
-import {ConnectedDocsResolver} from "../../../src/app/persist/connected-docs-resolver";
+import {ProjectConfiguration} from '../../../src/app/configuration/project-configuration';
+import {ConnectedDocsResolver} from '../../../src/app/persist/connected-docs-resolver';
 
 /**
  * @author Daniel de Oliveira
  */
 export function main() {
+
     describe('ConnectedDocsResolver', () => {
 
         const projectConfiguration = new ProjectConfiguration({
-            "types": [
+            'types': [
                 {
-                    "type": "object",
-                    "fields": []
+                    'type': 'object',
+                    'fields': []
                 }
             ],
-            "relations": [
+            'relations': [
                 {
-                    "name": "BelongsTo",
-                    "inverse": "Contains",
-                    "label": "Enthalten in"
+                    'name': 'BelongsTo',
+                    'inverse': 'Contains',
+                    'label': 'Enthalten in'
                 },
                 {
-                    "name": "Contains",
-                    "inverse": "BelongsTo",
-                    "label": "Enthält"
+                    'name': 'Contains',
+                    'inverse': 'BelongsTo',
+                    'label': 'Enthält'
                 },
                 {
-                    "name": "OneWay",
-                    "inverse": "NO-INVERSE",
-                    "label": "Einweg"
+                    'name': 'OneWay',
+                    'inverse': 'NO-INVERSE',
+                    'label': 'Einweg'
                 }
             ]
         });
@@ -38,149 +39,131 @@ export function main() {
         let anotherRelatedDoc;
         let connectedDocsResolver;
 
-        beforeEach(()=>{
-            doc = { "resource" : {
-                "id" :"1", "identifier": "ob1",
-                "type": "object",
-                "relations" : {}
+        beforeEach(() => {
+
+            doc = { 'resource' : {
+                'id' :'1', 'identifier': 'ob1',
+                'type': 'object',
+                'relations' : {}
             }};
-            relatedDoc = { "resource" : {
-                "id": "2" , "identifier": "ob2",
-                "type": "object",
-                "relations" : {}
+            relatedDoc = { 'resource' : {
+                'id': '2' , 'identifier': 'ob2',
+                'type': 'object',
+                'relations' : {}
             }};
-            anotherRelatedDoc = { "resource" : {
-                "id": "3" , "identifier": "ob3",
-                "type": "object",
-                "relations" : {}
+            anotherRelatedDoc = { 'resource' : {
+                'id': '3' , 'identifier': 'ob3',
+                'type': 'object',
+                'relations' : {}
             }};
             connectedDocsResolver = new ConnectedDocsResolver(projectConfiguration);
         });
 
-        it('add one',
-            () => {
-                doc.resource.relations['BelongsTo'] = ["2"];
+        it('add one', () => {
 
-                const docsToUpdate =
-                    connectedDocsResolver.determineDocsToUpdate(doc,[relatedDoc],true);
+            doc.resource.relations['BelongsTo'] = ['2'];
 
-                expect(docsToUpdate).toEqual([relatedDoc]);
-            }
-        );
+            const docsToUpdate = connectedDocsResolver.determineDocsToUpdate(doc, [relatedDoc], true);
 
-        it('remove one',
-            () => {
-                relatedDoc.resource.relations['Contains'] = ["1"];
+            expect(docsToUpdate).toEqual([relatedDoc]);
+        });
 
-                const docsToUpdate =
-                    connectedDocsResolver.determineDocsToUpdate(doc,[relatedDoc],true);
+        it('remove one', () => {
 
-                expect(docsToUpdate).toEqual([relatedDoc]);
-                expect(relatedDoc.resource.relations['Contains']).toEqual(undefined);
-            }
-        );
+            relatedDoc.resource.relations['Contains'] = ['1'];
 
-        it('add one and remove one',
-            () => {
-                doc.resource.relations['BelongsTo'] = ["3"];
-                relatedDoc.resource.relations['Contains'] = ["1"];
+            const docsToUpdate = connectedDocsResolver.determineDocsToUpdate(doc, [relatedDoc], true);
 
-                const docsToUpdate =
-                    connectedDocsResolver.determineDocsToUpdate(doc,[relatedDoc,anotherRelatedDoc],true);
+            expect(docsToUpdate).toEqual([relatedDoc]);
+            expect(relatedDoc.resource.relations['Contains']).toEqual(undefined);
+        });
 
-                expect(docsToUpdate).toEqual([relatedDoc,anotherRelatedDoc]);
-                expect(relatedDoc.resource.relations['Contains']).toEqual(undefined);
-                expect(anotherRelatedDoc.resource.relations['Contains']).toEqual(["1"]);
-            }
-        );
+        it('add one and remove one', () => {
 
-        it('dont touch a third party relation on add',
-            () => {
-                doc.resource.relations['BelongsTo'] = ["2"];
-                relatedDoc.resource.relations['Contains'] = ["4"];
+            doc.resource.relations['BelongsTo'] = ['3'];
+            relatedDoc.resource.relations['Contains'] = ['1'];
 
-                const docsToUpdate =
-                    connectedDocsResolver.determineDocsToUpdate(doc,[relatedDoc],true);
+            const docsToUpdate
+                = connectedDocsResolver.determineDocsToUpdate(doc, [relatedDoc, anotherRelatedDoc], true);
 
-                expect(docsToUpdate).toEqual([relatedDoc]);
-                expect(relatedDoc.resource.relations['Contains']).toEqual(["1","4"]);
-            }
-        );
+            expect(docsToUpdate).toEqual([relatedDoc,anotherRelatedDoc]);
+            expect(relatedDoc.resource.relations['Contains']).toEqual(undefined);
+            expect(anotherRelatedDoc.resource.relations['Contains']).toEqual(['1']);
+        });
 
-        it('dont touch a third party relation on remove',
-            () => {
-                relatedDoc.resource.relations['Contains'] = ["1","4"];
+        it('dont touch a third party relation on add', () => {
 
-                const docsToUpdate =
-                    connectedDocsResolver.determineDocsToUpdate(doc,[relatedDoc],true);
+            doc.resource.relations['BelongsTo'] = ['2'];
+            relatedDoc.resource.relations['Contains'] = ['4'];
 
-                expect(docsToUpdate).toEqual([relatedDoc]);
-                expect(relatedDoc.resource.relations['Contains']).toEqual(["4"]);
-            }
-        );
+            const docsToUpdate = connectedDocsResolver.determineDocsToUpdate(doc, [relatedDoc], true);
 
-        it('dont update if existed before iwith additional relation in related doc',
-            () => {
-                doc.resource.relations['BelongsTo'] = ["2"];
-                relatedDoc.resource.relations['Contains'] = ["1","4"];
+            expect(docsToUpdate).toEqual([relatedDoc]);
+            expect(relatedDoc.resource.relations['Contains']).toEqual(['1','4']);
+        });
 
-                const docsToUpdate =
-                    connectedDocsResolver.determineDocsToUpdate(doc,[relatedDoc],true);
+        it('dont touch a third party relation on remove', () => {
 
-                expect(docsToUpdate).toEqual([]);
-                expect(relatedDoc.resource.relations['Contains']).toEqual(["1","4"]);
-            }
-        );
+            relatedDoc.resource.relations['Contains'] = ['1','4'];
 
-        it('do not update if existed before',
-            () => {
-                doc.resource.relations['BelongsTo'] = ["2"];
-                relatedDoc.resource.relations['Contains'] = ["1"];
+            const docsToUpdate = connectedDocsResolver.determineDocsToUpdate(doc, [relatedDoc], true);
 
-                const docsToUpdate =
-                    connectedDocsResolver.determineDocsToUpdate(doc,[relatedDoc],true);
+            expect(docsToUpdate).toEqual([relatedDoc]);
+            expect(relatedDoc.resource.relations['Contains']).toEqual(['4']);
+        });
 
-                expect(docsToUpdate).toEqual([]);
-                expect(relatedDoc.resource.relations['Contains']).toEqual(["1"]);
-            }
-        );
+        it('dont update if existed before with additional relation in related doc', () => {
+
+            doc.resource.relations['BelongsTo'] = ['2'];
+            relatedDoc.resource.relations['Contains'] = ['1','4'];
+
+            const docsToUpdate = connectedDocsResolver.determineDocsToUpdate(doc, [relatedDoc], true);
+
+            expect(docsToUpdate).toEqual([]);
+            expect(relatedDoc.resource.relations['Contains']).toEqual(['1','4']);
+        });
+
+        it('do not update if existed before', () => {
+
+            doc.resource.relations['BelongsTo'] = ['2'];
+            relatedDoc.resource.relations['Contains'] = ['1'];
+
+            const docsToUpdate = connectedDocsResolver.determineDocsToUpdate(doc, [relatedDoc], true);
+
+            expect(docsToUpdate).toEqual([]);
+            expect(relatedDoc.resource.relations['Contains']).toEqual(['1']);
+        });
 
 
-        it('remove only',
-            () => {
-                doc.resource.relations['Contains'] = ["2"];
-                relatedDoc.resource.relations['BelongsTo'] = ["1"];
+        it('remove only', () => {
 
-                const docsToUpdate =
-                    connectedDocsResolver.determineDocsToUpdate(doc,[relatedDoc],false);
+            doc.resource.relations['Contains'] = ['2'];
+            relatedDoc.resource.relations['BelongsTo'] = ['1'];
 
-                expect(docsToUpdate).toEqual([relatedDoc]);
-                expect(relatedDoc.resource.relations['BelongsTo']).toEqual(undefined);
-            }
-        );
+            const docsToUpdate = connectedDocsResolver.determineDocsToUpdate(doc, [relatedDoc], false);
 
-        it('dont add on remove only',
-            () => {
-                doc.resource.relations['Contains'] = ["2"];
+            expect(docsToUpdate).toEqual([relatedDoc]);
+            expect(relatedDoc.resource.relations['BelongsTo']).toEqual(undefined);
+        });
 
-                const docsToUpdate =
-                    connectedDocsResolver.determineDocsToUpdate(doc,[relatedDoc],false);
+        it('dont add on remove only', () => {
 
-                expect(docsToUpdate).toEqual([]);
-                expect(relatedDoc.resource.relations['BelongsTo']).toEqual(undefined);
-            }
-        );
+            doc.resource.relations['Contains'] = ['2'];
 
-        it('dont touch a third party relation on remove only',
-            () => {
-                relatedDoc.resource.relations['Contains'] = ["1","4"];
+            const docsToUpdate = connectedDocsResolver.determineDocsToUpdate(doc, [relatedDoc], false);
 
-                const docsToUpdate =
-                    connectedDocsResolver.determineDocsToUpdate(doc,[relatedDoc],false);
+            expect(docsToUpdate).toEqual([]);
+            expect(relatedDoc.resource.relations['BelongsTo']).toEqual(undefined);
+        });
 
-                expect(docsToUpdate).toEqual([relatedDoc]);
-                expect(relatedDoc.resource.relations['Contains']).toEqual(["4"]);
-            }
-        );
+        it('dont touch a third party relation on remove only', () => {
+
+            relatedDoc.resource.relations['Contains'] = ['1', '4'];
+
+            const docsToUpdate = connectedDocsResolver.determineDocsToUpdate(doc, [relatedDoc], false);
+
+            expect(docsToUpdate).toEqual([relatedDoc]);
+            expect(relatedDoc.resource.relations['Contains']).toEqual(['4']);
+        });
     });
 }
