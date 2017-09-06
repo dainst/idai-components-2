@@ -3,6 +3,7 @@ import {ConnectedDocsResolver} from '../../../src/app/persist/connected-docs-res
 
 /**
  * @author Daniel de Oliveira
+ * @author Thomas Kleinke
  */
 export function main() {
 
@@ -86,7 +87,7 @@ export function main() {
             const docsToUpdate
                 = connectedDocsResolver.determineDocsToUpdate(doc, [relatedDoc, anotherRelatedDoc], true);
 
-            expect(docsToUpdate).toEqual([relatedDoc,anotherRelatedDoc]);
+            expect(docsToUpdate).toEqual([relatedDoc, anotherRelatedDoc]);
             expect(relatedDoc.resource.relations['Contains']).toEqual(undefined);
             expect(anotherRelatedDoc.resource.relations['Contains']).toEqual(['1']);
         });
@@ -164,6 +165,32 @@ export function main() {
 
             expect(docsToUpdate).toEqual([relatedDoc]);
             expect(relatedDoc.resource.relations['Contains']).toEqual(['4']);
+        });
+
+        it('dont remove one-way relations of related documents', () => {
+
+            doc.resource.relations['Contains'] = ['2'];
+            relatedDoc.resource.relations['OneWay'] = ['1'];
+            relatedDoc.resource.relations['BelongsTo'] = ['1'];
+
+            const docsToUpdate = connectedDocsResolver.determineDocsToUpdate(doc, [relatedDoc], true);
+
+            expect(docsToUpdate).toEqual([]);
+            expect(relatedDoc.resource.relations['OneWay']).toEqual(['1']);
+            expect(relatedDoc.resource.relations['BelongsTo']).toEqual(['1']);
+        });
+
+        it('remove one-way relations of related documents on remove only', () => {
+
+            doc.resource.relations['Contains'] = ['2'];
+            relatedDoc.resource.relations['OneWay'] = ['1'];
+            relatedDoc.resource.relations['BelongsTo'] = ['1'];
+
+            const docsToUpdate = connectedDocsResolver.determineDocsToUpdate(doc, [relatedDoc], false);
+
+            expect(docsToUpdate).toEqual([relatedDoc]);
+            expect(relatedDoc.resource.relations['OneWay']).toEqual(undefined);
+            expect(relatedDoc.resource.relations['BelongsTo']).toEqual(undefined);
         });
     });
 }
