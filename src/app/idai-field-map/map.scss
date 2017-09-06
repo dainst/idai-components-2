@@ -38,8 +38,8 @@
       }
 
       &.main {
-        stroke-width: 1px;
-        stroke-dasharray: 5;
+        stroke-width: 2px;
+        stroke-dasharray: 5, 5, 1, 5;
         stroke-opacity: 0.2;
         fill: none;
       }
