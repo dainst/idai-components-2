@@ -14,6 +14,12 @@
     </div>
     <div *ngIf="!field.isArray" class="document-view-field">
         <h3 class="fieldname">{{field.name}}</h3>
-        <div class="fieldvalue">{{field.value}}</div>
+        <div class="fieldvalue" *ngIf="isBoolean(field.value)">
+			<span *ngIf="field.value">ja</span>
+			<span *ngIf="!field.value">nein</span>
+		</div>
+		<div class="fieldvalue" *ngIf="!isBoolean(field.value)">
+			{{field.value}}
+		</div>
     </div>
 </div>

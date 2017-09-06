@@ -30,6 +30,10 @@ export class FieldsViewComponent implements OnChanges {
         if (this.resource) this.processFields(this.resource);
     }
 
+    public isBoolean(value): boolean {
+        return typeof value == 'boolean';
+    }
+
     private processFields(resource: Resource) {
 
         this.configLoader.getProjectConfiguration().then(
