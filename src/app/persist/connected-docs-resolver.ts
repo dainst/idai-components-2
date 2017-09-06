@@ -1,7 +1,6 @@
-import {Injectable} from "@angular/core";
-import {Document} from "../model/document";
-import {Resource} from "../model/resource";
-import {ProjectConfiguration} from "../configuration/project-configuration";
+import {Injectable} from '@angular/core';
+import {Document} from '../model/document';
+import {ProjectConfiguration} from '../configuration/project-configuration';
 
 @Injectable()
 /**
@@ -10,11 +9,7 @@ import {ProjectConfiguration} from "../configuration/project-configuration";
  */
 export class ConnectedDocsResolver {
 
-    constructor(
-        private projectConfiguration: ProjectConfiguration
-    ) {
-
-    }
+    constructor(private projectConfiguration: ProjectConfiguration) {}
 
     /**
      * The method returns a set of the target documents which need an update.
@@ -25,26 +20,23 @@ export class ConnectedDocsResolver {
      * @param setInverseRelations
      * @return {Array} the instances of targetDocuments which need an update
      */
-    public determineDocsToUpdate(
-        document: Document,
-        targetDocuments: Document[],
-        setInverseRelations: boolean) {
+    public determineDocsToUpdate(document: Document, targetDocuments: Array<Document>, setInverseRelations: boolean) {
 
         const copyOfTargetDocuments = JSON.parse(JSON.stringify(targetDocuments));
 
         for (let targetDocument of targetDocuments) {
-            this.pruneInverseRelations(document.resource.id, targetDocument);
+            this.pruneInverseRelations(document.resource.id, targetDocument, setInverseRelations);
             if (setInverseRelations) this.setInverseRelations(document, targetDocument);
         }
 
-        return this.compare(targetDocuments,copyOfTargetDocuments);
+        return this.compare(targetDocuments, copyOfTargetDocuments);
     }
 
-    private compare(targetDocuments,copyOfTargetDocuments) {
+    private compare(targetDocuments, copyOfTargetDocuments) {
+        
         const docsToUpdate = [];
         for (let i in targetDocuments) {
             let same = true;
-
 
             if (Object.keys(targetDocuments[i].resource.relations).sort().toString()
                 == Object.keys(copyOfTargetDocuments[i].resource.relations).sort().toString()) {
@@ -52,7 +44,7 @@ export class ConnectedDocsResolver {
                 for (let relation in copyOfTargetDocuments[i].resource.relations) {
                     const orig = targetDocuments[i].resource.relations[relation].sort().toString();
                     const copy = copyOfTargetDocuments[i].resource.relations[relation].sort().toString();
-                    if (orig != copy) { same = false; }
+                    if (orig != copy) same = false;
                 }
             } else {
                 same = false;
@@ -63,28 +55,30 @@ export class ConnectedDocsResolver {
         return docsToUpdate;
     }
 
-    private pruneInverseRelations(resourceId: string, targetDocument: Document) {
+    private pruneInverseRelations(resourceId: string, targetDocument: Document, keepAllNoInverseRelations: boolean) {
 
         for (let relation in targetDocument.resource.relations) {
             if (!this.projectConfiguration.isRelationProperty(relation)) continue;
-
-            if (this.removeRelation(resourceId,targetDocument.resource.relations,relation)) {
+            if (keepAllNoInverseRelations && this.projectConfiguration.getInverseRelations(relation) == 'NO-INVERSE') {
+                continue;
             }
+
+            this.removeRelation(resourceId, targetDocument.resource.relations, relation);
         }
     }
 
-    private removeRelation(resourceId,relations,relation) {
+    private removeRelation(resourceId: string, relations: any, relation: string): boolean {
+        
         const index = relations[relation].indexOf(resourceId);
         if (index == -1) return false;
 
         relations[relation].splice(index, 1);
         if (relations[relation].length == 0) delete relations[relation];
+
         return true;
     }
 
-    private setInverseRelations(
-        document: Document,
-        targetDocument: Document) {
+    private setInverseRelations(document: Document, targetDocument: Document) {
 
         for (let relation in document.resource.relations) {
 
