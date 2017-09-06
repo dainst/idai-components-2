@@ -52,18 +52,18 @@ export class ProjectConfiguration {
         this.viewsList = configuration.views;
     }
 
-    public getInverseRelations(prop) {
+    public getInverseRelations(relationName: string): string {
 
-        for (let p of this.relationFields) {
-            if (p['name'] == prop) return p['inverse'];
+        for (let relationField of this.relationFields) {
+            if (relationField['name'] == relationName) return relationField['inverse'];
         }
         return undefined;
     }
 
     public isRelationProperty(propertyName: string): boolean {
 
-        for (let p of this.relationFields) {
-            if (p['name'] == propertyName) return true;
+        for (let relationField of this.relationFields) {
+            if (relationField['name'] == propertyName) return true;
         }
         return false;
     }
