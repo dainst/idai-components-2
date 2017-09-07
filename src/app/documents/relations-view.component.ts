@@ -47,7 +47,7 @@ export class RelationsViewComponent implements OnChanges {
 
             for (let relationName in resource.relations) {
                 if (resource.relations.hasOwnProperty(relationName)) {
-                    if (!projectConfiguration.isVisibleRelation(relationName)) continue;
+                    if (!projectConfiguration.isVisibleRelation(relationName, this.resource.type)) continue;
 
                     let targetIds = resource.relations[relationName];
 

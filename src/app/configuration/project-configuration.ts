@@ -195,16 +195,17 @@ export class ProjectConfiguration {
         return this.hasProperty(typeName, fieldName, 'visible');
     }
 
-    public isVisibleRelation(relationName:string): boolean {
+    public isVisibleRelation(relationName: string, domainType: string): boolean {
 
-        for (let i in this.relationFields) {
-            if (this.relationFields[i].name == relationName &&
-                this.relationFields[i].visible != undefined &&
-                    this.relationFields[i].visible == false) {
-
+        for (let relationField of this.relationFields) {
+            if (relationField.name == relationName &&
+                    relationField.domain.indexOf(domainType) > -1 &&
+                    relationField.visible != undefined &&
+                    relationField.visible === false) {
                 return false;
             }
         }
+
         return true;
     }
 
