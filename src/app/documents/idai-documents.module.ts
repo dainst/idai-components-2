@@ -1,10 +1,12 @@
 import {LOCALE_ID, NgModule} from '@angular/core';
 import {CommonModule, DecimalPipe} from '@angular/common';
 import {RouterModule} from '@angular/router';
-import {Datastore} from "../datastore/datastore";
-import {ReadDatastore} from "../datastore/read-datastore";
-import {ConfigLoader} from "../configuration/config-loader";
-import {PersistenceManager} from "../persist/persistence-manager";
+import {FormsModule} from '@angular/forms';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {Datastore} from '../datastore/datastore';
+import {ReadDatastore} from '../datastore/read-datastore';
+import {ConfigLoader} from '../configuration/config-loader';
+import {PersistenceManager} from '../persist/persistence-manager';
 import {DocumentEditComponent} from './document-edit.component';
 import {EditFormComponent} from './edit-form.component';
 import {RelationsFormComponent} from './relations-form.component';
@@ -21,13 +23,12 @@ import {MultiselectComponent} from './forms/multiselect.component';
 import {RadioComponent} from './forms/radio.component';
 import {TextComponent} from './forms/text.component';
 import {DatingComponent} from './forms/dating.component';
-import {FormsModule} from '@angular/forms';
-import {FieldsViewComponent} from "./fields-view.component";
-import {RelationsViewComponent} from "./relations-view.component";
-import {DocumentViewComponent} from "./document-view.component";
-import {IdaiWidgetsModule} from "../widgets/idai-widgets.module";
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {BooleanComponent} from "./forms/boolean.component";
+import {FieldsViewComponent} from './fields-view.component';
+import {RelationsViewComponent} from './relations-view.component';
+import {DocumentViewComponent} from './document-view.component';
+import {IdaiWidgetsModule} from '../widgets/idai-widgets.module';
+import {BooleanComponent} from './forms/boolean.component';
+import {DocumentTeaserComponent} from './document-teaser.component';
 
 @NgModule({
     imports: [
@@ -57,13 +58,14 @@ import {BooleanComponent} from "./forms/boolean.component";
         RadioComponent,
         TextComponent,
         DatingComponent,
-        DimensionComponent
+        DimensionComponent,
+        DocumentTeaserComponent
     ],
     providers: [
         ConfigLoader,
         PersistenceManager,
         DecimalPipe,
-        { provide: LOCALE_ID, useValue: "de-DE" }, // change when i18n is implemented
+        { provide: LOCALE_ID, useValue: 'de-DE' }, // change when i18n is implemented
         { provide: ReadDatastore, useExisting: Datastore }
     ],
     exports: [
@@ -72,7 +74,8 @@ import {BooleanComponent} from "./forms/boolean.component";
         RelationsViewComponent,
         RelationsFormComponent,
         EditFormComponent,
-        DocumentViewComponent
+        DocumentViewComponent,
+        DocumentTeaserComponent
     ]
 })
 export class IdaiDocumentsModule {}
