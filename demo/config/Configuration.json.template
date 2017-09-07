@@ -173,7 +173,7 @@
       "domain": [
         "Section"
       ],
-      "editable": "false",
+      "editable": false,
       "inverse": "NO-INVERSE",
       "label": "Gehört zu",
       "name": "isRecordedIn",
@@ -181,21 +181,21 @@
         "Object",
         "Object_enhanced"
       ],
-      "visible": "false"
+      "visible": false
     },
     {
       "domain": [
         "Object",
         "Object_enhanced"
       ],
-      "editable": "false",
+      "editable": false,
       "inverse": "NO-INVERSE",
       "label": "Gehört zu",
       "name": "isRecordedIn",
       "range": [
         "Project"
       ],
-      "visible": "false"
+      "visible": false
     },
     {
       "name": "Belongs to",
