@@ -4,7 +4,7 @@
             <span class="card-title" *ngIf="field.label">{{field.label}}</span>
             <span class="card-title" *ngIf="!field.label">{{field.name}}</span>
 
-            <span *ngIf="field.description" placement="left" ngbTooltip="{{field.description}}"
+            <span *ngIf="field.description" placement="left" container="body" ngbTooltip="{{field.description}}"
                   class="mdi mdi-information-outline float-right"></span>
         </div>
 
