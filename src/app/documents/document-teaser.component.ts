@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {IdaiFieldDocument} from '../idai-field-model/idai-field-document';
+import {Document} from '../model/document';
 
 @Component({
     selector: 'document-teaser',
@@ -8,5 +8,5 @@ import {IdaiFieldDocument} from '../idai-field-model/idai-field-document';
 })
 export class DocumentTeaserComponent {
 
-    @Input() document: IdaiFieldDocument;
+    @Input() document: Document;
 }

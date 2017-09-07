@@ -1,4 +1,5 @@
 import {Component, OnChanges, Input, EventEmitter, Output} from '@angular/core';
+import {Document} from '../model/document';
 import {Resource} from '../model/resource';
 import {ReadDatastore} from '../datastore/read-datastore';
 import {ConfigLoader} from '../configuration/config-loader';
@@ -20,7 +21,7 @@ export class RelationsViewComponent implements OnChanges {
     protected relations: Array<any>;
 
     @Input() resource: Resource;
-    @Output() relationClicked = new EventEmitter();
+    @Output() onRelationTargetClicked: EventEmitter<Document> = new EventEmitter<Document>();
 
     public collapsed: boolean;
 
@@ -37,8 +38,9 @@ export class RelationsViewComponent implements OnChanges {
         if (this.resource) this.processRelations(this.resource);
     }
 
-    public clickRelation(doc) {
-        this.relationClicked.emit(doc);
+    public clickRelation(document: Document) {
+
+        this.onRelationTargetClicked.emit(document);
     }
 
     private processRelations(resource: Resource) {
@@ -87,6 +89,4 @@ export class RelationsViewComponent implements OnChanges {
             () => Promise.resolve(targetDocuments)
         );
     }
-
-
 }

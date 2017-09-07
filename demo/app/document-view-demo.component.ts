@@ -57,4 +57,9 @@ export class DocumentViewDemoComponent implements OnInit {
 
         this.selectedDocument = undefined;
     }
+
+    public showRelationTargetClickedMessage(relationTarget: Document) {
+
+        alert('Relation-Target ausgewählt: ' + relationTarget.resource.identifier);
+    }
 }

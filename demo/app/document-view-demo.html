@@ -68,7 +68,9 @@
                 <code>&lt;relations-view [resource]="selectedDocument.resource"&gt;&lt;/relations-view&gt;</code>
             </p>
 
-            <relations-view *ngIf="selectedDocument" [resource]="selectedDocument.resource"></relations-view>
+            <relations-view *ngIf="selectedDocument" [resource]="selectedDocument.resource"
+                (onRelationTargetClicked)="showRelationTargetClickedMessage($event)">
+            </relations-view>
         </div>
     </div>
 </div>
