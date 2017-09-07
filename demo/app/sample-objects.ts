@@ -38,11 +38,12 @@ export var OBJECTS: Document[] = [
             { 'lang': 'de', 'content': [ 'a' , 'b' ]},
             {'lang': 'en', 'content':  [ 'c' , 'd' ] }
         ],
-        'single_select_radio': 'CD', 'relations': {} }
+        'single_select_radio': 'CD',
+        'relations': { 'Belongs to': ['/demo/2'] }}
     },
     
     { 'resource': { 'id': '/demo/2', 'identifier': 'ob2', 'non_editable': 'not editable', 'type': 'Object',
-        'relations': {} }},
+        'relations': { 'Includes': ['/demo/1'] } }},
 
     { 'resource': { 'id': '/demo/3', 'identifier': 'ob3', 'type': 'Object', 'relations': {} }},
 
