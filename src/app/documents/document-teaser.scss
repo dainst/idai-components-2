@@ -1,14 +1,26 @@
-.document-teaser type-icon {
-  position: absolute;
-  margin-top: 3px;
-}
+.document-teaser {
 
-.document-teaser type-icon img {
-  border-radius: 45px;
-}
+  type-icon {
+    position: absolute;
+    margin-top: 3px;
+  }
 
-.document-teaser .teasercontent,
-.document-teaser .new {
-  display: inline-block;
-  margin-left: 45px;
+  type-icon img {
+    border-radius: 45px;
+  }
+
+  .teasercontent,
+  .new {
+    display: inline-block;
+    margin-left: 45px;
+  }
+
+  .title {
+    color: #111;
+  }
+
+  .subtitle {
+    font-size: 0.7em;
+    color: #999;
+  }
 }
