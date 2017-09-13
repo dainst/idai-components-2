@@ -31,21 +31,23 @@ export class FieldsViewComponent implements OnChanges {
     }
 
     public isBoolean(value): boolean {
+
         return typeof value == 'boolean';
     }
 
     private processFields(resource: Resource) {
 
-        this.configLoader.getProjectConfiguration().then(
-            projectConfiguration => {
+        this.configLoader.getProjectConfiguration().then(projectConfiguration => {
 
-            const ignoredFields: Array<string> = [ 'relations' ];
+            const ignoredFields: string[] = ['relations'];
 
-            for (let fieldName in resource) {
+            for (let fieldDefinition of projectConfiguration.getFieldDefinitions(resource.type)) {
 
-                if (projectConfiguration.isVisible(resource.type,fieldName)==false) continue;
+                const fieldName = fieldDefinition.name;
 
-                if (resource.hasOwnProperty(fieldName) && ignoredFields.indexOf(fieldName) == -1) {
+                if (!projectConfiguration.isVisible(resource.type, fieldName)) continue;
+
+                if (resource[fieldName] && ignoredFields.indexOf(fieldName) == -1) {
                     this.fields.push({
                         name: projectConfiguration.getFieldDefinitionLabel(resource.type, fieldName),
                         value: resource[fieldName],
@@ -53,6 +55,6 @@ export class FieldsViewComponent implements OnChanges {
                     });
                 }
             }
-        })
+        });
     }
 }
