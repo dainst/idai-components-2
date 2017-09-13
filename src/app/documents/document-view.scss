@@ -9,9 +9,16 @@ $buttoncolor: #657faa;
   padding-bottom: 0;
 }
 
-#document-view .card-header .type-icon {
+#document-view .card-header .type-icon-container {
   position: absolute;
-  top: 8px;
+  top: 16px;
+  width: 30px;
+  height: 30px;
+}
+
+#document-view .card-header .type-icon {
+  user-select: none;
+  cursor: default;
 }
 
 #document-view .card-header .document-title {
@@ -35,16 +42,6 @@ $buttoncolor: #657faa;
   margin-right: 0 !important;
   font-size: 27px;
   color: $buttoncolor !important;
-}
-
-#document-view .card-header .tooltip {
-  top: 47px !important;
-  left: 3px !important;
-}
-
-#document-view .card-header .type-icon {
-  user-select: none;
-  cursor: default;
 }
 
 #document-view-button-edit-document,

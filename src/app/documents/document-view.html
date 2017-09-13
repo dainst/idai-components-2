@@ -3,10 +3,9 @@
 
     <div *ngIf="document">
         <div class="card-header">
-            <type-icon [type]="document.resource.type" size="30"
-                       class="type-icon" ngbTooltip="{{typeLabel}}"
-                       placement="bottom">
-            </type-icon>
+            <div class="type-icon-container" ngbTooltip="{{typeLabel}}" container="body" placement="bottom">
+                <type-icon [type]="document.resource.type" size="30" class="type-icon"></type-icon>
+            </div>
             <h4 class="document-title">
                 <span id="document-view-resource-type-label">{{document.resource.identifier}}</span>
 
