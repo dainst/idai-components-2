@@ -37,6 +37,16 @@ $buttoncolor: #657faa;
   color: $buttoncolor !important;
 }
 
+#document-view .card-header .tooltip {
+  top: 47px !important;
+  left: 3px !important;
+}
+
+#document-view .card-header .type-icon {
+  user-select: none;
+  cursor: default;
+}
+
 #document-view-button-edit-document,
 #document-view-button-solve-conflicts {
   font-size: 20px;
