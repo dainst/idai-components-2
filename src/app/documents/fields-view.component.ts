@@ -50,11 +50,22 @@ export class FieldsViewComponent implements OnChanges {
                 if (resource[fieldName] && ignoredFields.indexOf(fieldName) == -1) {
                     this.fields.push({
                         name: projectConfiguration.getFieldDefinitionLabel(resource.type, fieldName),
-                        value: resource[fieldName],
+                        value: this.getValue(resource, fieldName),
                         isArray: Array.isArray(resource[fieldName])
                     });
                 }
             }
         });
+    }
+
+    private getValue(resource: Resource, fieldName: string): any {
+
+        if (typeof resource[fieldName] == 'string') {
+            return resource[fieldName]
+                .replace(/^\s+|\s+$/g, '')
+                .replace(/\n/g, '<br>');
+        } else {
+            return resource[fieldName];
+        }
     }
 }

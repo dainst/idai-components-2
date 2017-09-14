@@ -18,8 +18,6 @@
 			<span *ngIf="field.value">ja</span>
 			<span *ngIf="!field.value">nein</span>
 		</div>
-		<div class="fieldvalue" *ngIf="!isBoolean(field.value)">
-			{{field.value}}
-		</div>
+		<div class="fieldvalue" *ngIf="!isBoolean(field.value)" [innerHTML]="field.value"></div>
     </div>
 </div>
