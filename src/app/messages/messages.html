@@ -1,0 +1,11 @@
+<ng-container *ngFor="let message of messages.getMessages().reverse(); let index = index">
+    <div *ngIf="!message.hidden || message.overrideHidden" id="message-{{index}}" style="text-align: right;">
+        <div class="alert alert-{{message.level}}" style="display: inline-block;">
+            <button *ngIf="message.level == 'danger' || message.level == 'warning'" type="button" class="close"
+                    (click)="closeAlert(message)" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <span class="message-content">{{getMessageContent(message)}}</span>
+        </div>
+    </div>
+</ng-container>

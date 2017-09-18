@@ -1,8 +1,18 @@
 /**
  * @author: Jan G. Wieners
+ * @author: Thomas Kleinke
  */
 .alert {
   text-align: center;
+
+  .close {
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .close:focus {
+    outline: none;
+  }
 }
 
 @-webkit-keyframes fadeIn { from { opacity:0; opacity: 1\9; /* IE9 only */ } to { opacity:1; } }
