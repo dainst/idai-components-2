@@ -19,8 +19,7 @@ export class RelationPickerGroupComponent implements OnChanges {
     
     public ngOnChanges() {
         
-        if (this.document) 
-            this.relations = this.document['resource']['relations'];
+        if (this.document) this.relations = this.document.resource.relations;
     }
     
     public createRelation() {
@@ -28,17 +27,14 @@ export class RelationPickerGroupComponent implements OnChanges {
         if (!this.relations[this.relationDefinition.name])
             this.relations[this.relationDefinition.name] = [];
     
-        this.relations[this.relationDefinition.name].push("")
+        this.relations[this.relationDefinition.name].push('')
     }
     
     public validateNewest(): boolean {
     
         var index: number = this.relations[this.relationDefinition.name].length - 1;
     
-        if (!this.relations[this.relationDefinition.name][index] || this.relations[this.relationDefinition.name][index].length == 0) {
-            return false;
-        } else {
-            return true;
-        }
+        return (this.relations[this.relationDefinition.name][index]
+            && this.relations[this.relationDefinition.name][index].length > 0);
     }
 }
