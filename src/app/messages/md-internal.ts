@@ -15,7 +15,8 @@ export class MDInternal extends MD {
 
     public static MESSAGES_NOBODY: string = 'messages/nobody';
     public static PC_GENERIC_ERROR: string = 'pmc/generic';
-    public static PARSE_GENERIC_ERROR : string = 'parse/generic';
+
+    public static PARSE_ERROR_INVALID_JSON: string = 'parse/error/invalidjson';
 
     public static VALIDATION_ERROR_MISSINGPROPERTY: string = 'validation/error/missingproperty';
     public static VALIDATION_ERROR_MISSINGPARENTTYPE: string = 'validation/error/missingparenttype';
@@ -62,8 +63,8 @@ export class MDInternal extends MD {
             params: [],
             hidden: false
         };
-        this.msgs[MDInternal.PARSE_GENERIC_ERROR]={
-            content: 'Fehler beim Parsen der Konfigurationsdatei \'{0}\' (mehr Informationen in der Konsole).',
+        this.msgs[MDInternal.PARSE_ERROR_INVALID_JSON]={
+            content: 'Fehler beim Parsen der Konfigurationsdatei \'{0}\': Das JSON ist nicht valide.',
             level: 'danger',
             params: [],
             hidden: false

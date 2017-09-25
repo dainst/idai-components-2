@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
-import {ProjectConfiguration} from './project-configuration';
 import {Http} from '@angular/http';
+import {ProjectConfiguration} from './project-configuration';
 import {MDInternal} from '../messages/md-internal';
 import {ConfigurationPreprocessor} from './configuration-preprocessor';
 import {ConfigurationValidator} from './configuration-validator';
@@ -22,15 +22,16 @@ import {ConfigurationValidator} from './configuration-validator';
 export class ConfigLoader {
 
     private projectConfig: Promise<ProjectConfiguration> = undefined;
-    private projectConfigResolveFunction = undefined;
-    private projectConfigRejectFunction = undefined;
+    private projectConfigResolveFunction: Function = undefined;
+    private projectConfigRejectFunction: Function = undefined;
 
-    constructor(
-        private http: Http){
+    constructor(private http: Http) {
+
         this._reset();
     }
 
     public reset() {
+
         this._reset();
     }
 
@@ -39,6 +40,7 @@ export class ConfigLoader {
      *   a msgWithParams.
      */
     public getProjectConfiguration(): Promise<ProjectConfiguration> {
+
         return this.projectConfig;
     }
 
@@ -52,14 +54,14 @@ export class ConfigLoader {
 
         const defaultFields = [
             {
-                name : 'id',
-                editable : false,
-                visible : false
+                name: 'id',
+                editable: false,
+                visible: false
             },
             {
-                name : 'type',
-                visible : false,
-                editable : false
+                name: 'type',
+                visible: false,
+                editable: false
             }
         ];
 
@@ -69,36 +71,33 @@ export class ConfigLoader {
                 new ConfigurationPreprocessor([], defaultFields, []).go(config);
 
                 let configurationErrors = [];
-                if (configurationValidator) configurationErrors =
-                    configurationValidator.go(config);
+                if (configurationValidator) configurationErrors = configurationValidator.go(config);
                 if (configurationErrors.length > 0) {
                     this.projectConfigRejectFunction(configurationErrors);
                 } else {
                     this.projectConfigResolveFunction(new ProjectConfiguration(config));
                 }
             },
-            error => {
-                this.projectConfigRejectFunction(
-                    [[MDInternal.PARSE_GENERIC_ERROR].concat([error['path']])]
-                );
+            msgWithParams => {
+                this.projectConfigRejectFunction([msgWithParams]);
             }
         );
     }
 
     private read(http: any, path: string): Promise<any> {
 
-        return new Promise(function(resolve, reject) {
-            http.get(path).subscribe(data_=> {
+        return new Promise((resolve, reject) => {
+            http.get(path).subscribe(data_ => {
                 let data;
                 try {
                     data = JSON.parse(data_['_body']);
-                } catch (e) {
-                    e['path'] = path;
-                    reject(e);
+                } catch(e) {
+                    reject([MDInternal.PARSE_ERROR_INVALID_JSON, path]);
                 }
+                // TODO Why is this try/catch block necessary?
                 try {
                     resolve(data);
-                } catch (e) {
+                } catch(e) {
                     console.log(e);
                 }
             });
