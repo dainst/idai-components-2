@@ -28,10 +28,7 @@ export class Validator {
             let resource = doc.resource;
 
             if (!Validator.validateType(resource, projectConfiguration)) {
-                let err = [MDInternal.VALIDATION_ERROR_INVALIDTYPE];
-                err.push(resource.id);
-                err.push('"' + resource.type + '"');
-                return Promise.reject(err);
+                return Promise.reject([MDInternal.VALIDATION_ERROR_INVALIDTYPE, resource.type]);
             }
 
             let missingProperties = Validator.getMissingProperties(resource, projectConfiguration);
