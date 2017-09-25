@@ -6,6 +6,7 @@ import {FieldDefinition} from '../configuration/field-definition';
 import {RelationDefinition} from '../configuration/relation-definition';
 import {IdaiType} from '../configuration/idai-type';
 import {Document} from '../model/document';
+import {Resource} from '../model/resource';
 
 /**
  * @author Daniel de Oliveira
@@ -24,7 +25,7 @@ export class Validator {
 
         return this.configLoader.getProjectConfiguration().then(projectConfiguration => {
 
-            let resource = doc['resource'];
+            let resource = doc.resource;
 
             if (!Validator.validateType(resource, projectConfiguration)) {
                 let err = [MDInternal.VALIDATION_ERROR_INVALIDTYPE];
@@ -81,7 +82,7 @@ export class Validator {
         return Promise.resolve();
     }
 
-    private static getMissingProperties(resource: any, projectConfiguration: ProjectConfiguration) {
+    private static getMissingProperties(resource: Resource, projectConfiguration: ProjectConfiguration) {
 
         let missingFields: string[] = [];
         let fieldDefinitions: Array<FieldDefinition> = projectConfiguration.getFieldDefinitions(resource.type);
@@ -103,7 +104,7 @@ export class Validator {
      * @param projectConfiguration
      * @returns {boolean} true if the type of the resource is valid, otherwise false
      */
-    private static validateType(resource: any,projectConfiguration:ProjectConfiguration): boolean {
+    private static validateType(resource: Resource, projectConfiguration: ProjectConfiguration): boolean {
 
         if (!resource.type) return false;
 
@@ -123,7 +124,7 @@ export class Validator {
      * @returns {string[]} the names of invalid fields if one or more of the fields are invalid, otherwise
      * <code>undefined</code>
      */
-    public static validateFields(resource: any, projectConfiguration: ProjectConfiguration): string[] {
+    public static validateFields(resource: Resource, projectConfiguration: ProjectConfiguration): string[] {
 
         const projectFields: Array<FieldDefinition> = projectConfiguration.getFieldDefinitions(resource.type);
         const defaultFields: Array<FieldDefinition> = [{ name: 'relations' }];
@@ -159,7 +160,7 @@ export class Validator {
      * @returns {string[]} the names of invalid relation fields if one or more of the fields are invalid, otherwise
      * <code>undefined</code>
      */
-    public static validateRelations(resource: any, projectConfiguration: ProjectConfiguration): string[] {
+    public static validateRelations(resource: Resource, projectConfiguration: ProjectConfiguration): string[] {
 
         const fields: Array<RelationDefinition> = projectConfiguration.getRelationDefinitions(resource.type);
 
@@ -188,7 +189,7 @@ export class Validator {
         }
     }
 
-    public static validateNumericValues(resource: any, projectConfiguration: ProjectConfiguration): string[] {
+    public static validateNumericValues(resource: Resource, projectConfiguration: ProjectConfiguration): string[] {
 
         let projectFields: Array<FieldDefinition> = projectConfiguration.getFieldDefinitions(resource.type);
         let numericInputTypes: string[] = ['unsignedInt', 'float', 'unsignedFloat'];
