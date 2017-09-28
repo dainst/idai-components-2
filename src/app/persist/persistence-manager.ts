@@ -5,7 +5,7 @@ import {Resource} from '../model/resource';
 import {ProjectConfiguration} from '../configuration/project-configuration';
 import {ConfigLoader} from '../configuration/config-loader';
 import {MDInternal} from '../messages/md-internal';
-import {ConnectedDocsResolver} from "./connected-docs-resolver";
+import {ConnectedDocsResolver} from './connected-docs-resolver';
 
 @Injectable()
 /**
@@ -31,7 +31,7 @@ export class PersistenceManager {
         private datastore: Datastore,
         private configLoader: ConfigLoader
     ) {
-        this.ready = new Promise<string>((resolve) => {
+        this.ready = new Promise<string>(resolve => {
             this.configLoader.getProjectConfiguration().then(projectConfiguration => {
                 this.projectConfiguration = projectConfiguration;
                 this.connectedDocsResolver = new ConnectedDocsResolver(projectConfiguration);
@@ -115,7 +115,8 @@ export class PersistenceManager {
     private updateDocs(document: Document, connectedDocs: Array<Document>, setInverseRelations: boolean, user: string) {
 
         const promises = [];
-        const docsToUpdate = this.connectedDocsResolver.determineDocsToUpdate(document, connectedDocs, setInverseRelations);
+        const docsToUpdate = this.connectedDocsResolver.determineDocsToUpdate(document, connectedDocs,
+            setInverseRelations);
         for (let docToUpdate of docsToUpdate) {
             promises.push(this.persistIt(docToUpdate,user));
         }
@@ -133,23 +134,24 @@ export class PersistenceManager {
      *     [DatastoreErrors.DOCUMENT_DOES_NOT_EXIST_ERROR] - if document has a resource id, but does not exist in the db
      *     [DatastoreErrors.GENERIC_DELETE_ERROR] - if cannot delete for another reason
      */
-    public remove(document: Document, user: string = 'anonymous', oldVersions: Array<Document> = this.oldVersions): Promise<any> {
+    public remove(document: Document, user: string = 'anonymous',
+                  oldVersions: Array<Document> = this.oldVersions): Promise<any> {
 
         if (document == undefined) return Promise.resolve();
 
         return this.ready
                 .then(() => Promise.all(this.getConnectedDocs(document, oldVersions)))
-                .then(connectedDocs => this.updateDocs(document,connectedDocs,false,user))
+                .then(connectedDocs => this.updateDocs(document, connectedDocs, false, user))
                 .then(() => this.datastore.remove(document))
                 .then(() => { this.oldVersions = []; });
     }
 
-    private getConnectedDocs(document: Document, oldVersions: Array<Document>) {
+    private getConnectedDocs(document: Document, oldVersions: Array<Document>): Array<Promise<Document>> {
 
-        let promisesToGetObjects: Promise<Document>[] = [];
-        let ids: string[] = [];
+        const promisesToGetObjects: Promise<Document>[] = [];
+        const ids: string[] = [];
 
-        let documents = [ document ].concat(oldVersions);
+        const documents = [document].concat(oldVersions);
 
         for (let doc of documents) {
             for (let id of this.extractRelatedObjectIDs(doc.resource)) {
@@ -175,6 +177,7 @@ export class PersistenceManager {
                 relatedObjectIDs.push(id);
             }
         }
+
         return relatedObjectIDs;
     }
 
@@ -193,9 +196,11 @@ export class PersistenceManager {
         } else {
             document.created = { user: user, date: new Date() };
             document.modified = [{ user: user, date: new Date() }];
+
             // TODO isn't it a problem that create resolves to object id?
             // wouldn't persistChangedObjects() interpret it as an error?
             // why does this not happen?
+
             return this.datastore.create(document);
         }
     }
