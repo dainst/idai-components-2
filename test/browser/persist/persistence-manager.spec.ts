@@ -86,16 +86,22 @@ export function main() {
             });
         };
 
+        let findFunction = function() {
+            return Promise.resolve([]);
+        };
+
         let successFunction = function() {
             return Promise.resolve('ok');
         };
 
         beforeEach(() => {
 
-            mockDatastore = jasmine.createSpyObj('mockDatastore', ['get', 'create', 'update', 'refresh', 'remove']);
+            mockDatastore = jasmine.createSpyObj('mockDatastore',
+                ['get', 'find', 'create', 'update', 'refresh', 'remove']);
             persistenceManager = new PersistenceManager(mockDatastore, <ConfigLoader> configLoader);
             persistenceManager.setOldVersions([{ resource: {} }]);
             mockDatastore.get.and.callFake(getFunction);
+            mockDatastore.find.and.callFake(findFunction);
             mockDatastore.update.and.callFake(successFunction);
             mockDatastore.create.and.callFake(successFunction);
             mockDatastore.remove.and.callFake(successFunction);

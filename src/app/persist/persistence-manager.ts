@@ -6,6 +6,7 @@ import {ProjectConfiguration} from '../configuration/project-configuration';
 import {ConfigLoader} from '../configuration/config-loader';
 import {MDInternal} from '../messages/md-internal';
 import {ConnectedDocsResolver} from './connected-docs-resolver';
+import {Query} from '../datastore/query';
 
 @Injectable()
 /**
@@ -114,17 +115,23 @@ export class PersistenceManager {
 
     private updateDocs(document: Document, connectedDocs: Array<Document>, setInverseRelations: boolean, user: string) {
 
-        const promises = [];
         const docsToUpdate = this.connectedDocsResolver.determineDocsToUpdate(document, connectedDocs,
             setInverseRelations);
+
+        let promise: Promise<any> = Promise.resolve();
+
         for (let docToUpdate of docsToUpdate) {
-            promises.push(this.persistIt(docToUpdate,user));
+            promise = promise.then(() => this.persistIt(docToUpdate, user));
         }
-        return Promise.all(promises);
+
+        return promise;
     }
 
     /**
-     * Removes the document from the datastore and deletes all corresponding reverse relations.
+     * Removes the document from the datastore.
+     *
+     * Also removes all documents with an 'isRecordedIn' relation pointing to this document.
+     * Deletes all corresponding inverse relations.
      *
      * @param document
      * @param oldVersions
@@ -140,10 +147,24 @@ export class PersistenceManager {
         if (document == undefined) return Promise.resolve();
 
         return this.ready
-                .then(() => Promise.all(this.getConnectedDocs(document, oldVersions)))
-                .then(connectedDocs => this.updateDocs(document, connectedDocs, false, user))
-                .then(() => this.datastore.remove(document))
-                .then(() => { this.oldVersions = []; });
+            .then(() => this.getRecordedInDocs(document))
+            .then(recordedInDocs => {
+                let promise: Promise<any> = Promise.resolve();
+
+                for (let doc of recordedInDocs) {
+                    promise = promise.then(() => this.remove(doc, user, []));
+                }
+
+                return promise.then(() => this.removeDocument(document, user, oldVersions));
+            });
+    }
+
+    private removeDocument(document: Document, user: string, oldVersions: Array<Document>): Promise<any> {
+
+        return Promise.all(this.getConnectedDocs(document, oldVersions))
+            .then(connectedDocs => this.updateDocs(document, connectedDocs, false, user))
+            .then(() => this.datastore.remove(document))
+            .then(() => { this.oldVersions = []; });
     }
 
     private getConnectedDocs(document: Document, oldVersions: Array<Document>): Array<Promise<Document>> {
@@ -179,6 +200,16 @@ export class PersistenceManager {
         }
 
         return relatedObjectIDs;
+    }
+
+    private getRecordedInDocs(document: Document): Promise<Array<Document>> {
+
+        const query: Query = {
+            q: '',
+            constraints: { 'resource.relations.isRecordedIn': document.resource.id }
+        };
+
+        return this.datastore.find(query);
     }
 
     /**
