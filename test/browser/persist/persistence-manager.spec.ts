@@ -57,6 +57,11 @@ export function main() {
                     'name': 'OneWay',
                     'inverse': 'NO-INVERSE',
                     'label': 'Einweg'
+                },
+                {
+                    'name': 'isRecordedIn',
+                    'inverse': 'NO-INVERSE',
+                    'label': 'Gehört zu'
                 }
             ]
         });
@@ -67,7 +72,9 @@ export function main() {
 
         let doc: Document;
         let relatedDoc: any;
-        let anotherRelatedObject: any;
+        let anotherRelatedDoc: any;
+
+        let findResult: Array<Document>;
 
         let configLoader = {
             getProjectConfiguration: function() {
@@ -81,13 +88,17 @@ export function main() {
                     resolve(relatedDoc);
                 }
                 else {
-                    resolve(anotherRelatedObject);
+                    resolve(anotherRelatedDoc);
                 }
             });
         };
 
         let findFunction = function() {
-            return Promise.resolve([]);
+            return new Promise(resolve => {
+                const findResultCopy = findResult;
+                findResult = [];
+                resolve(findResultCopy);
+            });
         };
 
         let successFunction = function() {
@@ -118,12 +129,13 @@ export function main() {
                 'relations' : {}
             }};
 
-            anotherRelatedObject = { 'resource' : {
+            anotherRelatedDoc = { 'resource' : {
                 'id': '3' , 'identifier': 'ob3',
                 'type': 'object',
                 'relations' : {}
             }};
 
+            findResult = [];
         });
 
         it('should save the base object', done => {
@@ -147,7 +159,7 @@ export function main() {
             }, err => { fail(err); done(); });
         });
 
-        it ('should save an object with a one way relation', done => {
+        it('should save an object with a one way relation', done => {
 
             doc.resource.relations['OneWay'] = ['2'];
 
@@ -159,7 +171,7 @@ export function main() {
             }, err => { fail(err); done(); });
         });
 
-        it ('should remove a document', done => {
+        it('should remove a document', done => {
 
             doc.resource.relations['BelongsTo']=['2'];
             relatedDoc.resource.relations['Contains']=['1'];
@@ -173,7 +185,7 @@ export function main() {
             }, err => { fail(err); done(); });
         });
 
-        it ('should remove a document with a one way relation', done => {
+        it('should remove a document with a one way relation', done => {
 
             doc.resource.relations['OneWay'] = ['2'];
 
@@ -185,6 +197,21 @@ export function main() {
             }, err => { fail(err); done(); });
         });
 
+        it('should remove a main type resource', done => {
+
+            relatedDoc.resource.relations['isRecordedIn'] = ['1'];
+            relatedDoc.resource.relations['Contains'] = ['3'];
+            anotherRelatedDoc.resource.relations['BelongsTo'] = ['2'];
+
+            findResult = [relatedDoc];
+
+            persistenceManager.remove(doc).then(() => {
+                expect(mockDatastore.remove).toHaveBeenCalledWith(relatedDoc);
+                expect(mockDatastore.update).toHaveBeenCalledWith(anotherRelatedDoc);
+                expect(anotherRelatedDoc.resource.relations['BelongsTo']).toBeUndefined();
+                done();
+            }, err => { fail(err); done(); });
+        });
 
         it('should add two relations of the same type', done => {
 
@@ -194,9 +221,9 @@ export function main() {
 
                 // expect(mockDatastore.update).toHaveBeenCalledWith(relatedObject);
                 // right now it is not possible to test both objects due to problems with the return val of promise.all
-                expect(mockDatastore.update).toHaveBeenCalledWith(anotherRelatedObject);
+                expect(mockDatastore.update).toHaveBeenCalledWith(anotherRelatedDoc);
                 // expect(relatedObject['Contains'][0]).toBe('1');
-                expect(anotherRelatedObject['resource']['relations']['Contains'][0]).toBe('1');
+                expect(anotherRelatedDoc['resource']['relations']['Contains'][0]).toBe('1');
                 done();
 
             }, err => { fail(err); done(); });
