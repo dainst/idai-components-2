@@ -48,11 +48,6 @@ export class DocumentViewDemoComponent implements OnInit {
         });
     }
 
-    public startEdit(doc: Document) {
-
-        alert("User wants to edit the document");
-    }
-
     public deselect() {
 
         this.selectedDocument = undefined;

@@ -17,11 +17,7 @@
             </h4>
         </div>
         <div class="card-block">
-            <button class="btn btn-link"
-                    id="document-view-button-edit-document"
-                    (click)="onEdit.emit(document)">
-                <span class="mdi mdi-pencil"></span>
-            </button>
+
             <button *ngIf="document._conflicts" class="btn btn-link btn-xs"
                     id="document-view-button-solve-conflicts"
                     (click)="onSolveConflicts.emit(document)">

@@ -19,7 +19,6 @@ export class DocumentViewComponent implements OnChanges {
 
     @Output() onSolveConflicts: EventEmitter<any> = new EventEmitter<any>();
     @Output() onDeselect: EventEmitter<any> = new EventEmitter<any>();
-    @Output() onEdit: EventEmitter<any> = new EventEmitter<any>();
 
     private typeLabel;
 
