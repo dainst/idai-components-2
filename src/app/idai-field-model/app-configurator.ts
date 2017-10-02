@@ -25,9 +25,15 @@ export class AppConfigurator {
                 label: 'Breite'
             },
             {
+                name : 'hasOriginalFilename',
+                visible: false,
+                editable: false
+            },
+            // TODO Delete the field 'filename' as soon as existing data has been migrated.
+            {
                 name : 'filename',
-                editable: false,
-                label: 'Dateiname'
+                visible: false,
+                editable: false
             },
             {
                 name: 'georeference',
