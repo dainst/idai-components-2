@@ -25,7 +25,7 @@ export class AppConfigurator {
                 label: 'Breite'
             },
             {
-                name : 'hasOriginalFilename',
+                name : 'originalFilename',
                 visible: false,
                 editable: false
             },
