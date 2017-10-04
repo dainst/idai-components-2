@@ -2,7 +2,7 @@
 
     <input #searchInput
            [(ngModel)]="q"
-           (keyup)="emitQueryStringWithTimeout()"
+           (keyup)="emitQueryString()"
            name="searchInput"
            type="text"
            class="form-control"

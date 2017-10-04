@@ -33,17 +33,11 @@ export class SearchBarComponent implements OnChanges {
     @ViewChild('p') private popover;
 
     private filterOptions: Array<IdaiType> = [];
-    private queryTimeoutReference: number;
 
 
     constructor(private configLoader: ConfigLoader) {}
 
     public ngOnChanges(changes: SimpleChanges) {
-
-        if (this.queryTimeoutReference) {
-            clearTimeout(this.queryTimeoutReference);
-            this.queryTimeoutReference = undefined;
-        }
 
         if (changes['relationName'] || changes['relationRangeType']) {
             this.initializeFilterOptions();
@@ -70,12 +64,6 @@ export class SearchBarComponent implements OnChanges {
     public emitQueryString() {
 
         this.onQueryStringChanged.emit(this.q);
-    }
-
-    public emitQueryStringWithTimeout() {
-
-        if (this.queryTimeoutReference) clearTimeout(this.queryTimeoutReference);
-        this.queryTimeoutReference = setTimeout(this.emitQueryString.bind(this), 100);
     }
 
     private initializeFilterOptions() {
