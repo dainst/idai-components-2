@@ -75,7 +75,7 @@ export class SearchBarComponent implements OnChanges {
     public emitQueryStringWithTimeout() {
 
         if (this.queryTimeoutReference) clearTimeout(this.queryTimeoutReference);
-        this.queryTimeoutReference = setTimeout(this.emitQueryString.bind(this), 300);
+        this.queryTimeoutReference = setTimeout(this.emitQueryString.bind(this), 100);
     }
 
     private initializeFilterOptions() {
