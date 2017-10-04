@@ -40,6 +40,11 @@ export class SearchBarComponent implements OnChanges {
 
     public ngOnChanges(changes: SimpleChanges) {
 
+        if (this.queryTimeoutReference) {
+            clearTimeout(this.queryTimeoutReference);
+            this.queryTimeoutReference = undefined;
+        }
+
         if (changes['relationName'] || changes['relationRangeType']) {
             this.initializeFilterOptions();
         }
