@@ -70,6 +70,8 @@ export class MapComponent implements OnChanges {
         const mapOptions: L.MapOptions = {
             crs: this.getCoordinateReferenceSystem(),
             attributionControl: false,
+            minZoom: -20,
+            maxZoom: 30,
             maxBoundsViscosity: 0.7
         };
 
@@ -109,9 +111,9 @@ export class MapComponent implements OnChanges {
         } else if (this.bounds.length > 1) {
             this.map.fitBounds(L.latLngBounds(this.bounds));
         } else if (this.bounds.length == 1) {
-            this.map.setView(this.bounds[0], 5);
+            this.map.setView(this.bounds[0], 15);
         } else {
-            this.map.setView([0, 0], 5);
+            this.map.setView([0, 0], 15);
         }
 
         if (this.stayInBounds && this.bounds.length >= 1) {
