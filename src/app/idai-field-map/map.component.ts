@@ -31,6 +31,7 @@ export class MapComponent implements OnChanges {
     @Input() selectedDocument: IdaiFieldDocument;
     @Input() mainTypeDocument: IdaiFieldDocument;
     @Input() projectDocument: IdaiFieldDocument;
+    @Input() stayInBounds: boolean;
     @Input() update: boolean;
 
     @Output() onSelectDocument: EventEmitter<IdaiFieldDocument> = new EventEmitter<IdaiFieldDocument>();
@@ -69,7 +70,7 @@ export class MapComponent implements OnChanges {
         const mapOptions: L.MapOptions = {
             crs: this.getCoordinateReferenceSystem(),
             attributionControl: false,
-            minZoom: -1000
+            maxBoundsViscosity: 0.7
         };
 
         const map: L.Map = L.map('map-container', mapOptions);
@@ -111,6 +112,12 @@ export class MapComponent implements OnChanges {
             this.map.setView(this.bounds[0], 5);
         } else {
             this.map.setView([0, 0], 5);
+        }
+
+        if (this.stayInBounds && this.bounds.length >= 1) {
+            this.map.setMaxBounds(L.latLngBounds(this.bounds));
+        } else {
+            this.map.setMaxBounds(undefined);
         }
 
         return Promise.resolve();

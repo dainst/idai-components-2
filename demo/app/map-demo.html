@@ -1,7 +1,7 @@
 <div class="container-fluid">
 
     <map [documents]="documents" [selectedDocument]="selectedDocument" [mainTypeDocument]="mainTypeDocument"
-         [projectDocument]="projectDocument" [update]="liveUpdate"
+         [projectDocument]="projectDocument" [stayInBounds]="stayInBounds" [update]="liveUpdate"
          (onSelectDocument)="selectDocument($event)"></map>
 
     <div (click)="toggleMainTypeDocument()" style="margin-top: 20px;">
@@ -19,7 +19,14 @@
         </button>
     </div>
 
-    <div (click)="liveUpdate = !liveUpdate" style="clear: both;">
+    <div (click)="stayInBounds = !stayInBounds" style="clear: both;">
+        <button class="btn btn" [class.btn-primary]="stayInBounds" [class.btn-outline-primary]="!stayInBounds"
+                style="cursor: pointer; float: left; margin-top: 20px; margin-right: 10px;">
+            Geometrien im sichtbaren Bereich halten
+        </button>
+    </div>
+
+    <div (click)="liveUpdate = !liveUpdate">
         <button class="btn btn" [class.btn-primary]="liveUpdate" [class.btn-outline-primary]="!liveUpdate"
                 style="cursor: pointer; margin-top: 20px;">
             Live-Update
