@@ -23,6 +23,11 @@ export class SearchBarComponent implements OnChanges {
     @Input() relationName: string;
     @Input() relationRangeType: string;
 
+    // If this value is set, only child types of the parent type are shown in the filter menu.
+    // The 'all types' option is not visible if a parent type is set because choosing the parent type is equivalent to
+    // this option.
+    @Input() parentType: string;
+
     @Input() q: string = '';
     @Input() types: string[];
     @Input() showFiltersMenu: boolean = true;
@@ -39,7 +44,8 @@ export class SearchBarComponent implements OnChanges {
 
     public ngOnChanges(changes: SimpleChanges) {
 
-        if (changes['relationName'] || changes['relationRangeType']) {
+        if (changes['relationName'] || changes['relationRangeType'] || changes['parentType'] ||
+            changes['showFiltersMenu']) {
             this.initializeFilterOptions();
         }
     }
@@ -71,7 +77,11 @@ export class SearchBarComponent implements OnChanges {
         this.filterOptions = [];
 
         this.configLoader.getProjectConfiguration().then(projectConfiguration => {
+
             for (let type of projectConfiguration.getTypesTreeList()) {
+
+                if (this.parentType && type.name != this.parentType) continue;
+
                 if ((!this.relationName && !this.relationRangeType)
                         || projectConfiguration.isAllowedRelationDomainType(type.name, this.relationRangeType,
                         this.relationName)) {

@@ -25,8 +25,9 @@
         <ng-template #filterMenu>
             <div class="filtermenu">
                 <div class="popover-custom-title">Nach Ressourcentyp filtern:</div>
-                <type-picker [typesTreeList]="filterOptions" [allTypesOptionVisible]="true" [selectedTypes]="types"
-                             (onTypePicked)="chooseTypeFilter($event); p.close();"></type-picker>
+                <type-picker [typesTreeList]="filterOptions" [allTypesOptionVisible]="!parentType"
+                             [selectedTypes]="types" (onTypePicked)="chooseTypeFilter($event); p.close();">
+                </type-picker>
             </div>
         </ng-template>
     </span>
