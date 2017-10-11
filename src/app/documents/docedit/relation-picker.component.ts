@@ -101,13 +101,18 @@ export class RelationPickerComponent implements OnChanges {
 
     private makeSuggestionsFrom(documents) {
 
+        const maxNrSuggestions = 5;
+        let nrSuggestions = 0;
         for (let document of documents) {
-            // Show only the first five suggestions
-            if (this.suggestions.length == 5) break;
 
-            if (RelationPickerComponent.checkResourceSuggestion(this.resource,
-                    document.resource, this.relationDefinition))
+            if (nrSuggestions == maxNrSuggestions) continue;
+
+            if (RelationPickerComponent.isValidSuggestion(this.resource,
+                    document.resource, this.relationDefinition)) {
+
                 this.suggestions.push(document);
+                nrSuggestions++;
+            }
         }
     }
 
@@ -118,7 +123,7 @@ export class RelationPickerComponent implements OnChanges {
      * @param relDef
      * @return true if the suggestion should be suggested, false otherwise
      */
-    private static checkResourceSuggestion(
+    private static isValidSuggestion(
             resource: Resource, suggestion: Resource,
             relDef: RelationDefinition) {
 
