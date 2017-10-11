@@ -1,9 +1,9 @@
 import {Component, Input, OnChanges, ElementRef} from '@angular/core';
-import {Document} from '../model/document';
-import {Resource} from '../model/resource';
+import {Document} from '../../model/document';
+import {Resource} from '../../model/resource';
 import {DocumentEditChangeMonitor} from './document-edit-change-monitor';
-import {ReadDatastore} from '../datastore/read-datastore';
-import {RelationDefinition} from '../configuration/relation-definition';
+import {ReadDatastore} from '../../datastore/read-datastore';
+import {RelationDefinition} from '../../configuration/relation-definition';
 
 
 @Component({

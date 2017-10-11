@@ -1,6 +1,6 @@
 import {Component, OnChanges, Input} from '@angular/core';
-import {ConfigLoader} from '../configuration/config-loader';
-import {Resource} from '../model/resource';
+import {ConfigLoader} from '../../configuration/config-loader';
+import {Resource} from '../../model/resource';
 
 @Component({
     selector: 'fields-view',

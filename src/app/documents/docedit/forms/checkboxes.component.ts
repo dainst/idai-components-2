@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {Resource} from "../../model/resource";
+import {Resource} from "../../../model/resource";
 import {DocumentEditChangeMonitor} from "../document-edit-change-monitor";
 
 /**
@@ -7,34 +7,28 @@ import {DocumentEditChangeMonitor} from "../document-edit-change-monitor";
  */
 @Component({
     moduleId: module.id,
-    selector: 'dai-multiselect',
-    templateUrl: './multiselect.html'
+    selector: 'dai-checkboxes',
+    templateUrl: './checkboxes.html'
 })
 
-export class MultiselectComponent {
+export class CheckboxesComponent {
 
     @Input() resource: Resource;
     @Input() field: any;
 
     constructor(private documentEditChangeMonitor: DocumentEditChangeMonitor) {}
 
-    public toggleItem(item) {
+    public addInputArrayItem(item) {
         if(this.resource[this.field.name]==undefined) this.resource[this.field.name] = new Array<String>();
 
-        var resourceListIndex = this.resource[this.field.name].indexOf(item, 0);
-
-        if (resourceListIndex > -1) {
-            this.resource[this.field.name].splice(resourceListIndex, 1);
-
-            this.field.valuelist.push(item);
+        var index:number = this.resource[this.field.name].indexOf(item, 0);
+        if (index > -1) {
+            this.resource[this.field.name].splice(index, 1);
         } else {
-            var valueListIndex = this.field.valuelist.indexOf(item, 0);
-            this.field.valuelist.splice(valueListIndex, 1);
-
             this.resource[this.field.name].push(item);
         }
 
         this.documentEditChangeMonitor.setChanged();
     }
-
+    
 }

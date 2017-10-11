@@ -1,10 +1,10 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {PersistenceManager} from '../persist/persistence-manager';
-import {Validator} from '../persist/validator';
-import {Messages} from '../messages/messages';
-import {ProjectConfiguration} from '../configuration/project-configuration';
+import {PersistenceManager} from '../../persist/persistence-manager';
+import {Validator} from '../../persist/validator';
+import {Messages} from '../../messages/messages';
+import {ProjectConfiguration} from '../../configuration/project-configuration';
 import {OnChanges} from '@angular/core';
-import {ConfigLoader} from '../configuration/config-loader';
+import {ConfigLoader} from '../../configuration/config-loader';
 
 @Component({
     moduleId: module.id,

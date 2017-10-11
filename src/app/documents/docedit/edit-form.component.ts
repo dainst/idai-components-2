@@ -1,6 +1,6 @@
 import {Component, Input, AfterViewInit, OnChanges, ElementRef} from '@angular/core';
 import {DocumentEditChangeMonitor} from './document-edit-change-monitor';
-import {FieldDefinition} from '../configuration/field-definition';
+import {FieldDefinition} from '../../configuration/field-definition';
 
 /**
  * @author Daniel de Oliveira

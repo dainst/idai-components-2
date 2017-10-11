@@ -1,6 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {Resource} from "../model/resource";
-import {DocumentEditChangeMonitor} from "./document-edit-change-monitor";
+import {DocumentEditChangeMonitor} from "./docedit/document-edit-change-monitor";
 
 /**
  * @author Thomas Kleinke

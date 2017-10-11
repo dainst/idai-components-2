@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {routing} from './app.routing';
 import {Datastore} from "../../src/app/datastore/datastore";
-import {DocumentEditChangeMonitor} from "../../src/app/documents/document-edit-change-monitor";
+import {DocumentEditChangeMonitor} from "../../src/app/documents/docedit/document-edit-change-monitor";
 import {Messages} from "../../src/app/messages/messages";
 import {MemoryDatastore} from "./memory-datastore";
 import {MD} from "../../src/app/messages/md";

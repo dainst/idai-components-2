@@ -1,6 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {DocumentEditChangeMonitor} from './document-edit-change-monitor';
-import {RelationDefinition} from '../configuration/relation-definition';
+import {RelationDefinition} from '../../configuration/relation-definition';
 
 /**
  * @author Daniel de Oliveira
