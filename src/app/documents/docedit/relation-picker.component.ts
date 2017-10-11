@@ -41,10 +41,12 @@ export class RelationPickerComponent implements OnChanges {
     // It is intended to be only used as guard in updateSuggestions.
     private updateSuggestionsMode = false;
 
+
     constructor(private element: ElementRef,
         private datastore: ReadDatastore,
         private documentEditChangeMonitor: DocumentEditChangeMonitor
     ) {}
+
 
     public ngOnChanges() {
 
@@ -57,7 +59,7 @@ export class RelationPickerComponent implements OnChanges {
         this.idSearchString = '';
         this.selectedTarget = undefined;
 
-        let relationId: string = this.relations[this.relationDefinition.name][this.relationIndex];
+        const relationId: string = this.relations[this.relationDefinition.name][this.relationIndex];
 
         if (relationId && relationId != '') {
             this.datastore.get(relationId).then(
@@ -66,27 +68,162 @@ export class RelationPickerComponent implements OnChanges {
             );
         } else {
             setTimeout(() => {
-                this.updateSuggestions();
-                this.focusInputField();
+                this.updateSuggestions().then(() => {
+                    return this.focusInputField();
+                })
             }, 100);
         }
     }
+
+
+    /**
+     * Creates a relation to the target object.
+     * @param document
+     */
+    public createRelation(document: Document) {
+
+        this.relations[this.relationDefinition.name][this.relationIndex] =
+            document.resource.id;
+        this.selectedTarget = document;
+        this.idSearchString = '';
+        this.suggestions = [];
+
+        this.documentEditChangeMonitor.setChanged();
+    }
+
+
+    public editTarget() {
+
+        this.idSearchString = this.selectedTarget.resource[this.primary];
+        this.suggestions = [ this.selectedTarget ];
+        this.selectedSuggestionIndex = 0;
+        this.selectedTarget = undefined;
+
+        setTimeout(this.focusInputField.bind(this), 100);
+    }
+
+
+    public enterSuggestionMode() {
+
+        this.suggestionsVisible = true;
+    }
+
+
+    public leaveSuggestionMode() {
+
+        if (!this.relations[this.relationDefinition.name][this.relationIndex]
+            || this.relations[this.relationDefinition.name][this.relationIndex] == '') {
+            return this.deleteRelation();
+        }
+
+        this.suggestionsVisible = false;
+
+        if (!this.selectedTarget && this.relations[this.relationDefinition.name][this.relationIndex]
+            && this.relations[this.relationDefinition.name][this.relationIndex] != '') {
+            this.datastore.get(this.relations[this.relationDefinition.name][this.relationIndex])
+                .then(
+                    document => { this.selectedTarget = document as Document; },
+                    err => { console.error(err); }
+                );
+        }
+    }
+
+
+    public focusInputField() {
+
+        let elements = this.element.nativeElement.getElementsByTagName('input');
+
+        if (elements.length == 1) {
+            elements.item(0).focus();
+        }
+    }
+
+
+    public deleteRelation(): Promise<any> {
+
+        let targetId = this.relations[this.relationDefinition.name][this.relationIndex];
+
+        return new Promise<any>((resolve) => {
+            if (targetId.length == 0) {
+                this.relations[this.relationDefinition.name].splice(this.relationIndex, 1);
+            } else {
+                this.relations[this.relationDefinition.name].splice(this.relationIndex, 1);
+                this.documentEditChangeMonitor.setChanged();
+            }
+
+            if (this.relations[this.relationDefinition.name].length==0)
+                delete this.relations[this.relationDefinition.name];
+            resolve();
+        });
+    }
+
+
+    public keyDown(event: any) {
+
+        switch(event.key) {
+            case 'ArrowUp':
+                if (this.selectedSuggestionIndex > 0)
+                    this.selectedSuggestionIndex--;
+                else
+                    this.selectedSuggestionIndex = this.suggestions.length - 1;
+                event.preventDefault();
+                break;
+            case 'ArrowDown':
+                if (this.selectedSuggestionIndex < this.suggestions.length - 1)
+                    this.selectedSuggestionIndex++;
+                else
+                    this.selectedSuggestionIndex = 0;
+                event.preventDefault();
+                break;
+            case 'ArrowLeft':
+            case 'ArrowRight':
+                break;
+            case 'Enter':
+                if (this.selectedSuggestionIndex > -1 && this.suggestions.length > 0)
+                    this.createRelation(this.suggestions[this.selectedSuggestionIndex]);
+                break;
+        }
+    }
+
+
+    public keyUp(event: any) {
+
+        switch(event.key) {
+            case 'ArrowUp':
+            case 'ArrowDown':
+            case 'ArrowLeft':
+            case 'ArrowRight':
+            case 'Enter':
+                break;
+            default:
+                this.selectedSuggestionIndex = 0;
+                setTimeout(() => {
+                    return this.updateSuggestions()}
+                , 100);
+                // This is to compensate for
+                // a slight delay where idSearchString takes some time to get updated. The behaviour
+                // was discovered on an ocasion where the search string got pasted into the input field.
+                // If one does the keyup quickly after pasting, it wasn't working. If One leaves the command
+                // key somewhat later, it worked.
+                break;
+        }
+    }
+
 
     private updateSuggestions() {
 
         if (this.updateSuggestionsMode) return;
         this.updateSuggestionsMode = true;
 
-        this.clearSuggestions();
-
         const query: Query = {};
         if (this.idSearchString) {
             query.q = this.idSearchString;
         }
 
-        this.datastore.find(query)
+        return this.datastore.find(query)
             .then(documents => {
-                this.makeSuggestionsFrom(documents);
+                this.suggestions = RelationPickerComponent.makeSuggestionsFrom(
+                    documents, this.resource, this.relationDefinition);
             }).catch(err => {
                 console.debug(err);
             }).then(() => {
@@ -94,27 +231,26 @@ export class RelationPickerComponent implements OnChanges {
             });
     }
 
-    private clearSuggestions() {
 
-        this.suggestions = [];
-    }
+    private static makeSuggestionsFrom(documents, resource, relationDefinition) {
 
-    private makeSuggestionsFrom(documents) {
-
+        const suggestions = [];
         const maxNrSuggestions = 5;
         let nrSuggestions = 0;
         for (let document of documents) {
 
             if (nrSuggestions == maxNrSuggestions) continue;
 
-            if (RelationPickerComponent.isValidSuggestion(this.resource,
-                    document.resource, this.relationDefinition)) {
+            if (RelationPickerComponent.isValidSuggestion(resource,
+                    document.resource, relationDefinition)) {
 
-                this.suggestions.push(document);
+                suggestions.push(document);
                 nrSuggestions++;
             }
         }
+        return suggestions;
     }
+
 
     /**
      * Checks if the given suggestion should be shown as a suggestion
@@ -155,6 +291,7 @@ export class RelationPickerComponent implements OnChanges {
                 resource, suggestion);
     }
 
+
     private static isSameMainTypeResource(
             resource1: Resource,
             resource2: Resource) {
@@ -167,128 +304,4 @@ export class RelationPickerComponent implements OnChanges {
 
         return relations1[0] == relations2[0];
     }
-
-    /**
-     * Creates a relation to the target object.
-     * @param document
-     */
-    public createRelation(document: Document) {
-
-        this.relations[this.relationDefinition.name][this.relationIndex] =
-            document.resource.id;
-        this.selectedTarget = document;
-        this.idSearchString = '';
-        this.suggestions = [];
-
-        this.documentEditChangeMonitor.setChanged();
-    }
-
-    public editTarget() {
-
-        this.idSearchString = this.selectedTarget.resource[this.primary];
-        this.suggestions = [ this.selectedTarget ];
-        this.selectedSuggestionIndex = 0;
-        this.selectedTarget = undefined;
-
-        setTimeout(this.focusInputField.bind(this), 100);
-    }
-
-    public enterSuggestionMode() {
-
-        this.suggestionsVisible = true;
-    }
-
-    public leaveSuggestionMode() {
-
-        if (!this.relations[this.relationDefinition.name][this.relationIndex]
-                || this.relations[this.relationDefinition.name][this.relationIndex] == '') {
-            return this.deleteRelation();
-        }
-
-        this.suggestionsVisible = false;
-
-        if (!this.selectedTarget && this.relations[this.relationDefinition.name][this.relationIndex]
-                                 && this.relations[this.relationDefinition.name][this.relationIndex] != '') {
-            this.datastore.get(this.relations[this.relationDefinition.name][this.relationIndex])
-                .then(
-                    document => { this.selectedTarget = document as Document; },
-                    err => { console.error(err); }
-                );
-        }
-    }
-
-    public focusInputField() {
-
-        let elements = this.element.nativeElement.getElementsByTagName('input');
-
-        if (elements.length == 1) {
-            elements.item(0).focus();
-        }
-    }
-
-    public deleteRelation(): Promise<any> {
-
-        let targetId = this.relations[this.relationDefinition.name][this.relationIndex];
-
-        return new Promise<any>((resolve) => {
-            if (targetId.length == 0) {
-                this.relations[this.relationDefinition.name].splice(this.relationIndex, 1);
-            } else {
-                this.relations[this.relationDefinition.name].splice(this.relationIndex, 1);
-                this.documentEditChangeMonitor.setChanged();
-            }
-
-            if (this.relations[this.relationDefinition.name].length==0)
-                delete this.relations[this.relationDefinition.name];
-            resolve();
-        });
-    }
-
-    public keyDown(event: any) {
-
-        switch(event.key) {
-            case 'ArrowUp':
-                if (this.selectedSuggestionIndex > 0)
-                    this.selectedSuggestionIndex--;
-                else
-                    this.selectedSuggestionIndex = this.suggestions.length - 1;
-                event.preventDefault();
-                break;
-            case 'ArrowDown':
-                if (this.selectedSuggestionIndex < this.suggestions.length - 1)
-                    this.selectedSuggestionIndex++;
-                else
-                    this.selectedSuggestionIndex = 0;
-                event.preventDefault();
-                break;
-            case 'ArrowLeft':
-            case 'ArrowRight':
-                break;
-            case 'Enter':
-                if (this.selectedSuggestionIndex > -1 && this.suggestions.length > 0)
-                    this.createRelation(this.suggestions[this.selectedSuggestionIndex]);
-                break;
-        }
-    }
-
-    public keyUp(event: any) {
-
-        switch(event.key) {
-            case 'ArrowUp':
-            case 'ArrowDown':
-            case 'ArrowLeft':
-            case 'ArrowRight':
-            case 'Enter':
-                break;
-            default:
-                this.selectedSuggestionIndex = 0;
-                setTimeout(this.updateSuggestions.bind(this), 100); // This is to compensate for
-                  // a slight delay where idSearchString takes some time to get updated. The behaviour
-                  // was discovered on an ocasion where the search string got pasted into the input field.
-                  // If one does the keyup quickly after pasting, it wasn't working. If One leaves the command
-                  // key somewhat later, it worked.
-                break;
-        }
-    }
-
 }
