@@ -1,5 +1,6 @@
 import {Component, Input, OnChanges, ElementRef} from '@angular/core';
 import {Document} from '../../model/document';
+import {Query} from '../../datastore/query';
 import {Resource} from '../../model/resource';
 import {DocumentEditChangeMonitor} from './document-edit-change-monitor';
 import {ReadDatastore} from '../../datastore/read-datastore';
@@ -42,7 +43,7 @@ export class RelationPickerComponent implements OnChanges {
 
     constructor(private element: ElementRef,
         private datastore: ReadDatastore,
-        private saveService: DocumentEditChangeMonitor 
+        private documentEditChangeMonitor: DocumentEditChangeMonitor
     ) {}
 
     public ngOnChanges() {
@@ -64,30 +65,33 @@ export class RelationPickerComponent implements OnChanges {
                 err => { this.disabled = true; console.error(err); }
             );
         } else {
-            setTimeout(this.focusInputField.bind(this), 100);
+            setTimeout(() => {
+                this.updateSuggestions();
+                this.focusInputField();
+            }, 100);
         }
     }
 
     private updateSuggestions() {
 
         if (this.updateSuggestionsMode) return;
+        this.updateSuggestionsMode = true;
 
         this.clearSuggestions();
 
-        if (this.idSearchString.length < 1) return;
+        const query: Query = {};
+        if (this.idSearchString) {
+            query.q = this.idSearchString;
+        }
 
-        this.updateSuggestionsMode = true;
-
-        this.datastore.find({q: this.idSearchString})
+        this.datastore.find(query)
             .then(documents => {
                 this.makeSuggestionsFrom(documents);
-                this.updateSuggestionsMode = false;
-
             }).catch(err => {
                 console.debug(err);
+            }).then(() => {
                 this.updateSuggestionsMode = false;
-            }
-        );
+            });
     }
 
     private clearSuggestions() {
@@ -97,13 +101,13 @@ export class RelationPickerComponent implements OnChanges {
 
     private makeSuggestionsFrom(documents) {
 
-        for (let i in documents) {
+        for (let document of documents) {
             // Show only the first five suggestions
             if (this.suggestions.length == 5) break;
 
             if (RelationPickerComponent.checkResourceSuggestion(this.resource,
-                    documents[i].resource, this.relationDefinition))
-                this.suggestions.push(documents[i]);
+                    document.resource, this.relationDefinition))
+                this.suggestions.push(document);
         }
     }
 
@@ -114,34 +118,47 @@ export class RelationPickerComponent implements OnChanges {
      * @param relDef
      * @return true if the suggestion should be suggested, false otherwise
      */
-    private static checkResourceSuggestion(resource: Resource, suggestion: Resource, relDef: RelationDefinition) {
+    private static checkResourceSuggestion(
+            resource: Resource, suggestion: Resource,
+            relDef: RelationDefinition) {
 
         // Don't suggest the resource itself
-        if (resource.id == suggestion.id)
+        if (resource.id == suggestion.id) {
             return false;
+        }
 
         // Don't suggest a resource that is already included as a target in the relation list
-        if (resource.relations[relDef.name].indexOf(suggestion.id) > -1) return false;
+        if (resource.relations[relDef.name].indexOf(suggestion.id) > -1) {
+            return false;
+        }
 
         // Don't suggest a resource that is already included as a target in the inverse relation list
         if (resource.relations[relDef.inverse]
-                && resource.relations[relDef.inverse].indexOf(suggestion.id) > -1)
+                && resource.relations[relDef.inverse].indexOf(suggestion.id) > -1) {
             return false;
+        }
 
         // Don't suggest a resource whose type is not a part of the relation's range
-        if (relDef.range.indexOf(suggestion.type) == -1) return false;
+        if (relDef.range.indexOf(suggestion.type) == -1) {
+            return false;
+        }
 
         // Don't suggest a resource which is linked to a different main type resource if the relation property
         // 'sameMainTypeResource' is set to true
-        return !relDef.sameMainTypeResource || RelationPickerComponent.isSameMainTypeResource(resource, suggestion);
+        return !relDef.sameMainTypeResource ||
+            RelationPickerComponent.isSameMainTypeResource(
+                resource, suggestion);
     }
 
-    private static isSameMainTypeResource(resource1: Resource, resource2: Resource) {
+    private static isSameMainTypeResource(
+            resource1: Resource,
+            resource2: Resource) {
 
-        let relations1 = resource1.relations['isRecordedIn'];
-        let relations2 = resource2.relations['isRecordedIn'];
+        const relations1 = resource1.relations['isRecordedIn'];
+        const relations2 = resource2.relations['isRecordedIn'];
 
-        if (!relations1 || relations1.length == 0 || !relations2 || relations2.length == 0) return false;
+        if (!relations1 || relations1.length == 0 ||
+            !relations2 || relations2.length == 0) return false;
 
         return relations1[0] == relations2[0];
     }
@@ -152,12 +169,13 @@ export class RelationPickerComponent implements OnChanges {
      */
     public createRelation(document: Document) {
 
-        this.relations[this.relationDefinition.name][this.relationIndex] = document.resource.id;
+        this.relations[this.relationDefinition.name][this.relationIndex] =
+            document.resource.id;
         this.selectedTarget = document;
         this.idSearchString = '';
         this.suggestions = [];
 
-        this.saveService.setChanged();
+        this.documentEditChangeMonitor.setChanged();
     }
 
     public editTarget() {
@@ -212,12 +230,11 @@ export class RelationPickerComponent implements OnChanges {
                 this.relations[this.relationDefinition.name].splice(this.relationIndex, 1);
             } else {
                 this.relations[this.relationDefinition.name].splice(this.relationIndex, 1);
-                // todo
-                this.saveService.setChanged();
+                this.documentEditChangeMonitor.setChanged();
             }
 
             if (this.relations[this.relationDefinition.name].length==0)
-                delete this.relations[this.relationDefinition.name]
+                delete this.relations[this.relationDefinition.name];
             resolve();
         });
     }
