@@ -60,10 +60,11 @@ export class MemoryDatastore implements Datastore {
     
     public find(query: Query): Promise<Document[]> {
 
-        var queryString = query.q.toLowerCase();
+        if (!query.q) query.q = '';
+        const queryString = query.q.toLowerCase();
 
-        var results: Document[] = [];
-        for (var i in this.objectCache) {
+        const results: Document[] = [];
+        for (let i in this.objectCache) {
             if (this.objectCache[i].resource.id.indexOf(queryString) != -1) results.push(this.objectCache[i]);
         }
 

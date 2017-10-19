@@ -1,6 +1,6 @@
 import {Component, OnChanges, Input, Output, EventEmitter} from "@angular/core";
 import {Router} from "@angular/router";
-import {ConfigLoader} from "../configuration/config-loader";
+import {ConfigLoader} from "../../configuration/config-loader";
 
 @Component({
     selector: 'document-view',

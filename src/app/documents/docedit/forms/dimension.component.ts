@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {Resource} from "../../model/resource";
+import {Resource} from "../../../model/resource";
 import {DocumentEditChangeMonitor} from "../document-edit-change-monitor";
 import {DecimalPipe} from "@angular/common";
 

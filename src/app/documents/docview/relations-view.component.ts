@@ -1,8 +1,8 @@
 import {Component, OnChanges, Input, EventEmitter, Output} from '@angular/core';
-import {Document} from '../model/document';
-import {Resource} from '../model/resource';
-import {ReadDatastore} from '../datastore/read-datastore';
-import {ConfigLoader} from '../configuration/config-loader';
+import {Document} from '../../model/document';
+import {Resource} from '../../model/resource';
+import {ReadDatastore} from '../../datastore/read-datastore';
+import {ConfigLoader} from '../../configuration/config-loader';
 
 @Component({
     selector: 'relations-view',
