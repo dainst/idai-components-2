@@ -100,6 +100,12 @@ export class MapComponent implements OnChanges {
 
         this.map.invalidateSize(true);
 
+        if (this.stayInBounds && this.bounds.length >= 1) {
+            this.map.setMaxBounds(L.latLngBounds(this.bounds));
+        } else {
+            this.map.setMaxBounds(undefined);
+        }
+
         if (this.selectedDocument) {
             if (this.polygons[this.selectedDocument.resource.id]) {
                 this.focusPolygons(this.polygons[this.selectedDocument.resource.id]);
@@ -114,12 +120,6 @@ export class MapComponent implements OnChanges {
             this.map.setView(this.bounds[0], 15);
         } else {
             this.map.setView([0, 0], 15);
-        }
-
-        if (this.stayInBounds && this.bounds.length >= 1) {
-            this.map.setMaxBounds(L.latLngBounds(this.bounds));
-        } else {
-            this.map.setMaxBounds(undefined);
         }
 
         return Promise.resolve();
