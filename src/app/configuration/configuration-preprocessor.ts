@@ -46,10 +46,10 @@ export class ConfigurationPreprocessor {
     private addExtraRelations(configuration : ConfigurationDefinition,
                               extraRelations : Array<RelationDefinition>) {
 
-        for (var extraRelation of extraRelations) {
-            var relationAlreadyPresent = false;
-            for (var relationDefinition of configuration.relations) {
-                if ((<FieldDefinition>relationDefinition).name == extraRelation.name) {
+        for (let extraRelation of extraRelations) {
+            let relationAlreadyPresent = false;
+            for (const relationDefinition of configuration.relations) {
+                if (ConfigurationPreprocessor.relationAlreadyExists(relationDefinition, extraRelation)) {
                     relationAlreadyPresent = true;
                 }
             }
@@ -62,6 +62,21 @@ export class ConfigurationPreprocessor {
             }
         }
     }
+
+
+    private static relationAlreadyExists(existingRelation, extraRelation) { // TODO write unit test
+
+        if (existingRelation.name == extraRelation.name) {
+
+            if (existingRelation.domain && extraRelation.domain) {
+
+                if (existingRelation.domain.sort().toString() ==
+                    extraRelation.domain.sort().toString()) return true;
+            }
+        }
+        return false;
+    }
+
 
     private expandInherits(configuration : ConfigurationDefinition,
                            extraRelation : RelationDefinition, itemSet: string) {
