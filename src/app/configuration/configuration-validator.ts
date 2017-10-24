@@ -3,6 +3,7 @@ import {MDInternal} from '../messages/md-internal';
 import {TypeDefinition} from './type-definition';
 import {ViewDefinition} from './view-definition';
 import {RelationDefinition} from './relation-definition';
+import {FieldDefinition} from './field-definition';
 
 /**
  * @author F.Z.
@@ -53,7 +54,7 @@ export class ConfigurationValidator {
         const missingRelationTypeErrors = this.findMissingRelationType(configuration.relations, configuration.types);
         if (missingRelationTypeErrors) msgs = msgs.concat(missingRelationTypeErrors);
 
-        const mandatoryRelationsError = this.validateMandatoryRelations(configuration.relations);
+        const mandatoryRelationsError = this.validateMandatoryRelations(configuration.relations, configuration.types);
         if (mandatoryRelationsError.length) msgs = msgs.concat(mandatoryRelationsError);
 
         const fieldError = this.validateFieldDefinitions(configuration.types);
@@ -153,7 +154,8 @@ export class ConfigurationValidator {
         return msgs;
     }
 
-    private validateMandatoryRelations(relations: Array<RelationDefinition>): Array<Array<string>> {
+    private validateMandatoryRelations(relations: Array<RelationDefinition>,
+                                       types: Array<TypeDefinition>): Array<Array<string>> {
 
         let msgs = [];
 
@@ -168,6 +170,15 @@ export class ConfigurationValidator {
 
         if ('Project' in recordedInRelations) {
             for (let type of recordedInRelations['Project']) {
+
+                let isAbstract = false;
+                for (let t of types) {
+                    if (t.type == type && t.abstract) {
+                        isAbstract = true;
+                    }
+                }
+                if (isAbstract) continue;
+
                 if (!(type in recordedInRelations) || !recordedInRelations[type]
                         || recordedInRelations[type].length == 0) {
                     msgs.push([MDInternal.VALIDATION_ERROR_INCOMPLETERECORDEDIN, type]);

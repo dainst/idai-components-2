@@ -18,13 +18,10 @@ export function main() {
                 http.get.and.returnValue({ subscribe: (cb) =>
                     {cb({"_body": JSON.stringify({
                             types: [
-                                {type: "A"},
                                 {type: "ConcreteOperation", parent: 'Operation'},
                                 {type: "B"},
                             ],
                             relations:[
-                                { name: 'isRecordedIn', domain: ['A'], label: "Gehört zu",
-                                    range: ['Operation'], inverse: 'NO-INVERSE', visible: false, editable: false },
                                 { name: 'isRecordedIn', domain: ['B'], label: "Gehört zu",
                                     range: ['ConcreteOperation'], inverse: 'NO-INVERSE', visible: false, editable: false },
                             ]

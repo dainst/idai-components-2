@@ -15,7 +15,8 @@ export class IdaiFieldAppConfigurator {
         fields: []
     }, {
         type: 'Operation',
-        fields: []
+        fields: [],
+        abstract: true
     }, {
         type: 'Image',
         fields: [
