@@ -6,9 +6,10 @@ import {MDInternal} from '../../../src/app/messages/md-internal';
  * @author Daniel de Oliveira
  */
 export function main() {
+
     describe('ConfigurationValidator', () => {
 
-        var configuration: ConfigurationDefinition;
+        let configuration: ConfigurationDefinition;
 
         it('should report missing mandatory type', function() {
 

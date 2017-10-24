@@ -1,9 +1,7 @@
 import {ConfigurationDefinition} from './configuration-definition';
 import {MDInternal} from '../messages/md-internal';
 import {TypeDefinition} from './type-definition';
-import {ViewDefinition} from './view-definition';
 import {RelationDefinition} from './relation-definition';
-import {FieldDefinition} from './field-definition';
 
 /**
  * @author F.Z.
@@ -18,10 +16,14 @@ export class ConfigurationValidator {
     private static VALUELIST_INPUT_TYPES = ['dropdown', 'radio', 'checkboxes',
         'multiselect'];
 
+
     /**
      * @param namesOfMandatoryTypes
      */
-    constructor(private namesOfMandatoryTypes: Array<string>) { }
+    constructor(
+        private namesOfMandatoryTypes: Array<string> // TODO remove, we do not use it
+    ) { }
+
 
     /**
      * Searches for missing mandatory types or duplicate types.
@@ -46,22 +48,21 @@ export class ConfigurationValidator {
         const missingParentTypeErrors = ConfigurationValidator.findMissingParentType(configuration.types);
         if (missingParentTypeErrors) msgs = msgs.concat(missingParentTypeErrors);
 
-        if (configuration.views) {
-            const missingViewTypeErrors = ConfigurationValidator.findMissingViewType(configuration.views, configuration.types);
-            if (missingViewTypeErrors) msgs = msgs.concat(missingViewTypeErrors);
-        }
-
         const missingRelationTypeErrors = ConfigurationValidator.findMissingRelationType(configuration.relations as any, configuration.types);
         if (missingRelationTypeErrors) msgs = msgs.concat(missingRelationTypeErrors);
-
-        const mandatoryRelationsError = ConfigurationValidator.validateMandatoryRelations(configuration.relations as any, configuration.types);
-        if (mandatoryRelationsError.length) msgs = msgs.concat(mandatoryRelationsError);
 
         const fieldError = ConfigurationValidator.validateFieldDefinitions(configuration.types);
         if (fieldError.length) msgs = msgs.concat(fieldError);
 
-        return msgs;
+        return msgs.concat(this.custom(configuration));
     }
+
+
+    protected custom(configuration: ConfigurationDefinition): any[] {
+
+        return [];
+    }
+
 
     /**
      * Check if all necessary fields are given and have the right type
@@ -79,6 +80,7 @@ export class ConfigurationValidator {
         }
         return msgs;
     }
+
 
     private static findDuplicateType(types: Array<TypeDefinition>): Array<Array<string>> {
 
@@ -127,20 +129,6 @@ export class ConfigurationValidator {
     }
 
 
-    private static findMissingViewType(views: Array<ViewDefinition>, types: Array<TypeDefinition>): Array<Array<string>> {
-
-        let msgs = [];
-        const typeNames: Array<string> = types.map(type => type.type);
-
-        for (let view of views) {
-            if (view.mainType == 'Project') continue;
-            if (typeNames.indexOf(view.mainType) == -1)
-                msgs.push([MDInternal.VALIDATION_ERROR_MISSINGVIEWTYPE, view.mainType]);
-        }
-        return msgs;
-    }
-
-
     private static findMissingRelationType(relations: Array<RelationDefinition>,
                                     types: Array<TypeDefinition>): Array<Array<string>> {
 
@@ -155,44 +143,6 @@ export class ConfigurationValidator {
                 if (typeNames.indexOf(type) == -1 && type != 'Project')
                     msgs.push([MDInternal.VALIDATION_ERROR_MISSINGRELATIONTYPE, type]);
         }
-        return msgs;
-    }
-
-
-    private static validateMandatoryRelations(relations: Array<RelationDefinition>,
-                                       types: Array<TypeDefinition>): Array<Array<string>> {
-
-        let msgs = [];
-
-        let recordedInRelations: any = {};
-        if (relations) for (let relation of relations) {
-            if (relation.name == 'isRecordedIn') {
-                for (let type of relation.range) {
-                    recordedInRelations[type] = relation.domain;
-                }
-            }
-        }
-
-        if ('Project' in recordedInRelations) {
-            for (let type of recordedInRelations['Project']) {
-
-                let isAbstract = false;
-                for (let t of types) {
-                    if (t.type == type && t.abstract) {
-                        isAbstract = true;
-                    }
-                }
-                if (isAbstract) continue;
-
-                if (!(type in recordedInRelations) || !recordedInRelations[type]
-                        || recordedInRelations[type].length == 0) {
-                    msgs.push([MDInternal.VALIDATION_ERROR_INCOMPLETERECORDEDIN, type]);
-                }
-            }
-        } else {
-            msgs.push([MDInternal.VALIDATION_ERROR_NOPROJECTRECORDEDIN]);
-        }
-
         return msgs;
     }
 

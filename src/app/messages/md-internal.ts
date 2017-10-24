@@ -21,6 +21,7 @@ export class MDInternal extends MD {
     public static VALIDATION_ERROR_MISSINGPROPERTY: string = 'validation/error/missingproperty';
     public static VALIDATION_ERROR_MISSINGPARENTTYPE: string = 'validation/error/missingparenttype';
     public static VALIDATION_ERROR_MISSINGVIEWTYPE: string = 'validation/error/missingviewtype';
+    public static VALIDATION_ERROR_NONOPERATIONVIEWTYPE: string = 'validation/error/nonoperationviewtype';
     public static VALIDATION_ERROR_MISSINGRELATIONTYPE: string = 'validation/error/missingrelationtype';
     public static VALIDATION_ERROR_TOPLEVELTYPEHASPARENT: string = 'validation/error/topleveltypehasparent';
     public static VALIDATION_ERROR_INCOMPLETERECORDEDIN: string = 'validation/error/incompleterecordedin';
@@ -131,6 +132,12 @@ export class MDInternal extends MD {
         };
         this.msgs[MDInternal.VALIDATION_ERROR_MISSINGVIEWTYPE]={
             content: 'Im View-Teil der Configuration.json wird auf den nicht definierten Typ \'{0}\' verwiesen.',
+            level: 'danger',
+            params: [],
+            hidden: false
+        };
+        this.msgs[MDInternal.VALIDATION_ERROR_NONOPERATIONVIEWTYPE]={
+            content: 'Im View-Teil der Configuration.json wird auf den Typ \'{0}\' verwiesen. Dieser ist als Nicht-Maßnahmen-Typ nicht unterstützt.',
             level: 'danger',
             params: [],
             hidden: false
