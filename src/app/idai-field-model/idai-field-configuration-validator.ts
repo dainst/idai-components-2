@@ -97,17 +97,17 @@ export class IdaiFieldConfigurationValidator extends ConfigurationValidator{
 
         for (let view of views) {
 
-            if (view.mainType == 'Project') continue;
-            if (typeNames.indexOf(view.mainType) == -1)
-                msgs.push([MDInternal.VALIDATION_ERROR_MISSINGVIEWTYPE, view.mainType]);
+            if (view.operationSubtype == 'Project') continue;
+            if (typeNames.indexOf(view.operationSubtype) == -1)
+                msgs.push([MDInternal.VALIDATION_ERROR_MISSINGVIEWTYPE, view.operationSubtype]);
 
             let supported = false;
             for (let type of types) {
-                if (view.mainType == type.type &&
+                if (view.operationSubtype == type.type &&
                     type.parent == 'Operation') supported = true
             }
             if (!supported) {
-                msgs.push([MDInternal.VALIDATION_ERROR_NONOPERATIONVIEWTYPE, view.mainType]);
+                msgs.push([MDInternal.VALIDATION_ERROR_NONOPERATIONVIEWTYPE, view.operationSubtype]);
             }
         }
         return msgs;

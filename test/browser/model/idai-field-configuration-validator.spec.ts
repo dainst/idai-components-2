@@ -42,7 +42,7 @@ export function main() {
                     {
                         name: 'a',
                         label: 'A',
-                        mainType: 'T1'
+                        operationSubtype: 'T1'
                     }
                 ]
             };
@@ -54,7 +54,7 @@ export function main() {
             configuration.views[0] = {
                 name: 'a',
                 label: 'A',
-                mainType: 'U'
+                operationSubtype: 'U'
             };
 
             expect(new IdaiFieldConfigurationValidator([])
@@ -69,7 +69,7 @@ export function main() {
             configuration.views[0] = {
                 name: 'a',
                 label: 'A',
-                mainType: 'T2'
+                operationSubtype: 'T2'
             };
 
             expect(new IdaiFieldConfigurationValidator([])
