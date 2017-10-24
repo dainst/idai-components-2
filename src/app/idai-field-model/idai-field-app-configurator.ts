@@ -110,9 +110,7 @@ export class IdaiFieldAppConfigurator {
     constructor(private configLoader: ConfigLoader) { }
 
 
-    public go(projectConfigurationPath: string, reset: boolean = false) {
-
-        if (reset) this.configLoader.reset();
+    public go(projectConfigurationPath: string) {
 
         this.configLoader.go(
             projectConfigurationPath,
