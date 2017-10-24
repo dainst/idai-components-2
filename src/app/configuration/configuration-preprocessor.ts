@@ -2,6 +2,7 @@ import {FieldDefinition} from "./field-definition";
 import {TypeDefinition} from "./type-definition";
 import {ConfigurationDefinition} from "./configuration-definition";
 import {RelationDefinition} from "./relation-definition";
+import {Config} from 'protractor';
 
 /**
  * @author Daniel de Oliveira
@@ -17,6 +18,7 @@ export class ConfigurationPreprocessor {
                 private extraFields : Array<FieldDefinition>,
                 private extraRelations : Array<RelationDefinition>) { }
 
+
     // TODO make it return a copy
     /**
      * @param configuration
@@ -25,26 +27,29 @@ export class ConfigurationPreprocessor {
         configuration : ConfigurationDefinition
         ) {
 
-        this.addExtraTypes(configuration,this.extraTypes);
+        ConfigurationPreprocessor.addExtraTypes(configuration,this.extraTypes);
         
-        for (var typeDefinition of configuration.types) {
+        for (let typeDefinition of configuration.types) {
             if (!typeDefinition.fields) typeDefinition.fields = [];
 
             if (typeDefinition.parent == undefined) {
-                this.addExtraFields(typeDefinition,this.extraFields)
+                ConfigurationPreprocessor.addExtraFields(typeDefinition,this.extraFields)
             }
-            for (var fieldDefinition of typeDefinition.fields) {
+            for (let fieldDefinition of typeDefinition.fields) {
                 if (fieldDefinition.editable==undefined) fieldDefinition.editable = true;
                 if (fieldDefinition.visible==undefined) fieldDefinition.visible = true;
             }
         }
 
         if (!configuration.relations) configuration.relations = [];
-        this.addExtraRelations(configuration, this.extraRelations);
+        ConfigurationPreprocessor.addExtraRelations(configuration, this.extraRelations);
     }
 
-    private addExtraRelations(configuration : ConfigurationDefinition,
+
+    private static addExtraRelations(configuration : ConfigurationDefinition,
                               extraRelations : Array<RelationDefinition>) {
+
+        if (!configuration.relations) return
 
         for (let extraRelation of extraRelations) {
             let relationAlreadyPresent = false;
@@ -55,16 +60,16 @@ export class ConfigurationPreprocessor {
             }
             if (!relationAlreadyPresent) {
                 configuration.relations.splice(0,0,extraRelation);
-                this.expandInherits(configuration, extraRelation, 'range');
-                this.expandInherits(configuration, extraRelation, 'domain');
-                this.expandOnUndefined(configuration, extraRelation, 'range');
-                this.expandOnUndefined(configuration, extraRelation, 'domain');
+                ConfigurationPreprocessor.expandInherits(configuration, extraRelation, 'range');
+                ConfigurationPreprocessor.expandInherits(configuration, extraRelation, 'domain');
+                ConfigurationPreprocessor.expandOnUndefined(configuration, extraRelation, 'range');
+                ConfigurationPreprocessor.expandOnUndefined(configuration, extraRelation, 'domain');
             }
         }
     }
 
 
-    private static relationAlreadyExists(existingRelation, extraRelation) { // TODO write unit test
+    private static relationAlreadyExists(existingRelation: any, extraRelation: any) { // TODO write unit test
 
         if (existingRelation.name == extraRelation.name) {
 
@@ -78,15 +83,17 @@ export class ConfigurationPreprocessor {
     }
 
 
-    private expandInherits(configuration : ConfigurationDefinition,
+    private static expandInherits(configuration : ConfigurationDefinition,
                            extraRelation : RelationDefinition, itemSet: string) {
-        if (!extraRelation[itemSet]) return;
 
-        var itemsNew = [];
-        for (var item of extraRelation[itemSet]) {
+        if (!extraRelation) return;
+        if (!(extraRelation as any)[itemSet]) return;
+
+        const itemsNew = [];
+        for (let item of (extraRelation as any)[itemSet]) {
             if (item.indexOf(':inherit') != -1) {
 
-                for (var type of configuration.types) {
+                for (let type of configuration.types) {
                     if (type.parent==item.split(':')[0]) {
                         itemsNew.push(type.type);
                     }
@@ -96,20 +103,22 @@ export class ConfigurationPreprocessor {
                 itemsNew.push(item);
             }
         }
-        extraRelation[itemSet] = itemsNew;
+        (extraRelation as any)[itemSet] = itemsNew;
     }
 
 
-    private expandOnUndefined(configuration : ConfigurationDefinition,
-                              extraRelation : RelationDefinition, itemSet: string) {
+    private static expandOnUndefined(configuration : ConfigurationDefinition,
+                              extraRelation_ : RelationDefinition, itemSet: string) {
+
+        const extraRelation: any = extraRelation_;
 
         if (extraRelation[itemSet] != undefined) return;
 
-        var opposite = 'range';
+        let opposite = 'range';
         if (itemSet == 'range') opposite = 'domain';
 
         extraRelation[itemSet] = [];
-        for (var type of configuration.types) {
+        for (let type of configuration.types) {
             if (extraRelation[opposite].indexOf(type.type) == -1) {
                 extraRelation[itemSet].push(type.type)
             }
@@ -117,11 +126,12 @@ export class ConfigurationPreprocessor {
     }
 
 
-    private mergeFields(target:TypeDefinition, source:TypeDefinition) {
-        for (var sourceField of source.fields) {
+    private static mergeFields(target:TypeDefinition, source:TypeDefinition) {
 
-            var alreadyPresentInTarget = false;
-            for (var targetField of target.fields) {
+        for (let sourceField of source.fields) {
+
+            let alreadyPresentInTarget = false;
+            for (let targetField of target.fields) {
                 if (targetField.name == sourceField.name) {
                     alreadyPresentInTarget = true;
                 }
@@ -132,20 +142,21 @@ export class ConfigurationPreprocessor {
         }
     }
 
-    private addExtraTypes(
+
+    private static addExtraTypes(
         configuration : ConfigurationDefinition,
         extraTypes : Array<TypeDefinition>) {
 
-        for (var extraType of extraTypes) {
-            var typeAlreadyPresent = false;
+        for (let extraType of extraTypes) {
+            let typeAlreadyPresent = false;
 
-            for (var typeDefinition of configuration.types) {
+            for (let typeDefinition of configuration.types) {
 
                 if ((<TypeDefinition>typeDefinition).type
                     == (<TypeDefinition>extraType).type) {
 
                     typeAlreadyPresent = true;
-                    this.mergeFields(typeDefinition,extraType);
+                    ConfigurationPreprocessor.mergeFields(typeDefinition,extraType);
                 }
             }
 
@@ -156,13 +167,13 @@ export class ConfigurationPreprocessor {
     }
 
 
-    private addExtraFields(
+    private static addExtraFields(
         typeDefinition : TypeDefinition,
         extraFields : Array<FieldDefinition>) {
 
-        for (var extraField of extraFields) {
-            var fieldAlreadyPresent = false;
-            for (var fieldDefinition of (<TypeDefinition>typeDefinition).fields) {
+        for (let extraField of extraFields) {
+            let fieldAlreadyPresent = false;
+            for (let fieldDefinition of (<TypeDefinition>typeDefinition).fields) {
                 if ((<FieldDefinition>fieldDefinition).name == extraField.name) {
                     fieldAlreadyPresent = true;
                 }

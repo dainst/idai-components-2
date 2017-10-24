@@ -32,32 +32,32 @@ export class ConfigurationValidator {
      */
     public go(configuration: ConfigurationDefinition): Array<Array<string>> {
 
-        let msgs = [];
+        let msgs: any[] = [];
 
-        const invalidTypeErrors = this.findInvalidType(configuration.types);
+        const invalidTypeErrors = ConfigurationValidator.findInvalidType(configuration.types);
         if (invalidTypeErrors) msgs = msgs.concat(invalidTypeErrors);
         
-        const missingTypeErrors = this.findMissingType(configuration.types, this.namesOfMandatoryTypes);
+        const missingTypeErrors = ConfigurationValidator.findMissingType(configuration.types, this.namesOfMandatoryTypes);
         if (missingTypeErrors) msgs = msgs.concat(missingTypeErrors);
 
-        const duplicateTypeErrors = this.findDuplicateType(configuration.types);
+        const duplicateTypeErrors = ConfigurationValidator.findDuplicateType(configuration.types);
         if (duplicateTypeErrors) msgs = msgs.concat(duplicateTypeErrors);
 
-        const missingParentTypeErrors = this.findMissingParentType(configuration.types);
+        const missingParentTypeErrors = ConfigurationValidator.findMissingParentType(configuration.types);
         if (missingParentTypeErrors) msgs = msgs.concat(missingParentTypeErrors);
 
         if (configuration.views) {
-            const missingViewTypeErrors = this.findMissingViewType(configuration.views, configuration.types);
+            const missingViewTypeErrors = ConfigurationValidator.findMissingViewType(configuration.views, configuration.types);
             if (missingViewTypeErrors) msgs = msgs.concat(missingViewTypeErrors);
         }
 
-        const missingRelationTypeErrors = this.findMissingRelationType(configuration.relations, configuration.types);
+        const missingRelationTypeErrors = ConfigurationValidator.findMissingRelationType(configuration.relations as any, configuration.types);
         if (missingRelationTypeErrors) msgs = msgs.concat(missingRelationTypeErrors);
 
-        const mandatoryRelationsError = this.validateMandatoryRelations(configuration.relations, configuration.types);
+        const mandatoryRelationsError = ConfigurationValidator.validateMandatoryRelations(configuration.relations as any, configuration.types);
         if (mandatoryRelationsError.length) msgs = msgs.concat(mandatoryRelationsError);
 
-        const fieldError = this.validateFieldDefinitions(configuration.types);
+        const fieldError = ConfigurationValidator.validateFieldDefinitions(configuration.types);
         if (fieldError.length) msgs = msgs.concat(fieldError);
 
         return msgs;
@@ -70,7 +70,7 @@ export class ConfigurationValidator {
      * @param types
      * @returns {string} invalidType. undefined if no error.
      */
-    private findInvalidType(types: Array<TypeDefinition>): Array<Array<string>> {
+    private static findInvalidType(types: Array<TypeDefinition>): Array<Array<string>> {
 
         let msgs = [];
         for (let type of types) {
@@ -80,11 +80,11 @@ export class ConfigurationValidator {
         return msgs;
     }
 
-    private findDuplicateType(types: Array<TypeDefinition>): Array<Array<string>> {
+    private static findDuplicateType(types: Array<TypeDefinition>): Array<Array<string>> {
 
         let msgs = [];
-        var o = {};
-        for (var typeName of types.map(type => type.type)) {
+        let o: any = {};
+        for (let typeName of types.map(type => type.type)) {
             if (o[typeName]) msgs.push([MDInternal.VALIDATION_ERROR_DUPLICATETYPE, typeName]);
             o[typeName] = true;
         }
@@ -92,13 +92,14 @@ export class ConfigurationValidator {
         return msgs;
     }
 
-    private findMissingType(types: Array<TypeDefinition>, namesOfMandatoryTypes: Array<string>): Array<Array<string>> {
 
-        let msgs = [];
+    private static findMissingType(types: Array<TypeDefinition>, namesOfMandatoryTypes: Array<string>): Array<Array<string>> {
+
+        let msgs: any[] = [];
 
         if ( !namesOfMandatoryTypes || namesOfMandatoryTypes.length == 0) return msgs;
 
-        for (var nameOfMandatoryType of namesOfMandatoryTypes) {
+        for (let nameOfMandatoryType of namesOfMandatoryTypes) {
             let found: boolean = false;
             for (let type of types) {
                 if (type.type == nameOfMandatoryType) found = true;
@@ -110,7 +111,8 @@ export class ConfigurationValidator {
         return msgs;
     }
 
-    private findMissingParentType(types: Array<TypeDefinition>): Array<Array<string>> {
+
+    private static findMissingParentType(types: Array<TypeDefinition>): Array<Array<string>> {
 
 
         let msgs = [];
@@ -124,7 +126,8 @@ export class ConfigurationValidator {
         return msgs;
     }
 
-    private findMissingViewType(views: Array<ViewDefinition>, types: Array<TypeDefinition>): Array<Array<string>> {
+
+    private static findMissingViewType(views: Array<ViewDefinition>, types: Array<TypeDefinition>): Array<Array<string>> {
 
         let msgs = [];
         const typeNames: Array<string> = types.map(type => type.type);
@@ -137,7 +140,8 @@ export class ConfigurationValidator {
         return msgs;
     }
 
-    private findMissingRelationType(relations: Array<RelationDefinition>,
+
+    private static findMissingRelationType(relations: Array<RelationDefinition>,
                                     types: Array<TypeDefinition>): Array<Array<string>> {
 
         let msgs = [];
@@ -154,12 +158,13 @@ export class ConfigurationValidator {
         return msgs;
     }
 
-    private validateMandatoryRelations(relations: Array<RelationDefinition>,
+
+    private static validateMandatoryRelations(relations: Array<RelationDefinition>,
                                        types: Array<TypeDefinition>): Array<Array<string>> {
 
         let msgs = [];
 
-        let recordedInRelations = {};
+        let recordedInRelations: any = {};
         if (relations) for (let relation of relations) {
             if (relation.name == 'isRecordedIn') {
                 for (let type of relation.range) {
@@ -191,11 +196,12 @@ export class ConfigurationValidator {
         return msgs;
     }
 
-    private validateFieldDefinitions(types: Array<TypeDefinition>): Array<Array<string>> {
+
+    private static validateFieldDefinitions(types: Array<TypeDefinition>): Array<Array<string>> {
 
         let msgs = [];
 
-        const fieldDefs = [].concat(...types.map(type => type.fields));
+        const fieldDefs: any = [].concat(...types.map(type => type.fields));
 
         for (let fieldDef of fieldDefs) {
             if (!fieldDef.hasOwnProperty('name'))

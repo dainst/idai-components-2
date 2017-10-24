@@ -26,13 +26,13 @@ export class ProjectConfiguration {
 
     private projectIdentifier: string;
 
-    private typesList: Array<IdaiType> = undefined;
+    private typesList: Array<IdaiType>|undefined = undefined;
 
-    private typesTreeList: Array<IdaiType> = undefined;
+    private typesTreeList: Array<IdaiType>|undefined = undefined;
 
     private typesColorMap: { [typeName: string]: string } = {};
 
-    private relationFields: any[] = undefined;
+    private relationFields: any[]|undefined = undefined;
 
     private viewsList: Array<ViewDefinition> = [];
 
@@ -42,7 +42,7 @@ export class ProjectConfiguration {
     /**
      * @param configuration
      */
-    constructor(configuration) {
+    constructor(configuration: any) {
 
         this.initTypes(configuration);
         this.initViewsMap(configuration);
@@ -52,7 +52,10 @@ export class ProjectConfiguration {
         this.viewsList = configuration.views;
     }
 
-    public getInverseRelations(relationName: string): string {
+
+    public getInverseRelations(relationName: string): string|undefined {
+
+        if (!this.relationFields) return undefined;
 
         for (let relationField of this.relationFields) {
             if (relationField['name'] == relationName) return relationField['inverse'];
@@ -60,13 +63,17 @@ export class ProjectConfiguration {
         return undefined;
     }
 
+
     public isRelationProperty(propertyName: string): boolean {
+
+        if (!this.relationFields) return false;
 
         for (let relationField of this.relationFields) {
             if (relationField['name'] == propertyName) return true;
         }
         return false;
     }
+
 
     /**
      * @returns {IdaiType[]} All types in flat array, ignoring hierarchy
@@ -83,6 +90,7 @@ export class ProjectConfiguration {
         return this.typesList;
     }
 
+
     /**
      * @returns {IdaiType[]} All root types in array, including child types
      */
@@ -98,11 +106,15 @@ export class ProjectConfiguration {
         return this.typesTreeList;
     }
 
+
     public getTypesMap(): any {
+
         return this.typesMap;
     }
 
+
     public getTypesTree() : any {
+
         return this.typesTree;
     }
 
@@ -116,7 +128,9 @@ export class ProjectConfiguration {
      * @returns {Array<RelationDefinition>} the definitions for the type.
      */
     public getRelationDefinitions(typeName: string, isRangeType: boolean = false, property?: string)
-            : Array<RelationDefinition> {
+            : Array<RelationDefinition>|undefined {
+
+        if (!this.relationFields) return undefined;
 
         const availableRelationFields = new Array<RelationDefinition>();
         for (let i in this.relationFields) {
@@ -140,7 +154,8 @@ export class ProjectConfiguration {
      */
     public isAllowedRelationDomainType(domainTypeName: string, rangeTypeName: string, relationName: string): boolean {
 
-        const relationDefinitions: Array<RelationDefinition> = this.getRelationDefinitions(rangeTypeName, true);
+        const relationDefinitions: Array<RelationDefinition>|undefined = this.getRelationDefinitions(rangeTypeName, true);
+        if (!relationDefinitions) return false;
 
         for (let relationDefinition of relationDefinitions) {
             if (relationName == relationDefinition.name
@@ -150,52 +165,51 @@ export class ProjectConfiguration {
         return false;
     }
 
+
     /**
      * @param typeName
      * @returns {any[]} the fields definitions for the type.
      */
     public getFieldDefinitions(typeName: string): FieldDefinition[] {
+
         if (!this.typesMap[typeName]) return [];
         return this.typesMap[typeName].getFieldDefinitions();
     }
 
+
     public getLabelForType(typeName: string): string {
+
         if (!this.typesMap[typeName]) return '';
         return this.typesMap[typeName].label;
     }
 
-    private generateColorForType(typeName: string): string {
-
-        if (this.typesMap[typeName] && this.typesMap[typeName].color) {
-            return this.typesMap[typeName].color;
-        } else {
-            var hash = this.hashCode(typeName);
-            var r = (hash & 0xFF0000) >> 16;
-            var g = (hash & 0x00FF00) >> 8;
-            var b = hash & 0x0000FF;
-            return "#" + ("0" + r.toString(16)).substr(-2) + ("0" + g.toString(16)).substr(-2) + ("0" + b.toString(16)).substr(-2);
-        }
-    }
 
     public getColorForType(typeName: string): string {
 
         return this.typesColorMap[typeName];
     }
 
+
     public getTypeColors(): { [typeName: string]: string } {
 
         return this.typesColorMap;
     }
 
+
     public isMandatory(typeName: string, fieldName: string): boolean {
+
         return this.hasProperty(typeName, fieldName, 'mandatory');
     }
     
     public isVisible(typeName: string, fieldName: string): boolean {
+
         return this.hasProperty(typeName, fieldName, 'visible');
     }
 
+
     public isVisibleRelation(relationName: string, domainType: string): boolean {
+
+        if (!this.relationFields) return false;
 
         for (let relationField of this.relationFields) {
             if (relationField.name == relationName &&
@@ -209,6 +223,7 @@ export class ProjectConfiguration {
         return true;
     }
 
+
     /**
      * Should be used only from within components.
      * 
@@ -218,8 +233,9 @@ export class ProjectConfiguration {
     public getRelationDefinitionLabel(relationName: string): string {
 
         const relationFields = this.relationFields;
-        return this.getLabel(relationName, relationFields);
+        return ProjectConfiguration.getLabel(relationName, relationFields as any);
     }
+
 
     /**
      * Gets the label for the field if it is defined.
@@ -236,16 +252,21 @@ export class ProjectConfiguration {
         if (fieldDefinitions.length == 0)
             throw 'No type definition found for type \'' + typeName + '\'';
 
-        return this.getLabel(fieldName, fieldDefinitions);
+        return ProjectConfiguration.getLabel(fieldName, fieldDefinitions);
     }
 
+
     public getViewsList(): Array<ViewDefinition> {
+
         return this.viewsList;
     }
 
+
     public getView(name: string): ViewDefinition {
+
         return this.viewsMap[name];
     }
+
 
     /**
      * @returns {string} the name of the excavation, if defined.
@@ -262,7 +283,7 @@ export class ProjectConfiguration {
 
         for (let i in fields) {
             if (fields[i].name == fieldName) {
-                if (fields[i][propertyName] == true) {
+                if ((fields[i] as any)[propertyName as any] == true) {
                     return true;
                 }
             }
@@ -270,35 +291,21 @@ export class ProjectConfiguration {
         return false;
     }
 
-    private getLabel(fieldName: string, fields: Array<any>): string{
-
-        for (let i in fields) {
-            if (fields[i].name == fieldName) {
-                if (fields[i].label) {
-                    return fields[i].label;
-                } else {
-                    return fieldName;
-                }
-            }
-        }
-
-        return fieldName;
-    }
 
     private initTypes(configuration: ConfigurationDefinition) {
 
         for (let type of configuration.types) {
-            let typeName = this.getTypeName(type);
+            let typeName = ProjectConfiguration.getTypeName(type);
             this.typesMap[typeName] = new IdaiType(type);
-            this.typesColorMap[typeName] = this.generateColorForType(typeName);
+            this.typesColorMap[typeName] = this.generateColorForType(typeName) as any;
         }
 
         for (let type of configuration.types) {
-            let typeName = this.getTypeName(type);
+            let typeName = ProjectConfiguration.getTypeName(type);
             if (!type['parent']) {
                 this.typesTree[typeName] = this.typesMap[typeName];
             } else {
-                let parentType = this.typesMap[type.parent];
+                let parentType = this.typesMap[type.parent as any];
                 if (parentType == undefined)
                     throw MDInternal.PC_GENERIC_ERROR;
                 parentType.addChildType(this.typesMap[typeName]);
@@ -315,12 +322,15 @@ export class ProjectConfiguration {
         }
     }
 
-    private getTypeName(type): string {
+    private static getTypeName(type: any): string {
+
         return type.type;
     }
 
-    private hashCode(string): number {
-        var hash = 0, i, chr;
+
+    private hashCode(string: any): number {
+
+        let hash = 0, i, chr;
         if (string.length === 0) return hash;
         for (i = 0; i < string.length; i++) {
             chr   = string.charCodeAt(i);
@@ -330,4 +340,33 @@ export class ProjectConfiguration {
         return hash;
     }
 
+
+    private static getLabel(fieldName: string, fields: Array<any>): string{
+
+        for (let i in fields) {
+            if (fields[i].name == fieldName) {
+                if (fields[i].label) {
+                    return fields[i].label;
+                } else {
+                    return fieldName;
+                }
+            }
+        }
+
+        return fieldName;
+    }
+
+
+    private generateColorForType(typeName: string): string|undefined {
+
+        if (this.typesMap[typeName] && this.typesMap[typeName].color) {
+            return this.typesMap[typeName].color;
+        } else {
+            var hash = this.hashCode(typeName);
+            var r = (hash & 0xFF0000) >> 16;
+            var g = (hash & 0x00FF00) >> 8;
+            var b = hash & 0x0000FF;
+            return "#" + ("0" + r.toString(16)).substr(-2) + ("0" + g.toString(16)).substr(-2) + ("0" + b.toString(16)).substr(-2);
+        }
+    }
 }

@@ -21,9 +21,9 @@ import {ConfigurationValidator} from './configuration-validator';
 @Injectable()
 export class ConfigLoader {
 
-    private projectConfig: Promise<ProjectConfiguration> = undefined;
-    private projectConfigResolveFunction: Function = undefined;
-    private projectConfigRejectFunction: Function = undefined;
+    private projectConfig: Promise<ProjectConfiguration>|undefined = undefined;
+    private projectConfigResolveFunction: Function|undefined = undefined;
+    private projectConfigRejectFunction: Function|undefined = undefined;
 
     constructor(private http: Http) {
 
@@ -39,7 +39,7 @@ export class ConfigLoader {
      * @returns resolves with the ProjectConfiguration or rejects with
      *   a msgWithParams.
      */
-    public getProjectConfiguration(): Promise<ProjectConfiguration> {
+    public getProjectConfiguration(): Promise<ProjectConfiguration>|undefined {
 
         return this.projectConfig;
     }
@@ -70,16 +70,16 @@ export class ConfigLoader {
                 if (configurationPreprocessor) configurationPreprocessor.go(config);
                 new ConfigurationPreprocessor([], defaultFields, []).go(config);
 
-                let configurationErrors = [];
+                let configurationErrors: any = [];
                 if (configurationValidator) configurationErrors = configurationValidator.go(config);
                 if (configurationErrors.length > 0) {
-                    this.projectConfigRejectFunction(configurationErrors);
+                    if (this.projectConfigRejectFunction) this.projectConfigRejectFunction(configurationErrors);
                 } else {
-                    this.projectConfigResolveFunction(new ProjectConfiguration(config));
+                    if (this.projectConfigResolveFunction) this.projectConfigResolveFunction(new ProjectConfiguration(config));
                 }
             },
             msgWithParams => {
-                this.projectConfigRejectFunction([msgWithParams]);
+                if (this.projectConfigRejectFunction) this.projectConfigRejectFunction([msgWithParams]);
             }
         );
     }
@@ -87,7 +87,7 @@ export class ConfigLoader {
     private read(http: any, path: string): Promise<any> {
 
         return new Promise((resolve, reject) => {
-            http.get(path).subscribe(data_ => {
+            http.get(path).subscribe((data_: any) => {
                 let data;
                 try {
                     data = JSON.parse(data_['_body']);
