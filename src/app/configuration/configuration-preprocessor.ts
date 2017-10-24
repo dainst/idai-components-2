@@ -1,8 +1,7 @@
-import {FieldDefinition} from "./field-definition";
-import {TypeDefinition} from "./type-definition";
-import {ConfigurationDefinition} from "./configuration-definition";
-import {RelationDefinition} from "./relation-definition";
-import {Config} from 'protractor';
+import {FieldDefinition} from './field-definition';
+import {TypeDefinition} from './type-definition';
+import {ConfigurationDefinition} from './configuration-definition';
+import {RelationDefinition} from './relation-definition';
 
 /**
  * @author Daniel de Oliveira
@@ -19,7 +18,6 @@ export class ConfigurationPreprocessor {
                 private extraRelations : Array<RelationDefinition>) { }
 
 
-    // TODO make it return a copy
     /**
      * @param configuration
      */
@@ -69,12 +67,17 @@ export class ConfigurationPreprocessor {
     }
 
 
-    private static relationAlreadyExists(existingRelation: any, extraRelation: any) { // TODO write unit test
+    /**
+     * A relation definition is unique for each name/domain pair
+     *
+     * @param existingRelation
+     * @param extraRelation
+     * @returns {boolean}
+     */
+    private static relationAlreadyExists(existingRelation: any, extraRelation: any) {
 
         if (existingRelation.name == extraRelation.name) {
-
             if (existingRelation.domain && extraRelation.domain) {
-
                 if (existingRelation.domain.sort().toString() ==
                     extraRelation.domain.sort().toString()) return true;
             }
