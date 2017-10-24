@@ -88,7 +88,16 @@ export class SearchBarComponent implements OnChanges {
                         || projectConfiguration.isAllowedRelationDomainType(type.name, this.relationRangeType,
                         this.relationName)) {
 
-                    if (this.relationRangeType == 'Project' && type.isAbstract) continue;
+                    if (this.relationRangeType == 'Project' && type.isAbstract) {
+
+                        for (let childType of type.children) { // TODO remove duplication
+                            if (projectConfiguration.isAllowedRelationDomainType(childType.name, this.relationRangeType,
+                                    this.relationName)) {
+                                this.addFilterOption(childType);
+                            }
+                        }
+                        continue;
+                    }
 
                     this.addFilterOption(type);
 
