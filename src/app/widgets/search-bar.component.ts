@@ -82,11 +82,18 @@ export class SearchBarComponent implements OnChanges {
 
                 if (this.parentType && type.name != this.parentType) continue;
 
+
+
                 if ((!this.relationName && !this.relationRangeType)
                         || projectConfiguration.isAllowedRelationDomainType(type.name, this.relationRangeType,
                         this.relationName)) {
+
+                    if (this.relationRangeType == 'Project' && type.isAbstract) continue;
+
                     this.addFilterOption(type);
+
                 } else if (type.children) {
+
                     for (let childType of type.children) {
                         if (projectConfiguration.isAllowedRelationDomainType(childType.name, this.relationRangeType,
                                 this.relationName)) {
@@ -94,6 +101,7 @@ export class SearchBarComponent implements OnChanges {
                         }
                     }
                 }
+
             }
         });
     }
