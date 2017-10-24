@@ -27,13 +27,12 @@ export class ConfigLoader {
 
     constructor(private http: Http) {
 
-        this._reset();
+        this.projectConfig = new Promise<ProjectConfiguration>((resolve, reject) => {
+            this.projectConfigResolveFunction = resolve;
+            this.projectConfigRejectFunction = reject;
+        });
     }
 
-    public reset() {
-
-        this._reset();
-    }
 
     /**
      * @returns resolves with the ProjectConfiguration or rejects with
@@ -101,14 +100,6 @@ export class ConfigLoader {
                     console.log(e);
                 }
             });
-        });
-    }
-
-    private _reset() {
-
-        this.projectConfig = new Promise<ProjectConfiguration>((resolve, reject) => {
-            this.projectConfigResolveFunction = resolve;
-            this.projectConfigRejectFunction = reject;
         });
     }
 }
