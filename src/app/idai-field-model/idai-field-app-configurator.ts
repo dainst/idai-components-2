@@ -3,15 +3,20 @@ import {ConfigLoader} from '../configuration/config-loader';
 import {ConfigurationPreprocessor} from '../configuration/configuration-preprocessor';
 import {ConfigurationValidator} from '../configuration/configuration-validator';
 
+
 @Injectable()
 /**
  * @author Daniel de Oliveira
  */
-export class AppConfigurator {
-
-    constructor(private configLoader: ConfigLoader) { }
+export class IdaiFieldAppConfigurator {
 
     private defaultTypes = [{
+        type: 'Place',
+        fields: []
+    }, {
+        type: 'Operation',
+        fields: []
+    }, {
         type: 'Image',
         fields: [
             {
@@ -67,6 +72,7 @@ export class AppConfigurator {
         ]
     }];
 
+
     private defaultFields = [{
         name: 'shortDescription',
         label: 'Kurzbeschreibung',
@@ -83,12 +89,25 @@ export class AppConfigurator {
         editable: false
     }];
 
+
     private defaultRelations = [
-        { name: 'depicts', domain: ['Image:inherit'], inverse: 'isDepictedIn', label: 'Zeigt', editable: true },
-        { name: 'isDepictedIn', range: ['Image:inherit'], inverse: 'depicts', visible: false, editable: false }
-        // isRecordedIn
-        // records
+        { name: 'depicts', domain: ['Image:inherit'],
+            inverse: 'isDepictedIn', label: 'Zeigt', editable: true },
+        { name: 'isDepictedIn', range: ['Image:inherit'],
+            inverse: 'depicts', visible: false, editable: false },
+        { name: 'isRecordedIn', domain: ['Operation:inherit'], label: "Gehört zu",
+            range: ['Project'], inverse: 'NO-INVERSE', visible: false, editable: false },
+        { name: 'isRecordedIn', domain: ['Place'], label: "Gehört zu",
+            range: ['Project'], inverse: 'NO-INVERSE', visible: false, editable: false },
+        { name: "liesWithin", domain: ["Operation:inherit"], label: "Liegt in",
+            inverse: "includes", range: ["Place"], sameMainTypeResource: true },
+        { name: "includes", domain: ["Place"], label: "Enthält", inverse: "liesWithin",
+            range: ["Operation:inherit"], sameMainTypeResource: true }
     ];
+
+
+    constructor(private configLoader: ConfigLoader) { }
+
 
     public go(projectConfigurationPath: string, reset: boolean = false) {
 
