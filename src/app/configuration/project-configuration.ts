@@ -262,17 +262,12 @@ export class ProjectConfiguration {
     }
 
 
-    public getView(name: string): ViewDefinition {
-
-        return this.viewsMap[name];
-    }
-
-
     /**
      * @returns {string} the name of the excavation, if defined.
      *   <code>undefined</code> otherwise.
      */
     public getProjectIdentifier(): any {
+
         return this.projectIdentifier;
     }
 
