@@ -29,9 +29,14 @@ export class AppConfigurator {
                 visible: false,
                 editable: false
             },
-            // TODO Delete the field 'filename' as soon as existing data has been migrated.
+            // TODO Delete the fields 'filename' and 'hasFilename' as soon as existing data has been migrated.
             {
                 name : 'filename',
+                visible: false,
+                editable: false
+            },
+            {
+                name : 'hasFilename',
                 visible: false,
                 editable: false
             },
