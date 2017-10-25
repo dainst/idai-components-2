@@ -44,6 +44,9 @@
             <dai-dating *ngIf="field.inputType == 'dating'" [(resource)]="document['resource']"
                              [field]="field"></dai-dating>
 
+            <dai-date *ngIf="field.inputType == 'date'" [(resource)]="document['resource']"
+                             [field]="field"></dai-date>
+
             <dai-dimension *ngIf="field.inputType == 'dimension'" [(resource)]="document['resource']"
                              [field]="field"></dai-dimension>
 

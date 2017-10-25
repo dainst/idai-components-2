@@ -22,6 +22,12 @@
           "description" : "this is a simple input field"
         },
         {
+          "name": "some_date",
+          "label": "Datum",
+          "inputType": "date",
+          "description" : "this is a input for a date"
+        },
+        {
           "name": "unsigned_integer_input",
           "label": "Unsigned Integer Input",
           "inputType": "unsignedInt",
