@@ -1,5 +1,7 @@
 import {Document} from "../model/document";
 import {Query} from "./query";
+import {Observable} from 'rxjs/Observable';
+import {DocumentChange} from './document-change';
 
 /**
  * The interface providing read access methods 
@@ -32,4 +34,12 @@ export abstract class ReadDatastore  {
      *     [GENERIC_ERROR (, cause: any)] - in case of error, optionally including a cause
      */
     abstract find(query: Query): Promise<Document[]>;
+
+
+    /**
+     * Subscription enables clients to get notified
+     * when documents get modified via one of the accessor
+     * methods defined in <code>Datastore</code>.
+     */
+    abstract documentChangesNotifications(): Observable<DocumentChange>;
 }

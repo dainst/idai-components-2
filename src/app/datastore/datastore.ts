@@ -57,12 +57,4 @@ export abstract class Datastore extends ReadDatastore {
      *     [GENERIC_ERROR (, cause: any)] - in case of error, optionally including a cause
      */
     abstract remove(doc: Document): Promise<undefined>;
-
-    /**
-     * Subscription enables clients to get notified
-     * when documents get modified via one of the accessor
-     * methods defined in <code>Datastore</code>.
-     */
-    abstract documentChangesNotifications(): Observable<DocumentChange>;
-
 }
