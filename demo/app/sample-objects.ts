@@ -8,11 +8,7 @@ export var OBJECTS: Document[] = [
         'type': 'Object',
         'multiple_input': [ 'a' , 'b' ],
         'unsigned_integer_input': 0,
-        'some_date': {
-            'year': 2017,
-            'month': 12,
-            'day': 31
-        },
+        'some_date': "31.12.2016",
         'dating_input': [
             {
                 'hasBegin': {

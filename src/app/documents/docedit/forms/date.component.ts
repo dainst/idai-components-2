@@ -1,22 +1,28 @@
 import {Component, Input} from '@angular/core';
 import {Resource} from "../../../model/resource";
 import {DocumentEditChangeMonitor} from "../document-edit-change-monitor";
-
-
+import {NgbDateParserFormatter, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'dai-date',
-    template: `<input class="form-control" [firstDayOfWeek]="1" placeholder="dd.mm.yyyy" (change)="setValue()" (click)="d.toggle()" [(ngModel)]="this.resource[this.field.name]" ngbDatepicker #d="ngbDatepicker">`
+    template: `<input class="form-control" [firstDayOfWeek]="1" placeholder="dd.mm.yyyy" (click)="d.toggle()" (ngModelChange)="update($event)" [(ngModel)]="dateStruct" ngbDatepicker #d="ngbDatepicker">`
 })
 
 export class DateComponent {
-
     @Input() resource: Resource;
-    @Input() field: any;
+    dateStruct: NgbDateStruct;
 
-    public dateStruct: {year: number, month: number, day: number} = {year: 2017, month: 6, day: 6};
+    _field : any;
+    @Input('field')
+        set field(value: any) {
+            this._field = value;
+            this.dateStruct = this.dateFormatter.parse(this.resource[this._field.name])
+        }
 
-    constructor(private documentEditChangeMonitor: DocumentEditChangeMonitor) {}
+    constructor(private documentEditChangeMonitor: DocumentEditChangeMonitor, public dateFormatter: NgbDateParserFormatter) { }
 
-    
+    public update(new_value) {
+        this.resource[this._field.name] = this.dateFormatter.format(new_value);
+        this.documentEditChangeMonitor.setChanged();
+    }
 }

@@ -23,7 +23,6 @@ export class NgbDateDEParserFormatter extends NgbDateParserFormatter {
 	    return parseInt(`${value}`, 10);
 	}
     parse(value: string): NgbDateStruct {
-    	console.log("parse");
         if (value) {
             const dateParts = value.trim().split('.');
             if (dateParts.length === 1 && this.isNumber(dateParts[0])) {
@@ -37,8 +36,7 @@ export class NgbDateDEParserFormatter extends NgbDateParserFormatter {
         return null;
     }
 
-    format(date: NgbDateStruct): string {
-    	console.log("format");
+    public format(date: NgbDateStruct): string {
         let stringDate: string = ""; 
         if (date) {
             stringDate += this.isNumber(date.day) ? this.padNumber(date.day) + "." : "";

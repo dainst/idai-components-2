@@ -24,7 +24,7 @@ import {RadioComponent} from './docedit/forms/radio.component';
 import {TextComponent} from './docedit/forms/text.component';
 import {DatingComponent} from './docedit/forms/dating.component';
 import {DateComponent} from './docedit/forms/date.component';
-import {NgbDateDEParserFormatter} from './docedit/forms/dateformatter.component';
+import {NgbDateDEParserFormatter} from './docedit/forms/date-formatter.component';
 import {FieldsViewComponent} from './docview/fields-view.component';
 import {RelationsViewComponent} from './docview/relations-view.component';
 import {DocumentViewComponent} from './docview/document-view.component';
