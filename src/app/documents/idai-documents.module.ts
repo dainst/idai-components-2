@@ -2,7 +2,7 @@ import {LOCALE_ID, NgModule} from '@angular/core';
 import {CommonModule, DecimalPipe} from '@angular/common';
 import {RouterModule} from '@angular/router';
 import {FormsModule} from '@angular/forms';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModule, NgbDateParserFormatter} from '@ng-bootstrap/ng-bootstrap';
 import {Datastore} from '../datastore/datastore';
 import {ReadDatastore} from '../datastore/read-datastore';
 import {ConfigLoader} from '../configuration/config-loader';
@@ -24,6 +24,7 @@ import {RadioComponent} from './docedit/forms/radio.component';
 import {TextComponent} from './docedit/forms/text.component';
 import {DatingComponent} from './docedit/forms/dating.component';
 import {DateComponent} from './docedit/forms/date.component';
+import {NgbDateDEParserFormatter} from './docedit/forms/dateformatter.component';
 import {FieldsViewComponent} from './docview/fields-view.component';
 import {RelationsViewComponent} from './docview/relations-view.component';
 import {DocumentViewComponent} from './docview/document-view.component';
@@ -68,7 +69,8 @@ import {DocumentTeaserComponent} from './document-teaser.component';
         PersistenceManager,
         DecimalPipe,
         { provide: LOCALE_ID, useValue: 'de-DE' }, // change when i18n is implemented
-        { provide: ReadDatastore, useExisting: Datastore }
+        { provide: ReadDatastore, useExisting: Datastore },
+        { provide: NgbDateParserFormatter, useClass: NgbDateDEParserFormatter }
     ],
     exports: [
         DocumentEditComponent,
