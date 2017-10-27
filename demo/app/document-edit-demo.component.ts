@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {ConfigLoader} from '../../src/app/configuration/config-loader';
-import {IdaiType} from '../../src/app/configuration/idai-type';
-import {Datastore} from '../../src/app/datastore/datastore';
-import {Document} from '../../src/app/model/document';
-import {PersistenceManager} from '../../src/app/persist/persistence-manager';
+import {ConfigLoader} from '../../src/ts/core/configuration/config-loader';
+import {IdaiType} from '../../src/ts/core/configuration/idai-type';
+import {Datastore} from '../../src/ts/core/datastore/datastore';
+import {Document} from '../../src/ts/core/model/document';
+import {PersistenceManager} from '../../src/ts/core/persist/persistence-manager';
 
 @Component({
     selector: 'document-edit-demo',

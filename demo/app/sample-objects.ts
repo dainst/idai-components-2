@@ -1,4 +1,4 @@
-import {Document} from '../../src/app/model/document';
+import {Document} from '../../src/ts/core/model/document';
 
 export var OBJECTS: Document[] = [
     
