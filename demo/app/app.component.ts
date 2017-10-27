@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {Messages} from '../../src/ts/core/messages/messages';
-import {ConfigLoader} from '../../src/ts/core/configuration/config-loader';
-import {ConfigurationValidator} from '../../src/ts/core/configuration/configuration-validator';
-import {ConfigurationPreprocessor} from '../../src/ts/core/configuration/configuration-preprocessor';
+import {Messages} from '../../src/app/messages/messages';
+import {ConfigLoader} from '../../src/app/configuration/config-loader';
+import {ConfigurationValidator} from '../../src/app/configuration/configuration-validator';
+import {ConfigurationPreprocessor} from '../../src/app/configuration/configuration-preprocessor';
 import {OBJECTS} from './sample-objects';
-import {Datastore} from '../../src/ts/core/datastore/datastore';
+import {Datastore} from '../../src/app/datastore/datastore';
 
 @Component({
     selector: 'idai-components-demo-app',

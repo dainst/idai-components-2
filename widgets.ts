@@ -1,3 +1,3 @@
-export {IdaiWidgetsModule} from './src/ts/core/widgets/idai-widgets.module';
-export {TypeIconComponent} from './src/ts/core/widgets/type-icon';
-export {SearchBarComponent} from './src/ts/core/widgets/search-bar.component';
+export {IdaiWidgetsModule} from './src/app/widgets/idai-widgets.module';
+export {TypeIconComponent} from './src/app/widgets/type-icon';
+export {SearchBarComponent} from './src/app/widgets/search-bar.component';

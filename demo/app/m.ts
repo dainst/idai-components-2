@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
-import {Message} from "../../src/ts/core/messages/message"
-import {MD} from "../../src/ts/core/messages/md"
+import {Message} from "../../src/app/messages/message"
+import {MD} from "../../src/app/messages/md"
 
 @Injectable()
 export class M extends MD{

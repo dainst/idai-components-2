@@ -1,9 +1,9 @@
-import {Document} from '../../src/ts/core/model/document';
-import {Query} from '../../src/ts/core/datastore/query';
-import {Datastore} from '../../src/ts/core/datastore/datastore';
+import {Document} from '../../src/app/model/document';
+import {Query} from '../../src/app/datastore/query';
+import {Datastore} from '../../src/app/datastore/datastore';
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
-import {DocumentChange} from '../../src/ts/core/datastore/document-change';
+import {DocumentChange} from '../../src/app/datastore/document-change';
 
 /**
  * @author Daniel de Oliveira

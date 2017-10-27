@@ -3,12 +3,12 @@
 
 @import "variables";
 @import "buttons";
-@import "../ts/core/messages/messages";
-@import "../ts/core/documents/documents";
-@import "../ts/core/widgets/search-bar";
-@import "../ts/core/widgets/type-icon";
-@import "../ts/core/widgets/type-picker";
-@import "../ts/idai-field/idai-field-map/map";
+@import "../app/messages/messages";
+@import "../app/documents/documents";
+@import "../app/widgets/search-bar";
+@import "../app/widgets/type-icon";
+@import "../app/widgets/type-picker";
+@import "../app/idai-field-map/map";
 
 html {
   position: relative;

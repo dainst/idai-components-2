@@ -1,5 +1,5 @@
-export {PersistenceManager} from './src/ts/core/persist/persistence-manager';
-export {Validator} from './src/ts/core/persist/validator';
+export {PersistenceManager} from './src/app/persist/persistence-manager';
+export {Validator} from './src/app/persist/validator';
 
 
 
