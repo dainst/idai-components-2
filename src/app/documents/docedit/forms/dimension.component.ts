@@ -27,30 +27,40 @@ export class DimensionComponent {
     		"new": true,
     		"hasValue": 0,
             "hasInputValue": 0,
+            "hasInputRangeEndValue": 0,
 			"hasMeasurementPosition": "",
 			"hasMeasurementComment": "",
 			"hasInputUnit": "cm",
 			"isImprecise": false,
+            "isRange": false,
 			"hasLabel": ""
     	}
     }
 
-    private convertInputToMM(dimension) {
-    	let _val = parseFloat(dimension["hasInputValue"]);
-        if (dimension["hasInputUnit"] == "mm") dimension["hasValue"] = _val * 1000;
-    	if (dimension["hasInputUnit"] == "cm") dimension["hasValue"] = _val * 10000;
-    	if (dimension["hasInputUnit"] == "m") dimension["hasValue"] = _val * 1000000;
+    private convertInputUnitToMM(inputUnit, inputValue) : Number {
+    	let _val = parseFloat(inputValue);
+        if (inputUnit == "mm") return _val * 1000;
+    	if (inputUnit == "cm") return _val * 10000;
+    	if (inputUnit == "m") return _val * 1000000;
     }
 
     private generateLabel(dimension) {
-        let formattedValue = "" + this.decimalPipe.transform(dimension["hasInputValue"]);
-    	dimension["hasLabel"] = (dimension["isImprecise"] ? "ca. " : "")
-            + formattedValue
-            + " " + dimension["hasInputUnit"];
+        var label = (dimension["isImprecise"] ? "ca. " : "");
+
+        if (dimension.isRange) {
+            label += `${this.decimalPipe.transform(dimension["hasInputValue"])}-${this.decimalPipe.transform(dimension["hasInputRangeEndValue"])}`;
+        } else {
+            label += this.decimalPipe.transform(dimension["hasInputValue"]);
+        }
+        
+        label +=  ` ${dimension["hasInputUnit"]}`;
+
     	if (dimension["hasMeasurementPosition"])
-            dimension['hasLabel'] += ", Gemessen an " + dimension["hasMeasurementPosition"];
+            label += `, Gemessen an ${dimension["hasMeasurementPosition"]}`;
     	if (dimension["hasMeasurementComment"])
-            dimension['hasLabel'] += " (" + dimension["hasMeasurementComment"] + ")";
+            label += `(${dimension["hasMeasurementComment"]})`;
+
+        dimension['hasLabel'] = label;
     }
 
     public cancelNewDimension() {
@@ -64,8 +74,15 @@ export class DimensionComponent {
     public saveDimension(dimension) {
     	if (!this.resource[this.field.name]) this.resource[this.field.name] = [];
 
-    	this.convertInputToMM(dimension);
+        if (dimension.isRange) {
+            dimension['hasRangeMin'] = this.convertInputUnitToMM(dimension['hasInputUnit'], dimension['hasInputValue']);
+            dimension['hasRangeMax'] = this.convertInputUnitToMM(dimension['hasInputUnit'], dimension['hasInputRangeEndValue']);
+        } else {
+    	    dimension['hasValue'] = this.convertInputUnitToMM(dimension['hasInputUnit'], dimension['hasInputValue']);
+        };
+
     	this.generateLabel(dimension);
+
     	if (dimension["new"]) {
     		delete dimension["new"];
     		this.resource[this.field.name].push(dimension);

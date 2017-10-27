@@ -34,24 +34,38 @@
 
 	<div class="card">
 		<div class="card-block">
+
+			<select class="form-control w100 mb-2" [(ngModel)]="dimension.isRange">
+		        <option [ngValue]="false">Einzelwert</option>
+		        <option [ngValue]="true">Bereich</option>
+		    </select>
+
+		 
 			<div class="form-inline form-group">
 				<input [(ngModel)]="dimension.hasInputValue" type="number"
 					   step="0.001" min="0" size="6" name="hasInputValue"
 					   style="width:100px" class="form-control">
+				<span *ngIf="dimension.isRange" class="ml-2 form-inline form-group">
+					 -  
+					<input [(ngModel)]="dimension.hasInputRangeEndValue" type="number"
+						   step="0.001" min="0" size="6" name="hasInputRangeEndValue"
+						   style="width:100px" class="ml-2 form-control">
+				</span>
+
 				<select  [(ngModel)]="dimension.hasInputUnit" class="form-control">
 					<option value="cm">cm</option>
 					<option value="m">m</option>
 					<option value="mm">mm</option>
 				</select>
 
-				<label style="margin-left: 20px">Gemessen an</label>
+				<label style="margin-left: 20px" class="small">Gemessen an</label>
 				<select *ngIf="this.field.position_values" [(ngModel)]="dimension.hasMeasurementPosition" class="ml-2 form-control">
 					<option value=""></option>
 					<option *ngFor="let item of field.position_values" value="{{item}}">{{item}}</option>
 				</select>
 				<input *ngIf="!this.field.position_values" [(ngModel)]="dimension.hasMeasurementPosition" class="form-control">
 			</div>
-
+			
 			<div class="form-group">
 				<label class="form-check-label">
 					<input class="form-check-input" type="checkbox"
