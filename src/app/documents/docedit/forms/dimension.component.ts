@@ -80,6 +80,7 @@ export class DimensionComponent {
         if (dimension.isRange) {
             dimension['hasRangeMin'] = this.convertValueFromInputUnitToMicrometre(dimension['hasInputUnit'], dimension['hasInputValue']);
             dimension['hasRangeMax'] = this.convertValueFromInputUnitToMicrometre(dimension['hasInputUnit'], dimension['hasInputRangeEndValue']);
+            delete(dimension['hasValue']);
         } else {
     	    dimension['hasValue'] = this.convertValueFromInputUnitToMicrometre(dimension['hasInputUnit'], dimension['hasInputValue']);
         };
