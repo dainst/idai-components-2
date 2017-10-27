@@ -37,7 +37,7 @@ export class DimensionComponent {
     	}
     }
 
-    private convertInputUnitToMM(inputUnit, inputValue) : Number {
+    private convertValueFromInputUnitToMicrometre(inputUnit, inputValue) : Number {
     	let _val = parseFloat(inputValue);
         if (inputUnit == "mm") return _val * 1000;
     	if (inputUnit == "cm") return _val * 10000;
@@ -75,10 +75,10 @@ export class DimensionComponent {
     	if (!this.resource[this.field.name]) this.resource[this.field.name] = [];
 
         if (dimension.isRange) {
-            dimension['hasRangeMin'] = this.convertInputUnitToMM(dimension['hasInputUnit'], dimension['hasInputValue']);
-            dimension['hasRangeMax'] = this.convertInputUnitToMM(dimension['hasInputUnit'], dimension['hasInputRangeEndValue']);
+            dimension['hasRangeMin'] = this.convertValueFromInputUnitToMicrometre(dimension['hasInputUnit'], dimension['hasInputValue']);
+            dimension['hasRangeMax'] = this.convertValueFromInputUnitToMicrometre(dimension['hasInputUnit'], dimension['hasInputRangeEndValue']);
         } else {
-    	    dimension['hasValue'] = this.convertInputUnitToMM(dimension['hasInputUnit'], dimension['hasInputValue']);
+    	    dimension['hasValue'] = this.convertValueFromInputUnitToMicrometre(dimension['hasInputUnit'], dimension['hasInputValue']);
         };
 
     	this.generateLabel(dimension);
