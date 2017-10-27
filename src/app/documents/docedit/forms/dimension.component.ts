@@ -52,13 +52,16 @@ export class DimensionComponent {
         } else {
             label += this.decimalPipe.transform(dimension["hasInputValue"]);
         }
-        
+
         label +=  ` ${dimension["hasInputUnit"]}`;
+
+        if (this.field.unitSuffix && this.field.unitSuffix != "") label += ` ${this.field.unitSuffix}`;
+
 
     	if (dimension["hasMeasurementPosition"])
             label += `, Gemessen an ${dimension["hasMeasurementPosition"]}`;
     	if (dimension["hasMeasurementComment"])
-            label += `(${dimension["hasMeasurementComment"]})`;
+            label += ` (${dimension["hasMeasurementComment"]})`;
 
         dimension['hasLabel'] = label;
     }
@@ -82,6 +85,8 @@ export class DimensionComponent {
         };
 
     	this.generateLabel(dimension);
+        if (this.field.unitSuffix && this.field.unitSuffix != "") dimension["unitSuffix"] = this.field.unitSuffix;
+
 
     	if (dimension["new"]) {
     		delete dimension["new"];

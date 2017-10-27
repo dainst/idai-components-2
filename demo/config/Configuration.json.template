@@ -135,6 +135,7 @@
           "label": "Dimension",
           "inputType":"dimension",
           "description": "",
+          "unitSuffix": "ü.NN.",
           "position_values": [
             "am Bruch",
             "oben",
