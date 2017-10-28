@@ -35,7 +35,7 @@ export function main() {
     beforeEach(
         function(){
             spyOn(console, 'error');
-            messages = new Messages(messagesDictionary);
+            messages = new Messages(messagesDictionary, 100);
             messages.add(["key1"]);
         }
     );

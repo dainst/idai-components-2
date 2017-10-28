@@ -12,12 +12,15 @@ import {MDInternal} from "./md-internal";
  * @author Daniel M. de Oliveira
  * @author Thomas Kleinke
  */
-@Injectable()
 export class Messages {
 
     private internalMessagesDictionary = new MDInternal();
     
-    constructor(private messagesDictionary: MD) {}
+    constructor(private messagesDictionary: MD,
+                private timeout: any) {
+
+        if (timeout) timeout = timeout;
+    }
 
     private messageList: Message[] = [];
 
@@ -87,7 +90,7 @@ export class Messages {
         if (['warning', 'danger'].indexOf(messageToAdd.level) == -1) {
             setTimeout(() => {
                 messageToAdd.hidden = true;
-            }, 3500);
+            }, this.timeout);
         }
         this.messageList.push(messageToAdd);
     }

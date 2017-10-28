@@ -41,8 +41,14 @@ import {IdaiFieldMapModule} from '../../src/app/idai-field-map/idai-field-map.mo
     providers: [
         { provide: LocationStrategy, useClass: HashLocationStrategy },
         { provide: Datastore, useClass: MemoryDatastore },
-        Messages,
         { provide: MD, useClass: M },
+        {
+            provide: Messages,
+            useFactory: (md: MD) => {
+                return new Messages(md, 3500);
+            },
+            deps: [MD]
+        },
         DocumentEditChangeMonitor
     ],
     bootstrap: [ AppComponent ]
