@@ -3,6 +3,7 @@ import {Message} from "./message";
 import {MD} from "./md";
 import {MDInternal} from "./md-internal";
 
+@Injectable()
 /**
  * Maintains a collection of currently active messages the
  * user can see at a given moment. Messages can be added
@@ -18,8 +19,6 @@ export class Messages {
     
     constructor(private messagesDictionary: MD,
                 private timeout: any) {
-
-        if (timeout) timeout = timeout;
     }
 
     private messageList: Message[] = [];
