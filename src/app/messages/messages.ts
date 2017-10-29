@@ -87,9 +87,11 @@ export class Messages {
         };
 
         if (['warning', 'danger'].indexOf(messageToAdd.level) == -1) {
-            setTimeout(() => {
-                messageToAdd.hidden = true;
-            }, this.timeout);
+            if (this.timeout) {
+                setTimeout(() => {
+                    messageToAdd.hidden = true;
+                }, this.timeout);
+            }
         }
         this.messageList.push(messageToAdd);
     }

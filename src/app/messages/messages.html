@@ -5,6 +5,10 @@
                     (click)="closeAlert(message)" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
+            <button *ngIf="alwaysShowClose && message.level != 'danger' && message.level != 'warning'" type="button" class="close"
+                    (click)="closeAlert(message)" aria-label="Close">
+                <span aria-hidden="true" class="close-success">&times;</span>
+            </button>
             <span class="message-content">{{getMessageContent(message)}}</span>
         </div>
     </div>

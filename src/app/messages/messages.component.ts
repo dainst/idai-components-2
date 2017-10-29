@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {Messages} from './messages';
 import {Message} from './message';
 
@@ -13,6 +13,8 @@ import {Message} from './message';
 })
 
 export class MessagesComponent {
+
+    @Input() alwaysShowClose = false;
 
     constructor(private messages: Messages) {}
     
