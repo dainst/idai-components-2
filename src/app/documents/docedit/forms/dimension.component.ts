@@ -79,9 +79,10 @@ export class DimensionComponent {
     }
 
 
-    public removeDimensionAtIndex(dimensionIndex) {
+    public removeDimensionAtIndex(dimensionIndex: number) {
 
         this.resource[this.field.name].splice(dimensionIndex, 1);
+        this.documentEditChangeMonitor.setChanged();
     }
 
 
