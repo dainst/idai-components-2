@@ -32,6 +32,7 @@ export class DatingComponent {
     public removeDating(index: number) {
 
         this.resource[this.field.name].splice(index, 1);
+        this.documentEditChangeMonitor.setChanged();
     }
 
 
@@ -49,6 +50,7 @@ export class DatingComponent {
         if (!this.resource[this.field.name]) this.resource[this.field.name] = [];
         this.resource[this.field.name].push(this.convertDating(this.newDating));
         this.newDating = null;
+        this.documentEditChangeMonitor.setChanged();
     }
 
 
