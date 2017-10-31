@@ -28,10 +28,9 @@ export class PersistenceManager {
 
     private connectedDocsResolver;
 
-
     constructor(
-        protected datastore: Datastore,
-        protected configLoader: ConfigLoader
+        private datastore: Datastore,
+        private configLoader: ConfigLoader
     ) {
         this.ready = new Promise<string>(resolve => {
             this.configLoader.getProjectConfiguration().then(projectConfiguration => {
@@ -41,7 +40,6 @@ export class PersistenceManager {
             })
         });
     }
-
 
     /**
      * Package private.
@@ -57,13 +55,11 @@ export class PersistenceManager {
         }
     }
 
-
     public addOldVersion(oldVersion: Document) {
 
         this.oldVersions.push(JSON.parse(JSON.stringify(oldVersion)));
     }
-
-
+    
     /**
      * Persists the loaded object and all the objects that are or have been in relation
      * with the object before the method call.
@@ -117,7 +113,6 @@ export class PersistenceManager {
             });
     }
 
-
     private updateDocs(document: Document, connectedDocs: Array<Document>, setInverseRelations: boolean, user: string) {
 
         const docsToUpdate = this.connectedDocsResolver.determineDocsToUpdate(document, connectedDocs,
@@ -131,7 +126,6 @@ export class PersistenceManager {
 
         return promise;
     }
-
 
     /**
      * Removes the document from the datastore.
@@ -153,16 +147,17 @@ export class PersistenceManager {
         if (document == undefined) return Promise.resolve();
 
         return this.ready
-            .then(() => this.removeCustom(document, user))
-            .then(() => this.removeDocument(document, user, oldVersions));
+            .then(() => this.getRecordedInDocs(document))
+            .then(recordedInDocs => {
+                let promise: Promise<any> = Promise.resolve();
+
+                for (let doc of recordedInDocs) {
+                    promise = promise.then(() => this.remove(doc, user, []));
+                }
+
+                return promise.then(() => this.removeDocument(document, user, oldVersions));
+            });
     }
-
-
-    protected removeCustom(document: Document, user: string) {
-
-        return Promise.resolve();
-    }
-
 
     private removeDocument(document: Document, user: string, oldVersions: Array<Document>): Promise<any> {
 
@@ -171,7 +166,6 @@ export class PersistenceManager {
             .then(() => this.datastore.remove(document))
             .then(() => { this.oldVersions = []; });
     }
-
 
     private getConnectedDocs(document: Document, oldVersions: Array<Document>): Array<Promise<Document>> {
 
@@ -192,7 +186,6 @@ export class PersistenceManager {
         return promisesToGetObjects;
     }
 
-
     private extractRelatedObjectIDs(resource: Resource): Array<string> {
 
         const relatedObjectIDs = [];
@@ -209,6 +202,15 @@ export class PersistenceManager {
         return relatedObjectIDs;
     }
 
+    private getRecordedInDocs(document: Document): Promise<Array<Document>> {
+
+        const query: Query = {
+            q: '',
+            constraints: { 'resource.relations.isRecordedIn': document.resource.id }
+        };
+
+        return this.datastore.find(query);
+    }
 
     /**
      * Saves the document to the local datastore.
