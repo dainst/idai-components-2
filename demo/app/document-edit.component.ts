@@ -1,10 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {PersistenceManager} from '../../persist/persistence-manager';
-import {Validator} from '../../persist/validator';
-import {Messages} from '../../messages/messages';
-import {ProjectConfiguration} from '../../configuration/project-configuration';
-import {OnChanges} from '@angular/core';
-import {ConfigLoader} from '../../configuration/config-loader';
+import {Validator} from '../../src/app/persist/validator';
+import {Messages} from '../../src/app/messages/messages';
+import {ProjectConfiguration} from '../../src/app/configuration/project-configuration';
+import {ConfigLoader} from '../../src/app/configuration/config-loader';
 
 @Component({
     moduleId: module.id,
@@ -16,7 +14,7 @@ import {ConfigLoader} from '../../configuration/config-loader';
  * @author Thomas Kleinke
  * @author Daniel de Oliveira
  */
-export class DocumentEditComponent implements OnChanges, OnInit {
+export class DocumentEditComponent implements OnInit {
 
     @Input() document: any;
     @Input() primary: string;
@@ -26,7 +24,6 @@ export class DocumentEditComponent implements OnChanges, OnInit {
     private validator : Validator;
 
     constructor(
-        private persistenceManager: PersistenceManager,
         private configLoader: ConfigLoader,
         private messages: Messages
     ) {}
@@ -37,10 +34,6 @@ export class DocumentEditComponent implements OnChanges, OnInit {
         this.configLoader.getProjectConfiguration().then(projectConfiguration => {
             this.projectConfiguration = projectConfiguration;
         });
-    }
-
-    public ngOnChanges() {
-        if (this.document) this.persistenceManager.setOldVersions([this.document]);
     }
 
     public validate(doc) {

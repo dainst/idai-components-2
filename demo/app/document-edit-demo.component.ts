@@ -3,7 +3,6 @@ import {ConfigLoader} from '../../src/app/configuration/config-loader';
 import {IdaiType} from '../../src/app/configuration/idai-type';
 import {Datastore} from '../../src/app/datastore/datastore';
 import {Document} from '../../src/app/model/document';
-import {PersistenceManager} from '../../src/app/persist/persistence-manager';
 
 @Component({
     selector: 'document-edit-demo',
@@ -18,20 +17,11 @@ export class DocumentEditDemoComponent implements OnInit {
 
     constructor(
         private configLoader: ConfigLoader,
-        private datastore: Datastore,
-        private persistenceManager: PersistenceManager) {
+        private datastore: Datastore) {
     }
 
     public clicked(id) {
-        if (!this.selectedDocument) return this.changeTo(id);
-
-        this.persistenceManager.persist(this.selectedDocument).then(
-            () => {
-                this.changeTo(id);
-            }, msgWithParams => {
-                console.error('error while persisting object', msgWithParams);
-                this.changeTo(id);
-            });
+        this.changeTo(id);
     }
 
     private changeTo(id) {

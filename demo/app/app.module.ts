@@ -19,6 +19,7 @@ import {IdaiDocumentsModule} from '../../src/app/documents/idai-documents.module
 import {IdaiMessagesModule} from '../../src/app/messages/idai-messages.module';
 import {IdaiWidgetsModule} from '../../src/app/widgets/idai-widgets.module';
 import {IdaiFieldMapModule} from '../../src/app/idai-field-map/idai-field-map.module';
+import {DocumentEditComponent} from "./document-edit.component";
 
 @NgModule({
     imports: [
@@ -36,6 +37,7 @@ import {IdaiFieldMapModule} from '../../src/app/idai-field-map/idai-field-map.mo
         DocumentEditDemoComponent,
         DocumentViewDemoComponent,
         MessagesDemoComponent,
+        DocumentEditComponent,
         MapDemoComponent
     ],
     providers: [

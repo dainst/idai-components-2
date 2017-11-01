@@ -6,8 +6,7 @@ import {NgbModule, NgbDateParserFormatter} from '@ng-bootstrap/ng-bootstrap';
 import {Datastore} from '../datastore/datastore';
 import {ReadDatastore} from '../datastore/read-datastore';
 import {ConfigLoader} from '../configuration/config-loader';
-import {PersistenceManager} from '../persist/persistence-manager';
-import {DocumentEditComponent} from './docedit/document-edit.component';
+import {DocumentEditComponent} from '../../../demo/app/document-edit.component';
 import {EditFormComponent} from './docedit/edit-form.component';
 import {RelationsFormComponent} from './docedit/relations-form.component';
 import {RelationPickerComponent} from './docedit/relation-picker.component';
@@ -43,7 +42,6 @@ import {DocumentTeaserComponent} from './document-teaser.component';
     declarations: [
         FieldsViewComponent,
         RelationsViewComponent,
-        DocumentEditComponent,
         DocumentViewComponent,
         EditFormComponent,
         RelationsFormComponent,
@@ -66,14 +64,12 @@ import {DocumentTeaserComponent} from './document-teaser.component';
     ],
     providers: [
         ConfigLoader,
-        PersistenceManager,
         DecimalPipe,
         { provide: LOCALE_ID, useValue: 'de-DE' }, // change when i18n is implemented
         { provide: ReadDatastore, useExisting: Datastore },
         { provide: NgbDateParserFormatter, useClass: NgbDateDEParserFormatter }
     ],
     exports: [
-        DocumentEditComponent,
         FieldsViewComponent,
         RelationsViewComponent,
         RelationsFormComponent,
