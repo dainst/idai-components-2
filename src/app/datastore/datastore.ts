@@ -1,7 +1,5 @@
-import {Document} from "../model/document";
-import {ReadDatastore} from "./read-datastore";
-import {Observable} from "rxjs/Observable";
-import {DocumentChange} from './document-change';
+import {Document} from '../model/document';
+import {ReadDatastore} from './read-datastore';
 
 /**
  * The interface for datastores supporting 

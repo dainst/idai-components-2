@@ -21,14 +21,16 @@ export class DocumentEditComponent implements OnInit {
 
     private projectConfiguration: ProjectConfiguration;
 
-    private validator : Validator;
+    private validator: Validator;
+
 
     constructor(
         private configLoader: ConfigLoader,
         private messages: Messages
     ) {}
 
-    ngOnInit():any {
+
+    ngOnInit(): any {
         this.validator = new Validator(this.configLoader);
 
         this.configLoader.getProjectConfiguration().then(projectConfiguration => {
@@ -36,7 +38,9 @@ export class DocumentEditComponent implements OnInit {
         });
     }
 
+
     public validate(doc) {
+
         this.validator.validate(doc).catch(
             msgsWithParams => {
                 this.messages.add(msgsWithParams);

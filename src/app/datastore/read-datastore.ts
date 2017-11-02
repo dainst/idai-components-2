@@ -1,7 +1,6 @@
-import {Document} from "../model/document";
-import {Query} from "./query";
 import {Observable} from 'rxjs/Observable';
-import {DocumentChange} from './document-change';
+import {Document} from '../model/document';
+import {Query} from './query';
 
 /**
  * The interface providing read access methods 
@@ -41,5 +40,5 @@ export abstract class ReadDatastore  {
      * when documents get modified via one of the accessor
      * methods defined in <code>Datastore</code>.
      */
-    abstract documentChangesNotifications(): Observable<DocumentChange>;
+    abstract remoteChangesNotifications(): Observable<Document>;
 }

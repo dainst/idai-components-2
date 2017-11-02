@@ -1,9 +1,8 @@
+import {Injectable} from '@angular/core';
+import {Observable} from 'rxjs/Observable';
 import {Document} from '../../src/app/model/document';
 import {Query} from '../../src/app/datastore/query';
 import {Datastore} from '../../src/app/datastore/datastore';
-import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import {DocumentChange} from '../../src/app/datastore/document-change';
 
 /**
  * @author Daniel de Oliveira
@@ -21,7 +20,7 @@ export class MemoryDatastore implements Datastore {
     constructor() {};
 
     // NOT IMPLEMENTED
-    public documentChangesNotifications(): Observable<DocumentChange> {
+    public remoteChangesNotifications(): Observable<Document> {
         return undefined;
     }
 
