@@ -45,7 +45,7 @@
     "@types/leaflet": "~1.0.49",
     "@types/node": "7.0.4",
     "archiver": "1.0.0",
-    "chromedriver": "2.25.1",
+    "chromedriver": "2.33.0",
     "gulp": "3.9.0",
     "gulp-concat": "2.6.0",
     "gulp-minify-css": "1.2.3",
