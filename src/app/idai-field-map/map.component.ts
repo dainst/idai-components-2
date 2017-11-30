@@ -53,10 +53,12 @@ export class MapComponent implements OnChanges {
         }).then(typeColors => this.typeColors = typeColors);
     }
 
+
     public ngAfterViewInit() {
 
         if (this.map) this.map.invalidateSize(false);
     }
+
 
     public ngOnChanges(changes: SimpleChanges) {
 
@@ -64,6 +66,7 @@ export class MapComponent implements OnChanges {
 
         this.ready.then(() => this.updateMap(changes));
     }
+
 
     private createMap(): L.Map {
 
@@ -85,6 +88,7 @@ export class MapComponent implements OnChanges {
         return map;
     }
 
+
     protected updateMap(changes: SimpleChanges): Promise<any> {
 
         if (!this.update) return Promise.resolve();
@@ -95,6 +99,7 @@ export class MapComponent implements OnChanges {
 
         return this.setView();
     }
+
 
     protected setView(): Promise<any> {
 
@@ -125,6 +130,7 @@ export class MapComponent implements OnChanges {
         return Promise.resolve();
     }
 
+
     private clearMap() {
 
         for (let i in this.polygons) {
@@ -148,10 +154,12 @@ export class MapComponent implements OnChanges {
         this.markers = {};
     }
 
+
     protected extendBounds(latLng: L.LatLng) {
 
         this.bounds.push(latLng);
     }
+
 
     private extendBoundsForMultipleLatLngs(latLngs: Array<any>) {
 
@@ -164,6 +172,7 @@ export class MapComponent implements OnChanges {
             this.extendBounds(latLng);
         }
     }
+
 
     private addGeometriesToMap() {
 
@@ -178,6 +187,7 @@ export class MapComponent implements OnChanges {
         }
     }
 
+
     private addMainTypeDocumentGeometryToMap() {
 
         if (!this.mainTypeDocument || !this.mainTypeDocument.resource.geometry) return;
@@ -189,6 +199,7 @@ export class MapComponent implements OnChanges {
 
         this.addGeometryToMap(this.mainTypeDocument);
     }
+
 
     private addGeometryToMap(document: IdaiFieldDocument) {
 
@@ -224,6 +235,7 @@ export class MapComponent implements OnChanges {
         }
     }
 
+
     private addMarkerToMap(coordinates: any, document: IdaiFieldDocument): IdaiFieldMarker {
 
         let latLng = L.latLng([coordinates[1], coordinates[0]]);
@@ -253,6 +265,7 @@ export class MapComponent implements OnChanges {
         return marker;
     }
 
+
     private addPolylineToMap(coordinates: any, document: IdaiFieldDocument): IdaiFieldPolyline {
 
         let polyline: IdaiFieldPolyline = this.getPolylineFromCoordinates(coordinates);
@@ -272,6 +285,7 @@ export class MapComponent implements OnChanges {
         return polyline;
     }
 
+
     private addPolygonToMap(coordinates: any, document: IdaiFieldDocument): IdaiFieldPolygon {
 
         let polygon: IdaiFieldPolygon = this.getPolygonFromCoordinates(coordinates);
@@ -290,6 +304,7 @@ export class MapComponent implements OnChanges {
 
         return polygon;
     }
+
 
     private setPathOptions(path: L.Path, document: IdaiFieldDocument, className: string) {
 
@@ -314,6 +329,7 @@ export class MapComponent implements OnChanges {
         path.addTo(this.map);
     }
 
+
     private setPathOptionsForMainTypeDocument(path: L.Path, document: IdaiFieldDocument) {
 
         path.setStyle({
@@ -325,10 +341,12 @@ export class MapComponent implements OnChanges {
         path.addTo(this.map);
     }
 
+
     private focusMarker(marker: L.Marker) {
 
         this.map.panTo(marker.getLatLng(), { animate: true, easeLinearity: 0.3 });
     }
+
 
     private focusPolylines(polylines: Array<L.Polyline>) {
 
@@ -339,6 +357,7 @@ export class MapComponent implements OnChanges {
         this.map.fitBounds(bounds);
     }
 
+
     private focusPolygons(polygons: Array<L.Polygon>) {
 
         let bounds = [];
@@ -347,6 +366,7 @@ export class MapComponent implements OnChanges {
         }
         this.map.fitBounds(bounds);
     }
+
 
     private getShortDescription(resource: IdaiFieldResource) {
 
@@ -358,10 +378,12 @@ export class MapComponent implements OnChanges {
         return shortDescription;
     }
 
+
     protected clickOnMap(clickPosition: L.LatLng) {
 
         this.deselect();
     }
+
 
     protected select(document: IdaiFieldDocument): boolean {
 
@@ -369,20 +391,24 @@ export class MapComponent implements OnChanges {
         return true;
     }
 
+
     protected deselect() {
 
         this.onSelectDocument.emit(null);
     }
+
 
     private getPolylineFromCoordinates(coordinates: Array<any>): L.Polyline {
 
         return L.polyline(<any> CoordinatesUtility.convertPolylineCoordinatesFromLngLatToLatLng(coordinates));
     }
 
+
     private getPolygonFromCoordinates(coordinates: Array<any>): L.Polygon {
 
         return L.polygon(<any> CoordinatesUtility.convertPolygonCoordinatesFromLngLatToLatLng(coordinates));
     }
+
 
     protected generateMarkerIcon(color: string, extraClasses: string = ''): L.Icon {
 
@@ -394,10 +420,12 @@ export class MapComponent implements OnChanges {
         });
     }
 
+
     private updateCoordinateReferenceSystem() {
 
         this.map.options.crs = this.getCoordinateReferenceSystem();
     }
+
 
     private getCoordinateReferenceSystem(): L.CRS {
 
