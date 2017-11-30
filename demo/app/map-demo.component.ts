@@ -123,7 +123,6 @@ export class MapDemoComponent {
 
     public mainTypeDocument: IdaiFieldDocument;
     public selectedDocument: IdaiFieldDocument;
-    public stayInBounds: boolean = true;
     public liveUpdate: boolean = true;
 
     public selectDocument(document: IdaiFieldDocument) {

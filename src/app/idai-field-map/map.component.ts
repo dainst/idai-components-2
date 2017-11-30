@@ -31,7 +31,6 @@ export class MapComponent implements OnChanges {
     @Input() selectedDocument: IdaiFieldDocument;
     @Input() mainTypeDocument: IdaiFieldDocument;
     @Input() projectDocument: IdaiFieldDocument;
-    @Input() stayInBounds: boolean;
     @Input() update: boolean;
 
     @Output() onSelectDocument: EventEmitter<IdaiFieldDocument> = new EventEmitter<IdaiFieldDocument>();
@@ -104,12 +103,6 @@ export class MapComponent implements OnChanges {
     protected setView(): Promise<any> {
 
         this.map.invalidateSize(true);
-
-        if (this.stayInBounds && this.bounds.length >= 1) {
-            this.map.setMaxBounds(L.latLngBounds(this.bounds));
-        } else {
-            this.map.setMaxBounds(undefined);
-        }
 
         if (this.selectedDocument) {
             if (this.polygons[this.selectedDocument.resource.id]) {
