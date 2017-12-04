@@ -3,6 +3,7 @@ import {Observable} from 'rxjs/Observable';
 import {Document} from '../../src/app/model/document';
 import {Query} from '../../src/app/datastore/query';
 import {Datastore} from '../../src/app/datastore/datastore';
+import {FindResult} from '../../src/app/datastore/read-datastore';
 
 /**
  * @author Daniel de Oliveira
@@ -75,7 +76,7 @@ export class MemoryDatastore implements Datastore {
     }
 
 
-    public find(query: Query): Promise<Document[]> {
+    public find(query: Query): Promise<FindResult> {
 
         if (!query.q) query.q = '';
         const queryString = query.q.toLowerCase();
@@ -85,8 +86,9 @@ export class MemoryDatastore implements Datastore {
             if (this.objectCache[i].resource.id.indexOf(queryString) != -1) results.push(this.objectCache[i]);
         }
 
-        return new Promise((resolve, reject) => {
-            resolve(results);
+        return Promise.resolve({
+            documents: results,
+            totalCount: results.length
         });
     }
 

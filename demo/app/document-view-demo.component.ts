@@ -11,16 +11,18 @@ import {Document} from '../../src/app/model/document';
 })
 export class DocumentViewDemoComponent implements OnInit {
 
-    private documents = new Array();
+    private documents: Array<Document> = [];
     private selectedDocument: Document;
     private fieldDefinitions: Array<FieldDefinition>;
 
-    private types : IdaiType[];
+    private types: IdaiType[];
+
 
     constructor(
         private configLoader: ConfigLoader,
         private datastore: Datastore) {
     }
+
 
     ngOnInit() {
 
@@ -28,17 +30,31 @@ export class DocumentViewDemoComponent implements OnInit {
             this.types = projectConfiguration.getTypesTreeList();
         });
 
-        this.datastore.find({q:''}).then(docs => {
-            this.documents = docs as Document[];
-        })
+        this.datastore.find({q:''}).then(result => {
+            this.documents = result.documents;
+        });
     }
 
-    public clicked(id) {
+
+    public clicked(id: string) {
 
         this.changeTo(id);
     }
 
-    private changeTo(id) {
+
+    public deselect() {
+
+        this.selectedDocument = undefined;
+    }
+
+
+    public showRelationTargetClickedMessage(relationTarget: Document) {
+
+        alert('Relation-Target ausgewählt: ' + relationTarget.resource.identifier);
+    }
+
+
+    private changeTo(id: string) {
 
         this.configLoader.getProjectConfiguration().then(projectConfiguration => {
             this.datastore.get(id).then(document => {
@@ -46,15 +62,5 @@ export class DocumentViewDemoComponent implements OnInit {
                 this.fieldDefinitions = projectConfiguration.getFieldDefinitions(this.selectedDocument.resource.type);
             });
         });
-    }
-
-    public deselect() {
-
-        this.selectedDocument = undefined;
-    }
-
-    public showRelationTargetClickedMessage(relationTarget: Document) {
-
-        alert('Relation-Target ausgewählt: ' + relationTarget.resource.identifier);
     }
 }

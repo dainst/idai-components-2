@@ -10,33 +10,40 @@ import {Document} from '../../src/app/model/document';
 })
 export class DocumentEditDemoComponent implements OnInit {
 
-    private documents = new Array();
+    private documents: Array<Document> = [];
     private selectedDocument: Document;
 
-    private types: IdaiType[];
+    private types: Array<IdaiType>;
+
 
     constructor(
         private configLoader: ConfigLoader,
         private datastore: Datastore) {
     }
 
-    public clicked(id) {
-        this.changeTo(id);
-    }
-
-    private changeTo(id) {
-        this.datastore.get(id).then((document) => {
-            this.selectedDocument = JSON.parse(JSON.stringify(document));
-        });
-    }
 
     ngOnInit() {
+
         this.configLoader.getProjectConfiguration().then(projectConfiguration => {
             this.types = projectConfiguration.getTypesTreeList();
         });
 
-        this.datastore.find({q: ''}).then(docs => {
-            this.documents = docs as Document[];
+        this.datastore.find({ q: '' }).then(result => {
+            this.documents = result.documents;
+        });
+    }
+
+
+    public clicked(id: string) {
+
+        this.changeTo(id);
+    }
+
+
+    private changeTo(id: string) {
+
+        this.datastore.get(id).then(document => {
+            this.selectedDocument = JSON.parse(JSON.stringify(document));
         });
     }
 }

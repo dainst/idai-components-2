@@ -7,13 +7,14 @@ import {Query} from './query';
  * for datastores supporting the idai-components-2 document model.
  * For full access see <code>Datastore</code>
  *
- * Implementations guarantee that any of methods declared here
+ * Implementations guarantee that any of the methods declared here
  * have no effect on any of the documents within the datastore.
  * 
  * @author Sebastian Cuy
  * @author Daniel de Oliveira
+ * @author Thomas Kleinke
  */
-export abstract class ReadDatastore  {
+export abstract class ReadDatastore {
 
     /**
      * @param resourceId the desired document's resource id
@@ -24,6 +25,7 @@ export abstract class ReadDatastore  {
      */ 
     abstract get(resourceId: string, options?: Object): Promise<Document>;
 
+
     /**
      * Perform a fulltext query
      
@@ -32,7 +34,7 @@ export abstract class ReadDatastore  {
      *   Rejects with
      *     [GENERIC_ERROR (, cause: any)] - in case of error, optionally including a cause
      */
-    abstract find(query: Query): Promise<Document[]>;
+    abstract find(query: Query): Promise<FindResult>;
 
 
     /**
@@ -41,4 +43,11 @@ export abstract class ReadDatastore  {
      * methods defined in <code>Datastore</code>.
      */
     abstract remoteChangesNotifications(): Observable<Document>;
+}
+
+
+export interface FindResult {
+
+    documents: Array<Document>,
+    totalCount: number
 }

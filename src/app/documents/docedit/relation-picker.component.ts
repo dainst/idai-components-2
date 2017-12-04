@@ -221,9 +221,9 @@ export class RelationPickerComponent implements OnChanges {
         }
 
         return this.datastore.find(query)
-            .then(documents => {
+            .then(result => {
                 this.suggestions = RelationPickerComponent.makeSuggestionsFrom(
-                    documents, this.resource, this.relationDefinition);
+                    result.documents, this.resource, this.relationDefinition);
             }).catch(err => {
                 console.debug(err);
             }).then(() => {

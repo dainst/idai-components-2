@@ -7,12 +7,16 @@
  *   combined with each other and with the q term with AND, meaning that a search has to
  *   satisfy all the constraints (if defined) as well as to match q (at least partially) and
  *   type (if defined). A given contraint of
- *   { 'resource.relations.isRecordedIn' : 'id1' } would mean that the search result
+ *   { 'resource.relations.isRecordedIn': 'id1' } would mean that the search result
  *   contains the results which match the other properties of the query and which
  *   also match the given search term in the given field exactly.
+ * @property limit the number of documents to be returned. If there are more matching
+ *   documents, only the first documents are returned.
  */
 export interface Query {
+
     q?: string;
     types?: string[];
     constraints?: any;
+    limit?: number
 }
