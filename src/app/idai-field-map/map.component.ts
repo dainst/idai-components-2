@@ -181,7 +181,7 @@ export class MapComponent implements OnChanges {
     }
 
 
-    private addMainTypeDocumentGeometryToMap() {
+    protected addMainTypeDocumentGeometryToMap() {
 
         if (!this.mainTypeDocument || !this.mainTypeDocument.resource.geometry) return;
 
@@ -194,7 +194,7 @@ export class MapComponent implements OnChanges {
     }
 
 
-    private addGeometryToMap(document: IdaiFieldDocument) {
+    protected addGeometryToMap(document: IdaiFieldDocument) {
 
         const geometry = document.resource.geometry;
 
