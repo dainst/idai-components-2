@@ -167,7 +167,7 @@ export class MapComponent implements OnChanges {
     }
 
 
-    private addGeometriesToMap() {
+    protected addGeometriesToMap() {
 
         this.bounds = [];
 
