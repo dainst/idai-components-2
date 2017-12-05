@@ -67,7 +67,7 @@ export class MapComponent implements OnChanges {
     }
 
 
-    private createMap(): L.Map {
+    protected createMap(): L.Map {
 
         const mapOptions: L.MapOptions = {
             crs: this.getCoordinateReferenceSystem(),
