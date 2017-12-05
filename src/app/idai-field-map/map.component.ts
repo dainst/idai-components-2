@@ -124,7 +124,7 @@ export class MapComponent implements OnChanges {
     }
 
 
-    private clearMap() {
+    protected clearMap() {
 
         for (let i in this.polygons) {
             for (let polygon of this.polygons[i]) {
