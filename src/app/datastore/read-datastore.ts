@@ -35,14 +35,6 @@ export abstract class ReadDatastore {
      *     [GENERIC_ERROR (, cause: any)] - in case of error, optionally including a cause
      */
     abstract find(query: Query): Promise<FindResult>;
-
-
-    /**
-     * Subscription enables clients to get notified
-     * when documents get modified via one of the accessor
-     * methods defined in <code>Datastore</code>.
-     */
-    abstract remoteChangesNotifications(): Observable<Document>;
 }
 
 
