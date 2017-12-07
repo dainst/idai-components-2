@@ -1,4 +1,3 @@
-import {Observable} from 'rxjs/Observable';
 import {Document} from '../model/document';
 import {Query} from './query';
 
@@ -22,6 +21,7 @@ export abstract class ReadDatastore {
      * @returns {Promise<Document>} a document (rejects with msgWithParams in case of error)
      *  Rejects with
      *     [DOCUMENT_NOT_FOUND] - in case document is missing
+     *     [INVALID_DOCUMENT] - in case document is not valid
      */ 
     abstract get(resourceId: string, options?: Object): Promise<Document>;
 

@@ -13,10 +13,10 @@ export interface Document {
  */
 export class Document {
 
-    public static isValid(document: Document): boolean {
+    public static isValid(document: Document, missingIdLegal = false): boolean {
 
         if (!document.resource) return false;
-        if (!document.resource.id) return false;
+        if (!document.resource.id && !missingIdLegal) return false;
         if (!document.resource.relations) return false;
         if (!document.created) return false;
 

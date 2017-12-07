@@ -28,6 +28,7 @@ export abstract class Datastore extends ReadDatastore {
      *   Rejects with
      *     [GENERIC_ERROR (, cause: any)] - in case of error, optionally including a cause
      *     [DOCUMENT_RESOURCE_ID_EXISTS] - if a document with doc.resource.id already exists
+     *     [INVALID_DOCUMENT] - in case doc is not valid
      */
     abstract create(doc: Document): Promise<Document>;
 
@@ -39,7 +40,7 @@ export abstract class Datastore extends ReadDatastore {
      *   Rejects with
      *     [GENERIC_ERROR (, cause: any)] - in case of error, optionally including a cause
      *     [SAVE_CONFLICT] - in case of conflict
-     *     [DOCUMENT_NO_RESOURCE_ID] - if document has no resource id
+     *     [INVALID_DOCUMENT] - in case doc is not valid
      *     [DOCUMENT_NOT_FOUND] - if document has a resource id, but does not exist in the db
      */
     abstract update(doc: Document): Promise<Document>;
