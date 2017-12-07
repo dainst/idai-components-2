@@ -19,9 +19,8 @@ export abstract class ReadDatastore {
      * @param resourceId the desired document's resource id
      * @param options to control implementation specific behaviour
      * @returns {Promise<Document>} a document (rejects with msgWithParams in case of error)
-     *  Rejects with
-     *     [DOCUMENT_NOT_FOUND] - in case document is missing
-     *     [INVALID_DOCUMENT] - in case document is not valid
+     * @throws [DOCUMENT_NOT_FOUND] - in case document is missing
+     * @throws [INVALID_DOCUMENT] - in case document is not valid
      */ 
     abstract get(resourceId: string, options?: Object): Promise<Document>;
 
@@ -31,8 +30,7 @@ export abstract class ReadDatastore {
      
      * @param query the query object
      * @returns {Promise<Document[]>} an array of documents
-     *   Rejects with
-     *     [GENERIC_ERROR (, cause: any)] - in case of error, optionally including a cause
+     * @throws [GENERIC_ERROR (, cause: any)] - in case of error, optionally including a cause
      */
     abstract find(query: Query): Promise<FindResult>;
 }
