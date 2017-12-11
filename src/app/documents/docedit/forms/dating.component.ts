@@ -23,7 +23,7 @@ export class DatingComponent {
     @Input() resource: Resource;
     @Input() field: any;
 
-    public newDating: {} = null;
+    public newDating: {} = null as any;
 
 
     constructor(private documentEditChangeMonitor: DocumentEditChangeMonitor) {}
@@ -49,7 +49,7 @@ export class DatingComponent {
 
         if (!this.resource[this.field.name]) this.resource[this.field.name] = [];
         this.resource[this.field.name].push(this.convertDating(this.newDating));
-        this.newDating = null;
+        this.newDating = null as any;
         this.documentEditChangeMonitor.setChanged();
     }
 

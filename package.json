@@ -6,7 +6,7 @@
   "license": "Apache-2.0",
   "scripts": {
     "prebuild": "rimraf css/* && rimraf fonts/*",
-    "build": "gulp create-configs && gulp compile",
+    "build": "gulp create-configs && gulp compile && tsc -p src/tsconfig.json && tsc -p test/tsconfig.json",
     "start": "npm run server",
     "test:loop": "karma start src/test/config/karma.conf",
     "test": "karma start test/browser/config/karma.conf.js --single-run",

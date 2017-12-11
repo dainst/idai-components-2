@@ -30,7 +30,7 @@ export class RelationPickerComponent implements OnChanges {
 
     private suggestions: Document[];
     private selectedSuggestionIndex: number = -1;
-    private selectedTarget: Document;
+    private selectedTarget: Document|undefined;
     private idSearchString: string;
     private suggestionsVisible: boolean;
 
@@ -68,7 +68,7 @@ export class RelationPickerComponent implements OnChanges {
             );
         } else {
             setTimeout(() => {
-                this.updateSuggestions().then(() => {
+                (this.updateSuggestions() as any).then(() => {
                     return this.focusInputField();
                 })
             }, 100);
@@ -94,8 +94,8 @@ export class RelationPickerComponent implements OnChanges {
 
     public editTarget() {
 
-        this.idSearchString = this.selectedTarget.resource[this.primary];
-        this.suggestions = [ this.selectedTarget ];
+        this.idSearchString = (this.selectedTarget as any).resource[this.primary];
+        this.suggestions = [ this.selectedTarget ] as any;
         this.selectedSuggestionIndex = 0;
         this.selectedTarget = undefined;
 
@@ -244,7 +244,7 @@ export class RelationPickerComponent implements OnChanges {
             if (RelationPickerComponent.isValidSuggestion(resource,
                     document.resource, relationDefinition)) {
 
-                suggestions.push(document);
+                suggestions.push(document as never);
                 nrSuggestions++;
             }
         }
@@ -269,13 +269,13 @@ export class RelationPickerComponent implements OnChanges {
         }
 
         // Don't suggest a resource that is already included as a target in the relation list
-        if (resource.relations[relDef.name].indexOf(suggestion.id) > -1) {
+        if (resource.relations[relDef.name].indexOf(suggestion.id as any) > -1) {
             return false;
         }
 
         // Don't suggest a resource that is already included as a target in the inverse relation list
         if (resource.relations[relDef.inverse]
-                && resource.relations[relDef.inverse].indexOf(suggestion.id) > -1) {
+                && resource.relations[relDef.inverse].indexOf(suggestion.id as any) > -1) {
             return false;
         }
 

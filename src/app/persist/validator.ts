@@ -23,7 +23,7 @@ export class Validator {
      */
     public validate(doc: Document): Promise<any> {
 
-        return this.configLoader.getProjectConfiguration().then(projectConfiguration => {
+        return (this.configLoader.getProjectConfiguration() as any).then(projectConfiguration => {
 
             let resource = doc.resource;
 
@@ -121,7 +121,7 @@ export class Validator {
      * @returns {string[]} the names of invalid fields if one or more of the fields are invalid, otherwise
      * <code>undefined</code>
      */
-    public static validateFields(resource: Resource, projectConfiguration: ProjectConfiguration): string[] {
+    public static validateFields(resource: Resource, projectConfiguration: ProjectConfiguration): string[]|undefined {
 
         const projectFields: Array<FieldDefinition> = projectConfiguration.getFieldDefinitions(resource.type);
         const defaultFields: Array<FieldDefinition> = [{ name: 'relations' }];
@@ -157,9 +157,9 @@ export class Validator {
      * @returns {string[]} the names of invalid relation fields if one or more of the fields are invalid, otherwise
      * <code>undefined</code>
      */
-    public static validateRelations(resource: Resource, projectConfiguration: ProjectConfiguration): string[] {
+    public static validateRelations(resource: Resource, projectConfiguration: ProjectConfiguration): string[]|undefined {
 
-        const fields: Array<RelationDefinition> = projectConfiguration.getRelationDefinitions(resource.type);
+        const fields: Array<RelationDefinition> = projectConfiguration.getRelationDefinitions(resource.type) as any;
 
         const invalidFields: Array<any> = [];
 
@@ -186,7 +186,7 @@ export class Validator {
         }
     }
 
-    public static validateNumericValues(resource: Resource, projectConfiguration: ProjectConfiguration): string[] {
+    public static validateNumericValues(resource: Resource, projectConfiguration: ProjectConfiguration): string[]|undefined {
 
         let projectFields: Array<FieldDefinition> = projectConfiguration.getFieldDefinitions(resource.type);
         let numericInputTypes: string[] = ['unsignedInt', 'float', 'unsignedFloat'];
@@ -213,7 +213,7 @@ export class Validator {
                     }
 
                     if (!valueIsValid) {
-                        invalidFields.push(fieldDef.label);
+                        invalidFields.push(fieldDef.label as any);
                     }
                 }
             }

@@ -45,7 +45,7 @@ export class RelationsViewComponent implements OnChanges {
 
     private processRelations(resource: Resource) {
 
-        this.configLoader.getProjectConfiguration().then(projectConfiguration=>{
+        (this.configLoader.getProjectConfiguration() as any).then(projectConfiguration=>{
 
             for (let relationName in resource.relations) {
                 if (resource.relations.hasOwnProperty(relationName)) {
@@ -60,7 +60,7 @@ export class RelationsViewComponent implements OnChanges {
 
                     this.getTargetDocuments(targetIds).then(
                         targets => {
-                            relationGroup.targets = targets;
+                            relationGroup.targets = targets as any;
                             if (relationGroup.targets.length > 0) this.relations.push(relationGroup);
                         }
                     );
@@ -79,10 +79,10 @@ export class RelationsViewComponent implements OnChanges {
             let targetId = targetIds[i];
             promises.push(this.datastore.get(targetId).then(
                 targetDocument => {
-                    targetDocuments.push(targetDocument);
+                    targetDocuments.push(targetDocument as never);
                 },
                 err => console.error('Relation target not found', err)
-            ));
+            ) as never);
         }
 
         return Promise.all(promises).then(

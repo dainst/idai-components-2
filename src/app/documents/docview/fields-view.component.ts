@@ -37,7 +37,7 @@ export class FieldsViewComponent implements OnChanges {
 
     private processFields(resource: Resource) {
 
-        this.configLoader.getProjectConfiguration().then(projectConfiguration => {
+        (this.configLoader.getProjectConfiguration() as any).then(projectConfiguration => {
 
             const ignoredFields: string[] = ['relations'];
 

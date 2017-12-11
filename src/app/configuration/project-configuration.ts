@@ -84,7 +84,7 @@ export class ProjectConfiguration {
 
         const types = [];
         for (let typeKey of Object.keys(this.typesMap)) {
-            types.push(this.typesMap[typeKey]);
+            types.push(this.typesMap[typeKey] as never);
         }
         this.typesList = types;
         return this.typesList;
@@ -100,7 +100,7 @@ export class ProjectConfiguration {
 
         const types = [];
         for (let typeKey of Object.keys(this.typesTree)) {
-            types.push(this.typesTree[typeKey]);
+            types.push(this.typesTree[typeKey] as never);
         }
         this.typesTreeList = types;
         return this.typesTreeList;

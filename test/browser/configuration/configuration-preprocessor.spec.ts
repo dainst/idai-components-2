@@ -27,7 +27,7 @@ export function main() {
                 types: [
                     t1
                 ]
-            };
+            } as any;
         });
 
 
@@ -48,7 +48,7 @@ export function main() {
             delete configuration.relations; // in case someone defined it in before
             new ConfigurationPreprocessor([], [], [])
                 .go(configuration);
-            expect(configuration.relations.length).toBe(0);
+            expect(configuration.relations.length as any).toBe(0);
         });
 
 

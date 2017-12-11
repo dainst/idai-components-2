@@ -24,7 +24,7 @@ export class DocumentEditDemoComponent implements OnInit {
 
     ngOnInit() {
 
-        this.configLoader.getProjectConfiguration().then(projectConfiguration => {
+        (this.configLoader.getProjectConfiguration() as any).then(projectConfiguration => {
             this.types = projectConfiguration.getTypesTreeList();
         });
 

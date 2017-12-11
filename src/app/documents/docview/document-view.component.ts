@@ -32,7 +32,7 @@ export class DocumentViewComponent implements OnChanges {
     ngOnChanges() {
         if (!this.document) return;
         if (!this.basePath) this.basePath = '';
-        this.configLoader.getProjectConfiguration().then(projectConfiguration => {
+        (this.configLoader.getProjectConfiguration() as any).then(projectConfiguration => {
             this.typeLabel = projectConfiguration.getLabelForType(this.document.resource.type)
         });
     }

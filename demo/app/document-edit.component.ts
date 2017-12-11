@@ -33,7 +33,7 @@ export class DocumentEditComponent implements OnInit {
     ngOnInit(): any {
         this.validator = new Validator(this.configLoader);
 
-        this.configLoader.getProjectConfiguration().then(projectConfiguration => {
+        (this.configLoader.getProjectConfiguration() as any).then(projectConfiguration => {
             this.projectConfiguration = projectConfiguration;
         });
     }

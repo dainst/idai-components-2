@@ -17,7 +17,7 @@ export class MessagesDemoComponent {
     private useParams = false;
 
     constructor(private md: MD, private messages: Messages) {
-        this.messageKeys = Object.keys(md.msgs);
+        this.messageKeys = Object.keys(md.msgs) as never;
     }
 
     public showMessage(msgKey: string) {

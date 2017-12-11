@@ -29,7 +29,7 @@ export class SearchBarComponent implements OnChanges {
     @Input() parentType: string;
 
     @Input() q: string = '';
-    @Input() types: string[];
+    @Input() types: string[]|undefined;
     @Input() showFiltersMenu: boolean = true;
 
     @Output() onTypesChanged = new EventEmitter<string[]>();
@@ -76,7 +76,7 @@ export class SearchBarComponent implements OnChanges {
 
         this.filterOptions = [];
 
-        this.configLoader.getProjectConfiguration().then(projectConfiguration => {
+        (this.configLoader.getProjectConfiguration() as any).then(projectConfiguration => {
 
             for (let type of projectConfiguration.getTypesTreeList()) {
 

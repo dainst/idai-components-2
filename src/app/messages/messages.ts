@@ -54,8 +54,8 @@ export class Messages {
         let errs = [];
         for (let i in msgWithParams) {
             if ((typeof msgWithParams[i])!='string' && (typeof msgWithParams[i])!='number') {
-                if (!msgWithParams[i]) errs.push('undefined');
-                else errs.push(msgWithParams[i]);
+                if (!msgWithParams[i]) errs.push('undefined' as never);
+                else errs.push(msgWithParams[i] as never);
             }
         }
         if (errs.length > 0) {

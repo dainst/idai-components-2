@@ -18,14 +18,14 @@ export class MemoryDatastore implements Datastore {
     constructor() {};
 
 
-    public getUnsyncedObjects(): Observable<Document> {
+    public getUnsyncedObjects(): Observable<Document>|undefined {
 
         return undefined;
     }
 
 
     // NOT IMPLEMENTED
-    public remoteChangesNotifications(): Observable<Document> {
+    public remoteChangesNotifications(): Observable<Document>|undefined {
 
         return undefined;
     }
@@ -33,19 +33,19 @@ export class MemoryDatastore implements Datastore {
 
     public create(document: Document): Promise<Document> {
 
-        this.objectCache[document.resource.id] = document;
+        this.objectCache[document.resource.id as any] = document;
         return Promise.resolve(document);
     }
 
 
     public update(document: Document): Promise<Document> {
 
-        this.objectCache[document.resource.id] = document;
+        this.objectCache[document.resource.id as any] = document;
         return Promise.resolve(document);
     }
 
 
-    public refresh(document: Document): Promise<Document> {
+    public refresh(document: Document): Promise<Document|undefined> {
 
         return Promise.resolve(undefined);
     }
@@ -83,7 +83,7 @@ export class MemoryDatastore implements Datastore {
 
         const results: Document[] = [];
         for (let i in this.objectCache) {
-            if (this.objectCache[i].resource.id.indexOf(queryString) != -1) results.push(this.objectCache[i]);
+            if ((this.objectCache[i].resource.id as any).indexOf(queryString) != -1) results.push(this.objectCache[i]);
         }
 
         return Promise.resolve({

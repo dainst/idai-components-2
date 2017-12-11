@@ -12,7 +12,7 @@ import {Document} from '../../src/app/model/document';
 export class DocumentViewDemoComponent implements OnInit {
 
     private documents: Array<Document> = [];
-    private selectedDocument: Document;
+    private selectedDocument: Document|undefined;
     private fieldDefinitions: Array<FieldDefinition>;
 
     private types: IdaiType[];
@@ -26,7 +26,7 @@ export class DocumentViewDemoComponent implements OnInit {
 
     ngOnInit() {
 
-        this.configLoader.getProjectConfiguration().then(projectConfiguration=>{
+        (this.configLoader.getProjectConfiguration() as any).then(projectConfiguration=>{
             this.types = projectConfiguration.getTypesTreeList();
         });
 
@@ -56,10 +56,10 @@ export class DocumentViewDemoComponent implements OnInit {
 
     private changeTo(id: string) {
 
-        this.configLoader.getProjectConfiguration().then(projectConfiguration => {
+        (this.configLoader.getProjectConfiguration() as any).then(projectConfiguration => {
             this.datastore.get(id).then(document => {
                 this.selectedDocument = JSON.parse(JSON.stringify(document));
-                this.fieldDefinitions = projectConfiguration.getFieldDefinitions(this.selectedDocument.resource.type);
+                this.fieldDefinitions = projectConfiguration.getFieldDefinitions((this.selectedDocument as any).resource.type);
             });
         });
     }

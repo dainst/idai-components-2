@@ -43,7 +43,7 @@ export class DimensionComponent {
     }
 
 
-    private convertValueFromInputUnitToMicrometre(inputUnit: string, inputValue: string): Number {
+    private convertValueFromInputUnitToMicrometre(inputUnit: string, inputValue: string): Number|undefined {
 
     	let _val = parseFloat(inputValue);
         if (inputUnit == 'mm') return _val * 1000;

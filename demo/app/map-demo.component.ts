@@ -121,8 +121,8 @@ export class MapDemoComponent {
         }
     };
 
-    public mainTypeDocument: IdaiFieldDocument;
-    public selectedDocument: IdaiFieldDocument;
+    public mainTypeDocument: IdaiFieldDocument|undefined;
+    public selectedDocument: IdaiFieldDocument|undefined;
     public liveUpdate: boolean = true;
 
     public selectDocument(document: IdaiFieldDocument) {

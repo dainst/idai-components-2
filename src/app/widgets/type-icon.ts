@@ -26,7 +26,7 @@ export class TypeIconComponent implements OnChanges {
 
   ngOnChanges() {
 
-    this.configLoader.getProjectConfiguration().then(config => {
+      (this.configLoader.getProjectConfiguration() as any).then(config => {
       this.character = config.getLabelForType(this.type).substr(0, 1);
       this.color = config.getColorForType(this.type);
       this.textColor = this.isColorTooBright(this.color) ? 'black' : 'white';

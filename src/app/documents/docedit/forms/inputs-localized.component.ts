@@ -38,7 +38,7 @@ export class InputsLocalizedComponent {
     public addLanguage() {
         var newLocale = prompt("Enter new language");
 
-        if (this.languages().indexOf(newLocale) != -1) {
+        if (this.languages().indexOf(newLocale as any) != -1) {
             alert("Locale already included!");
             return;
         }

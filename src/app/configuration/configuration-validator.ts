@@ -76,7 +76,7 @@ export class ConfigurationValidator {
         let msgs = [];
         for (let type of types) {
             if (!type.type || !(typeof type.type == 'string'))
-                msgs.push([MDInternal.VALIDATION_ERROR_INVALIDTYPE, JSON.stringify(type)]);
+                msgs.push([MDInternal.VALIDATION_ERROR_INVALIDTYPE, JSON.stringify(type)] as never);
         }
         return msgs;
     }
@@ -87,7 +87,7 @@ export class ConfigurationValidator {
         let msgs = [];
         let o: any = {};
         for (let typeName of types.map(type => type.type)) {
-            if (o[typeName]) msgs.push([MDInternal.VALIDATION_ERROR_DUPLICATETYPE, typeName]);
+            if (o[typeName]) msgs.push([MDInternal.VALIDATION_ERROR_DUPLICATETYPE, typeName] as never);
             o[typeName] = true;
         }
         
@@ -122,7 +122,7 @@ export class ConfigurationValidator {
 
         for (let type of types) {
             if (type.parent && typeNames.indexOf(type.parent) == -1)
-                msgs.push([MDInternal.VALIDATION_ERROR_MISSINGPARENTTYPE, type.parent]);
+                msgs.push([MDInternal.VALIDATION_ERROR_MISSINGPARENTTYPE, type.parent] as never);
         }
         
         return msgs;
@@ -138,10 +138,10 @@ export class ConfigurationValidator {
         if (relations) for (let relation of relations) {
             for (let type of relation.domain)
                 if (typeNames.indexOf(type) == -1)
-                    msgs.push([MDInternal.VALIDATION_ERROR_MISSINGRELATIONTYPE, type]);
+                    msgs.push([MDInternal.VALIDATION_ERROR_MISSINGRELATIONTYPE as never, type] as never);
             for (let type of relation.range)
                 if (typeNames.indexOf(type) == -1 && type != 'Project')
-                    msgs.push([MDInternal.VALIDATION_ERROR_MISSINGRELATIONTYPE, type]);
+                    msgs.push([MDInternal.VALIDATION_ERROR_MISSINGRELATIONTYPE, type] as never);
         }
         return msgs;
     }
@@ -155,19 +155,19 @@ export class ConfigurationValidator {
 
         for (let fieldDef of fieldDefs) {
             if (!fieldDef.hasOwnProperty('name'))
-                msgs.push([MDInternal.VALIDATION_ERROR_MISSINGFIELDNAME, JSON.stringify(fieldDef)]);
+                msgs.push([MDInternal.VALIDATION_ERROR_MISSINGFIELDNAME, JSON.stringify(fieldDef)] as never);
             if (!fieldDef.hasOwnProperty('inputType'))
                 fieldDef.inputType = 'input';
             if (ConfigurationValidator.VALID_INPUT_TYPES.indexOf(fieldDef.inputType) == -1)
                 msgs.push([MDInternal.VALIDATION_ERROR_INVALIDINPUTTYPE, fieldDef.name,
-                    fieldDef.inputType, ConfigurationValidator.VALID_INPUT_TYPES.join(', ')]);
+                    fieldDef.inputType, ConfigurationValidator.VALID_INPUT_TYPES.join(', ')] as never);
             if (ConfigurationValidator.VALUELIST_INPUT_TYPES.indexOf(fieldDef.inputType) != -1
                     && (!fieldDef.hasOwnProperty('valuelist')
                         || !Array.isArray(fieldDef.valuelist)
                         || fieldDef.valuelist.length == 0
                 )
             )
-                msgs.push([MDInternal.VALIDATION_ERROR_MISSINGVALUELIST, fieldDef.name]);
+                msgs.push([MDInternal.VALIDATION_ERROR_MISSINGVALUELIST, fieldDef.name] as never);
         }
 
         return msgs;
