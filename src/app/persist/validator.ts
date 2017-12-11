@@ -23,7 +23,7 @@ export class Validator {
      */
     public validate(doc: Document): Promise<any> {
 
-        return (this.configLoader.getProjectConfiguration() as any).then(projectConfiguration => {
+        return (this.configLoader.getProjectConfiguration() as any).then((projectConfiguration: any) => {
 
             let resource = doc.resource;
 
@@ -193,7 +193,7 @@ export class Validator {
         let invalidFields: string[] = [];
 
         for (let i in projectFields) {
-            let fieldDef = projectFields[i];
+            let fieldDef = projectFields[i] as any;
 
             if (fieldDef.hasOwnProperty('inputType')) {
                 let value = resource[fieldDef.name];

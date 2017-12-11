@@ -47,9 +47,9 @@ export class MapComponent implements OnChanges {
 
     constructor(configLoader: ConfigLoader) {
 
-        this.ready = (configLoader.getProjectConfiguration() as any).then(projectConfiguration => {
+        this.ready = (configLoader.getProjectConfiguration() as any).then((projectConfiguration: any) => {
             return projectConfiguration.getTypeColors();
-        }).then(typeColors => this.typeColors = typeColors);
+        }).then((typeColors: any) => this.typeColors = typeColors);
     }
 
 
@@ -344,7 +344,7 @@ export class MapComponent implements OnChanges {
 
     private focusPolylines(polylines: Array<L.Polyline>) {
 
-        let bounds = [];
+        let bounds = [] as any;
         for (let polyline of polylines) {
             bounds.push(polyline.getLatLngs() as never);
         }
@@ -354,7 +354,7 @@ export class MapComponent implements OnChanges {
 
     private focusPolygons(polygons: Array<L.Polygon>) {
 
-        let bounds = [];
+        let bounds = [] as any;
         for (let polygon of polygons) {
             bounds.push(polygon.getLatLngs() as never);
         }

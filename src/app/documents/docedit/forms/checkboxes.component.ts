@@ -18,7 +18,7 @@ export class CheckboxesComponent {
 
     constructor(private documentEditChangeMonitor: DocumentEditChangeMonitor) {}
 
-    public addInputArrayItem(item) {
+    public addInputArrayItem(item: any) {
         if(this.resource[this.field.name]==undefined) this.resource[this.field.name] = new Array<String>();
 
         var index:number = this.resource[this.field.name].indexOf(item, 0);

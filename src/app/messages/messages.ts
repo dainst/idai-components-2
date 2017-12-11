@@ -46,12 +46,12 @@ export class Messages {
     /**
      * @returns {boolean} false and adds an unknown error if not, true otherwiese
      */
-    private isArrayOfStrings(msgWithParams) {
+    private isArrayOfStrings(msgWithParams: any) {
         if (!Array.isArray(msgWithParams)) {
             this.addUnkownErr('msgWithParams must be an array, but is "'+msgWithParams+'"');
             return false;
         }
-        let errs = [];
+        let errs = [] as any;
         for (let i in msgWithParams) {
             if ((typeof msgWithParams[i])!='string' && (typeof msgWithParams[i])!='number') {
                 if (!msgWithParams[i]) errs.push('undefined' as never);
@@ -70,7 +70,7 @@ export class Messages {
         this._add(this.internalMessagesDictionary.msgs[MDInternal.UNKOWN_ERROR],undefined);
     }
 
-    private _get(id) : Message {
+    private _get(id: any) : Message {
 
         let msg = this.internalMessagesDictionary.msgs[id];
         let providedMsg = this.messagesDictionary.msgs[id];
@@ -78,7 +78,7 @@ export class Messages {
         return msg;
     }
 
-    private _add(msg, params?: Array<string>) {
+    private _add(msg: any, params?: Array<string>) {
         let messageToAdd = {
             content: msg.content,
             level: msg.level,

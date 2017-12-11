@@ -43,7 +43,7 @@ export class IdaiFieldConfigurationValidator extends ConfigurationValidator{
     private static validateMandatoryRelations(relations: Array<RelationDefinition>,
                                               types: Array<TypeDefinition>): Array<Array<string>> {
 
-        let msgs = [];
+        let msgs = [] as any;
 
         let recordedInRelations: any = {};
         if (relations) for (let relation of relations) {
@@ -92,7 +92,7 @@ export class IdaiFieldConfigurationValidator extends ConfigurationValidator{
         views: Array<ViewDefinition>,
         types: Array<TypeDefinition>): Array<Array<string>> {
 
-        let msgs = [];
+        let msgs = [] as any;
         const typeNames: Array<string> = types.map(type => type.type);
 
         for (let view of views) {

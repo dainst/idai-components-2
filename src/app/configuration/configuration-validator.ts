@@ -73,7 +73,7 @@ export class ConfigurationValidator {
      */
     private static findInvalidType(types: Array<TypeDefinition>): Array<Array<string>> {
 
-        let msgs = [];
+        let msgs = [] as any;
         for (let type of types) {
             if (!type.type || !(typeof type.type == 'string'))
                 msgs.push([MDInternal.VALIDATION_ERROR_INVALIDTYPE, JSON.stringify(type)] as never);
@@ -84,7 +84,7 @@ export class ConfigurationValidator {
 
     private static findDuplicateType(types: Array<TypeDefinition>): Array<Array<string>> {
 
-        let msgs = [];
+        let msgs = [] as any;
         let o: any = {};
         for (let typeName of types.map(type => type.type)) {
             if (o[typeName]) msgs.push([MDInternal.VALIDATION_ERROR_DUPLICATETYPE, typeName] as never);
@@ -117,7 +117,7 @@ export class ConfigurationValidator {
     private static findMissingParentType(types: Array<TypeDefinition>): Array<Array<string>> {
 
 
-        let msgs = [];
+        let msgs = [] as any;
         const typeNames: Array<string> = types.map(type => type.type);
 
         for (let type of types) {
@@ -132,7 +132,7 @@ export class ConfigurationValidator {
     private static findMissingRelationType(relations: Array<RelationDefinition>,
                                     types: Array<TypeDefinition>): Array<Array<string>> {
 
-        let msgs = [];
+        let msgs = [] as any;
         const typeNames: Array<string> = types.map(type => type.type);
 
         if (relations) for (let relation of relations) {
@@ -149,7 +149,7 @@ export class ConfigurationValidator {
 
     private static validateFieldDefinitions(types: Array<TypeDefinition>): Array<Array<string>> {
 
-        let msgs = [];
+        let msgs = [] as any;
 
         const fieldDefs: any = [].concat(...types.map(type => type.fields));
 

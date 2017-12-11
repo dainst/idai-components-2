@@ -82,12 +82,12 @@ export class ProjectConfiguration {
 
         if(this.typesList) return this.typesList;
 
-        const types = [];
+        const types = [] as any;
         for (let typeKey of Object.keys(this.typesMap)) {
             types.push(this.typesMap[typeKey] as never);
         }
         this.typesList = types;
-        return this.typesList;
+        return this.typesList as any;
     }
 
 
@@ -98,12 +98,12 @@ export class ProjectConfiguration {
 
         if (this.typesTreeList) return this.typesTreeList;
 
-        const types = [];
+        const types = [] as any;
         for (let typeKey of Object.keys(this.typesTree)) {
             types.push(this.typesTree[typeKey] as never);
         }
         this.typesTreeList = types;
-        return this.typesTreeList;
+        return this.typesTreeList as any;
     }
 
 

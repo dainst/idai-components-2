@@ -30,14 +30,14 @@ export class FieldsViewComponent implements OnChanges {
         if (this.resource) this.processFields(this.resource);
     }
 
-    public isBoolean(value): boolean {
+    public isBoolean(value: any): boolean {
 
         return typeof value == 'boolean';
     }
 
     private processFields(resource: Resource) {
 
-        (this.configLoader.getProjectConfiguration() as any).then(projectConfiguration => {
+        (this.configLoader.getProjectConfiguration() as any).then((projectConfiguration: any) => {
 
             const ignoredFields: string[] = ['relations'];
 

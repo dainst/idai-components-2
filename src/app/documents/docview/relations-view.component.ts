@@ -45,7 +45,7 @@ export class RelationsViewComponent implements OnChanges {
 
     private processRelations(resource: Resource) {
 
-        (this.configLoader.getProjectConfiguration() as any).then(projectConfiguration=>{
+        (this.configLoader.getProjectConfiguration() as any).then((projectConfiguration: any)=>{
 
             for (let relationName in resource.relations) {
                 if (resource.relations.hasOwnProperty(relationName)) {
@@ -72,8 +72,8 @@ export class RelationsViewComponent implements OnChanges {
 
     private getTargetDocuments(targetIds: Array<string>): Promise<Array<Document>> {
 
-        const promises = [];
-        const targetDocuments = [];
+        const promises = [] as any;
+        const targetDocuments = [] as any;
 
         for (let i in targetIds) {
             let targetId = targetIds[i];

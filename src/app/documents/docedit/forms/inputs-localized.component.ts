@@ -32,8 +32,9 @@ export class InputsLocalizedComponent {
         if(this.resource[this.field.name] == undefined) {
             return ["de"]
         }
-        return this.resource[this.field.name].map(f=>f.lang)
+        return this.resource[this.field.name].map((f: any)=>f.lang)
     }
+
 
     public addLanguage() {
         var newLocale = prompt("Enter new language");

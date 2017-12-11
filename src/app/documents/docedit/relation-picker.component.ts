@@ -232,9 +232,9 @@ export class RelationPickerComponent implements OnChanges {
     }
 
 
-    private static makeSuggestionsFrom(documents, resource, relationDefinition) {
+    private static makeSuggestionsFrom(documents: any, resource: any, relationDefinition: any) {
 
-        const suggestions = [];
+        const suggestions = [] as any;
         const maxNrSuggestions = 5;
         let nrSuggestions = 0;
         for (let document of documents) {

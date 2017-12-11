@@ -92,7 +92,7 @@ export class ConfigurationPreprocessor {
         if (!extraRelation) return;
         if (!(extraRelation as any)[itemSet]) return;
 
-        const itemsNew = [];
+        const itemsNew = [] as any;
         for (let item of (extraRelation as any)[itemSet]) {
             if (item.indexOf(':inherit') != -1) {
 

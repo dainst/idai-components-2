@@ -21,7 +21,7 @@ export class DateComponent {
 
     constructor(private documentEditChangeMonitor: DocumentEditChangeMonitor, public dateFormatter: NgbDateParserFormatter) { }
 
-    public update(new_value) {
+    public update(new_value: any) {
         this.resource[this._field.name] = this.dateFormatter.format(new_value);
         this.documentEditChangeMonitor.setChanged();
     }

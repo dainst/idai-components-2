@@ -52,7 +52,7 @@ export class DimensionComponent {
     }
 
 
-    private generateLabel(dimension) {
+    private generateLabel(dimension: any) {
 
         let label = (dimension['isImprecise'] ? 'ca. ' : '');
 
@@ -86,7 +86,7 @@ export class DimensionComponent {
     }
 
 
-    public saveDimension(dimension) {
+    public saveDimension(dimension: any) {
 
     	if (!this.resource[this.field.name]) this.resource[this.field.name] = [];
 

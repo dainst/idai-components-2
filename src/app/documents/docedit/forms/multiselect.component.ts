@@ -18,7 +18,7 @@ export class MultiselectComponent {
 
     constructor(private documentEditChangeMonitor: DocumentEditChangeMonitor) {}
 
-    public toggleItem(item) {
+    public toggleItem(item: any) {
         if(this.resource[this.field.name]==undefined) this.resource[this.field.name] = new Array<String>();
 
         var resourceListIndex = this.resource[this.field.name].indexOf(item, 0);
