@@ -20,7 +20,7 @@ export class DropdownComponent {
 
     constructor(private documentEditChangeMonitor: DocumentEditChangeMonitor) {}
 
-    public setValue(value) {
+    public setValue(value: any) {
         if (value == "") delete this.resource[this.field.name];
         this.documentEditChangeMonitor.setChanged();
     }

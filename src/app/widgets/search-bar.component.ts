@@ -29,13 +29,13 @@ export class SearchBarComponent implements OnChanges {
     @Input() parentType: string;
 
     @Input() q: string = '';
-    @Input() types: string[];
+    @Input() types: string[]|undefined;
     @Input() showFiltersMenu: boolean = true;
 
     @Output() onTypesChanged = new EventEmitter<string[]>();
     @Output() onQueryStringChanged = new EventEmitter<string>();
 
-    @ViewChild('p') private popover;
+    @ViewChild('p') private popover: any;
 
     private filterOptions: Array<IdaiType> = [];
 
@@ -76,7 +76,7 @@ export class SearchBarComponent implements OnChanges {
 
         this.filterOptions = [];
 
-        this.configLoader.getProjectConfiguration().then(projectConfiguration => {
+        (this.configLoader.getProjectConfiguration() as any).then((projectConfiguration: any) => {
 
             for (let type of projectConfiguration.getTypesTreeList()) {
 
@@ -122,7 +122,7 @@ export class SearchBarComponent implements OnChanges {
         }
     }
 
-    private handleClick(event) {
+    private handleClick(event: any) {
 
         if (!this.popover) return;
         let target = event.target;

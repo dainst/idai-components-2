@@ -47,9 +47,9 @@ export class MapComponent implements OnChanges {
 
     constructor(configLoader: ConfigLoader) {
 
-        this.ready = configLoader.getProjectConfiguration().then(projectConfiguration => {
+        this.ready = (configLoader.getProjectConfiguration() as any).then((projectConfiguration: any) => {
             return projectConfiguration.getTypeColors();
-        }).then(typeColors => this.typeColors = typeColors);
+        }).then((typeColors: any) => this.typeColors = typeColors);
     }
 
 
@@ -105,12 +105,12 @@ export class MapComponent implements OnChanges {
         this.map.invalidateSize(true);
 
         if (this.selectedDocument) {
-            if (this.polygons[this.selectedDocument.resource.id]) {
-                this.focusPolygons(this.polygons[this.selectedDocument.resource.id]);
-            } else if (this.polylines[this.selectedDocument.resource.id]) {
-                this.focusPolylines(this.polylines[this.selectedDocument.resource.id]);
-            } else if (this.markers[this.selectedDocument.resource.id]) {
-                this.focusMarker(this.markers[this.selectedDocument.resource.id]);
+            if (this.polygons[this.selectedDocument.resource.id as any]) {
+                this.focusPolygons(this.polygons[this.selectedDocument.resource.id as any]);
+            } else if (this.polylines[this.selectedDocument.resource.id as any]) {
+                this.focusPolylines(this.polylines[this.selectedDocument.resource.id as any]);
+            } else if (this.markers[this.selectedDocument.resource.id as any]) {
+                this.focusMarker(this.markers[this.selectedDocument.resource.id as any]);
             }
         } else if (this.bounds.length > 1) {
             this.map.fitBounds(L.latLngBounds(this.bounds));
@@ -198,6 +198,7 @@ export class MapComponent implements OnChanges {
 
         const geometry = document.resource.geometry;
 
+        if (!geometry) return;
         if (!geometry.coordinates || geometry.coordinates.length == 0) return;
 
         switch(geometry.type) {
@@ -253,7 +254,7 @@ export class MapComponent implements OnChanges {
         });
 
         marker.addTo(this.map);
-        this.markers[document.resource.id] = marker;
+        this.markers[document.resource.id as any] = marker;
 
         return marker;
     }
@@ -271,9 +272,9 @@ export class MapComponent implements OnChanges {
         }
 
         let polylines: Array<IdaiFieldPolyline>
-            = this.polylines[document.resource.id] ? this.polylines[document.resource.id] : [];
+            = this.polylines[document.resource.id as any] ? this.polylines[document.resource.id as any] : [];
         polylines.push(polyline);
-        this.polylines[document.resource.id] = polylines;
+        this.polylines[document.resource.id as any] = polylines;
 
         return polyline;
     }
@@ -291,9 +292,9 @@ export class MapComponent implements OnChanges {
         }
 
         let polygons: Array<IdaiFieldPolygon>
-            = this.polygons[document.resource.id] ? this.polygons[document.resource.id] : [];
+            = this.polygons[document.resource.id as any] ? this.polygons[document.resource.id as any] : [];
         polygons.push(polygon);
-        this.polygons[document.resource.id] = polygons;
+        this.polygons[document.resource.id as any] = polygons;
 
         return polygon;
     }
@@ -343,9 +344,9 @@ export class MapComponent implements OnChanges {
 
     private focusPolylines(polylines: Array<L.Polyline>) {
 
-        let bounds = [];
+        let bounds = [] as any;
         for (let polyline of polylines) {
-            bounds.push(polyline.getLatLngs());
+            bounds.push(polyline.getLatLngs() as never);
         }
         this.map.fitBounds(bounds);
     }
@@ -353,9 +354,9 @@ export class MapComponent implements OnChanges {
 
     private focusPolygons(polygons: Array<L.Polygon>) {
 
-        let bounds = [];
+        let bounds = [] as any;
         for (let polygon of polygons) {
-            bounds.push(polygon.getLatLngs());
+            bounds.push(polygon.getLatLngs() as never);
         }
         this.map.fitBounds(bounds);
     }
@@ -387,7 +388,7 @@ export class MapComponent implements OnChanges {
 
     protected deselect() {
 
-        this.onSelectDocument.emit(null);
+        this.onSelectDocument.emit(null as any);
     }
 
 

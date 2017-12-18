@@ -18,10 +18,12 @@ export class RadioComponent {
 
     constructor(private documentEditChangeMonitor: DocumentEditChangeMonitor) {}
 
-    public setValue(value) {
+
+    public setValue(value: any) {
         this.resource[this.field.name] = value;
         this.documentEditChangeMonitor.setChanged();
     }
+
 
     public resetValue() {
         delete this.resource[this.field.name];

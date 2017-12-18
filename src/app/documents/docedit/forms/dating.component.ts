@@ -23,7 +23,7 @@ export class DatingComponent {
     @Input() resource: Resource;
     @Input() field: any;
 
-    public newDating: {} = null;
+    public newDating: {} = null as any;
 
 
     constructor(private documentEditChangeMonitor: DocumentEditChangeMonitor) {}
@@ -49,12 +49,12 @@ export class DatingComponent {
 
         if (!this.resource[this.field.name]) this.resource[this.field.name] = [];
         this.resource[this.field.name].push(this.convertDating(this.newDating));
-        this.newDating = null;
+        this.newDating = null as any;
         this.documentEditChangeMonitor.setChanged();
     }
 
 
-    public convertDating(dating): any {
+    public convertDating(dating: any): any {
 
         for (let date of dating.dates) {
             if (date.value < 0) return false;
@@ -82,9 +82,9 @@ export class DatingComponent {
     }
 
 
-    private createNormalizedDating(dating) {
+    private createNormalizedDating(dating: any) {
 
-        const normalized = {};
+        const normalized = {} as any;
 
         if (dating.type != 'before')
             normalized['hasBegin'] = { year: this.normalizeDate(dating.dates[0]) };
@@ -97,7 +97,7 @@ export class DatingComponent {
     }
 
 
-    private normalizeDate(date) {
+    private normalizeDate(date: any) {
 
         if (date.type == 'bce') return 0 - date.value;
         if (date.type == 'bp') return 1950 - date.value;
@@ -106,7 +106,7 @@ export class DatingComponent {
     }
 
 
-    private generateLabel(dating): string {
+    private generateLabel(dating: any): string {
 
         let prefix = '';
         let year = '';
@@ -135,12 +135,12 @@ export class DatingComponent {
     }
 
 
-    private generateLabelForDate(date): string {
+    private generateLabelForDate(date: any): string {
 
         if (date.value == 0) {
             return '0';
         } else {
-            return date.value + ' ' + this.DATE_TYPES[date.type];
+            return date.value + ' ' + ((this.DATE_TYPES as any)[date.type as any] as any);
         }
     }
 }

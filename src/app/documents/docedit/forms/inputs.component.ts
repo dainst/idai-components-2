@@ -30,7 +30,7 @@ export class InputsComponent {
         this.documentEditChangeMonitor.setChanged();
     }
     
-    public removeInputArrayItemAtIndex(index) {
+    public removeInputArrayItemAtIndex(index: any) {
 
         this.resource[this.fieldName].splice(index, 1);
         this.documentEditChangeMonitor.setChanged();

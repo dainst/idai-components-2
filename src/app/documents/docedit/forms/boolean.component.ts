@@ -18,7 +18,7 @@ export class BooleanComponent {
 
     constructor(private documentEditChangeMonitor: DocumentEditChangeMonitor) {}
 
-    public setValue(value) {
+    public setValue(value: any) {
         this.resource[this.fieldName] = value;
         this.documentEditChangeMonitor.setChanged();
     }

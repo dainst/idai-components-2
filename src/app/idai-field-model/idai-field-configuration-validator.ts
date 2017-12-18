@@ -43,7 +43,7 @@ export class IdaiFieldConfigurationValidator extends ConfigurationValidator{
     private static validateMandatoryRelations(relations: Array<RelationDefinition>,
                                               types: Array<TypeDefinition>): Array<Array<string>> {
 
-        let msgs = [];
+        let msgs = [] as any;
 
         let recordedInRelations: any = {};
         if (relations) for (let relation of relations) {
@@ -67,11 +67,11 @@ export class IdaiFieldConfigurationValidator extends ConfigurationValidator{
 
                 if (!(type in recordedInRelations) || !recordedInRelations[type]
                     || recordedInRelations[type].length == 0) {
-                    msgs.push([MDInternal.VALIDATION_ERROR_INCOMPLETERECORDEDIN, type]);
+                    msgs.push([MDInternal.VALIDATION_ERROR_INCOMPLETERECORDEDIN, type] as never);
                 }
             }
         } else {
-            msgs.push([MDInternal.VALIDATION_ERROR_NOPROJECTRECORDEDIN]);
+            msgs.push([MDInternal.VALIDATION_ERROR_NOPROJECTRECORDEDIN] as never);
         }
 
         return msgs;
@@ -92,14 +92,14 @@ export class IdaiFieldConfigurationValidator extends ConfigurationValidator{
         views: Array<ViewDefinition>,
         types: Array<TypeDefinition>): Array<Array<string>> {
 
-        let msgs = [];
+        let msgs = [] as any;
         const typeNames: Array<string> = types.map(type => type.type);
 
         for (let view of views) {
 
             if (view.operationSubtype == 'Project') continue;
             if (typeNames.indexOf(view.operationSubtype) == -1)
-                msgs.push([MDInternal.VALIDATION_ERROR_MISSINGVIEWTYPE, view.operationSubtype]);
+                msgs.push([MDInternal.VALIDATION_ERROR_MISSINGVIEWTYPE, view.operationSubtype] as never);
 
             let supported = false;
             for (let type of types) {
@@ -107,7 +107,7 @@ export class IdaiFieldConfigurationValidator extends ConfigurationValidator{
                     type.parent == 'Operation') supported = true
             }
             if (!supported) {
-                msgs.push([MDInternal.VALIDATION_ERROR_NONOPERATIONVIEWTYPE, view.operationSubtype]);
+                msgs.push([MDInternal.VALIDATION_ERROR_NONOPERATIONVIEWTYPE, view.operationSubtype] as never);
             }
         }
         return msgs;

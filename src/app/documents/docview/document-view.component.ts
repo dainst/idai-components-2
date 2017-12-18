@@ -20,7 +20,7 @@ export class DocumentViewComponent implements OnChanges {
     @Output() onSolveConflicts: EventEmitter<any> = new EventEmitter<any>();
     @Output() onDeselect: EventEmitter<any> = new EventEmitter<any>();
 
-    private typeLabel;
+    private typeLabel: any;
 
     constructor(
         private router: Router,
@@ -32,7 +32,7 @@ export class DocumentViewComponent implements OnChanges {
     ngOnChanges() {
         if (!this.document) return;
         if (!this.basePath) this.basePath = '';
-        this.configLoader.getProjectConfiguration().then(projectConfiguration => {
+        (this.configLoader.getProjectConfiguration() as any).then((projectConfiguration: any) => {
             this.typeLabel = projectConfiguration.getLabelForType(this.document.resource.type)
         });
     }

@@ -18,11 +18,22 @@ import {Constraint} from './constraint';
  * @property limit the number of documents to be returned. If there are more matching
  *   documents, only the first documents are returned.
  */
-
 export interface Query {
 
     q?: string;
     types?: string[];
     constraints?: { [name: string]: Constraint|string};
     limit?: number
+}
+
+
+/**
+ * Companion object
+ */
+export class Query {
+
+    public static isEmpty(query: Query) {
+
+        return ((!query.q || query.q == '') && !query.types);
+    }
 }

@@ -26,7 +26,7 @@ export class TypeIconComponent implements OnChanges {
 
   ngOnChanges() {
 
-    this.configLoader.getProjectConfiguration().then(config => {
+      (this.configLoader.getProjectConfiguration() as any).then((config: any) => {
       this.character = config.getLabelForType(this.type).substr(0, 1);
       this.color = config.getColorForType(this.type);
       this.textColor = this.isColorTooBright(this.color) ? 'black' : 'white';
@@ -34,7 +34,7 @@ export class TypeIconComponent implements OnChanges {
     });
   }
 
-  private isColorTooBright(c): boolean {
+  private isColorTooBright(c: any): boolean {
 
     c = c.substring(1);      // strip #
     let rgb = parseInt(c, 16);   // convert rrggbb to decimal

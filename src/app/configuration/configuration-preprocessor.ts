@@ -92,18 +92,18 @@ export class ConfigurationPreprocessor {
         if (!extraRelation) return;
         if (!(extraRelation as any)[itemSet]) return;
 
-        const itemsNew = [];
+        const itemsNew = [] as any;
         for (let item of (extraRelation as any)[itemSet]) {
             if (item.indexOf(':inherit') != -1) {
 
                 for (let type of configuration.types) {
                     if (type.parent==item.split(':')[0]) {
-                        itemsNew.push(type.type);
+                        itemsNew.push(type.type as never);
                     }
                 }
-                itemsNew.push(item.split(':')[0]);
+                itemsNew.push(item.split(':')[0] as never);
             } else {
-                itemsNew.push(item);
+                itemsNew.push(item as never);
             }
         }
         (extraRelation as any)[itemSet] = itemsNew;

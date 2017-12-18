@@ -25,9 +25,9 @@ export abstract class Datastore extends ReadDatastore {
      *
      * @param doc
      * @returns {Promise<Document>} a document
-     *   Rejects with
-     *     [GENERIC_ERROR (, cause: any)] - in case of error, optionally including a cause
-     *     [DOCUMENT_RESOURCE_ID_EXISTS] - if a document with doc.resource.id already exists
+     * @throws [GENERIC_ERROR (, cause: any)] - in case of error, optionally including a cause
+     * @throws [DOCUMENT_RESOURCE_ID_EXISTS] - if a document with doc.resource.id already exists
+     * @throws [INVALID_DOCUMENT] - in case doc is not valid
      */
     abstract create(doc: Document): Promise<Document>;
 
@@ -36,11 +36,11 @@ export abstract class Datastore extends ReadDatastore {
      *
      * @param doc
      * @returns {Promise<Document>} a document
-     *   Rejects with
-     *     [GENERIC_ERROR (, cause: any)] - in case of error, optionally including a cause
-     *     [SAVE_CONFLICT] - in case of conflict
-     *     [DOCUMENT_NO_RESOURCE_ID] - if document has no resource id
-     *     [DOCUMENT_NOT_FOUND] - if document has a resource id, but does not exist in the db
+     * @throws [GENERIC_ERROR (, cause: any)] - in case of error, optionally including a cause
+     * @throws [SAVE_CONFLICT] - in case of conflict
+     * @throws [DOCUMENT_NO_RESOURCE_ID] - if doc has no resource id
+     * @throws [INVALID_DOCUMENT] - in case doc is not valid
+     * @throws [DOCUMENT_NOT_FOUND] - if document has a resource id, but does not exist in the db
      */
     abstract update(doc: Document): Promise<Document>;
 
@@ -49,10 +49,9 @@ export abstract class Datastore extends ReadDatastore {
      *
      * @param doc
      * @returns {Promise<undefined>} undefined
-     *   Rejects with
-     *     [DOCUMENT_NO_RESOURCE_ID] - if document has no resource id
-     *     [DOCUMENT_NOT_FOUND] - if document has a resource id, but does not exist in the db
-     *     [GENERIC_ERROR (, cause: any)] - in case of error, optionally including a cause
+     * @throws [DOCUMENT_NO_RESOURCE_ID] - if document has no resource id
+     * @throws [DOCUMENT_NOT_FOUND] - if document has a resource id, but does not exist in the db
+     * @throws [GENERIC_ERROR (, cause: any)] - in case of error, optionally including a cause
      */
     abstract remove(doc: Document): Promise<undefined>;
 }

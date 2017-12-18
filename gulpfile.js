@@ -53,21 +53,10 @@ gulp.task('compile', ['convert-sass'], function () {
         .pipe(typescript(tscConfig.compilerOptions))
         .pipe(gulp.dest('./'));
 
-    gulp
+    return gulp
         .src('demo/app/**/*.ts')
         .pipe(typescript(tscConfig.compilerOptions))
         .pipe(gulp.dest('demo/app/'));
-
-    gulp
-        .src('src/app/**/*.ts')
-        .pipe(typescript(tscConfig.compilerOptions))
-        .pipe(gulp.dest('src/app/'));
-
-    // test sources
-    return gulp
-        .src('test/**/*.ts')
-        .pipe(typescript(tscConfig.compilerOptions))
-        .pipe(gulp.dest('test/'));
 });
 
 function createConfig(path) {

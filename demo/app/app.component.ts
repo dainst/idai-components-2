@@ -43,7 +43,7 @@ export class AppComponent implements OnInit {
             new ConfigurationValidator([])
         );
 
-        configLoader.getProjectConfiguration().catch(
+        (configLoader.getProjectConfiguration() as any).catch(
             msgsWithParams => {
                 msgsWithParams.forEach(msg => messages.add(msg));
             }
