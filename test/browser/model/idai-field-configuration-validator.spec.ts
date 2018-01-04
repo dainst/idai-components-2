@@ -57,7 +57,7 @@ export function main() {
                 operationSubtype: 'U'
             };
 
-            expect(new IdaiFieldConfigurationValidator([])
+            expect(new IdaiFieldConfigurationValidator()
                 .go(configuration))
                 .toContain([MDInternal.VALIDATION_ERROR_MISSINGVIEWTYPE, 'U']);
         });
@@ -72,7 +72,7 @@ export function main() {
                 operationSubtype: 'T2'
             };
 
-            expect(new IdaiFieldConfigurationValidator([])
+            expect(new IdaiFieldConfigurationValidator()
                 .go(configuration))
                 .toContain([MDInternal.VALIDATION_ERROR_NONOPERATIONVIEWTYPE, 'T2']);
         });

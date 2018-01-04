@@ -119,7 +119,7 @@ export class IdaiFieldAppConfigurator {
                 this.defaultFields,
                 this.defaultRelations)
             ,
-            new IdaiFieldConfigurationValidator([])
+            new IdaiFieldConfigurationValidator()
         );
     }
 }

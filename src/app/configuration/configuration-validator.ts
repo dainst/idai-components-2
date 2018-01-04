@@ -19,14 +19,6 @@ export class ConfigurationValidator {
 
 
     /**
-     * @param namesOfMandatoryTypes
-     */
-    constructor(
-        private namesOfMandatoryTypes: Array<string> // TODO remove, we do not use it
-    ) { }
-
-
-    /**
      * Searches for missing mandatory types or duplicate types.
      * Returns on the first occurrence of either one.
      *
@@ -40,9 +32,6 @@ export class ConfigurationValidator {
         const invalidTypeErrors = ConfigurationValidator.findInvalidType(configuration.types);
         if (invalidTypeErrors) msgs = msgs.concat(invalidTypeErrors);
         
-        const missingTypeErrors = ConfigurationValidator.findMissingType(configuration.types, this.namesOfMandatoryTypes);
-        if (missingTypeErrors) msgs = msgs.concat(missingTypeErrors);
-
         const duplicateTypeErrors = ConfigurationValidator.findDuplicateType(configuration.types);
         if (duplicateTypeErrors) msgs = msgs.concat(duplicateTypeErrors);
 
@@ -62,25 +51,6 @@ export class ConfigurationValidator {
     protected custom(configuration: ConfigurationDefinition): any[] {
 
         return [];
-    }
-
-
-    private static findMissingType(types: Array<TypeDefinition>, namesOfMandatoryTypes: Array<string>): Array<Array<string>> {
-
-        let msgs: any[] = [];
-
-        if ( !namesOfMandatoryTypes || namesOfMandatoryTypes.length == 0) return msgs;
-
-        for (let nameOfMandatoryType of namesOfMandatoryTypes) {
-            let found: boolean = false;
-            for (let type of types) {
-                if (type.type == nameOfMandatoryType) found = true;
-            }
-            if (!found) {
-                msgs.push([ConfigurationErrors.INVALID_CONFIG_MISSINGTYPE, nameOfMandatoryType]);
-            }
-        }
-        return msgs;
     }
 
 

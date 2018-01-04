@@ -40,7 +40,7 @@ export class AppComponent implements OnInit {
                         editable: false}
                 ]
             ),
-            new ConfigurationValidator([])
+            new ConfigurationValidator()
         );
 
         (configLoader.getProjectConfiguration() as any).catch(

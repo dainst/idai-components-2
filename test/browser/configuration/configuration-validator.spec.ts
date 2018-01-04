@@ -12,18 +12,6 @@ export function main() {
 
         let configuration: ConfigurationDefinition;
 
-        it('should report missing mandatory type', function() {
-
-            configuration = {
-                identifier: 'test',
-                types : [{ type: 'T', fields: []}]
-            };
-
-            expect(new ConfigurationValidator(['Tmissing'])
-                .go(configuration))
-                .toContain([ConfigurationErrors.INVALID_CONFIG_MISSINGTYPE,'Tmissing']);
-        });
-
 
         it('should report duplicate type', function() {
 
@@ -35,7 +23,7 @@ export function main() {
                 ]
             };
 
-            expect(new ConfigurationValidator([])
+            expect(new ConfigurationValidator()
                 .go(configuration))
                 .toContain([ConfigurationErrors.INVALID_CONFIG_DUPLICATETYPE,'Tduplicate']);
         });
@@ -48,7 +36,7 @@ export function main() {
                 types : [{ type: 'T', fields: [], parent: 'P'}]
             };
 
-            expect(new ConfigurationValidator(['T'])
+            expect(new ConfigurationValidator()
                 .go(configuration))
                 .toContain([ConfigurationErrors.INVALID_CONFIG_MISSINGPARENTTYPE,'P']);
         });
@@ -61,7 +49,7 @@ export function main() {
                 types : [{ fields: []} as any]
             };
 
-            expect(new ConfigurationValidator(['T'])
+            expect(new ConfigurationValidator()
                 .go(configuration))
                 .toContain([ConfigurationErrors.INVALID_CONFIG_INVALIDTYPE,
                     JSON.stringify({ fields: []})]);
