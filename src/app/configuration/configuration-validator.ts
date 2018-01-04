@@ -64,37 +64,6 @@ export class ConfigurationValidator {
     }
 
 
-    /**
-     * Check if all necessary fields are given and have the right type
-     * (Might be refactored to use some kind of runtime type checking)
-     *
-     * @param types
-     * @returns {string} invalidType. undefined if no error.
-     */
-    private static findInvalidType(types: Array<TypeDefinition>): Array<Array<string>> {
-
-        let msgs = [] as any;
-        for (let type of types) {
-            if (!type.type || !(typeof type.type == 'string'))
-                msgs.push([MDInternal.VALIDATION_ERROR_INVALIDTYPE, JSON.stringify(type)] as never);
-        }
-        return msgs;
-    }
-
-
-    private static findDuplicateType(types: Array<TypeDefinition>): Array<Array<string>> {
-
-        let msgs = [] as any;
-        let o: any = {};
-        for (let typeName of types.map(type => type.type)) {
-            if (o[typeName]) msgs.push([MDInternal.VALIDATION_ERROR_DUPLICATETYPE, typeName] as never);
-            o[typeName] = true;
-        }
-        
-        return msgs;
-    }
-
-
     private static findMissingType(types: Array<TypeDefinition>, namesOfMandatoryTypes: Array<string>): Array<Array<string>> {
 
         let msgs: any[] = [];
@@ -114,19 +83,61 @@ export class ConfigurationValidator {
     }
 
 
+    /**
+     * Check if all necessary fields are given and have the right type
+     * (Might be refactored to use some kind of runtime type checking)
+     *
+     * @param types
+     * @returns {string} invalidType. undefined if no error.
+     */
+    private static findInvalidType(types: Array<TypeDefinition>): Array<Array<string>> {
+
+        return types
+            .filter(type => !type.type || !(typeof type.type == 'string'))
+            .reduce(this.addErrMsg(this.invalidType), [])
+    }
+
+
+    private static findDuplicateType(types: Array<TypeDefinition>): Array<Array<string>> {
+
+        let o: any = {};
+
+        return types
+            .filter(type => {
+                if (o[type.type]) return true;
+                o[type.type] = true; return false;
+            })
+            .reduce(this.addErrMsg(this.duplicateType), [])
+    }
+
+
     private static findMissingParentType(types: Array<TypeDefinition>): Array<Array<string>> {
 
-
-        let msgs = [] as any;
-        const typeNames: Array<string> = types.map(type => type.type);
-
-        for (let type of types) {
-            if (type.parent && typeNames.indexOf(type.parent) == -1)
-                msgs.push([MDInternal.VALIDATION_ERROR_MISSINGPARENTTYPE, type.parent] as never);
-        }
-        
-        return msgs;
+        return types
+            .filter(type =>
+                type.parent &&
+                types.map(type => type.type).indexOf(type.parent) == -1)
+            .reduce(this.addErrMsg(this.missingParentType), []);
     }
+
+
+    private static addErrMsg = (errFun: Function) =>
+        (msgs: Array<Array<string>>, type: TypeDefinition) => {
+            msgs.push(errFun(type));
+            return msgs;
+        };
+
+
+    private static missingParentType = (type: TypeDefinition) =>
+        [MDInternal.VALIDATION_ERROR_MISSINGPARENTTYPE, type.parent];
+
+
+    private static duplicateType = (type: TypeDefinition) =>
+        [MDInternal.VALIDATION_ERROR_DUPLICATETYPE, type.type];
+
+
+    private static invalidType = (type: TypeDefinition) =>
+        [MDInternal.VALIDATION_ERROR_INVALIDTYPE, JSON.stringify(type)];
 
 
     private static findMissingRelationType(relations: Array<RelationDefinition>,
