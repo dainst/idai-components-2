@@ -140,12 +140,7 @@ export class Validator {
             }
         }
 
-        if (invalidFields.length > 0) {
-            return invalidFields;
-        }
-        else {
-            return undefined;
-        }
+        return (invalidFields.length > 0) ? invalidFields : undefined;
     }
 
     /**
@@ -172,12 +167,7 @@ export class Validator {
             }
         }
 
-        if (invalidFields.length > 0) {
-            return invalidFields;
-        }
-        else {
-            return undefined;
-        }
+        return (invalidFields.length > 0) ? invalidFields : undefined;
     }
 
 
