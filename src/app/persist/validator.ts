@@ -4,7 +4,6 @@ import {ConfigLoader} from '../configuration/config-loader';
 import {ProjectConfiguration} from '../configuration/project-configuration';
 import {FieldDefinition} from '../configuration/field-definition';
 import {RelationDefinition} from '../configuration/relation-definition';
-import {IdaiType} from '../configuration/idai-type';
 import {Document} from '../model/document';
 import {Resource} from '../model/resource';
 
