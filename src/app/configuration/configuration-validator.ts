@@ -2,6 +2,7 @@ import {ConfigurationDefinition} from './configuration-definition';
 import {MDInternal} from '../messages/md-internal';
 import {TypeDefinition} from './type-definition';
 import {RelationDefinition} from './relation-definition';
+import {ConfigurationErrors} from './configuration-errors';
 
 /**
  * @author F.Z.
@@ -76,7 +77,7 @@ export class ConfigurationValidator {
                 if (type.type == nameOfMandatoryType) found = true;
             }
             if (!found) {
-                msgs.push([MDInternal.VALIDATION_ERROR_MISSINGTYPE, nameOfMandatoryType]);
+                msgs.push([ConfigurationErrors.INVALID_CONFIG_MISSINGTYPE, nameOfMandatoryType]);
             }
         }
         return msgs;
@@ -129,15 +130,15 @@ export class ConfigurationValidator {
 
 
     private static missingParentType = (type: TypeDefinition) =>
-        [MDInternal.VALIDATION_ERROR_MISSINGPARENTTYPE, type.parent];
+        [ConfigurationErrors.INVALID_CONFIG_MISSINGPARENTTYPE, type.parent];
 
 
     private static duplicateType = (type: TypeDefinition) =>
-        [MDInternal.VALIDATION_ERROR_DUPLICATETYPE, type.type];
+        [ConfigurationErrors.INVALID_CONFIG_DUPLICATETYPE, type.type];
 
 
     private static invalidType = (type: TypeDefinition) =>
-        [MDInternal.VALIDATION_ERROR_INVALIDTYPE, JSON.stringify(type)];
+        [ConfigurationErrors.INVALID_CONFIG_INVALIDTYPE, JSON.stringify(type)];
 
 
     private static findMissingRelationType(relations: Array<RelationDefinition>,
@@ -149,10 +150,10 @@ export class ConfigurationValidator {
         if (relations) for (let relation of relations) {
             for (let type of relation.domain)
                 if (typeNames.indexOf(type) == -1)
-                    msgs.push([MDInternal.VALIDATION_ERROR_MISSINGRELATIONTYPE as never, type] as never);
+                    msgs.push([ConfigurationErrors.INVALID_CONFIG_MISSINGRELATIONTYPE as never, type] as never);
             for (let type of relation.range)
                 if (typeNames.indexOf(type) == -1 && type != 'Project')
-                    msgs.push([MDInternal.VALIDATION_ERROR_MISSINGRELATIONTYPE, type] as never);
+                    msgs.push([ConfigurationErrors.INVALID_CONFIG_MISSINGRELATIONTYPE, type] as never);
         }
         return msgs;
     }
@@ -166,7 +167,7 @@ export class ConfigurationValidator {
 
         for (let fieldDef of fieldDefs) {
             if (!fieldDef.hasOwnProperty('name'))
-                msgs.push([MDInternal.VALIDATION_ERROR_MISSINGFIELDNAME, JSON.stringify(fieldDef)] as never);
+                msgs.push([ConfigurationErrors.INVALID_CONFIG_MISSINGFIELDNAME, JSON.stringify(fieldDef)] as never);
             if (!fieldDef.hasOwnProperty('inputType'))
                 fieldDef.inputType = 'input';
             if (ConfigurationValidator.VALID_INPUT_TYPES.indexOf(fieldDef.inputType) == -1)
@@ -178,7 +179,7 @@ export class ConfigurationValidator {
                         || fieldDef.valuelist.length == 0
                 )
             )
-                msgs.push([MDInternal.VALIDATION_ERROR_MISSINGVALUELIST, fieldDef.name] as never);
+                msgs.push([ConfigurationErrors.INVALID_CONFIG_MISSINGVALUELIST, fieldDef.name] as never);
         }
 
         return msgs;

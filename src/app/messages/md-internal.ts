@@ -19,16 +19,12 @@ export class MDInternal extends MD {
     public static PARSE_ERROR_INVALID_JSON: string = 'parse/error/invalidjson';
 
     public static VALIDATION_ERROR_MISSINGPROPERTY: string = 'validation/error/missingproperty';
-    public static VALIDATION_ERROR_MISSINGPARENTTYPE: string = 'validation/error/missingparenttype';
     public static VALIDATION_ERROR_MISSINGVIEWTYPE: string = 'validation/error/missingviewtype';
     public static VALIDATION_ERROR_NONOPERATIONVIEWTYPE: string = 'validation/error/nonoperationviewtype';
-    public static VALIDATION_ERROR_MISSINGRELATIONTYPE: string = 'validation/error/missingrelationtype';
     public static VALIDATION_ERROR_TOPLEVELTYPEHASPARENT: string = 'validation/error/topleveltypehasparent';
     public static VALIDATION_ERROR_INCOMPLETERECORDEDIN: string = 'validation/error/incompleterecordedin';
     public static VALIDATION_ERROR_NOPROJECTRECORDEDIN: string = 'validation/error/noprojectrecordedin';
-    public static VALIDATION_ERROR_MISSINGFIELDNAME: string = 'validation/error/missingfieldname';
     public static VALIDATION_ERROR_INVALIDINPUTTYPE: string = 'validation/error/invalidinputtype';
-    public static VALIDATION_ERROR_MISSINGVALUELIST: string = 'validation/error/missingvaluelist';
     public static VALIDATION_ERROR_INVALIDTYPE: string = 'validation/error/invalidtype';
     public static VALIDATION_ERROR_INVALIDFIELD: string = 'validation/error/invalidfield';
     public static VALIDATION_ERROR_INVALIDFIELDS: string = 'validation/error/invalidfields';
@@ -36,9 +32,6 @@ export class MDInternal extends MD {
     public static VALIDATION_ERROR_INVALIDRELATIONFIELDS: string = 'validation/error/invalidrelationfields';
     public static VALIDATION_ERROR_INVALID_NUMERIC_VALUE: string = 'validation/error/invalidnumericvalue';
     public static VALIDATION_ERROR_INVALID_NUMERIC_VALUES: string = 'validation/error/invalidnumericvalues';
-    
-    public static VALIDATION_ERROR_MISSINGTYPE: string = 'validation/error/missingtype';
-    public static VALIDATION_ERROR_DUPLICATETYPE: string = 'validation/error/duplicatetype';
 
     public static PERSISTENCE_ERROR_TARGETNOTFOUND: string = 'persistence/error/targetnotfound';
 
@@ -46,6 +39,12 @@ export class MDInternal extends MD {
 
     constructor() {
         super();
+        this.msgs[MDInternal.VALIDATION_ERROR_INVALIDTYPE]={
+            content: 'Ungültige Typdefinition: \'{0}\'',
+            level: 'danger',
+            params: [],
+            hidden: false
+        };
         this.msgs[MDInternal.UNKOWN_ERROR]={
             content: 'Ein unbekannter Fehler ist aufgetreten. Details können in der Developer Console eingesehen werden.',
             level: 'danger',
@@ -66,12 +65,6 @@ export class MDInternal extends MD {
         };
         this.msgs[MDInternal.PARSE_ERROR_INVALID_JSON]={
             content: 'Fehler beim Parsen der Konfigurationsdatei \'{0}\': Das JSON ist nicht valide.',
-            level: 'danger',
-            params: [],
-            hidden: false
-        };
-        this.msgs[MDInternal.VALIDATION_ERROR_INVALIDTYPE]={
-            content: 'Ungültige Typdefinition: \'{0}\'',
             level: 'danger',
             params: [],
             hidden: false
@@ -118,18 +111,6 @@ export class MDInternal extends MD {
             params: [],
             hidden: false
         };
-        this.msgs[MDInternal.VALIDATION_ERROR_MISSINGTYPE]={
-            content: 'Die Configuration.json benötigt eine Definition für den Typ \'{0}\'.',
-            level: 'danger',
-            params: [],
-            hidden: false
-        };
-        this.msgs[MDInternal.VALIDATION_ERROR_MISSINGPARENTTYPE]={
-            content: 'In der Configuration.json wird auf den nicht definierten Parent-Typ \'{0}\' verwiesen.',
-            level: 'danger',
-            params: [],
-            hidden: false
-        };
         this.msgs[MDInternal.VALIDATION_ERROR_MISSINGVIEWTYPE]={
             content: 'Im View-Teil der Configuration.json wird auf den nicht definierten Typ \'{0}\' verwiesen.',
             level: 'danger',
@@ -138,12 +119,6 @@ export class MDInternal extends MD {
         };
         this.msgs[MDInternal.VALIDATION_ERROR_NONOPERATIONVIEWTYPE]={
             content: 'Im View-Teil der Configuration.json wird auf den Typ \'{0}\' verwiesen. Dieser ist als Nicht-Maßnahmen-Typ nicht unterstützt.',
-            level: 'danger',
-            params: [],
-            hidden: false
-        };
-        this.msgs[MDInternal.VALIDATION_ERROR_MISSINGRELATIONTYPE]={
-            content: 'Im Relation-Teil der Configuration.json wird auf den nicht definierten Typ \'{0}\' verwiesen.',
             level: 'danger',
             params: [],
             hidden: false
@@ -166,26 +141,8 @@ export class MDInternal extends MD {
             params: [],
             hidden: false
         };
-        this.msgs[MDInternal.VALIDATION_ERROR_MISSINGFIELDNAME]={
-            content: 'Fehlender Feldname in Felddefinition: \'{0}\'.',
-            level: 'danger',
-            params: [],
-            hidden: false
-        };
         this.msgs[MDInternal.VALIDATION_ERROR_INVALIDINPUTTYPE]={
             content: 'Ungültiger Wert \'{1}\' für \'inputType\' in Felddefinition für \'{0}\'. Erlaubte Werte: {2}.',
-            level: 'danger',
-            params: [],
-            hidden: false
-        };
-        this.msgs[MDInternal.VALIDATION_ERROR_MISSINGVALUELIST]={
-            content: 'Fehlende Werteliste in Felddefinition für \'{0}\'.',
-            level: 'danger',
-            params: [],
-            hidden: false
-        };
-        this.msgs[MDInternal.VALIDATION_ERROR_DUPLICATETYPE]={
-            content: 'Die Configuration.json enthält eine Mehrfachdefinition für den Typ \'{0}\'.',
             level: 'danger',
             params: [],
             hidden: false

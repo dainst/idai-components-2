@@ -8,11 +8,12 @@ import {IdaiType} from '../configuration/idai-type';
 import {Document} from '../model/document';
 import {Resource} from '../model/resource';
 
+
+@Injectable()
 /**
  * @author Daniel de Oliveira
  * @author Thomas Kleinke
  */
-@Injectable()
 export class Validator {
 
     constructor(private configLoader: ConfigLoader) {}
@@ -81,8 +82,8 @@ export class Validator {
 
     private static getMissingProperties(resource: Resource, projectConfiguration: ProjectConfiguration) {
 
-        let missingFields: string[] = [];
-        let fieldDefinitions: Array<FieldDefinition> = projectConfiguration.getFieldDefinitions(resource.type);
+        const missingFields: string[] = [];
+        const fieldDefinitions: Array<FieldDefinition> = projectConfiguration.getFieldDefinitions(resource.type);
 
         for (let fieldDefinition of fieldDefinitions) {
             if (projectConfiguration.isMandatory(resource.type,fieldDefinition.name)) {
@@ -104,14 +105,8 @@ export class Validator {
     private static validateType(resource: Resource, projectConfiguration: ProjectConfiguration): boolean {
 
         if (!resource.type) return false;
-
-        let types: Array<IdaiType> = projectConfiguration.getTypesList();
-
-        for (let i in types) {
-            if (types[i].name == resource.type) return true;
-        }
-
-        return false;
+        return projectConfiguration.getTypesList()
+            .some(type => type.name == resource.type);
     }
 
     /**
@@ -160,7 +155,6 @@ export class Validator {
     public static validateRelations(resource: Resource, projectConfiguration: ProjectConfiguration): string[]|undefined {
 
         const fields: Array<RelationDefinition> = projectConfiguration.getRelationDefinitions(resource.type) as any;
-
         const invalidFields: Array<any> = [];
 
         for (let relationField in resource.relations) {
@@ -186,11 +180,12 @@ export class Validator {
         }
     }
 
+
     public static validateNumericValues(resource: Resource, projectConfiguration: ProjectConfiguration): string[]|undefined {
 
-        let projectFields: Array<FieldDefinition> = projectConfiguration.getFieldDefinitions(resource.type);
-        let numericInputTypes: string[] = ['unsignedInt', 'float', 'unsignedFloat'];
-        let invalidFields: string[] = [];
+        const projectFields: Array<FieldDefinition> = projectConfiguration.getFieldDefinitions(resource.type);
+        const numericInputTypes: string[] = ['unsignedInt', 'float', 'unsignedFloat'];
+        const invalidFields: string[] = [];
 
         for (let i in projectFields) {
             let fieldDef = projectFields[i] as any;

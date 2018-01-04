@@ -1,6 +1,7 @@
 import {ConfigurationDefinition} from '../../../src/app/configuration/configuration-definition';
 import {ConfigurationValidator} from '../../../src/app/configuration/configuration-validator';
-import {MDInternal} from '../../../src/app/messages/md-internal';
+import {ConfigurationErrors} from '../../../src/app/configuration/configuration-errors';
+
 
 /**
  * @author Daniel de Oliveira
@@ -15,16 +16,12 @@ export function main() {
 
             configuration = {
                 identifier: 'test',
-                types : [
-                    { type: 'T',
-                        fields: []
-                    }
-                ]
+                types : [{ type: 'T', fields: []}]
             };
 
             expect(new ConfigurationValidator(['Tmissing'])
                 .go(configuration))
-                .toContain([MDInternal.VALIDATION_ERROR_MISSINGTYPE,'Tmissing']);
+                .toContain([ConfigurationErrors.INVALID_CONFIG_MISSINGTYPE,'Tmissing']);
         });
 
 
@@ -33,49 +30,40 @@ export function main() {
             configuration = {
                 identifier: 'test',
                 types : [
-                    { type: 'Tduplicate',
-                        fields: []
-                    },
-                    { type: 'Tduplicate',
-                        fields: []
-                    }
+                    { type: 'Tduplicate', fields: []},
+                    { type: 'Tduplicate', fields: []}
                 ]
             };
 
             expect(new ConfigurationValidator([])
                 .go(configuration))
-                .toContain([MDInternal.VALIDATION_ERROR_DUPLICATETYPE,'Tduplicate']);
+                .toContain([ConfigurationErrors.INVALID_CONFIG_DUPLICATETYPE,'Tduplicate']);
         });
 
 
         it('should report missing parent type', function() {
 
             configuration = {
-                'identifier': 'test',
-                types : [
-                    { type: 'T', fields: [], parent: 'P'}
-                ]
+                identifier: 'test',
+                types : [{ type: 'T', fields: [], parent: 'P'}]
             };
 
             expect(new ConfigurationValidator(['T'])
                 .go(configuration))
-                .toContain([MDInternal.VALIDATION_ERROR_MISSINGPARENTTYPE,'P']);
+                .toContain([ConfigurationErrors.INVALID_CONFIG_MISSINGPARENTTYPE,'P']);
         });
 
 
         it('should report unnamed type', function() {
 
             configuration = {
-                identifier
-                    : 'test',
-                types : [
-                    { fields: []} as any
-                ]
+                identifier: 'test',
+                types : [{ fields: []} as any]
             };
 
             expect(new ConfigurationValidator(['T'])
                 .go(configuration))
-                .toContain([MDInternal.VALIDATION_ERROR_INVALIDTYPE,
+                .toContain([ConfigurationErrors.INVALID_CONFIG_INVALIDTYPE,
                     JSON.stringify({ fields: []})]);
         });
     });
