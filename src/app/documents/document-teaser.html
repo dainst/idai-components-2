@@ -1,5 +1,6 @@
 <div class="document-teaser media">
     <type-icon [type]="document.resource.type" size="35"></type-icon>
+
     <div *ngIf="document.resource.identifier || document.resource.shortDescription"
          class="teasercontent media-body ml-2">
         <div class="title">
@@ -10,7 +11,9 @@
             {{document.resource.shortDescription}}
         </div>
     </div>
+
     <div *ngIf="!(document.resource.identifier || document.resource.shortDescription)"
-         class="new">Neues Objekt
+         class="teasercontent media-body ml-2">
+        <div class="new">Neues Objekt</div>
     </div>
 </div>
