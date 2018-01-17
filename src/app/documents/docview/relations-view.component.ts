@@ -4,71 +4,68 @@ import {Resource} from '../../model/resource';
 import {ReadDatastore} from '../../datastore/read-datastore';
 import {ConfigLoader} from '../../configuration/config-loader';
 
+
 @Component({
     selector: 'relations-view',
     moduleId: module.id,
     templateUrl: './relations-view.html'
 })
-
 /**
  * Shows relations and fields of a document.
  *
  * @author Thomas Kleinke
  * @author Sebastian Cuy
+ * @author Daniel de Oliveira
  */
 export class RelationsViewComponent implements OnChanges {
 
     protected relations: Array<any>;
 
     @Input() resource: Resource;
+    @Input() hideRelations: Array<string> = [];
     @Output() onRelationTargetClicked: EventEmitter<Document> = new EventEmitter<Document>();
 
-    public collapsed: boolean;
+    public collapsed: boolean = false;
 
-    constructor(
-        private datastore: ReadDatastore,
-        private configLoader: ConfigLoader
-    ) {
-        this.collapsed = false;
-    }
+
+    constructor(private datastore: ReadDatastore, private configLoader: ConfigLoader) {}
+
 
     ngOnChanges() {
         
         this.relations = [];
-        if (this.resource) this.processRelations(this.resource);
+        if (this.resource) this.processRels(this.resource);
     }
+
 
     public clickRelation(document: Document) {
 
         this.onRelationTargetClicked.emit(document);
     }
 
-    private processRelations(resource: Resource) {
 
-        (this.configLoader.getProjectConfiguration() as any).then((projectConfiguration: any)=>{
+    private async processRels(resource: Resource) {
 
-            for (let relationName in resource.relations) {
-                if (resource.relations.hasOwnProperty(relationName)) {
-                    if (!projectConfiguration.isVisibleRelation(relationName, this.resource.type)) continue;
+        const projectConfiguration = await this.configLoader.getProjectConfiguration() as any;
 
-                    let targetIds = resource.relations[relationName];
-
-                    let relationGroup = {
-                        name: projectConfiguration.getRelationDefinitionLabel(relationName),
-                        targets: []
-                    };
-
-                    this.getTargetDocuments(targetIds).then(
-                        targets => {
-                            relationGroup.targets = targets as any;
-                            if (relationGroup.targets.length > 0) this.relations.push(relationGroup);
-                        }
-                    );
-                }
-            }
-        });
-
+        Object.keys(resource.relations)
+            .filter(name => projectConfiguration.isVisibleRelation(name, this.resource.type))
+            .filter(name => this.hideRelations.indexOf(name) === -1)
+            .forEach(name =>
+                this.addRel(resource, name, projectConfiguration.getRelationDefinitionLabel(name)));
     }
+
+
+    private async addRel(resource: Resource, relationName: string, relLabel: string) {
+
+        const relationGroup = {
+            name: relLabel,
+            targets: (await this.getTargetDocuments(resource.relations[relationName])) as any
+        };
+
+        if (relationGroup.targets.length > 0) this.relations.push(relationGroup);
+    }
+
 
     private getTargetDocuments(targetIds: Array<string>): Promise<Array<Document>> {
 
