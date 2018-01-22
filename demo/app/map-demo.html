@@ -1,13 +1,13 @@
 <div class="container-fluid">
 
-    <map [documents]="documents" [selectedDocument]="selectedDocument" [mainTypeDocument]="mainTypeDocument"
+    <map [documents]="documents" [selectedDocument]="selectedDocument" [parentDocument]="parentDocument"
          [projectDocument]="projectDocument" [update]="liveUpdate"
          (onSelectDocument)="selectDocument($event)"></map>
 
-    <div (click)="toggleMainTypeDocument()" style="margin-top: 20px;">
-        <button class="btn btn" [class.btn-primary]="mainTypeDocument" [class.btn-outline-primary]="!mainTypeDocument"
+    <div (click)="toggleParentDocument()" style="margin-top: 20px;">
+        <button class="btn btn" [class.btn-primary]="parentDocument" [class.btn-outline-primary]="!parentDocument"
                 style="cursor: pointer; float: left; margin-right: 10px;">
-            {{mainTypeDocumentTemplate.resource.shortDescription}}
+            {{parentDocumentTemplate.resource.shortDescription}}
         </button>
     </div>
 

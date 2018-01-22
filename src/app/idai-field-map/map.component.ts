@@ -29,7 +29,7 @@ export class MapComponent implements OnChanges {
 
     @Input() documents: Array<IdaiFieldDocument>;
     @Input() selectedDocument: IdaiFieldDocument;
-    @Input() mainTypeDocument: IdaiFieldDocument;
+    @Input() parentDocument: IdaiFieldDocument;
     @Input() projectDocument: IdaiFieldDocument;
     @Input() update: boolean;
 
@@ -171,7 +171,7 @@ export class MapComponent implements OnChanges {
 
         this.bounds = [];
 
-        this.addMainTypeDocumentGeometryToMap();
+        this.addParentDocumentGeometryToMap();
 
         if (this.documents) {
             for (let document of this.documents) {
@@ -181,16 +181,16 @@ export class MapComponent implements OnChanges {
     }
 
 
-    protected addMainTypeDocumentGeometryToMap() {
+    protected addParentDocumentGeometryToMap() {
 
-        if (!this.mainTypeDocument || !this.mainTypeDocument.resource.geometry) return;
+        if (!this.parentDocument || !this.parentDocument.resource.geometry) return;
 
         if (['LineString', 'MultiLineString', 'Polygon', 'MultiPolygon']
-                .indexOf(this.mainTypeDocument.resource.geometry.type) == -1) {
+                .indexOf(this.parentDocument.resource.geometry.type) == -1) {
             return;
         }
 
-        this.addGeometryToMap(this.mainTypeDocument);
+        this.addGeometryToMap(this.parentDocument);
     }
 
 
@@ -265,8 +265,8 @@ export class MapComponent implements OnChanges {
         let polyline: IdaiFieldPolyline = this.getPolylineFromCoordinates(coordinates);
         polyline.document = document;
 
-        if (document == this.mainTypeDocument) {
-            this.setPathOptionsForMainTypeDocument(polyline, document);
+        if (document == this.parentDocument) {
+            this.setPathOptionsForParentDocument(polyline, document);
         } else {
             this.setPathOptions(polyline, document, 'polyline');
         }
@@ -285,8 +285,8 @@ export class MapComponent implements OnChanges {
         let polygon: IdaiFieldPolygon = this.getPolygonFromCoordinates(coordinates);
         polygon.document = document;
 
-        if (document == this.mainTypeDocument) {
-            this.setPathOptionsForMainTypeDocument(polygon, document);
+        if (document == this.parentDocument) {
+            this.setPathOptionsForParentDocument(polygon, document);
         } else {
             this.setPathOptions(polygon, document, 'polygon');
         }
@@ -324,11 +324,11 @@ export class MapComponent implements OnChanges {
     }
 
 
-    private setPathOptionsForMainTypeDocument(path: L.Path, document: IdaiFieldDocument) {
+    private setPathOptionsForParentDocument(path: L.Path, document: IdaiFieldDocument) {
 
         path.setStyle({
             color: this.typeColors[document.resource.type],
-            className: 'main',
+            className: 'parent',
             interactive: false
         });
 

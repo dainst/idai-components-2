@@ -91,7 +91,7 @@ export class MapDemoComponent {
         }
     ];
 
-    public mainTypeDocumentTemplate: IdaiFieldDocument = {
+    public parentDocumentTemplate: IdaiFieldDocument = {
         'resource': {
             'id': 's1',
             'identifier': 'section1',
@@ -121,14 +121,16 @@ export class MapDemoComponent {
         }
     };
 
-    public mainTypeDocument: IdaiFieldDocument|undefined;
+    public parentDocument: IdaiFieldDocument|undefined;
     public selectedDocument: IdaiFieldDocument|undefined;
     public liveUpdate: boolean = true;
+
 
     public selectDocument(document: IdaiFieldDocument) {
 
         this.selectedDocument = document;
     }
+
 
     public toggleDocument(document: IdaiFieldDocument) {
 
@@ -139,12 +141,13 @@ export class MapDemoComponent {
         }
     }
 
-    public toggleMainTypeDocument() {
 
-        if (this.mainTypeDocument) {
-            this.mainTypeDocument = undefined;
+    public toggleParentDocument() {
+
+        if (this.parentDocument) {
+            this.parentDocument = undefined;
         } else {
-            this.mainTypeDocument = this.mainTypeDocumentTemplate;
+            this.parentDocument = this.parentDocumentTemplate;
         }
     }
 }
