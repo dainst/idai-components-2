@@ -2,20 +2,6 @@
      class="card document-card">
 
     <div *ngIf="document">
-        <div class="card-header">
-            <div class="type-icon-container" ngbTooltip="{{typeLabel}}" container="body" placement="bottom">
-                <type-icon [type]="document.resource.type" size="30" class="type-icon"></type-icon>
-            </div>
-            <h4 class="document-title">
-                <span id="document-view-identifier-label">{{document.resource.identifier}}</span>
-
-                <button class="close-button btn btn-link btn-xs"
-                        id="document-view-button-back-to-map"
-                        (click)="onDeselect.emit()">
-                    <span class="mdi mdi-close"></span>
-                </button>
-            </h4>
-        </div>
         <div class="card-block">
 
             <button *ngIf="document._conflicts" class="btn btn-link btn-xs"

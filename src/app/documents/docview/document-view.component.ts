@@ -18,16 +18,10 @@ export class DocumentViewComponent implements OnChanges {
     @Input() basePath: string;
 
     @Output() onSolveConflicts: EventEmitter<any> = new EventEmitter<any>();
-    @Output() onDeselect: EventEmitter<any> = new EventEmitter<any>();
 
     private typeLabel: any;
 
-    constructor(
-        private router: Router,
-        private configLoader: ConfigLoader
-    ) {
-
-    }
+    constructor(private configLoader: ConfigLoader) {}
 
     ngOnChanges() {
         if (!this.document) return;
