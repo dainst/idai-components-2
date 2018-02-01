@@ -66,46 +66,6 @@ $buttoncolor: #657faa;
   box-shadow: none !important;
 }
 
-#document-view a {
-  color: #346599;
-}
-
-#document-view h1 {
-  font-size: 20px;
-}
-
-#document-view h2{
-  font-size: 15px;
-  color: #999;
-  margin-bottom: 20px;
-}
-
-.document-view-field {
-  margin-bottom: 10px;
-}
-
-.document-view-field ul {
-  padding: 0;
-  list-style-type: none;
-}
-
-.document-view-field .fieldname {
-  font-size: 1rem;
-  font-weight: bold;
-}
-
-.document-view-field .fieldvalue {
-  margin-left: 10px;
-  margin-bottom: 5px;
-  overflow-wrap: break-word;
-  line-height: 1.2;
-  font-size: 0.9em;
-}
-
-.document-view-field .fieldvalue .relation-link {
-  cursor: pointer;
-}
-
 #document-view-button-back-to-map,
 #document-view-button-show-data{
   margin-top: 1px;
