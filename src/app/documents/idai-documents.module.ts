@@ -26,7 +26,6 @@ import {DateComponent} from './docedit/forms/date.component';
 import {NgbDateDEParserFormatter} from './docedit/forms/date-formatter.component';
 import {FieldsViewComponent} from './docview/fields-view.component';
 import {RelationsViewComponent} from './docview/relations-view.component';
-import {DocumentViewComponent} from './docview/document-view.component';
 import {IdaiWidgetsModule} from '../widgets/idai-widgets.module';
 import {BooleanComponent} from './docedit/forms/boolean.component';
 import {DocumentTeaserComponent} from './document-teaser.component';
@@ -42,7 +41,6 @@ import {DocumentTeaserComponent} from './document-teaser.component';
     declarations: [
         FieldsViewComponent,
         RelationsViewComponent,
-        DocumentViewComponent,
         EditFormComponent,
         RelationsFormComponent,
         RelationPickerComponent,
@@ -74,7 +72,6 @@ import {DocumentTeaserComponent} from './document-teaser.component';
         RelationsViewComponent,
         RelationsFormComponent,
         EditFormComponent,
-        DocumentViewComponent,
         DocumentTeaserComponent
     ]
 })
