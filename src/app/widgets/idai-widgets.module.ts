@@ -3,7 +3,6 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {TypeIconComponent} from './type-icon';
-import {TypePickerComponent} from './type-picker.component';
 
 @NgModule({
     imports: [
@@ -12,12 +11,10 @@ import {TypePickerComponent} from './type-picker.component';
         FormsModule
     ],
     declarations: [
-        TypeIconComponent,
-        TypePickerComponent
+        TypeIconComponent
     ],
     exports: [
-        TypeIconComponent,
-        TypePickerComponent
+        TypeIconComponent
     ]
 })
-export class IdaiWidgetsModule {};
+export class IdaiWidgetsModule {}

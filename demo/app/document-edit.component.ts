@@ -1,5 +1,4 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Validator} from '../../src/app/persist/validator';
 import {Messages} from '../../src/app/messages/messages';
 import {ProjectConfiguration} from '../../src/app/configuration/project-configuration';
 import {ConfigLoader} from '../../src/app/configuration/config-loader';
@@ -21,30 +20,15 @@ export class DocumentEditComponent implements OnInit {
 
     private projectConfiguration: ProjectConfiguration;
 
-    private validator: Validator;
-
-
     constructor(
-        private configLoader: ConfigLoader,
-        private messages: Messages
+        private configLoader: ConfigLoader
     ) {}
 
 
     ngOnInit(): any {
-        this.validator = new Validator(this.configLoader);
 
         (this.configLoader.getProjectConfiguration() as any).then((projectConfiguration: any) => {
             this.projectConfiguration = projectConfiguration;
         });
-    }
-
-
-    public validate(doc: any) {
-
-        this.validator.validate(doc).catch(
-            msgsWithParams => {
-                this.messages.add(msgsWithParams);
-            }
-        );
     }
 }
