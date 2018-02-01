@@ -141,7 +141,7 @@ export class ConfigurationValidator {
             if (!fieldDef.hasOwnProperty('inputType'))
                 fieldDef.inputType = 'input';
             if (ConfigurationValidator.VALID_INPUT_TYPES.indexOf(fieldDef.inputType) == -1)
-                msgs.push([MDInternal.VALIDATION_ERROR_INVALIDINPUTTYPE, fieldDef.name,
+                msgs.push([ConfigurationErrors.VALIDATION_ERROR_INVALIDINPUTTYPE, fieldDef.name,
                     fieldDef.inputType, ConfigurationValidator.VALID_INPUT_TYPES.join(', ')] as never);
             if (ConfigurationValidator.VALUELIST_INPUT_TYPES.indexOf(fieldDef.inputType) != -1
                     && (!fieldDef.hasOwnProperty('valuelist')

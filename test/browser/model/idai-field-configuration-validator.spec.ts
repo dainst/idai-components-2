@@ -1,6 +1,6 @@
 import {ConfigurationDefinition} from '../../../src/app/configuration/configuration-definition';
-import {MDInternal} from '../../../src/app/messages/md-internal';
 import {IdaiFieldConfigurationValidator} from '../../../src/app/idai-field-model/idai-field-configuration-validator';
+import {ConfigurationErrors} from '../../../src/app/configuration/configuration-errors';
 
 /**
  * @author Daniel de Oliveira
@@ -59,7 +59,7 @@ export function main() {
 
             expect(new IdaiFieldConfigurationValidator()
                 .go(configuration))
-                .toContain([MDInternal.VALIDATION_ERROR_MISSINGVIEWTYPE, 'U']);
+                .toContain([ConfigurationErrors.VALIDATION_ERROR_MISSINGVIEWTYPE, 'U']);
         });
 
 
@@ -74,7 +74,7 @@ export function main() {
 
             expect(new IdaiFieldConfigurationValidator()
                 .go(configuration))
-                .toContain([MDInternal.VALIDATION_ERROR_NONOPERATIONVIEWTYPE, 'T2']);
+                .toContain([ConfigurationErrors.VALIDATION_ERROR_NONOPERATIONVIEWTYPE, 'T2']);
         });
     });
 }

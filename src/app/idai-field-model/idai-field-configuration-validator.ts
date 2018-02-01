@@ -1,9 +1,9 @@
 import {ConfigurationValidator} from '../configuration/configuration-validator';
 import {RelationDefinition} from '../configuration/relation-definition';
 import {TypeDefinition} from '../configuration/type-definition';
-import {MDInternal} from '../messages/md-internal';
 import {ConfigurationDefinition} from '../configuration/configuration-definition';
 import {ViewDefinition} from './view-definition';
+import {ConfigurationErrors} from '../configuration/configuration-errors';
 
 
 /**
@@ -67,11 +67,11 @@ export class IdaiFieldConfigurationValidator extends ConfigurationValidator{
 
                 if (!(type in recordedInRelations) || !recordedInRelations[type]
                     || recordedInRelations[type].length == 0) {
-                    msgs.push([MDInternal.VALIDATION_ERROR_INCOMPLETERECORDEDIN, type] as never);
+                    msgs.push([ConfigurationErrors.VALIDATION_ERROR_INCOMPLETERECORDEDIN, type] as never);
                 }
             }
         } else {
-            msgs.push([MDInternal.VALIDATION_ERROR_NOPROJECTRECORDEDIN] as never);
+            msgs.push([ConfigurationErrors.VALIDATION_ERROR_NOPROJECTRECORDEDIN] as never);
         }
 
         return msgs;
@@ -99,7 +99,7 @@ export class IdaiFieldConfigurationValidator extends ConfigurationValidator{
 
             if (view.operationSubtype == 'Project') continue;
             if (typeNames.indexOf(view.operationSubtype) == -1)
-                msgs.push([MDInternal.VALIDATION_ERROR_MISSINGVIEWTYPE, view.operationSubtype] as never);
+                msgs.push([ConfigurationErrors.VALIDATION_ERROR_MISSINGVIEWTYPE, view.operationSubtype] as never);
 
             let supported = false;
             for (let type of types) {
@@ -107,7 +107,7 @@ export class IdaiFieldConfigurationValidator extends ConfigurationValidator{
                     type.parent == 'Operation') supported = true
             }
             if (!supported) {
-                msgs.push([MDInternal.VALIDATION_ERROR_NONOPERATIONVIEWTYPE, view.operationSubtype] as never);
+                msgs.push([ConfigurationErrors.VALIDATION_ERROR_NONOPERATIONVIEWTYPE, view.operationSubtype] as never);
             }
         }
         return msgs;
