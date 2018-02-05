@@ -19,6 +19,7 @@ export class Messages {
 
     private activeMessages: Message[] = [];
 
+    // Messages of these types fade away after the given timeout.
     private static TIMEOUT_TYPES: string[] = ['success', 'info'];
 
     
@@ -151,7 +152,6 @@ export class Messages {
 
     private static shouldSetTimeout(message: Message): boolean {
 
-        //return (message.level) in Messages.TIMEOUT_TYPES;
         return Messages.TIMEOUT_TYPES.includes(message.level);
     }
 }
