@@ -35,19 +35,21 @@ export class Messages {
      *   Every occurrence of "{0}", "{1}", "{2}" etc. will be replaced with the param string at the corresponding
      *   array position: {0} will be replaced with params[0] etc.
      */
-    public add(msgWithParams: Array<string>): void {
+    public add(msgWithParams: Array<string>) {
 
         if (!this.isArrayOfStrings(msgWithParams)) return;
 
-        const id = msgWithParams[0];
+        const key: string = msgWithParams[0];
         msgWithParams.splice(0, 1);
 
         const params = msgWithParams;
-        const msg = this._get(id);
-        if (!msg) {
-            this.addUnknownErr('no msg found for key of M with id: "' + id + '"');
+        const template: Message = this.fetchTemplate(key);
+        if (!template) {
+            this.addUnknownErr('no msg found for key of M with id: "' + key + '"');
         } else {
-            this._add(msg, params);
+            const message: Message = Messages.buildFromTemplate(template, params);
+            this.startTimeout(message);
+            this.activeMessages.push(message);
         }
     }
 
@@ -120,38 +122,44 @@ export class Messages {
     private addUnknownErr(consoleError: string) {
         
         console.error(consoleError);
-        this._add(this.internalMessagesDictionary.msgs[MDInternal.UNKOWN_ERROR], undefined);
+        const message = Messages.buildFromTemplate(this.internalMessagesDictionary.msgs[MDInternal.UNKOWN_ERROR],
+            undefined);
+        this.startTimeout(message);
+        this.activeMessages.push(message);
     }
     
 
-    private _get(key: string): Message {
+    private fetchTemplate(key: string): Message {
 
         let message: Message = this.internalMessagesDictionary.msgs[key];
-        const providedMsg = this.messagesDictionary.msgs[key];
-        if (providedMsg) message = providedMsg;
+        const providedMessage = this.messagesDictionary.msgs[key];
+        if (providedMessage) message = providedMessage;
 
         return message;
     }
 
-    
-    private _add(message: Message, params?: Array<string>) {
-        
-        const messageToAdd = {
-            content: message.content,
-            level: message.level,
-            params: params ? params.slice() : message.params,
-            hidden: false
-        };
 
-        if (Messages.shouldSetTimeout(messageToAdd)) {
-            setTimeout(() => messageToAdd.hidden = true, this.timeout);
+    private startTimeout(message: Message) {
+
+        if (Messages.shouldSetTimeout(message)) {
+            setTimeout(() => message.hidden = true, this.timeout);
         }
-        this.activeMessages.push(messageToAdd);
     }
 
 
     private static shouldSetTimeout(message: Message): boolean {
 
         return Messages.TIMEOUT_TYPES.includes(message.level);
+    }
+
+
+    private static buildFromTemplate(template: Message, params?: Array<string>): Message {
+
+        return {
+            content: template.content,
+            level: template.level,
+            params: params ? params.slice() : template.params,
+            hidden: false
+        };
     }
 }
