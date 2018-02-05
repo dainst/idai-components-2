@@ -1,13 +1,13 @@
-import {Injectable} from "@angular/core";
-import {Message} from "./message";
-import {MD} from "./md";
-import {MDInternal} from "./md-internal";
+import {Injectable} from '@angular/core';
+import {Message} from './message';
+import {MD} from './md';
+import {MDInternal} from './md-internal';
 
 @Injectable()
 /**
  * Maintains a collection of currently active messages the
- * user can see at a given moment. Messages can be added
- * based on identifiers.
+ * user can see at a given moment. Message content is defined
+ * by message dictionary keys.
  *
  * @author Jan G. Wieners
  * @author Daniel M. de Oliveira
@@ -16,16 +16,18 @@ import {MDInternal} from "./md-internal";
 export class Messages {
 
     private internalMessagesDictionary = new MDInternal();
+
+    private activeMessages: Message[] = [];
+
     
     constructor(private messagesDictionary: MD,
                 private timeout: any) {
     }
-
-    private messageList: Message[] = [];
+    
 
     /**
      * @param msgWithParams an array of strings and numbers
-     *   msgWithParams[0] -> id. Used to identify the message. Must be an existing key.
+     *   msgWithParams[0] -> key. Used to identify the message. Must be an existing key.
      *   msgWithParams[1..n] -> params. Contains strings which will be inserted into the message content.
      *   Every occurrence of "{0}", "{1}", "{2}" etc. will be replaced with the param string at the corresponding
      *   array position: {0} will be replaced with params[0] etc.
@@ -39,16 +41,21 @@ export class Messages {
 
         let params = msgWithParams;
         let msg = this._get(id);
-        if (!msg) this.addUnkownErr('no msg found for key of M with id: "'+id+'"');
-        else this._add(msg,params);
+        if (!msg) {
+            this.addUnkownErr('no msg found for key of M with id: "' + id + '"');
+        } else {
+            this._add(msg,params);
+        }
     }
 
+    
     /**
-     * @returns {boolean} false and adds an unknown error if not, true otherwiese
+     * @returns {boolean} false and adds an unknown error if not, true otherwise
      */
     private isArrayOfStrings(msgWithParams: any) {
+        
         if (!Array.isArray(msgWithParams)) {
-            this.addUnkownErr('msgWithParams must be an array, but is "'+msgWithParams+'"');
+            this.addUnkownErr('msgWithParams must be an array, but is "' + msgWithParams + '"');
             return false;
         }
         let errs = [] as any;
@@ -59,16 +66,20 @@ export class Messages {
             }
         }
         if (errs.length > 0) {
-            this.addUnkownErr('msgWithParams must be an array of strings, but found "'+errs.join(',')+'"');
+            this.addUnkownErr('msgWithParams must be an array of strings, but found "'
+                + errs.join(',') + '"');
             return false;
         }
         return true;
     }
 
+    
     private addUnkownErr(consoleError: string) {
+        
         console.error(consoleError);
-        this._add(this.internalMessagesDictionary.msgs[MDInternal.UNKOWN_ERROR],undefined);
+        this._add(this.internalMessagesDictionary.msgs[MDInternal.UNKOWN_ERROR], undefined);
     }
+    
 
     private _get(id: any) : Message {
 
@@ -78,7 +89,9 @@ export class Messages {
         return msg;
     }
 
+    
     private _add(msg: any, params?: Array<string>) {
+        
         let messageToAdd = {
             content: msg.content,
             level: msg.level,
@@ -93,41 +106,50 @@ export class Messages {
                 }, this.timeout);
             }
         }
-        this.messageList.push(messageToAdd);
+        this.activeMessages.push(messageToAdd);
     }
+    
     
     /**
      * @param message to be removed
      */
     public removeMessage(message: Message) {
 
-        let index:number = this.messageList.indexOf(message, 0);
+        let index:number = this.activeMessages.indexOf(message, 0);
         if (index > -1) {
-            this.messageList.splice(index, 1);
+            this.activeMessages.splice(index, 1);
         }
     }
+    
 
     public hideMessage(message: Message) {
+        
         message.hidden = true;
     }
 
+    
     public setHidden(hidden: boolean) {
-        this.messageList.forEach(function (msg) {
+        
+        this.activeMessages.forEach(function (msg) {
             msg.hidden = hidden;
         })
     }
 
+    
     /**
      * Removes all messages.
      */
     public clear() {
-        this.messageList.splice(0, this.messageList.length);
+        
+        this.activeMessages.splice(0, this.activeMessages.length);
     }
+    
 
     /**
      * @returns {Array} reference to the list of current messages.
      */
-    public getMessages() : Message[] {
-        return this.messageList;
+    public getMessages(): Message[] {
+        
+        return this.activeMessages;
     }
 }
