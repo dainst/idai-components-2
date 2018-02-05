@@ -117,27 +117,6 @@ export function main() {
             }
         );
 
-        it('should throw an error if adding undefined instead of array',
-            function(){
-                messages.add(undefined as any);
-                verifyUnknownError('msgWithParams must be an array, but is "undefined"');
-            }
-        );
-
-        it('should throw an error if adding string else than an array',
-            function(){
-                messages.add('a' as any);
-                verifyUnknownError('msgWithParams must be an array, but is "a"');
-            }
-        );
-
-        it('should throw an error if any part of the array is not a string or a number',
-            function(){
-                messages.add(['a', 0, undefined, undefined] as any);
-                verifyUnknownError('msgWithParams must be an array of strings, but found "undefined,undefined"');
-            }
-        );
-
         it('should throw an error if array is empty',
             function(){
                 messages.add([]);

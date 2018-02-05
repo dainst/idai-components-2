@@ -37,7 +37,10 @@ export class Messages {
      */
     public add(msgWithParams: Array<string>) {
 
-        if (!this.isArrayOfStrings(msgWithParams)) return;
+        if (msgWithParams.length == 0) {
+            this.addUnknownErr('no msg found for key of M with id: "undefined"');
+            return;
+        }
 
         const key: string = msgWithParams[0];
         msgWithParams.splice(0, 1);
@@ -84,38 +87,6 @@ export class Messages {
     public getActiveMessages(): Message[] {
 
         return this.activeMessages;
-    }
-
-
-    // TODO Move method to util class
-
-    /**
-     * @returns {boolean} false and adds an unknown error if not, true otherwise
-     */
-    private isArrayOfStrings(msgWithParams: any): boolean {
-
-        if (!Array.isArray(msgWithParams)) {
-            this.addUnknownErr('msgWithParams must be an array, but is "' + msgWithParams + '"');
-            return false;
-        }
-
-        const errs: string[] = [];
-
-        for (let i in msgWithParams) {
-            if ((typeof msgWithParams[i]) != 'string' && (typeof msgWithParams[i]) != 'number') {
-                if (!msgWithParams[i]) errs.push('undefined' as never);
-                else errs.push(msgWithParams[i] as never);
-            }
-        }
-
-        if (errs.length > 0) {
-            // TODO remove from this method
-            this.addUnknownErr('msgWithParams must be an array of strings, but found "'
-                + errs.join(',') + '"');
-            return false;
-        }
-
-        return true;
     }
 
     
