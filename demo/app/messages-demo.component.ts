@@ -16,24 +16,28 @@ export class MessagesDemoComponent {
     private params = [];
     private useParams = false;
 
+    
     constructor(private md: MD, private messages: Messages) {
+        
         this.messageKeys = Object.keys(md.msgs) as never;
     }
 
+
+    public setHiddenForAll = (hidden: boolean) => this.messages.setHiddenForAll(hidden);
+
+    
     public showMessage(msgKey: string) {
-        if (this.useParams && msgKey == "with_params") {
+        
+        if (this.useParams && msgKey == 'with_params') {
             this.messages.add([msgKey].concat(this.params));
         } else {
             this.messages.add([msgKey]);
         }
     }
 
+    
     public clearMessages() {
-        this.messages.clear();
+        
+        this.messages.removeAllMessages();
     }
-
-    public setMessagesHidden(shown) {
-        this.messages.setHidden(!shown);
-    }
-
 }
