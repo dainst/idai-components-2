@@ -110,15 +110,15 @@ export class Messages {
 
     private startTimeout(message: Message) {
 
-        if (Messages.shouldSetTimeout(message)) {
+        if (this.shouldSetTimeout(message)) {
             setTimeout(() => message.hidden = true, this.timeout);
         }
     }
 
 
-    private static shouldSetTimeout(message: Message): boolean {
+    private shouldSetTimeout(message: Message): boolean {
 
-        return Messages.TIMEOUT_TYPES.includes(message.level);
+        return Messages.TIMEOUT_TYPES.includes(message.level) && this.timeout > 0;
     }
 
 
