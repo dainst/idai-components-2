@@ -38,7 +38,8 @@
                 '@angular/forms': 'node_modules/@angular/forms',
                 '@ng-bootstrap/ng-bootstrap': 'node_modules/@ng-bootstrap/ng-bootstrap/bundles/ng-bootstrap.js',
                 'rxjs': 'node_modules/rxjs',
-                'ts-md5': 'node_modules/ts-md5'
+                'ts-md5': 'node_modules/ts-md5',
+                'tsfun': 'node_modules/tsfun'
             },
             packages: {
                 'src/app': {
@@ -48,6 +49,10 @@
                 'demo/app': {
                     main: 'main.js',
                     format: 'cjs',
+                    defaultExtension: 'js'
+                },
+                tsfun: {
+                    main: 'index.js',
                     defaultExtension: 'js'
                 },
                 node_modules: {

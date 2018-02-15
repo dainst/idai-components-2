@@ -1,5 +1,7 @@
-import {Resource} from './resource'
-import {Action} from './action'
+import {Resource} from './resource';
+import {Action} from './action';
+import {subtractO} from 'tsfun';
+
 
 export interface Document {
     resource : Resource;
@@ -21,5 +23,21 @@ export class Document {
         if (!document.created) return false;
 
         return true;
+    }
+
+
+    public static removeFields<D extends Document>(document: D, fields: Array<string>): D {
+
+        const result = subtractO([])(document) as D; // TODO implement shallow copy method
+        result.resource = subtractO(fields)(document.resource) as Resource;
+        return result;
+    }
+
+
+    public static removeRelations<D extends Document>(document: D, relations: Array<string>): D {
+
+        const result = subtractO([])(document) as D; // TODO implement shallow copy method
+        result.resource.relations = subtractO(relations)(result.resource.relations);
+        return result;
     }
 }
