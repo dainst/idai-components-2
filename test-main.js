@@ -48,7 +48,7 @@ System.config({
         '@angular/core/testing': 'node_modules/@angular/core/testing',
         '@angular/router/testing': 'node_modules/@angular/router/testing',
         '@angular/compiler/testing': 'node_modules/@angular/compiler/testing',
-        '@angular/forms/testing': 'node_modules/@angular/forms/testing',
+        '@angular/forms/testing': 'node_modules/@angular/forms/testing'
     },
     packages: {
         '@angular/core': {

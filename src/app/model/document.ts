@@ -1,6 +1,7 @@
 import {Resource} from './resource';
 import {Action} from './action';
-import {copy, subtractO} from 'tsfun';
+import {copy} from 'tsfun';
+import {subtract} from 'tsfun/objects';
 
 
 export interface Document {
@@ -30,7 +31,7 @@ export class Document {
         (document: D): D => {
 
             const result = copy(document);
-            result.resource = subtractO(fields)(document.resource) as Resource;
+            result.resource = subtract(fields)(document.resource) as Resource;
             return result as D;
         };
 
@@ -39,7 +40,7 @@ export class Document {
         (document: D): D => {
 
             const result = copy(document);
-            result.resource.relations = subtractO(relations)(result.resource.relations);
+            result.resource.relations = subtract(relations)(result.resource.relations);
             return result as D;
         };
 }
