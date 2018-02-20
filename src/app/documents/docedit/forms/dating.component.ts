@@ -2,15 +2,16 @@ import {Component, Input} from '@angular/core';
 import {Resource} from '../../../model/resource';
 import {DocumentEditChangeMonitor} from '../document-edit-change-monitor';
 
-/**
- * @author Sebastian Cuy
- */
+
 @Component({
     moduleId: module.id,
     selector: 'dai-dating',
     templateUrl: './dating.html'
 })
 
+/**
+ * @author Sebastian Cuy
+ */
 export class DatingComponent {
 
     // TODO: use this map in template as well

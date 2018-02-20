@@ -1,17 +1,18 @@
 import {Component, Input} from '@angular/core';
+import {DecimalPipe} from '@angular/common';
 import {Resource} from '../../../model/resource';
 import {DocumentEditChangeMonitor} from '../document-edit-change-monitor';
-import {DecimalPipe} from '@angular/common';
 
-/**
- * @author Fabian Z.
- */
+
 @Component({
     moduleId: module.id,
     selector: 'dai-dimension',
     templateUrl: './dimension.html'
 })
 
+/**
+ * @author Fabian Z.
+ */
 export class DimensionComponent {
 
     @Input() resource: Resource;

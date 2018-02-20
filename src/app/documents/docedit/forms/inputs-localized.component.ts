@@ -1,9 +1,7 @@
 import {Component, Input} from '@angular/core';
-import {Resource} from "../../../model/resource";
+import {Resource} from '../../../model/resource';
 
-/**
- * @author Fabian Z.
- */
+
 @Component({
     moduleId: module.id,
     selector: 'dai-inputs-localized',
@@ -22,32 +20,35 @@ import {Resource} from "../../../model/resource";
     </div>`
 })
 
+/**
+ * @author Fabian Z.
+ */
 export class InputsLocalizedComponent {
 
     @Input() resource: Resource;
     @Input() field: any;
 
 
-    public languages() : Array<string> {
-        if(this.resource[this.field.name] == undefined) {
-            return ["de"]
-        }
-        return this.resource[this.field.name].map((f: any)=>f.lang)
+    public languages(): Array<string> {
+
+        return this.resource[this.field.name]
+            ? this.resource[this.field.name].map((f: any) => f.lang)
+            : ['de'];
     }
 
 
     public addLanguage() {
-        var newLocale = prompt("Enter new language");
+        
+        const newLocale = prompt('Enter new language');
 
         if (this.languages().indexOf(newLocale as any) != -1) {
-            alert("Locale already included!");
+            alert('Locale already included!');
             return;
         }
 
         if (!Array.isArray(this.resource[this.field.name])) {
             this.resource[this.field.name] = [];
         }
-        this.resource[this.field.name].push({"lang" : newLocale, "content": [""]})
-        
+        this.resource[this.field.name].push({'lang' : newLocale, 'content': ['']})
     }
 }

@@ -1,27 +1,31 @@
 import {Component, Input} from '@angular/core';
-import {Resource} from "../../../model/resource";
-import {DocumentEditChangeMonitor} from "../document-edit-change-monitor";
+import {Resource} from '../../../model/resource';
+import {DocumentEditChangeMonitor} from '../document-edit-change-monitor';
 
-/**
- * @author Fabian Z.
- */
+
 @Component({
     moduleId: module.id,
     selector: 'dai-checkboxes',
     templateUrl: './checkboxes.html'
 })
 
+/**
+ * @author Fabian Z.
+ */
 export class CheckboxesComponent {
 
     @Input() resource: Resource;
     @Input() field: any;
 
+    
     constructor(private documentEditChangeMonitor: DocumentEditChangeMonitor) {}
 
+    
     public addInputArrayItem(item: any) {
-        if(this.resource[this.field.name]==undefined) this.resource[this.field.name] = new Array<String>();
+        
+        if (!this.resource[this.field.name]) this.resource[this.field.name] = [];
 
-        var index:number = this.resource[this.field.name].indexOf(item, 0);
+        const index: number = this.resource[this.field.name].indexOf(item, 0);
         if (index > -1) {
             this.resource[this.field.name].splice(index, 1);
         } else {
@@ -30,5 +34,4 @@ export class CheckboxesComponent {
 
         this.documentEditChangeMonitor.setChanged();
     }
-    
 }
