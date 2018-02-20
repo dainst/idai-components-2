@@ -6,7 +6,6 @@ import {NgbModule, NgbDateParserFormatter} from '@ng-bootstrap/ng-bootstrap';
 import {Datastore} from '../datastore/datastore';
 import {ReadDatastore} from '../datastore/read-datastore';
 import {ConfigLoader} from '../configuration/config-loader';
-import {DocumentEditComponent} from '../../../demo/app/document-edit.component';
 import {EditFormComponent} from './docedit/edit-form.component';
 import {RelationsFormComponent} from './docedit/relations-form.component';
 import {RelationPickerComponent} from './docedit/relation-picker.component';
@@ -14,7 +13,6 @@ import {RelationPickerGroupComponent} from './docedit/relation-picker-group.comp
 import {CheckboxesComponent} from './docedit/forms/checkboxes.component';
 import {DropdownComponent} from './docedit/forms/dropdown.component';
 import {InputComponent} from './docedit/forms/input.component';
-import {NumberComponent} from './docedit/forms/number.component';
 import {DimensionComponent} from './docedit/forms/dimension.component';
 import {InputsComponent} from './docedit/forms/inputs.component';
 import {InputsLocalizedComponent} from './docedit/forms/inputs-localized.component';
@@ -49,7 +47,6 @@ import {DocumentTeaserComponent} from './document-teaser.component';
         BooleanComponent,
         DropdownComponent,
         InputComponent,
-        NumberComponent,
         InputsComponent,
         InputsLocalizedComponent,
         MultiselectComponent,

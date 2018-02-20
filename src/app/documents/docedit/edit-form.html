@@ -10,12 +10,10 @@
 
         <div class="card-block">
 
-            <dai-input *ngIf="field.inputType == 'input' || (field.inputType == undefined && field.inner == undefined)"
+            <dai-input *ngIf="field.inputType == 'input' || field.inputType == 'unsignedInt'
+                            || field.inputType == 'float' || field.inputType == 'unsignedFloat'
+                            || (field.inputType == undefined && field.inner == undefined)"
                        [(resource)]="document['resource']" [fieldName]="field.name"></dai-input>
-
-            <dai-number *ngIf="field.inputType == 'unsignedInt' || field.inputType == 'float'
-                                || field.inputType == 'unsignedFloat'" [(resource)]="document['resource']"
-                        [fieldName]="field.name" [inputType]="field.inputType"></dai-number>
 
             <dai-inputs *ngIf="field.inputType == 'inputs'" [(resource)]="document['resource']"
                         [fieldName]="field.name"></dai-inputs>
