@@ -1,5 +1,4 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Messages} from '../../src/app/messages/messages';
 import {ProjectConfiguration} from '../../src/app/configuration/project-configuration';
 import {ConfigLoader} from '../../src/app/configuration/config-loader';
 
@@ -19,6 +18,7 @@ export class DocumentEditComponent implements OnInit {
     @Input() primary: string;
 
     private projectConfiguration: ProjectConfiguration;
+
 
     constructor(
         private configLoader: ConfigLoader
