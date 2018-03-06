@@ -73,10 +73,12 @@ export class ConfigLoader {
 
         // PRE PREPROCESS VALIDATION
 
+        /*
         const prePreprocessValidationErrors = PrePrepprocessConfigurationValidator.go(appConfiguration);
         if (prePreprocessValidationErrors.length > 0) {
             return this.rejectFunction(prePreprocessValidationErrors);
         }
+        */
 
         // PREPROCESS
 
