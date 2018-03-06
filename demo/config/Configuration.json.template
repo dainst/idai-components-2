@@ -8,14 +8,6 @@
           "name": "minimalist_default"
         },
         {
-          "name": "non_editable",
-          "editable" : false
-        },
-        {
-          "name": "non_visible",
-          "visible" : false
-        },
-        {
           "name": "single_input",
           "label": "Simple Input",
           "inputType": "input",

@@ -110,10 +110,11 @@ export class IdaiFieldAppConfigurator {
     constructor(private configLoader: ConfigLoader) { }
 
 
-    public go(projectConfigurationPath: string) {
+    public go(appConfigurationPath: string, hiddenConfigurationPath: string|undefined) {
 
         this.configLoader.go(
-            projectConfigurationPath,
+            appConfigurationPath,
+            hiddenConfigurationPath,
             new ConfigurationPreprocessor(
                 this.defaultTypes,
                 this.defaultFields,

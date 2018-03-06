@@ -34,8 +34,8 @@ export class ConfigurationPreprocessor {
                 ConfigurationPreprocessor.addExtraFields(typeDefinition,this.extraFields)
             }
             for (let fieldDefinition of typeDefinition.fields) {
-                if (fieldDefinition.editable==undefined) fieldDefinition.editable = true;
-                if (fieldDefinition.visible==undefined) fieldDefinition.visible = true;
+                if (fieldDefinition.editable == undefined) fieldDefinition.editable = true;
+                if (fieldDefinition.visible == undefined) fieldDefinition.visible = true;
             }
         }
 
@@ -47,7 +47,7 @@ export class ConfigurationPreprocessor {
     private static addExtraRelations(configuration : ConfigurationDefinition,
                               extraRelations : Array<RelationDefinition>) {
 
-        if (!configuration.relations) return
+        if (!configuration.relations) return;
 
         for (let extraRelation of extraRelations) {
             let relationAlreadyPresent = false;

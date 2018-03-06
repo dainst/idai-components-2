@@ -4,6 +4,7 @@ import {ProjectConfiguration} from './project-configuration';
 import {MDInternal} from '../messages/md-internal';
 import {ConfigurationPreprocessor} from './configuration-preprocessor';
 import {ConfigurationValidator} from './configuration-validator';
+import {PrePrepprocessConfigurationValidator} from './pre-prepprocess-configuration-validator';
 
 @Injectable()
 /**
@@ -34,16 +35,18 @@ export class ConfigLoader {
         }
     ];
 
-    private projectConfig: Promise<ProjectConfiguration>|undefined = undefined;
-    private projectConfigResolveFunction: Function|undefined = undefined;
-    private projectConfigRejectFunction: Function|undefined = undefined;
+    private processedAppConfiguration: Promise<ProjectConfiguration>|undefined = undefined;
+
+    private resolveFunction: Function = () => {};
+
+    private rejectFunction: Function = () => {};
 
 
     constructor(private http: Http) {
 
-        this.projectConfig = new Promise<ProjectConfiguration>((resolve, reject) => {
-            this.projectConfigResolveFunction = resolve;
-            this.projectConfigRejectFunction = reject;
+        this.processedAppConfiguration = new Promise<ProjectConfiguration>((resolve, reject) => {
+            this.resolveFunction = resolve;
+            this.rejectFunction = reject;
         });
     }
 
@@ -52,37 +55,57 @@ export class ConfigLoader {
      * @returns resolves with the ProjectConfiguration or rejects with
      *   a msgWithParams.
      */
-    public getProjectConfiguration(): Promise<ProjectConfiguration>|undefined {
+    public getProjectConfiguration = (): Promise<ProjectConfiguration>|undefined => this.processedAppConfiguration;
 
-        return this.projectConfig;
-    }
 
-    /**
-     * @param projectConfigurationPath
-     * @param configurationPreprocessor
-     * @param configurationValidator
-     */
-    public async go(projectConfigurationPath: string, configurationPreprocessor: ConfigurationPreprocessor,
-              configurationValidator: ConfigurationValidator) {
+    public async go(
+                appConfigurationPath: string,
+                hiddenConfigurationPath: string|undefined,
+                externallyConfiguredConfigurationPreprocessor: ConfigurationPreprocessor,
+                postPreprocessConfigurationValidator: ConfigurationValidator) {
 
-        let config;
+        let appConfiguration;
         try {
-            config = await this.read(this.http, projectConfigurationPath);
+            appConfiguration = await this.read(this.http, appConfigurationPath);
         } catch (msgWithParams) {
-            if (this.projectConfigRejectFunction) return this.projectConfigRejectFunction([msgWithParams]);
+            if (this.rejectFunction) return this.rejectFunction([msgWithParams]);
         }
 
-        if (configurationPreprocessor) configurationPreprocessor.go(config);
-        new ConfigurationPreprocessor([], ConfigLoader.defaultFields, []).go(config);
+        // PRE PREPROCESS VALIDATION
+
+        const prePreprocessValidationErrors = PrePrepprocessConfigurationValidator.go(appConfiguration);
+        if (prePreprocessValidationErrors.length > 0) {
+            return this.rejectFunction(prePreprocessValidationErrors);
+        }
+
+        // PREPROCESS
+
+        if (hiddenConfigurationPath) {
+
+            let hiddenConfiguration;
+            try {
+                hiddenConfiguration = await this.read(this.http, hiddenConfigurationPath);
+                if (hiddenConfiguration) ConfigLoader.hideFields(appConfiguration, hiddenConfiguration);
+            } catch (_) {}
+        }
+
+        if (externallyConfiguredConfigurationPreprocessor) {
+            externallyConfiguredConfigurationPreprocessor.go(appConfiguration);
+        }
+        new ConfigurationPreprocessor([], ConfigLoader.defaultFields, [])
+            .go(appConfiguration);
+
+        // POST PREPROCESS VALIDATION
 
         let configurationErrors: any = [];
-        if (configurationValidator) configurationErrors = configurationValidator.go(config);
+        if (postPreprocessConfigurationValidator) configurationErrors = postPreprocessConfigurationValidator.go(appConfiguration);
         if (configurationErrors.length > 0) {
-            if (this.projectConfigRejectFunction) this.projectConfigRejectFunction(configurationErrors);
+            this.rejectFunction(configurationErrors);
         } else {
-            if (this.projectConfigResolveFunction) this.projectConfigResolveFunction(new ProjectConfiguration(config));
+            this.resolveFunction(new ProjectConfiguration(appConfiguration));
         }
     }
+
 
     private read(http: any, path: string): Promise<any> {
 
@@ -94,7 +117,6 @@ export class ConfigLoader {
                 } catch(e) {
                     reject([MDInternal.PARSE_ERROR_INVALID_JSON, path]);
                 }
-                // TODO Why is this try/catch block necessary?
                 try {
                     resolve(data);
                 } catch(e) {
@@ -102,5 +124,33 @@ export class ConfigLoader {
                 }
             });
         });
+    }
+
+
+    private static hideFields(appConfiguration: any, hiddenConfiguration: any) {
+
+        if (appConfiguration.types) {
+            for (let type of Object.keys(hiddenConfiguration)) {
+                for (let fieldToHide of hiddenConfiguration[type]) {
+
+                    for (let i in appConfiguration.types) {
+
+                        if (appConfiguration.types[i].type === type
+                            && appConfiguration.types[i].fields) {
+
+                            for (let j in appConfiguration.types[i].fields) {
+
+                                if (appConfiguration.types[i].fields[j].name === fieldToHide) {
+
+                                    appConfiguration.types[i].fields[j].visible = false;
+                                    appConfiguration.types[i].fields[j].editable = false;
+                                }
+                            }
+                        }
+                    }
+
+                }
+            }
+        }
     }
 }

@@ -8,13 +8,11 @@ export function main() {
 
     describe('IdaiFieldAppConfigurator', () => {
 
-
-        it('should run',
-            (done) => {
+        it('should run', (done) => {
 
                 const http = jasmine.createSpyObj('http',
                     ['get']);
-                let cbfun;
+
                 http.get.and.returnValue({ subscribe: (cb) =>
                     {cb({"_body": JSON.stringify({
                             types: [
@@ -32,10 +30,11 @@ export function main() {
                 const configLoader = new ConfigLoader(http);
 
                 new IdaiFieldAppConfigurator(configLoader).go(
-                    'democonf'
+                    'democonf',
+                    undefined
                 );
 
-                configLoader.getProjectConfiguration().then(
+                (configLoader.getProjectConfiguration() as any).then(
                     projectConfiguration => {
                         expect(
                             projectConfiguration.getRelationDefinitions(

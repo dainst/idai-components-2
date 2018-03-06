@@ -15,7 +15,10 @@ import {Datastore} from '../../src/app/datastore/datastore';
  */
 export class AppComponent implements OnInit {
 
-    private static PROJECT_CONFIGURATION_PATH = 'demo/config/Configuration.json';
+
+    private static APP_CONFIGURATION_PATH = 'demo/config/Configuration.json';
+    private static HIDDEN_CONFIGURATION_PATH = 'demo/config/Hidden.json';
+
 
     constructor(
         private configLoader: ConfigLoader,
@@ -24,7 +27,8 @@ export class AppComponent implements OnInit {
     ) {
 
         this.configLoader.go(
-            AppComponent.PROJECT_CONFIGURATION_PATH,
+            AppComponent.APP_CONFIGURATION_PATH,
+            AppComponent.HIDDEN_CONFIGURATION_PATH,
             new ConfigurationPreprocessor(
                 [
                     { 'type': 'Image', 'fields': [ { 'name': 'dimensions' } ] }
@@ -44,15 +48,13 @@ export class AppComponent implements OnInit {
         );
 
         (configLoader.getProjectConfiguration() as any).catch(
-            msgsWithParams => {
-                msgsWithParams.forEach(msg => messages.add(msg));
-            }
+            msgsWithParams => msgsWithParams.forEach(msg => messages.add(msg))
         )
     }
 
-    ngOnInit() {
-        this.loadSampleData();
-    }
+
+    ngOnInit = () => this.loadSampleData();
+
 
     loadSampleData(): void {
         for (let item of OBJECTS) {
