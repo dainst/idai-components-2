@@ -1,13 +1,12 @@
 import {Resource} from './resource';
-import {Action} from './action';
 import {copy} from 'tsfun';
 import {subtract} from 'tsfun/objects';
+import {NewDocument} from "./new-document";
 
 
-export interface Document {
+export interface Document extends NewDocument {
+
     resource : Resource;
-    modified?: Action[];
-    created?: Action;
 }
 
 

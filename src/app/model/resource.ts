@@ -1,8 +1,6 @@
-import {Relations} from './relations'
+import {NewResource} from "./new-resource";
 
-export interface Resource {
-    id?: string;
-    type: string;
-    relations: Relations;
-    [propName: string]: any;
+export interface Resource extends NewResource {
+
+    id: string;
 }
