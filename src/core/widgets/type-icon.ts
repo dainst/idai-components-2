@@ -1,5 +1,6 @@
 import {Component, OnChanges, Input} from '@angular/core';
 import {ConfigLoader} from '../configuration/config-loader';
+import {ProjectConfiguration} from '../configuration/project-configuration';
 
 @Component({
   selector: 'type-icon',
@@ -22,19 +23,18 @@ export class TypeIconComponent implements OnChanges {
   private textColor: string;
   private pxSize: string;
 
-  constructor(private configLoader: ConfigLoader) { }
+  constructor(private projectConfiguration: ProjectConfiguration) { }
 
   ngOnChanges() {
 
-      (this.configLoader.getProjectConfiguration() as any).then((config: any) => {
-      this.character = config.getLabelForType(this.type).substr(0, 1);
-      this.color = config.getColorForType(this.type);
-      this.textColor = this.isColorTooBright(this.color) ? 'black' : 'white';
+      this.character = this.projectConfiguration.getLabelForType(this.type).substr(0, 1);
+      this.color = this.projectConfiguration.getColorForType(this.type);
+      this.textColor = TypeIconComponent.isColorTooBright(this.color) ? 'black' : 'white';
       this.pxSize = this.size + 'px';
-    });
   }
 
-  private isColorTooBright(c: any): boolean {
+
+  private static isColorTooBright(c: any): boolean {
 
     c = c.substring(1);      // strip #
     let rgb = parseInt(c, 16);   // convert rrggbb to decimal
@@ -44,5 +44,4 @@ export class TypeIconComponent implements OnChanges {
     let luma = 0.2126 * r + 0.7152 * g + 0.0722 * b; // per ITU-R BT.709
     return luma > 200;
   }
-
 }

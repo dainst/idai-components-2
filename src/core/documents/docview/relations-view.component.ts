@@ -1,8 +1,8 @@
-import {Component, OnChanges, Input, EventEmitter, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, Output} from '@angular/core';
 import {Document} from '../../model/document';
 import {Resource} from '../../model/resource';
 import {ReadDatastore} from '../../datastore/read-datastore';
-import {ConfigLoader} from '../../configuration/config-loader';
+import {ProjectConfiguration} from '../../configuration/project-configuration';
 
 
 @Component({
@@ -28,7 +28,7 @@ export class RelationsViewComponent implements OnChanges {
     public collapsed: boolean = false;
 
 
-    constructor(private datastore: ReadDatastore, private configLoader: ConfigLoader) {}
+    constructor(private datastore: ReadDatastore, private projectConfiguration: ProjectConfiguration) {}
 
 
     ngOnChanges() {
@@ -46,13 +46,11 @@ export class RelationsViewComponent implements OnChanges {
 
     private async processRels(resource: Resource) {
 
-        const projectConfiguration = await this.configLoader.getProjectConfiguration() as any;
-
         Object.keys(resource.relations)
-            .filter(name => projectConfiguration.isVisibleRelation(name, this.resource.type))
+            .filter(name => this.projectConfiguration.isVisibleRelation(name, this.resource.type))
             .filter(name => this.hideRelations.indexOf(name) === -1)
             .forEach(name =>
-                this.addRel(resource, name, projectConfiguration.getRelationDefinitionLabel(name)));
+                this.addRel(resource, name, this.projectConfiguration.getRelationDefinitionLabel(name)));
     }
 
 

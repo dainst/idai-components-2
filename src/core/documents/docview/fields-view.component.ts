@@ -1,6 +1,7 @@
 import {Component, OnChanges, Input} from '@angular/core';
 import {ConfigLoader} from '../../configuration/config-loader';
 import {Resource} from '../../model/resource';
+import {ProjectConfiguration} from '../../configuration/project-configuration';
 
 @Component({
     selector: 'fields-view',
@@ -21,7 +22,7 @@ export class FieldsViewComponent implements OnChanges {
     protected fields: Array<any>;
 
     constructor(
-        private configLoader: ConfigLoader
+        private projectConfiguration: ProjectConfiguration
     ) { }
 
     ngOnChanges() {
@@ -37,28 +38,25 @@ export class FieldsViewComponent implements OnChanges {
 
     private processFields(resource: Resource) {
 
-        (this.configLoader.getProjectConfiguration() as any).then((projectConfiguration: any) => {
+        const ignoredFields: string[] = ['relations'];
 
-            const ignoredFields: string[] = ['relations'];
+        for (let fieldDefinition of this.projectConfiguration.getFieldDefinitions(resource.type)) {
 
-            for (let fieldDefinition of projectConfiguration.getFieldDefinitions(resource.type)) {
+            const fieldName = fieldDefinition.name;
 
-                const fieldName = fieldDefinition.name;
+            if (!this.projectConfiguration.isVisible(resource.type, fieldName)) continue;
 
-                if (!projectConfiguration.isVisible(resource.type, fieldName)) continue;
-
-                if (resource[fieldName] && ignoredFields.indexOf(fieldName) == -1) {
-                    this.fields.push({
-                        name: projectConfiguration.getFieldDefinitionLabel(resource.type, fieldName),
-                        value: this.getValue(resource, fieldName),
-                        isArray: Array.isArray(resource[fieldName])
-                    });
-                }
+            if (resource[fieldName] && ignoredFields.indexOf(fieldName) == -1) {
+                this.fields.push({
+                    name: this.projectConfiguration.getFieldDefinitionLabel(resource.type, fieldName),
+                    value: FieldsViewComponent.getValue(resource, fieldName),
+                    isArray: Array.isArray(resource[fieldName])
+                });
             }
-        });
+        }
     }
 
-    private getValue(resource: Resource, fieldName: string): any {
+    private static getValue(resource: Resource, fieldName: string): any {
 
         if (typeof resource[fieldName] == 'string') {
             return resource[fieldName]

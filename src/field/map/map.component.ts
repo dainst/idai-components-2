@@ -1,11 +1,11 @@
-import {Component, Input, Output, EventEmitter, OnChanges, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
 import {IdaiFieldDocument} from '../model/idai-field-document';
 import {IdaiFieldResource} from '../model/idai-field-resource';
 import {IdaiFieldPolyline} from './idai-field-polyline';
 import {IdaiFieldPolygon} from './idai-field-polygon';
 import {IdaiFieldMarker} from './idai-field-marker';
 import {CoordinatesUtility} from './coordinates-utility';
-import {ConfigLoader} from '../../core/configuration/config-loader';
+import {ProjectConfiguration} from '../../core/configuration/project-configuration';
 
 // no typings for VectorMarkers available
 declare global {
@@ -45,11 +45,10 @@ export class MapComponent implements OnChanges {
     protected bounds: any[] = []; // in fact L.LatLng[], but leaflet typings are incomplete
     protected typeColors: { [typeName: string]: string } = {};
 
-    constructor(configLoader: ConfigLoader) {
+    constructor(projectConfiguration: ProjectConfiguration) {
 
-        this.ready = (configLoader.getProjectConfiguration() as any).then((projectConfiguration: any) => {
-            return projectConfiguration.getTypeColors();
-        }).then((typeColors: any) => this.typeColors = typeColors);
+        this.typeColors = projectConfiguration.getTypeColors();
+        this.ready = Promise.resolve();
     }
 
 

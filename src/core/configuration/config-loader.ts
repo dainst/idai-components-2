@@ -1,10 +1,8 @@
 import {Injectable} from '@angular/core';
-import {Http} from '@angular/http';
 import {ProjectConfiguration} from './project-configuration';
-import {MDInternal} from '../messages/md-internal';
 import {ConfigurationPreprocessor} from './configuration-preprocessor';
 import {ConfigurationValidator} from './configuration-validator';
-import {PrePrepprocessConfigurationValidator} from './pre-prepprocess-configuration-validator';
+import {ConfigReader} from './config-reader';
 
 @Injectable()
 /**
@@ -35,40 +33,20 @@ export class ConfigLoader {
         }
     ];
 
-    private processedAppConfiguration: Promise<ProjectConfiguration>|undefined = undefined;
-
-    private resolveFunction: Function = () => {};
-
-    private rejectFunction: Function = () => {};
-
-
-    constructor(private http: Http) {
-
-        this.processedAppConfiguration = new Promise<ProjectConfiguration>((resolve, reject) => {
-            this.resolveFunction = resolve;
-            this.rejectFunction = reject;
-        });
-    }
-
-
-    /**
-     * @returns resolves with the ProjectConfiguration or rejects with
-     *   a msgWithParams.
-     */
-    public getProjectConfiguration = (): Promise<ProjectConfiguration>|undefined => this.processedAppConfiguration;
+    constructor(private configReader: ConfigReader) {}
 
 
     public async go(
                 appConfigurationPath: string,
                 hiddenConfigurationPath: string|undefined,
                 externallyConfiguredConfigurationPreprocessor: ConfigurationPreprocessor,
-                postPreprocessConfigurationValidator: ConfigurationValidator) {
+                postPreprocessConfigurationValidator: ConfigurationValidator): Promise<ProjectConfiguration> {
 
         let appConfiguration;
         try {
-            appConfiguration = await this.read(this.http, appConfigurationPath);
+            appConfiguration = await this.configReader.read(appConfigurationPath);
         } catch (msgWithParams) {
-            if (this.rejectFunction) return this.rejectFunction([msgWithParams]);
+            throw [[msgWithParams]];
         }
 
         // PRE PREPROCESS VALIDATION
@@ -86,7 +64,7 @@ export class ConfigLoader {
 
             let hiddenConfiguration;
             try {
-                hiddenConfiguration = await this.read(this.http, hiddenConfigurationPath);
+                hiddenConfiguration = await this.configReader.read(hiddenConfigurationPath);
                 if (hiddenConfiguration) ConfigLoader.hideFields(appConfiguration, hiddenConfiguration);
             } catch (_) {}
         }
@@ -102,30 +80,10 @@ export class ConfigLoader {
         let configurationErrors: any = [];
         if (postPreprocessConfigurationValidator) configurationErrors = postPreprocessConfigurationValidator.go(appConfiguration);
         if (configurationErrors.length > 0) {
-            this.rejectFunction(configurationErrors);
+            throw configurationErrors;
         } else {
-            this.resolveFunction(new ProjectConfiguration(appConfiguration));
+            return new ProjectConfiguration(appConfiguration);
         }
-    }
-
-
-    private read(http: any, path: string): Promise<any> {
-
-        return new Promise((resolve, reject) => {
-            http.get(path).subscribe((data_: any) => {
-                let data;
-                try {
-                    data = JSON.parse(data_['_body']);
-                } catch(e) {
-                    reject([MDInternal.PARSE_ERROR_INVALID_JSON, path]);
-                }
-                try {
-                    resolve(data);
-                } catch(e) {
-                    console.log(e);
-                }
-            });
-        });
     }
 
 

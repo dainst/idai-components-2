@@ -109,7 +109,7 @@ var IdaiFieldAppConfigurator = (function () {
         ];
     }
     IdaiFieldAppConfigurator.prototype.go = function (appConfigurationPath, hiddenConfigurationPath) {
-        this.configLoader.go(appConfigurationPath, hiddenConfigurationPath, new configuration_preprocessor_1.ConfigurationPreprocessor(this.defaultTypes, this.defaultFields, this.defaultRelations), new idai_field_configuration_validator_1.IdaiFieldConfigurationValidator());
+        return this.configLoader.go(appConfigurationPath, hiddenConfigurationPath, new configuration_preprocessor_1.ConfigurationPreprocessor(this.defaultTypes, this.defaultFields, this.defaultRelations), new idai_field_configuration_validator_1.IdaiFieldConfigurationValidator());
     };
     return IdaiFieldAppConfigurator;
 }());

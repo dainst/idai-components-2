@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {ConfigLoader} from '../../core/configuration/config-loader';
 import {ConfigurationPreprocessor} from '../../core/configuration/configuration-preprocessor';
 import {IdaiFieldConfigurationValidator} from './idai-field-configuration-validator';
+import {ProjectConfiguration} from '../../core/configuration/project-configuration';
 
 
 @Injectable()
@@ -110,9 +111,9 @@ export class IdaiFieldAppConfigurator {
     constructor(private configLoader: ConfigLoader) { }
 
 
-    public go(appConfigurationPath: string, hiddenConfigurationPath: string|undefined) {
+    public go(appConfigurationPath: string, hiddenConfigurationPath: string|undefined): Promise<ProjectConfiguration> {
 
-        this.configLoader.go(
+        return this.configLoader.go(
             appConfigurationPath,
             hiddenConfigurationPath,
             new ConfigurationPreprocessor(

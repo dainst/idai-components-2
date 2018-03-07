@@ -11,19 +11,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var coordinates_utility_1 = require("./coordinates-utility");
-var config_loader_1 = require("../../core/configuration/config-loader");
+var project_configuration_1 = require("../../core/configuration/project-configuration");
 var MapComponent = (function () {
-    function MapComponent(configLoader) {
-        var _this = this;
+    function MapComponent(projectConfiguration) {
         this.onSelectDocument = new core_1.EventEmitter();
         this.polygons = {};
         this.polylines = {};
         this.markers = {};
         this.bounds = []; // in fact L.LatLng[], but leaflet typings are incomplete
         this.typeColors = {};
-        this.ready = configLoader.getProjectConfiguration().then(function (projectConfiguration) {
-            return projectConfiguration.getTypeColors();
-        }).then(function (typeColors) { return _this.typeColors = typeColors; });
+        this.typeColors = projectConfiguration.getTypeColors();
+        this.ready = Promise.resolve();
     }
     MapComponent.prototype.ngAfterViewInit = function () {
         if (this.map)
@@ -349,7 +347,7 @@ MapComponent = __decorate([
      * @author Thomas Kleinke
      */
     ,
-    __metadata("design:paramtypes", [config_loader_1.ConfigLoader])
+    __metadata("design:paramtypes", [project_configuration_1.ProjectConfiguration])
 ], MapComponent);
 exports.MapComponent = MapComponent;
 //# sourceMappingURL=map.component.js.map
