@@ -17,6 +17,7 @@ export {DocumentEditChangeMonitor} from './src/core/documents/docedit/document-e
 
 
 export {ConfigLoader} from './src/core/configuration/config-loader';
+export {ConfigReader} from './src/core/configuration/config-reader';
 export {FieldDefinition} from './src/core/configuration/field-definition';
 export {IdaiType} from './src/core/configuration/idai-type';
 export {ProjectConfiguration} from './src/core/configuration/project-configuration';
