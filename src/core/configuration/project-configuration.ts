@@ -15,6 +15,7 @@ import {ConfigurationDefinition} from './configuration-definition';
  *
  * @author Thomas Kleinke
  * @author Daniel de Oliveira
+ * @author Sebastian Cuy
  */
 @Injectable()
 export class ProjectConfiguration {
@@ -183,6 +184,12 @@ export class ProjectConfiguration {
     }
 
 
+    public getTextColorForType(typeName: string): string {
+
+        return this.isBrightColor(this.getColorForType(typeName)) ? '#000000' : '#ffffff';
+    }
+
+
     public getTypeColors(): { [typeName: string]: string } {
 
         return this.typesColorMap;
@@ -342,5 +349,18 @@ export class ProjectConfiguration {
             var b = hash & 0x0000FF;
             return "#" + ("0" + r.toString(16)).substr(-2) + ("0" + g.toString(16)).substr(-2) + ("0" + b.toString(16)).substr(-2);
         }
+    }
+
+
+    private isBrightColor(color: string): boolean {
+
+        color = color.substring(1); // strip #
+        let rgb = parseInt(color, 16);   // convert rrggbb to decimal
+        let r = (rgb >> 16) & 0xff;  // extract red
+        let g = (rgb >>  8) & 0xff;  // extract green
+        let b = (rgb >>  0) & 0xff;  // extract blue
+        let luma = 0.2126 * r + 0.7152 * g + 0.0722 * b; // per ITU-R BT.709
+
+        return luma > 200;
     }
 }
