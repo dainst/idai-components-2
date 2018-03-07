@@ -2,7 +2,6 @@ import {ConfigurationValidator} from '../../core/configuration/configuration-val
 import {RelationDefinition} from '../../core/configuration/relation-definition';
 import {TypeDefinition} from '../../core/configuration/type-definition';
 import {ConfigurationDefinition} from '../../core/configuration/configuration-definition';
-import {ViewDefinition} from './view-definition';
 import {ConfigurationErrors} from '../../core/configuration/configuration-errors';
 
 
@@ -16,11 +15,6 @@ export class IdaiFieldConfigurationValidator extends ConfigurationValidator{
     protected custom(configuration: ConfigurationDefinition) {
 
         let msgs: any[] = [];
-
-        if (configuration.views) {
-            const missingViewTypeErrors = IdaiFieldConfigurationValidator.findMissingViewType(configuration.views, configuration.types);
-            if (missingViewTypeErrors) msgs = msgs.concat(missingViewTypeErrors);
-        }
 
         const mandatoryRelationsError = IdaiFieldConfigurationValidator.
             validateMandatoryRelations(configuration.relations as any, configuration.types);
@@ -74,42 +68,6 @@ export class IdaiFieldConfigurationValidator extends ConfigurationValidator{
             msgs.push([ConfigurationErrors.VALIDATION_ERROR_NOPROJECTRECORDEDIN] as never);
         }
 
-        return msgs;
-    }
-
-
-    /**
-     * idai-field projects have view configurations. their they must refer to
-     * existing subtypes of operation. we want to avoid having views for other
-     * types than operation types in order to have a real domain model foundation
-     * on which the isRecordedIn relation later get created.
-     *
-     * @param views
-     * @param types
-     * @returns {Array}
-     */
-    private static findMissingViewType(
-        views: Array<ViewDefinition>,
-        types: Array<TypeDefinition>): Array<Array<string>> {
-
-        let msgs = [] as any;
-        const typeNames: Array<string> = types.map(type => type.type);
-
-        for (let view of views) {
-
-            if (view.operationSubtype == 'Project') continue;
-            if (typeNames.indexOf(view.operationSubtype) == -1)
-                msgs.push([ConfigurationErrors.VALIDATION_ERROR_MISSINGVIEWTYPE, view.operationSubtype] as never);
-
-            let supported = false;
-            for (let type of types) {
-                if (view.operationSubtype == type.type &&
-                    type.parent == 'Operation') supported = true
-            }
-            if (!supported) {
-                msgs.push([ConfigurationErrors.VALIDATION_ERROR_NONOPERATIONVIEWTYPE, view.operationSubtype] as never);
-            }
-        }
         return msgs;
     }
 }

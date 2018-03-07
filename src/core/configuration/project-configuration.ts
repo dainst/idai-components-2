@@ -3,7 +3,6 @@ import {MDInternal} from '../messages/md-internal';
 import {IdaiType} from './idai-type';
 import {FieldDefinition} from './field-definition';
 import {RelationDefinition} from './relation-definition';
-import {ViewDefinition} from '../../field/model/view-definition';
 import {ConfigurationDefinition} from './configuration-definition';
 
 /**
@@ -34,10 +33,6 @@ export class ProjectConfiguration {
 
     private relationFields: any[]|undefined = undefined;
 
-    private viewsList: Array<ViewDefinition> = [];
-
-    private viewsMap: { [name: string]: ViewDefinition } = {};
-
 
     /**
      * @param configuration
@@ -45,11 +40,9 @@ export class ProjectConfiguration {
     constructor(configuration: any) {
 
         this.initTypes(configuration);
-        this.initViewsMap(configuration);
 
         this.projectIdentifier = configuration.identifier;
         this.relationFields = configuration.relations;
-        this.viewsList = configuration.views;
     }
 
 
@@ -256,12 +249,6 @@ export class ProjectConfiguration {
     }
 
 
-    public getViewsList(): Array<ViewDefinition> {
-
-        return this.viewsList;
-    }
-
-
     /**
      * @returns {string} the name of the excavation, if defined.
      *   <code>undefined</code> otherwise.
@@ -308,14 +295,6 @@ export class ProjectConfiguration {
         }
     }
 
-    private initViewsMap(configuration: ConfigurationDefinition) {
-
-        if (!configuration.views) return;
-
-        for (let view of configuration.views) {
-            this.viewsMap[view.name] = view;
-        }
-    }
 
     private static getTypeName(type: any): string {
 

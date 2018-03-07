@@ -23,11 +23,6 @@ var IdaiFieldConfigurationValidator = (function (_super) {
     }
     IdaiFieldConfigurationValidator.prototype.custom = function (configuration) {
         var msgs = [];
-        if (configuration.views) {
-            var missingViewTypeErrors = IdaiFieldConfigurationValidator.findMissingViewType(configuration.views, configuration.types);
-            if (missingViewTypeErrors)
-                msgs = msgs.concat(missingViewTypeErrors);
-        }
         var mandatoryRelationsError = IdaiFieldConfigurationValidator.
             validateMandatoryRelations(configuration.relations, configuration.types);
         if (mandatoryRelationsError.length)
@@ -77,38 +72,6 @@ var IdaiFieldConfigurationValidator = (function (_super) {
         }
         else {
             msgs.push([configuration_errors_1.ConfigurationErrors.VALIDATION_ERROR_NOPROJECTRECORDEDIN]);
-        }
-        return msgs;
-    };
-    /**
-     * idai-field projects have view configurations. their they must refer to
-     * existing subtypes of operation. we want to avoid having views for other
-     * types than operation types in order to have a real domain model foundation
-     * on which the isRecordedIn relation later get created.
-     *
-     * @param views
-     * @param types
-     * @returns {Array}
-     */
-    IdaiFieldConfigurationValidator.findMissingViewType = function (views, types) {
-        var msgs = [];
-        var typeNames = types.map(function (type) { return type.type; });
-        for (var _i = 0, views_1 = views; _i < views_1.length; _i++) {
-            var view = views_1[_i];
-            if (view.operationSubtype == 'Project')
-                continue;
-            if (typeNames.indexOf(view.operationSubtype) == -1)
-                msgs.push([configuration_errors_1.ConfigurationErrors.VALIDATION_ERROR_MISSINGVIEWTYPE, view.operationSubtype]);
-            var supported = false;
-            for (var _a = 0, types_2 = types; _a < types_2.length; _a++) {
-                var type = types_2[_a];
-                if (view.operationSubtype == type.type &&
-                    type.parent == 'Operation')
-                    supported = true;
-            }
-            if (!supported) {
-                msgs.push([configuration_errors_1.ConfigurationErrors.VALIDATION_ERROR_NONOPERATIONVIEWTYPE, view.operationSubtype]);
-            }
         }
         return msgs;
     };
