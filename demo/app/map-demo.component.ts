@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {IdaiFieldDocument} from '../../src/app/idai-field-model/idai-field-document';
+import {Document} from '../../src/app/model/document';
 
 @Component({
     selector: 'idai-field-map-demo',
@@ -11,7 +11,7 @@ import {IdaiFieldDocument} from '../../src/app/idai-field-model/idai-field-docum
  */
 export class MapDemoComponent {
 
-    public documents: Array<IdaiFieldDocument> = [
+    public documents: Array<Document> = [
         {
             'resource': {
                 'id': 'obj1',
@@ -91,7 +91,7 @@ export class MapDemoComponent {
         }
     ];
 
-    public parentDocumentTemplate: IdaiFieldDocument = {
+    public parentDocumentTemplate: Document = {
         'resource': {
             'id': 's1',
             'identifier': 'section1',
@@ -108,7 +108,7 @@ export class MapDemoComponent {
         }
     };
 
-    public projectDocument: IdaiFieldDocument = {
+    public projectDocument: Document = {
         'resource': {
             'id': 'mapdemo',
             'identifier': 'mapdemo',
@@ -121,18 +121,18 @@ export class MapDemoComponent {
         }
     };
 
-    public parentDocument: IdaiFieldDocument|undefined;
-    public selectedDocument: IdaiFieldDocument|undefined;
+    public parentDocument: Document|undefined;
+    public selectedDocument: Document|undefined;
     public liveUpdate: boolean = true;
 
 
-    public selectDocument(document: IdaiFieldDocument) {
+    public selectDocument(document: Document) {
 
         this.selectedDocument = document;
     }
 
 
-    public toggleDocument(document: IdaiFieldDocument) {
+    public toggleDocument(document: Document) {
 
         if (this.selectedDocument == document) {
             this.selectedDocument = undefined;
