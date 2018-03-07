@@ -2,6 +2,7 @@ import {Component, OnChanges, Input} from '@angular/core';
 import {ConfigLoader} from '../configuration/config-loader';
 import {ProjectConfiguration} from '../configuration/project-configuration';
 
+
 @Component({
   selector: 'type-icon',
   template: '<div class="type-icon" [style.width]="pxSize" [style.height]="pxSize" [style.font-size]="pxSize" [style.line-height]="pxSize" [style.background-color]="color">' +
@@ -12,21 +13,22 @@ import {ProjectConfiguration} from '../configuration/project-configuration';
 /**
  * @author Sebastian Cuy
  */
-
 export class TypeIconComponent implements OnChanges {
 
-  @Input() size: number;
-  @Input() type: string;
+    @Input() size: number;
+    @Input() type: string;
 
-  private character: string;
-  private color: string;
-  private textColor: string;
-  private pxSize: string;
-
+<<<<<<< HEAD
   constructor(private projectConfiguration: ProjectConfiguration) { }
+=======
+    private character: string;
+    private color: string;
+    private textColor: string;
+    private pxSize: string;
+>>>>>>> 217869ff61986c4f0164ee23e97bd6c4d3465252
 
-  ngOnChanges() {
 
+<<<<<<< HEAD
       this.character = this.projectConfiguration.getLabelForType(this.type).substr(0, 1);
       this.color = this.projectConfiguration.getColorForType(this.type);
       this.textColor = TypeIconComponent.isColorTooBright(this.color) ? 'black' : 'white';
@@ -44,4 +46,18 @@ export class TypeIconComponent implements OnChanges {
     let luma = 0.2126 * r + 0.7152 * g + 0.0722 * b; // per ITU-R BT.709
     return luma > 200;
   }
+=======
+    constructor(private configLoader: ConfigLoader) { }
+
+
+    ngOnChanges() {
+
+        (this.configLoader.getProjectConfiguration() as any).then((config: any) => {
+            this.character = config.getLabelForType(this.type).substr(0, 1);
+            this.color = config.getColorForType(this.type);
+            this.textColor = config.getTextColorForType(this.type);
+            this.pxSize = this.size + 'px';
+        });
+    }
+>>>>>>> 217869ff61986c4f0164ee23e97bd6c4d3465252
 }
