@@ -8,8 +8,8 @@
     "prebuild": "rimraf css/* && rimraf fonts/*",
     "build": "gulp create-configs && tsc -p src/tsconfig.json && tsc -p test/tsconfig.json",
     "start": "npm run server",
-    "test:loop": "karma start src/test/config/karma.conf",
-    "test": "karma start test/browser/config/karma.conf.js --single-run",
+    "test": "npm run jasmine",
+    "jasmine": "jasmine JASMINE_CONFIG_PATH=test/unit/config/jasmine.json",
     "server": "gulp webserver-watch"
   },
   "repository": {
@@ -51,10 +51,8 @@
     "gulp-sass": "3.1.0",
     "gulp-typescript": "3.1.4",
     "gulp-webserver": "0.9.1",
-    "jasmine-core": "2.4.1",
-    "karma": "0.13.21",
-    "karma-chrome-launcher": "0.2.2",
-    "karma-jasmine": "0.3.7",
+    "jasmine": "2.5.2",
+    "jasmine-core": "2.5.2",
     "rimraf": "2.5.2",
     "typescript": "2.3.1"
   }
