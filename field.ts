@@ -10,5 +10,3 @@ export {MapComponent} from './src/field/map/map.component';
 export {IdaiFieldPolygon} from './src/field/map/idai-field-polygon';
 export {IdaiFieldPolyline} from './src/field/map/idai-field-polyline';
 export {IdaiFieldMarker} from './src/field/map/idai-field-marker';
-
-export {ViewDefinition} from './src/field/model/view-definition'; // TODO remove
