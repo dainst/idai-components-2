@@ -34,26 +34,18 @@ export class ConfigLoader {
     ];
 
 
-    private processedAppConfiguration: Promise<ProjectConfiguration>|undefined = undefined;
+    // - still in use, but only to prevent circular dependency while loading idai-field-sample-data-loader via pouchdb-manager via settings-service
+    public getProjectConfiguration = () =>
+        new Promise<ProjectConfiguration>((resolve) => {
+            this.resolveFunction = resolve;
+        });
 
     private resolveFunction: Function = () => {};
+    // -
 
-    private rejectFunction: Function = () => {};
+    constructor(private configReader: ConfigReader) {}
 
 
-    constructor(private configReader: ConfigReader) {
-
-        this.processedAppConfiguration = new Promise<ProjectConfiguration>((resolve, reject) => {
-            this.resolveFunction = resolve;
-            this.rejectFunction = reject;
-        });
-    }
-
-    /**
-     * @returns resolves with the ProjectConfiguration or rejects with
-     *   a msgWithParams.
-     */
-    public getProjectConfiguration = (): Promise<ProjectConfiguration>|undefined => this.processedAppConfiguration;
 
 
     public async go(
