@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ProjectConfiguration} from '../../src/app/configuration/project-configuration';
-import {ConfigLoader} from '../../src/app/configuration/config-loader';
+import {ProjectConfiguration} from '../../src/core/configuration/project-configuration';
+import {ConfigLoader} from '../../src/core/configuration/config-loader';
 
 @Component({
     moduleId: module.id,

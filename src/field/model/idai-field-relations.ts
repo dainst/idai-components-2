@@ -1,4 +1,4 @@
-import {Relations} from '../model/relations';
+import {Relations} from '../../core/model/relations';
 
 
 export interface IdaiFieldRelations extends Relations {

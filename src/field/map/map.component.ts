@@ -1,11 +1,11 @@
 import {Component, Input, Output, EventEmitter, OnChanges, SimpleChanges} from '@angular/core';
-import {IdaiFieldDocument} from '../idai-field-model/idai-field-document';
-import {IdaiFieldResource} from '../idai-field-model/idai-field-resource';
+import {IdaiFieldDocument} from '../model/idai-field-document';
+import {IdaiFieldResource} from '../model/idai-field-resource';
 import {IdaiFieldPolyline} from './idai-field-polyline';
 import {IdaiFieldPolygon} from './idai-field-polygon';
 import {IdaiFieldMarker} from './idai-field-marker';
 import {CoordinatesUtility} from './coordinates-utility';
-import {ConfigLoader} from '../configuration/config-loader';
+import {ConfigLoader} from '../../core/configuration/config-loader';
 
 // no typings for VectorMarkers available
 declare global {

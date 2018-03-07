@@ -1,4 +1,4 @@
-import {Resource} from "../../src/app/model/resource";
+import {Resource} from "../../src/core/model/resource";
 
 export interface ExtendedResource extends Resource {
     fieldlist_example? : Array<any>;

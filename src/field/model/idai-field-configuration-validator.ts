@@ -1,9 +1,9 @@
-import {ConfigurationValidator} from '../configuration/configuration-validator';
-import {RelationDefinition} from '../configuration/relation-definition';
-import {TypeDefinition} from '../configuration/type-definition';
-import {ConfigurationDefinition} from '../configuration/configuration-definition';
+import {ConfigurationValidator} from '../../core/configuration/configuration-validator';
+import {RelationDefinition} from '../../core/configuration/relation-definition';
+import {TypeDefinition} from '../../core/configuration/type-definition';
+import {ConfigurationDefinition} from '../../core/configuration/configuration-definition';
 import {ViewDefinition} from './view-definition';
-import {ConfigurationErrors} from '../configuration/configuration-errors';
+import {ConfigurationErrors} from '../../core/configuration/configuration-errors';
 
 
 /**

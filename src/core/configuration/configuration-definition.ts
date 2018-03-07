@@ -1,6 +1,6 @@
 import {TypeDefinition} from './type-definition';
 import {RelationDefinition} from './relation-definition';
-import {ViewDefinition} from '../idai-field-model/view-definition';
+import {ViewDefinition} from '../../field/model/view-definition';
 
 /**
  * @author Daniel de Oliveira

@@ -1,4 +1,4 @@
-import {Resource} from '../model/resource';
+import {Resource} from '../../core/model/resource';
 import {IdaiFieldGeometry} from './idai-field-geometry';
 import {IdaiFieldRelations} from './idai-field-relations';
 

@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
-import {ConfigLoader} from '../configuration/config-loader';
-import {ConfigurationPreprocessor} from '../configuration/configuration-preprocessor';
+import {ConfigLoader} from '../../core/configuration/config-loader';
+import {ConfigurationPreprocessor} from '../../core/configuration/configuration-preprocessor';
 import {IdaiFieldConfigurationValidator} from './idai-field-configuration-validator';
 
 

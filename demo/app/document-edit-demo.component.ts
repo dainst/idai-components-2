@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {ConfigLoader} from '../../src/app/configuration/config-loader';
-import {IdaiType} from '../../src/app/configuration/idai-type';
-import {Datastore} from '../../src/app/datastore/datastore';
-import {Document} from '../../src/app/model/document';
+import {ConfigLoader} from '../../src/core/configuration/config-loader';
+import {IdaiType} from '../../src/core/configuration/idai-type';
+import {Datastore} from '../../src/core/datastore/datastore';
+import {Document} from '../../src/core/model/document';
 
 @Component({
     selector: 'document-edit-demo',

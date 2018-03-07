@@ -39,26 +39,6 @@ gulp.task('webserver-watch', function () {
     watch();
 });
 
-const tscConfig = require('./tsconfig.json');
-gulp.task('compile', ['convert-sass'], function () {
-    // fonts
-    gulp.src([
-        'node_modules/mdi/fonts/**/*'
-    ])
-        .pipe(gulp.dest('src/fonts'));
-
-    // sources
-    gulp
-        .src('*.ts')
-        .pipe(typescript(tscConfig.compilerOptions))
-        .pipe(gulp.dest('./'));
-
-    return gulp
-        .src('demo/app/**/*.ts')
-        .pipe(typescript(tscConfig.compilerOptions))
-        .pipe(gulp.dest('demo/app/'));
-});
-
 function createConfig(path) {
     fs.access(path, fs.F_OK, function (err) {
 

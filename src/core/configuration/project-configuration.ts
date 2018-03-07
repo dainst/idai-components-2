@@ -3,7 +3,7 @@ import {MDInternal} from '../messages/md-internal';
 import {IdaiType} from './idai-type';
 import {FieldDefinition} from './field-definition';
 import {RelationDefinition} from './relation-definition';
-import {ViewDefinition} from '../idai-field-model/view-definition';
+import {ViewDefinition} from '../../field/model/view-definition';
 import {ConfigurationDefinition} from './configuration-definition';
 
 /**

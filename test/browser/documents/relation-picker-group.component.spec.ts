@@ -1,4 +1,4 @@
-import {RelationPickerGroupComponent} from "../../../src/app/documents/docedit/relation-picker-group.component";
+import {RelationPickerGroupComponent} from "../../../src/core/documents/docedit/relation-picker-group.component";
 
 /**
  * @author Thomas Kleinke

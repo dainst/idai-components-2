@@ -1,7 +1,7 @@
-import {ConfigurationPreprocessor} from '../../../src/app/configuration/configuration-preprocessor';
-import {TypeDefinition} from '../../../src/app/configuration/type-definition'
-import {RelationDefinition} from '../../../src/app/configuration/relation-definition'
-import {ConfigurationDefinition} from '../../../src/app/configuration/configuration-definition';
+import {ConfigurationPreprocessor} from '../../../src/core/configuration/configuration-preprocessor';
+import {TypeDefinition} from '../../../src/core/configuration/type-definition'
+import {RelationDefinition} from '../../../src/core/configuration/relation-definition'
+import {ConfigurationDefinition} from '../../../src/core/configuration/configuration-definition';
 
 /**
  * @author Daniel de Oliveira

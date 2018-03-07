@@ -3,10 +3,10 @@
 
 @import "variables";
 @import "buttons";
-@import "../app/messages/messages";
-@import "../app/documents/documents";
-@import "../app/widgets/type-icon";
-@import "../app/idai-field-map/map";
+@import "../core/messages/messages";
+@import "../core/documents/documents";
+@import "../core/widgets/type-icon";
+@import "../core/idai-field-map/map";
 
 html {
   position: relative;
