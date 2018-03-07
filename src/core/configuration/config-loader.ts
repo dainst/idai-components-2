@@ -33,7 +33,27 @@ export class ConfigLoader {
         }
     ];
 
-    constructor(private configReader: ConfigReader) {}
+
+    private processedAppConfiguration: Promise<ProjectConfiguration>|undefined = undefined;
+
+    private resolveFunction: Function = () => {};
+
+    private rejectFunction: Function = () => {};
+
+
+    constructor(private configReader: ConfigReader) {
+
+        this.processedAppConfiguration = new Promise<ProjectConfiguration>((resolve, reject) => {
+            this.resolveFunction = resolve;
+            this.rejectFunction = reject;
+        });
+    }
+
+    /**
+     * @returns resolves with the ProjectConfiguration or rejects with
+     *   a msgWithParams.
+     */
+    public getProjectConfiguration = (): Promise<ProjectConfiguration>|undefined => this.processedAppConfiguration;
 
 
     public async go(
@@ -82,6 +102,7 @@ export class ConfigLoader {
         if (configurationErrors.length > 0) {
             throw configurationErrors;
         } else {
+            this.resolveFunction(appConfiguration);
             return new ProjectConfiguration(appConfiguration);
         }
     }
