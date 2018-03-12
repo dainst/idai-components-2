@@ -81,6 +81,8 @@ describe('ConfigLoader', function () {
                 case 1:
                     pconf = _a.sent();
                     expect(pconf.getRelationDefinitions('A')[0].range).toContain('B1');
+                    expect(pconf.getRelationDefinitions('A1')[0].range).toContain('B');
+                    expect(pconf.getRelationDefinitions('A2')[0].range).toContain('B2');
                     expect(pconf.getRelationDefinitions('C')[0].range).toContain('D');
                     done();
                     return [2 /*return*/];
