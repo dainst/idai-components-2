@@ -11,14 +11,21 @@ import {ProjectConfiguration} from '../../core/configuration/project-configurati
  */
 export class IdaiFieldAppConfigurator {
 
-    private defaultTypes = [{
+    private defaultTypes = [
+    {
         type: 'Place',
         fields: []
-    }, {
+    },
+    {
         type: 'Operation',
         fields: [],
         abstract: true
-    }, {
+    },
+    {
+       type: 'Feature',
+       fields: []
+    },
+    {
         type: 'Image',
         fields: [
             {
@@ -104,7 +111,13 @@ export class IdaiFieldAppConfigurator {
         { name: "liesWithin", domain: ["Operation:inherit"], label: "Liegt in",
             inverse: "includes", range: ["Place"], sameMainTypeResource: true },
         { name: "includes", domain: ["Place"], label: "Enthält", inverse: "liesWithin",
-            range: ["Operation:inherit"], sameMainTypeResource: true }
+            range: ["Operation:inherit"], sameMainTypeResource: true },
+        { name: "isAfter", inverse: "isBefore",
+            domain: ["Feature:inherit"], range: ["Feature:inherit"]},
+        { name: "isBefore", inverse: "isAfter",
+            domain: ["Feature:inherit"], range: ["Feature:inherit"]},
+        { name: "isContemporaryWith", inverse: "isContemporaryWith",
+            domain: ["Feature:inherit"], range: ["Feature:inherit"]},
     ];
 
 

@@ -16,14 +16,21 @@ var idai_field_configuration_validator_1 = require("./idai-field-configuration-v
 var IdaiFieldAppConfigurator = (function () {
     function IdaiFieldAppConfigurator(configLoader) {
         this.configLoader = configLoader;
-        this.defaultTypes = [{
+        this.defaultTypes = [
+            {
                 type: 'Place',
                 fields: []
-            }, {
+            },
+            {
                 type: 'Operation',
                 fields: [],
                 abstract: true
-            }, {
+            },
+            {
+                type: 'Feature',
+                fields: []
+            },
+            {
                 type: 'Image',
                 fields: [
                     {
@@ -77,7 +84,8 @@ var IdaiFieldAppConfigurator = (function () {
                         ]
                     }
                 ]
-            }];
+            }
+        ];
         this.defaultFields = [{
                 name: 'shortDescription',
                 label: 'Kurzbeschreibung',
@@ -105,7 +113,13 @@ var IdaiFieldAppConfigurator = (function () {
             { name: "liesWithin", domain: ["Operation:inherit"], label: "Liegt in",
                 inverse: "includes", range: ["Place"], sameMainTypeResource: true },
             { name: "includes", domain: ["Place"], label: "Enthält", inverse: "liesWithin",
-                range: ["Operation:inherit"], sameMainTypeResource: true }
+                range: ["Operation:inherit"], sameMainTypeResource: true },
+            { name: "isAfter", inverse: "isBefore",
+                domain: ["Feature:inherit"], range: ["Feature:inherit"] },
+            { name: "isBefore", inverse: "isAfter",
+                domain: ["Feature:inherit"], range: ["Feature:inherit"] },
+            { name: "isContemporaryWith", inverse: "isContemporaryWith",
+                domain: ["Feature:inherit"], range: ["Feature:inherit"] },
         ];
     }
     IdaiFieldAppConfigurator.prototype.go = function (appConfigurationPath, hiddenConfigurationPath) {
