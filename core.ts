@@ -24,7 +24,7 @@ export {ProjectConfiguration} from './src/core/configuration/project-configurati
 export {TypeDefinition} from './src/core/configuration/type-definition';
 export {RelationDefinition} from './src/core/configuration/relation-definition';
 export {ConfigurationValidator} from './src/core/configuration/configuration-validator';
-export {ConfigurationPreprocessor} from './src/core/configuration/configuration-preprocessor';
+export {Preprocessing} from './src/core/configuration/preprocessing';
 
 export {IdaiMessagesModule} from './src/core/messages/idai-messages.module';
 export {Messages} from './src/core/messages/messages';

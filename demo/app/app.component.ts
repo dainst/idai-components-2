@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Messages} from '../../src/core/messages/messages';
 import {ConfigLoader} from '../../src/core/configuration/config-loader';
 import {ConfigurationValidator} from '../../src/core/configuration/configuration-validator';
-import {ConfigurationPreprocessor} from '../../src/core/configuration/configuration-preprocessor';
+import {Preprocessing} from '../../src/core/configuration/preprocessing';
 import {OBJECTS} from './sample-objects';
 import {Datastore} from '../../src/core/datastore/datastore';
 
@@ -29,7 +29,7 @@ export class AppComponent implements OnInit {
         this.configLoader.go(
             AppComponent.APP_CONFIGURATION_PATH,
             AppComponent.HIDDEN_CONFIGURATION_PATH,
-            new ConfigurationPreprocessor(
+            new Preprocessing(
                 [
                     { 'type': 'Image', 'fields': [ { 'name': 'dimensions' } ] }
                 ],

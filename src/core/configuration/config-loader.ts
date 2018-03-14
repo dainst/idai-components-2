@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {ProjectConfiguration} from './project-configuration';
-import {ConfigurationPreprocessor} from './configuration-preprocessor';
+import {Preprocessing} from './preprocessing';
 import {ConfigurationValidator} from './configuration-validator';
 import {ConfigReader} from './config-reader';
 import {TypeDefinition} from './type-definition';
@@ -78,10 +78,10 @@ export class ConfigLoader {
         }
 
         if (!appConfiguration.relations) appConfiguration.relations = [];
-        ConfigurationPreprocessor.addExtraTypes(appConfiguration, extraTypes);
-        ConfigurationPreprocessor.addExtraFields(appConfiguration, extraFields);
-        ConfigurationPreprocessor.addExtraRelations(appConfiguration, extraRelations);
-        ConfigurationPreprocessor.addExtraFields(appConfiguration, ConfigLoader.defaultFields);
+        Preprocessing.addExtraTypes(appConfiguration, extraTypes);
+        Preprocessing.addExtraFields(appConfiguration, extraFields);
+        Preprocessing.addExtraRelations(appConfiguration, extraRelations);
+        Preprocessing.addExtraFields(appConfiguration, ConfigLoader.defaultFields);
 
         // POST PREPROCESS VALIDATION
 

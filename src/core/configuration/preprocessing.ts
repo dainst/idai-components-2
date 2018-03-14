@@ -6,7 +6,7 @@ import {RelationDefinition} from './relation-definition';
 /**
  * @author Daniel de Oliveira
  */
-export module ConfigurationPreprocessor {
+export module Preprocessing {
 
     export function addExtraFields(
         configuration : ConfigurationDefinition,

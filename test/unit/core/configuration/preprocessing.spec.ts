@@ -1,4 +1,4 @@
-import {ConfigurationPreprocessor} from '../../../../src/core/configuration/configuration-preprocessor';
+import {Preprocessing} from '../../../../src/core/configuration/preprocessing';
 import {TypeDefinition} from '../../../../src/core/configuration/type-definition'
 import {RelationDefinition} from '../../../../src/core/configuration/relation-definition'
 import {ConfigurationDefinition} from '../../../../src/core/configuration/configuration-definition';
@@ -63,7 +63,7 @@ describe('ConfigurationPreprocessor', () => {
 
     it('should add extra fields', function() {
 
-        ConfigurationPreprocessor.addExtraFields(configuration, [{ name: 'identifier' }]);
+        Preprocessing.addExtraFields(configuration, [{ name: 'identifier' }]);
 
         expect(configuration.types[0].fields[0].name).toBe('identifier');
         expect(configuration.types[0].fields[1].name).toBe('aField');
@@ -79,7 +79,7 @@ describe('ConfigurationPreprocessor', () => {
                 }]
         };
 
-        ConfigurationPreprocessor.addExtraTypes(configuration, [et]);
+        Preprocessing.addExtraTypes(configuration, [et]);
         expect(configuration.types[1].fields[0].name).toBe('bField');
     });
 
@@ -93,8 +93,8 @@ describe('ConfigurationPreprocessor', () => {
                 }]
         };
 
-        ConfigurationPreprocessor.addExtraTypes(configuration, [et]);
-        ConfigurationPreprocessor.addExtraFields(configuration, [{name:'identifier'}]);
+        Preprocessing.addExtraTypes(configuration, [et]);
+        Preprocessing.addExtraFields(configuration, [{name:'identifier'}]);
 
         expect(configuration.types[1].fields[0].name).toBe('identifier');
         expect(configuration.types[1].fields[1].name).toBe('bField');
@@ -110,7 +110,7 @@ describe('ConfigurationPreprocessor', () => {
                 }]
         };
 
-        ConfigurationPreprocessor.addExtraTypes(configuration, [et]);
+        Preprocessing.addExtraTypes(configuration, [et]);
 
         expect(configuration.types[0].fields[0].name).toBe('aField');
         expect(configuration.types[0].fields[1].name).toBe('bField');
@@ -126,8 +126,8 @@ describe('ConfigurationPreprocessor', () => {
                 }]
         };
 
-        ConfigurationPreprocessor.addExtraTypes(configuration, [et]);
-        ConfigurationPreprocessor.addExtraFields(configuration, [{name:'identifier'}]);
+        Preprocessing.addExtraTypes(configuration, [et]);
+        Preprocessing.addExtraFields(configuration, [{name:'identifier'}]);
 
         expect(configuration.types[0].fields[0].name).toBe('identifier');
         expect(configuration.types[0].fields[1].name).toBe('aField');
@@ -152,8 +152,8 @@ describe('ConfigurationPreprocessor', () => {
             ]
         };
 
-        ConfigurationPreprocessor.addExtraTypes(configuration, []);
-        ConfigurationPreprocessor.addExtraFields(configuration, [{name:'identifier'}]);
+        Preprocessing.addExtraTypes(configuration, []);
+        Preprocessing.addExtraFields(configuration, [{name:'identifier'}]);
 
         expect(configuration.types[0].fields[0].name).toBe('aField');
         expect(configuration.types[0].fields[1]).toBe(undefined);
@@ -168,8 +168,8 @@ describe('ConfigurationPreprocessor', () => {
         };
         configuration.relations = [];
 
-        ConfigurationPreprocessor.addExtraFields(configuration, []);
-        ConfigurationPreprocessor.addExtraRelations(configuration, [r]);
+        Preprocessing.addExtraFields(configuration, []);
+        Preprocessing.addExtraRelations(configuration, [r]);
 
         expect(configuration.relations[0].name).toBe('R');
         expect(configuration.relations[1]).toBe(undefined); // to prevent reintroducing bug
@@ -199,9 +199,9 @@ describe('ConfigurationPreprocessor', () => {
             ]
         };
 
-        ConfigurationPreprocessor.addExtraTypes(configuration, []);
-        ConfigurationPreprocessor.addExtraFields(configuration, []);
-        ConfigurationPreprocessor.addExtraRelations(configuration, [r2]);
+        Preprocessing.addExtraTypes(configuration, []);
+        Preprocessing.addExtraFields(configuration, []);
+        Preprocessing.addExtraRelations(configuration, [r2]);
 
         expect(configuration.relations.length).toBe(2);
     });
@@ -215,8 +215,8 @@ describe('ConfigurationPreprocessor', () => {
 
         configuration.relations = [];
 
-        ConfigurationPreprocessor.addExtraFields(addType(addType(configuration)), []);
-        ConfigurationPreprocessor.addExtraRelations(configuration, [r]);
+        Preprocessing.addExtraFields(addType(addType(configuration)), []);
+        Preprocessing.addExtraRelations(configuration, [r]);
 
         expect(configuration.relations[0].range[0]).toBe('T1');
         expect(configuration.relations[0].range[1]).toBe(undefined);
@@ -232,8 +232,8 @@ describe('ConfigurationPreprocessor', () => {
 
         configuration.relations = [];
 
-        ConfigurationPreprocessor.addExtraFields(addType(addType(configuration)), []);
-        ConfigurationPreprocessor.addExtraRelations(configuration, [r]);
+        Preprocessing.addExtraFields(addType(addType(configuration)), []);
+        Preprocessing.addExtraRelations(configuration, [r]);
 
 
         expect(configuration.relations[0].domain[0]).toBe('T1');
@@ -250,8 +250,8 @@ describe('ConfigurationPreprocessor', () => {
 
         configuration.relations = [];
 
-        ConfigurationPreprocessor.addExtraFields(addType(addType(configuration,'T1')), []);
-        ConfigurationPreprocessor.addExtraRelations(configuration, [r]);
+        Preprocessing.addExtraFields(addType(addType(configuration,'T1')), []);
+        Preprocessing.addExtraRelations(configuration, [r]);
 
         expect(configuration.relations[0].range.indexOf('T1')).not.toBe(-1);
         expect(configuration.relations[0].range.indexOf('T2')).not.toBe(-1);
@@ -269,8 +269,8 @@ describe('ConfigurationPreprocessor', () => {
 
         configuration.relations = [];
 
-        ConfigurationPreprocessor.addExtraFields(addType(addType(configuration,'T1')), []);
-        ConfigurationPreprocessor.addExtraRelations(configuration, [r]);
+        Preprocessing.addExtraFields(addType(addType(configuration,'T1')), []);
+        Preprocessing.addExtraRelations(configuration, [r]);
 
         expect(configuration.relations[0].domain.indexOf('T1')).not.toBe(-1);
         expect(configuration.relations[0].domain.indexOf('T2')).not.toBe(-1);
@@ -287,8 +287,8 @@ describe('ConfigurationPreprocessor', () => {
         };
 
         configuration.relations = [];
-        ConfigurationPreprocessor.addExtraFields(addType(addType(configuration,'T1')), []);
-        ConfigurationPreprocessor.addExtraRelations(configuration, [r]);
+        Preprocessing.addExtraFields(addType(addType(configuration,'T1')), []);
+        Preprocessing.addExtraRelations(configuration, [r]);
 
         expect(configuration.relations[0].range[0]).toBe('T3');
         expect(configuration.relations[0].range.indexOf('T1')).toBe(-1);

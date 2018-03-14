@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var configuration_preprocessor_1 = require("../../../../src/core/configuration/configuration-preprocessor");
+var preprocessing_1 = require("../../../../src/core/configuration/preprocessing");
 /**
  * @author Daniel de Oliveira
  */
@@ -51,7 +51,7 @@ describe('ConfigurationPreprocessor', function () {
     });
     */
     it('should add extra fields', function () {
-        configuration_preprocessor_1.ConfigurationPreprocessor.addExtraFields(configuration, [{ name: 'identifier' }]);
+        preprocessing_1.Preprocessing.addExtraFields(configuration, [{ name: 'identifier' }]);
         expect(configuration.types[0].fields[0].name).toBe('identifier');
         expect(configuration.types[0].fields[1].name).toBe('aField');
     });
@@ -63,7 +63,7 @@ describe('ConfigurationPreprocessor', function () {
                 }
             ]
         };
-        configuration_preprocessor_1.ConfigurationPreprocessor.addExtraTypes(configuration, [et]);
+        preprocessing_1.Preprocessing.addExtraTypes(configuration, [et]);
         expect(configuration.types[1].fields[0].name).toBe('bField');
     });
     it('should add and extra field to an extra type', function () {
@@ -74,8 +74,8 @@ describe('ConfigurationPreprocessor', function () {
                 }
             ]
         };
-        configuration_preprocessor_1.ConfigurationPreprocessor.addExtraTypes(configuration, [et]);
-        configuration_preprocessor_1.ConfigurationPreprocessor.addExtraFields(configuration, [{ name: 'identifier' }]);
+        preprocessing_1.Preprocessing.addExtraTypes(configuration, [et]);
+        preprocessing_1.Preprocessing.addExtraFields(configuration, [{ name: 'identifier' }]);
         expect(configuration.types[1].fields[0].name).toBe('identifier');
         expect(configuration.types[1].fields[1].name).toBe('bField');
     });
@@ -87,7 +87,7 @@ describe('ConfigurationPreprocessor', function () {
                 }
             ]
         };
-        configuration_preprocessor_1.ConfigurationPreprocessor.addExtraTypes(configuration, [et]);
+        preprocessing_1.Preprocessing.addExtraTypes(configuration, [et]);
         expect(configuration.types[0].fields[0].name).toBe('aField');
         expect(configuration.types[0].fields[1].name).toBe('bField');
     });
@@ -99,8 +99,8 @@ describe('ConfigurationPreprocessor', function () {
                 }
             ]
         };
-        configuration_preprocessor_1.ConfigurationPreprocessor.addExtraTypes(configuration, [et]);
-        configuration_preprocessor_1.ConfigurationPreprocessor.addExtraFields(configuration, [{ name: 'identifier' }]);
+        preprocessing_1.Preprocessing.addExtraTypes(configuration, [et]);
+        preprocessing_1.Preprocessing.addExtraFields(configuration, [{ name: 'identifier' }]);
         expect(configuration.types[0].fields[0].name).toBe('identifier');
         expect(configuration.types[0].fields[1].name).toBe('aField');
         expect(configuration.types[0].fields[2].name).toBe('bField');
@@ -120,8 +120,8 @@ describe('ConfigurationPreprocessor', function () {
                 t
             ]
         };
-        configuration_preprocessor_1.ConfigurationPreprocessor.addExtraTypes(configuration, []);
-        configuration_preprocessor_1.ConfigurationPreprocessor.addExtraFields(configuration, [{ name: 'identifier' }]);
+        preprocessing_1.Preprocessing.addExtraTypes(configuration, []);
+        preprocessing_1.Preprocessing.addExtraFields(configuration, [{ name: 'identifier' }]);
         expect(configuration.types[0].fields[0].name).toBe('aField');
         expect(configuration.types[0].fields[1]).toBe(undefined);
     });
@@ -131,8 +131,8 @@ describe('ConfigurationPreprocessor', function () {
             range: ['rangeA']
         };
         configuration.relations = [];
-        configuration_preprocessor_1.ConfigurationPreprocessor.addExtraFields(configuration, []);
-        configuration_preprocessor_1.ConfigurationPreprocessor.addExtraRelations(configuration, [r]);
+        preprocessing_1.Preprocessing.addExtraFields(configuration, []);
+        preprocessing_1.Preprocessing.addExtraRelations(configuration, [r]);
         expect(configuration.relations[0].name).toBe('R');
         expect(configuration.relations[1]).toBe(undefined); // to prevent reintroducing bug
     });
@@ -155,9 +155,9 @@ describe('ConfigurationPreprocessor', function () {
                 r1
             ]
         };
-        configuration_preprocessor_1.ConfigurationPreprocessor.addExtraTypes(configuration, []);
-        configuration_preprocessor_1.ConfigurationPreprocessor.addExtraFields(configuration, []);
-        configuration_preprocessor_1.ConfigurationPreprocessor.addExtraRelations(configuration, [r2]);
+        preprocessing_1.Preprocessing.addExtraTypes(configuration, []);
+        preprocessing_1.Preprocessing.addExtraFields(configuration, []);
+        preprocessing_1.Preprocessing.addExtraRelations(configuration, [r2]);
         expect(configuration.relations.length).toBe(2);
     });
     it('should replace range ALL with all types execpt the range types', function () {
@@ -165,8 +165,8 @@ describe('ConfigurationPreprocessor', function () {
             domain: ['T2', 'T3']
         };
         configuration.relations = [];
-        configuration_preprocessor_1.ConfigurationPreprocessor.addExtraFields(addType(addType(configuration)), []);
-        configuration_preprocessor_1.ConfigurationPreprocessor.addExtraRelations(configuration, [r]);
+        preprocessing_1.Preprocessing.addExtraFields(addType(addType(configuration)), []);
+        preprocessing_1.Preprocessing.addExtraRelations(configuration, [r]);
         expect(configuration.relations[0].range[0]).toBe('T1');
         expect(configuration.relations[0].range[1]).toBe(undefined);
     });
@@ -175,8 +175,8 @@ describe('ConfigurationPreprocessor', function () {
             range: ['T2', 'T3']
         };
         configuration.relations = [];
-        configuration_preprocessor_1.ConfigurationPreprocessor.addExtraFields(addType(addType(configuration)), []);
-        configuration_preprocessor_1.ConfigurationPreprocessor.addExtraRelations(configuration, [r]);
+        preprocessing_1.Preprocessing.addExtraFields(addType(addType(configuration)), []);
+        preprocessing_1.Preprocessing.addExtraRelations(configuration, [r]);
         expect(configuration.relations[0].domain[0]).toBe('T1');
         expect(configuration.relations[0].domain[1]).toBe(undefined);
     });
@@ -186,8 +186,8 @@ describe('ConfigurationPreprocessor', function () {
             range: ['T1:inherit']
         };
         configuration.relations = [];
-        configuration_preprocessor_1.ConfigurationPreprocessor.addExtraFields(addType(addType(configuration, 'T1')), []);
-        configuration_preprocessor_1.ConfigurationPreprocessor.addExtraRelations(configuration, [r]);
+        preprocessing_1.Preprocessing.addExtraFields(addType(addType(configuration, 'T1')), []);
+        preprocessing_1.Preprocessing.addExtraRelations(configuration, [r]);
         expect(configuration.relations[0].range.indexOf('T1')).not.toBe(-1);
         expect(configuration.relations[0].range.indexOf('T2')).not.toBe(-1);
         expect(configuration.relations[0].range.indexOf('T1:inherit')).toBe(-1);
@@ -199,8 +199,8 @@ describe('ConfigurationPreprocessor', function () {
             range: ['T3']
         };
         configuration.relations = [];
-        configuration_preprocessor_1.ConfigurationPreprocessor.addExtraFields(addType(addType(configuration, 'T1')), []);
-        configuration_preprocessor_1.ConfigurationPreprocessor.addExtraRelations(configuration, [r]);
+        preprocessing_1.Preprocessing.addExtraFields(addType(addType(configuration, 'T1')), []);
+        preprocessing_1.Preprocessing.addExtraRelations(configuration, [r]);
         expect(configuration.relations[0].domain.indexOf('T1')).not.toBe(-1);
         expect(configuration.relations[0].domain.indexOf('T2')).not.toBe(-1);
         expect(configuration.relations[0].domain.indexOf('T1:inherit')).toBe(-1);
@@ -212,11 +212,11 @@ describe('ConfigurationPreprocessor', function () {
             domain: ['T1:inherit']
         };
         configuration.relations = [];
-        configuration_preprocessor_1.ConfigurationPreprocessor.addExtraFields(addType(addType(configuration, 'T1')), []);
-        configuration_preprocessor_1.ConfigurationPreprocessor.addExtraRelations(configuration, [r]);
+        preprocessing_1.Preprocessing.addExtraFields(addType(addType(configuration, 'T1')), []);
+        preprocessing_1.Preprocessing.addExtraRelations(configuration, [r]);
         expect(configuration.relations[0].range[0]).toBe('T3');
         expect(configuration.relations[0].range.indexOf('T1')).toBe(-1);
         expect(configuration.relations[0].range.indexOf('T2')).toBe(-1);
     });
 });
-//# sourceMappingURL=configuration-preprocessor.spec.js.map
+//# sourceMappingURL=preprocessing.spec.js.map
