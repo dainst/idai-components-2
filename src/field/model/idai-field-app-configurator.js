@@ -11,7 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var config_loader_1 = require("../../core/configuration/config-loader");
-var configuration_preprocessor_1 = require("../../core/configuration/configuration-preprocessor");
 var idai_field_configuration_validator_1 = require("./idai-field-configuration-validator");
 var IdaiFieldAppConfigurator = (function () {
     function IdaiFieldAppConfigurator(configLoader) {
@@ -122,8 +121,8 @@ var IdaiFieldAppConfigurator = (function () {
                 domain: ["Feature:inherit"], range: ["Feature:inherit"] },
         ];
     }
-    IdaiFieldAppConfigurator.prototype.go = function (appConfigurationPath, hiddenConfigurationPath) {
-        return this.configLoader.go(appConfigurationPath, hiddenConfigurationPath, new configuration_preprocessor_1.ConfigurationPreprocessor(this.defaultTypes, this.defaultFields, this.defaultRelations), new idai_field_configuration_validator_1.IdaiFieldConfigurationValidator());
+    IdaiFieldAppConfigurator.prototype.go = function (configDirPath) {
+        return this.configLoader.go(configDirPath, this.defaultTypes, this.defaultRelations, this.defaultFields, new idai_field_configuration_validator_1.IdaiFieldConfigurationValidator());
     };
     return IdaiFieldAppConfigurator;
 }());

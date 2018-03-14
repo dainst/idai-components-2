@@ -37,7 +37,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
 var config_loader_1 = require("../../../../src/core/configuration/config-loader");
-var configuration_preprocessor_1 = require("../../../../src/core/configuration/configuration-preprocessor");
 /**
  * @author Daniel de Oliveira
  */
@@ -73,11 +72,11 @@ describe('ConfigLoader', function () {
                         domain: ['C'],
                         range: ['D']
                     });
-                    return [4 /*yield*/, configLoader.go('yo', undefined, new configuration_preprocessor_1.ConfigurationPreprocessor([], [], [{
+                    return [4 /*yield*/, configLoader.go('yo', [], [{
                                 name: 'connection',
                                 domain: ['A:inherit'],
                                 range: ['B:inherit']
-                            }]), undefined)];
+                            }], [], undefined)];
                 case 1:
                     pconf = _a.sent();
                     expect(pconf.getRelationDefinitions('A')[0].range).toContain('B1');

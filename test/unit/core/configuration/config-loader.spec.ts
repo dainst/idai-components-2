@@ -1,6 +1,5 @@
 import {ConfigurationDefinition} from '../../../../src/core/configuration/configuration-definition';
 import {ConfigLoader} from '../../../../src/core/configuration/config-loader';
-import {ConfigurationPreprocessor} from '../../../../src/core/configuration/configuration-preprocessor';
 
 /**
  * @author Daniel de Oliveira
@@ -45,16 +44,13 @@ describe('ConfigLoader',() => {
 
         const pconf = await configLoader.go(
             'yo',
-            undefined,
-            new ConfigurationPreprocessor(
-                [],
-                [],
-                [{
-                    name: 'connection',
-                    domain: ['A:inherit'], // TODO reject config if not an array
-                    range: ['B:inherit']
-                }]
-            ),
+            [],
+            [{
+                name: 'connection',
+                domain: ['A:inherit'], // TODO reject config if not an array
+                range: ['B:inherit']
+            }],
+            [],
             undefined,
         );
         

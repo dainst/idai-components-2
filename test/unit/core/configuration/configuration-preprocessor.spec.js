@@ -32,20 +32,26 @@ describe('ConfigurationPreprocessor', function () {
         configuration.types.push(newT);
         return configuration;
     }
-    it('should add missing relations', function () {
+    /*
+    it('should add missing relations', function() {
+
         delete configuration.relations; // in case someone defined it in before
-        new configuration_preprocessor_1.ConfigurationPreprocessor([], [], [])
-            .go(configuration);
-        expect(configuration.relations.length).toBe(0);
+        // new ConfigurationPreprocessor([])
+        //     .addExtraFields(configuration);
+        expect(configuration.relations.length as any).toBe(0);
     });
-    it('should add missing type fields', function () {
+
+
+    it('should add missing type fields', function() {
+
         delete configuration.types[0].fields;
-        new configuration_preprocessor_1.ConfigurationPreprocessor([], [], [])
-            .go(configuration);
+        new ConfigurationPreprocessor([])
+            .addExtraFields(configuration);
         expect(configuration.types[0].fields.length).toBe(0);
     });
+    */
     it('should add extra fields', function () {
-        new configuration_preprocessor_1.ConfigurationPreprocessor([], [{ name: 'identifier' }], []).go(configuration);
+        configuration_preprocessor_1.ConfigurationPreprocessor.addExtraFields(configuration, [{ name: 'identifier' }]);
         expect(configuration.types[0].fields[0].name).toBe('identifier');
         expect(configuration.types[0].fields[1].name).toBe('aField');
     });
@@ -57,8 +63,7 @@ describe('ConfigurationPreprocessor', function () {
                 }
             ]
         };
-        new configuration_preprocessor_1.ConfigurationPreprocessor([et], [], [])
-            .go(configuration);
+        configuration_preprocessor_1.ConfigurationPreprocessor.addExtraTypes(configuration, [et]);
         expect(configuration.types[1].fields[0].name).toBe('bField');
     });
     it('should add and extra field to an extra type', function () {
@@ -69,8 +74,8 @@ describe('ConfigurationPreprocessor', function () {
                 }
             ]
         };
-        new configuration_preprocessor_1.ConfigurationPreprocessor([et], [{ name: 'identifier' }], [])
-            .go(configuration);
+        configuration_preprocessor_1.ConfigurationPreprocessor.addExtraTypes(configuration, [et]);
+        configuration_preprocessor_1.ConfigurationPreprocessor.addExtraFields(configuration, [{ name: 'identifier' }]);
         expect(configuration.types[1].fields[0].name).toBe('identifier');
         expect(configuration.types[1].fields[1].name).toBe('bField');
     });
@@ -82,8 +87,7 @@ describe('ConfigurationPreprocessor', function () {
                 }
             ]
         };
-        new configuration_preprocessor_1.ConfigurationPreprocessor([et], [], [])
-            .go(configuration);
+        configuration_preprocessor_1.ConfigurationPreprocessor.addExtraTypes(configuration, [et]);
         expect(configuration.types[0].fields[0].name).toBe('aField');
         expect(configuration.types[0].fields[1].name).toBe('bField');
     });
@@ -95,8 +99,8 @@ describe('ConfigurationPreprocessor', function () {
                 }
             ]
         };
-        new configuration_preprocessor_1.ConfigurationPreprocessor([et], [{ name: 'identifier' }], [])
-            .go(configuration);
+        configuration_preprocessor_1.ConfigurationPreprocessor.addExtraTypes(configuration, [et]);
+        configuration_preprocessor_1.ConfigurationPreprocessor.addExtraFields(configuration, [{ name: 'identifier' }]);
         expect(configuration.types[0].fields[0].name).toBe('identifier');
         expect(configuration.types[0].fields[1].name).toBe('aField');
         expect(configuration.types[0].fields[2].name).toBe('bField');
@@ -116,8 +120,8 @@ describe('ConfigurationPreprocessor', function () {
                 t
             ]
         };
-        new configuration_preprocessor_1.ConfigurationPreprocessor([], [{ name: 'identifier' }], [])
-            .go(configuration);
+        configuration_preprocessor_1.ConfigurationPreprocessor.addExtraTypes(configuration, []);
+        configuration_preprocessor_1.ConfigurationPreprocessor.addExtraFields(configuration, [{ name: 'identifier' }]);
         expect(configuration.types[0].fields[0].name).toBe('aField');
         expect(configuration.types[0].fields[1]).toBe(undefined);
     });
@@ -126,8 +130,9 @@ describe('ConfigurationPreprocessor', function () {
             domain: ['domainA'],
             range: ['rangeA']
         };
-        new configuration_preprocessor_1.ConfigurationPreprocessor([], [], [r])
-            .go(configuration);
+        configuration.relations = [];
+        configuration_preprocessor_1.ConfigurationPreprocessor.addExtraFields(configuration, []);
+        configuration_preprocessor_1.ConfigurationPreprocessor.addExtraRelations(configuration, [r]);
         expect(configuration.relations[0].name).toBe('R');
         expect(configuration.relations[1]).toBe(undefined); // to prevent reintroducing bug
     });
@@ -150,16 +155,18 @@ describe('ConfigurationPreprocessor', function () {
                 r1
             ]
         };
-        new configuration_preprocessor_1.ConfigurationPreprocessor([], [], [r2])
-            .go(configuration);
+        configuration_preprocessor_1.ConfigurationPreprocessor.addExtraTypes(configuration, []);
+        configuration_preprocessor_1.ConfigurationPreprocessor.addExtraFields(configuration, []);
+        configuration_preprocessor_1.ConfigurationPreprocessor.addExtraRelations(configuration, [r2]);
         expect(configuration.relations.length).toBe(2);
     });
     it('should replace range ALL with all types execpt the range types', function () {
         var r = { name: 'R',
             domain: ['T2', 'T3']
         };
-        new configuration_preprocessor_1.ConfigurationPreprocessor([], [], [r])
-            .go(addType(addType(configuration)));
+        configuration.relations = [];
+        configuration_preprocessor_1.ConfigurationPreprocessor.addExtraFields(addType(addType(configuration)), []);
+        configuration_preprocessor_1.ConfigurationPreprocessor.addExtraRelations(configuration, [r]);
         expect(configuration.relations[0].range[0]).toBe('T1');
         expect(configuration.relations[0].range[1]).toBe(undefined);
     });
@@ -167,8 +174,9 @@ describe('ConfigurationPreprocessor', function () {
         var r = { name: 'R',
             range: ['T2', 'T3']
         };
-        new configuration_preprocessor_1.ConfigurationPreprocessor([], [], [r])
-            .go(addType(addType(configuration)));
+        configuration.relations = [];
+        configuration_preprocessor_1.ConfigurationPreprocessor.addExtraFields(addType(addType(configuration)), []);
+        configuration_preprocessor_1.ConfigurationPreprocessor.addExtraRelations(configuration, [r]);
         expect(configuration.relations[0].domain[0]).toBe('T1');
         expect(configuration.relations[0].domain[1]).toBe(undefined);
     });
@@ -177,8 +185,9 @@ describe('ConfigurationPreprocessor', function () {
             domain: ['T3'],
             range: ['T1:inherit']
         };
-        new configuration_preprocessor_1.ConfigurationPreprocessor([], [], [r])
-            .go(addType(addType(configuration, 'T1')));
+        configuration.relations = [];
+        configuration_preprocessor_1.ConfigurationPreprocessor.addExtraFields(addType(addType(configuration, 'T1')), []);
+        configuration_preprocessor_1.ConfigurationPreprocessor.addExtraRelations(configuration, [r]);
         expect(configuration.relations[0].range.indexOf('T1')).not.toBe(-1);
         expect(configuration.relations[0].range.indexOf('T2')).not.toBe(-1);
         expect(configuration.relations[0].range.indexOf('T1:inherit')).toBe(-1);
@@ -189,8 +198,9 @@ describe('ConfigurationPreprocessor', function () {
             domain: ['T1:inherit'],
             range: ['T3']
         };
-        new configuration_preprocessor_1.ConfigurationPreprocessor([], [], [r])
-            .go(addType(addType(configuration, 'T1')));
+        configuration.relations = [];
+        configuration_preprocessor_1.ConfigurationPreprocessor.addExtraFields(addType(addType(configuration, 'T1')), []);
+        configuration_preprocessor_1.ConfigurationPreprocessor.addExtraRelations(configuration, [r]);
         expect(configuration.relations[0].domain.indexOf('T1')).not.toBe(-1);
         expect(configuration.relations[0].domain.indexOf('T2')).not.toBe(-1);
         expect(configuration.relations[0].domain.indexOf('T1:inherit')).toBe(-1);
@@ -201,8 +211,9 @@ describe('ConfigurationPreprocessor', function () {
         var r = { name: 'R',
             domain: ['T1:inherit']
         };
-        new configuration_preprocessor_1.ConfigurationPreprocessor([], [], [r])
-            .go(addType(addType(configuration, 'T1')));
+        configuration.relations = [];
+        configuration_preprocessor_1.ConfigurationPreprocessor.addExtraFields(addType(addType(configuration, 'T1')), []);
+        configuration_preprocessor_1.ConfigurationPreprocessor.addExtraRelations(configuration, [r]);
         expect(configuration.relations[0].range[0]).toBe('T3');
         expect(configuration.relations[0].range.indexOf('T1')).toBe(-1);
         expect(configuration.relations[0].range.indexOf('T2')).toBe(-1);

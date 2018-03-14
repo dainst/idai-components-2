@@ -6,45 +6,28 @@ import {RelationDefinition} from './relation-definition';
 /**
  * @author Daniel de Oliveira
  */
-export class ConfigurationPreprocessor {
+export module ConfigurationPreprocessor {
 
-    /**
-     * @param extraTypes fields of an extra type are merged if there is a type of its name already.
-     * @param extraFields are added to every type including the extra types.
-     * @param extraRelations an extra relation is added only if there is no relation of its name defined yet.
-     */
-    constructor(private extraTypes : Array<TypeDefinition>,
-                private extraFields : Array<FieldDefinition>,
-                private extraRelations : Array<RelationDefinition>) { }
-
-
-    /**
-     * @param configuration
-     */
-    public go(
-        configuration : ConfigurationDefinition
+    export function addExtraFields(
+        configuration : ConfigurationDefinition,
+        extraFields: Array<FieldDefinition>
         ) {
 
-        ConfigurationPreprocessor.addExtraTypes(configuration,this.extraTypes);
-        
         for (let typeDefinition of configuration.types) {
             if (!typeDefinition.fields) typeDefinition.fields = [];
 
             if (typeDefinition.parent == undefined) {
-                ConfigurationPreprocessor.addExtraFields(typeDefinition,this.extraFields)
+                _addExtraFields(typeDefinition, extraFields)
             }
             for (let fieldDefinition of typeDefinition.fields) {
                 if (fieldDefinition.editable == undefined) fieldDefinition.editable = true;
                 if (fieldDefinition.visible == undefined) fieldDefinition.visible = true;
             }
         }
-
-        if (!configuration.relations) configuration.relations = [];
-        ConfigurationPreprocessor.addExtraRelations(configuration, this.extraRelations);
     }
 
 
-    private static addExtraRelations(configuration : ConfigurationDefinition,
+    export function addExtraRelations(configuration : ConfigurationDefinition,
                               extraRelations : Array<RelationDefinition>) {
 
         if (!configuration.relations) return;
@@ -52,16 +35,16 @@ export class ConfigurationPreprocessor {
         for (let extraRelation of extraRelations) {
             let relationAlreadyPresent = false;
             for (const relationDefinition of configuration.relations) {
-                if (ConfigurationPreprocessor.relationAlreadyExists(relationDefinition, extraRelation)) {
+                if (relationAlreadyExists(relationDefinition, extraRelation)) {
                     relationAlreadyPresent = true;
                 }
             }
             if (!relationAlreadyPresent) {
                 configuration.relations.splice(0,0,extraRelation);
-                ConfigurationPreprocessor.expandInherits(configuration, extraRelation, 'range');
-                ConfigurationPreprocessor.expandInherits(configuration, extraRelation, 'domain');
-                ConfigurationPreprocessor.expandOnUndefined(configuration, extraRelation, 'range');
-                ConfigurationPreprocessor.expandOnUndefined(configuration, extraRelation, 'domain');
+                expandInherits(configuration, extraRelation, 'range');
+                expandInherits(configuration, extraRelation, 'domain');
+                expandOnUndefined(configuration, extraRelation, 'range');
+                expandOnUndefined(configuration, extraRelation, 'domain');
             }
         }
     }
@@ -74,7 +57,7 @@ export class ConfigurationPreprocessor {
      * @param extraRelation
      * @returns {boolean}
      */
-    private static relationAlreadyExists(existingRelation: any, extraRelation: any) {
+    function relationAlreadyExists(existingRelation: any, extraRelation: any) {
 
         if (existingRelation.name == extraRelation.name) {
             if (existingRelation.domain && extraRelation.domain) {
@@ -86,7 +69,7 @@ export class ConfigurationPreprocessor {
     }
 
 
-    private static expandInherits(configuration : ConfigurationDefinition,
+    function expandInherits(configuration : ConfigurationDefinition,
                            extraRelation : RelationDefinition, itemSet: string) {
 
         if (!extraRelation) return;
@@ -110,7 +93,7 @@ export class ConfigurationPreprocessor {
     }
 
 
-    private static expandOnUndefined(configuration : ConfigurationDefinition,
+    function expandOnUndefined(configuration : ConfigurationDefinition,
                               extraRelation_ : RelationDefinition, itemSet: string) {
 
         const extraRelation: any = extraRelation_;
@@ -129,7 +112,7 @@ export class ConfigurationPreprocessor {
     }
 
 
-    private static mergeFields(target:TypeDefinition, source:TypeDefinition) {
+    function mergeFields(target:TypeDefinition, source:TypeDefinition) {
 
         for (let sourceField of source.fields) {
 
@@ -146,7 +129,7 @@ export class ConfigurationPreprocessor {
     }
 
 
-    private static addExtraTypes(
+    export function addExtraTypes(
         configuration : ConfigurationDefinition,
         extraTypes : Array<TypeDefinition>) {
 
@@ -159,7 +142,7 @@ export class ConfigurationPreprocessor {
                     == (<TypeDefinition>extraType).type) {
 
                     typeAlreadyPresent = true;
-                    ConfigurationPreprocessor.mergeFields(typeDefinition,extraType);
+                    mergeFields(typeDefinition,extraType);
                 }
             }
 
@@ -170,7 +153,7 @@ export class ConfigurationPreprocessor {
     }
 
 
-    private static addExtraFields(
+    function _addExtraFields(
         typeDefinition : TypeDefinition,
         extraFields : Array<FieldDefinition>) {
 

@@ -3,6 +3,9 @@ import {ProjectConfiguration} from './project-configuration';
 import {ConfigurationPreprocessor} from './configuration-preprocessor';
 import {ConfigurationValidator} from './configuration-validator';
 import {ConfigReader} from './config-reader';
+import {TypeDefinition} from './type-definition';
+import {RelationDefinition} from './relation-definition';
+import {FieldDefinition} from './field-definition';
 
 @Injectable()
 /**
@@ -38,10 +41,14 @@ export class ConfigLoader {
 
 
     public async go(
-                appConfigurationPath: string,
-                hiddenConfigurationPath: string|undefined,
-                externallyConfiguredConfigurationPreprocessor: ConfigurationPreprocessor,
+                configDirPath: string,
+                extraTypes : Array<TypeDefinition>,
+                extraRelations : Array<RelationDefinition>,
+                extraFields: Array<FieldDefinition>,
                 postPreprocessConfigurationValidator: ConfigurationValidator): Promise<ProjectConfiguration> {
+
+        const appConfigurationPath = configDirPath + "/Configuration.json";
+        const hiddenConfigurationPath = configDirPath + "/Hidden.json";
 
         let appConfiguration;
         try {
@@ -70,11 +77,11 @@ export class ConfigLoader {
             } catch (_) {}
         }
 
-        if (externallyConfiguredConfigurationPreprocessor) {
-            externallyConfiguredConfigurationPreprocessor.go(appConfiguration);
-        }
-        new ConfigurationPreprocessor([], ConfigLoader.defaultFields, [])
-            .go(appConfiguration);
+        if (!appConfiguration.relations) appConfiguration.relations = [];
+        ConfigurationPreprocessor.addExtraTypes(appConfiguration, extraTypes);
+        ConfigurationPreprocessor.addExtraFields(appConfiguration, extraFields);
+        ConfigurationPreprocessor.addExtraRelations(appConfiguration, extraRelations);
+        ConfigurationPreprocessor.addExtraFields(appConfiguration, ConfigLoader.defaultFields);
 
         // POST PREPROCESS VALIDATION
 
