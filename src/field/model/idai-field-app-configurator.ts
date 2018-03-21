@@ -111,11 +111,11 @@ export class IdaiFieldAppConfigurator {
             inverse: "includes", range: ["Place"], sameMainTypeResource: true },
         { name: "includes", domain: ["Place"], label: "Enthält", inverse: "liesWithin",
             range: ["Operation:inherit"], sameMainTypeResource: true },
-        { name: "isAfter", inverse: "isBefore",
+        { name: "isAfter", inverse: "isBefore", label: "Zeitlich nach",
             domain: ["Feature:inherit"], range: ["Feature:inherit"]},
-        { name: "isBefore", inverse: "isAfter",
+        { name: "isBefore", inverse: "isAfter", label: "Zeitlich vor",
             domain: ["Feature:inherit"], range: ["Feature:inherit"]},
-        { name: "isContemporaryWith", inverse: "isContemporaryWith",
+        { name: "isContemporaryWith", inverse: "isContemporaryWith", label: "Zeitgleich mit",
             domain: ["Feature:inherit"], range: ["Feature:inherit"]},
     ];
 
