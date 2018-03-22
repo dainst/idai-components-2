@@ -6,7 +6,7 @@
  * @author Daniel de Oliveira
  */
 import {TypeDefinition} from './type-definition';
-import {intersection, subtract} from 'tsfun/src/sets';
+import {intersection, subtract} from 'tsfun';
 import {RelationDefinition} from './relation-definition';
 
 export module PrePrepprocessConfigurationValidator {
