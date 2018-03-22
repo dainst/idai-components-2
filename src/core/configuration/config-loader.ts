@@ -66,6 +66,8 @@ export class ConfigLoader {
 
         // PREPROCESS
 
+        Preprocessing.prepareSameMainTypeResource(appConfiguration);
+
         if (hiddenConfigurationPath) {
 
             let hiddenConfiguration;

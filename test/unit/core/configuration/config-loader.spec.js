@@ -87,6 +87,30 @@ describe('ConfigLoader', function () {
             }
         });
     }); });
+    it('preprocess - convert sameOperation to sameMainTypeResource', function (done) { return __awaiter(_this, void 0, void 0, function () {
+        var pconf;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    Object.assign(configuration, {
+                        identifier: 'Conf',
+                        types: [{ type: 'A' }],
+                        relations: [{
+                                name: 'abc',
+                                domain: ['A'],
+                                sameOperation: false
+                            }]
+                    });
+                    return [4 /*yield*/, configLoader.go('yo', [], [], [], undefined)];
+                case 1:
+                    pconf = _a.sent();
+                    expect(pconf.getRelationDefinitions('A')[0].sameMainTypeResource)
+                        .toBe(false);
+                    done();
+                    return [2 /*return*/];
+            }
+        });
+    }); });
     it('preprocessConfigurationValidation - reject if isRecordedIn defined for operation subtype', function (done) { return __awaiter(_this, void 0, void 0, function () {
         var expected_1;
         return __generator(this, function (_a) {

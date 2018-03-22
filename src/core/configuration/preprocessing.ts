@@ -8,6 +8,22 @@ import {RelationDefinition} from './relation-definition';
  */
 export module Preprocessing {
 
+
+    export function prepareSameMainTypeResource(configuration : ConfigurationDefinition) {
+
+        if (!configuration.relations) return;
+
+        for (let relation of configuration.relations) {
+
+            if ((relation as any)['sameOperation'] != undefined && (relation as any)['sameOperation'] === false) {
+                relation.sameMainTypeResource = false;
+            } else {
+                relation.sameMainTypeResource = true;
+            }
+        }
+    }
+
+
     export function addExtraFields(
         configuration : ConfigurationDefinition,
         extraFields: Array<FieldDefinition>

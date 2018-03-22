@@ -60,6 +60,26 @@ describe('ConfigLoader',() => {
     });
 
 
+    it('preprocess - convert sameOperation to sameMainTypeResource', async (done) => {
+
+        Object.assign(configuration, {
+            identifier: 'Conf',
+            types: [{type: 'A'}],
+            relations: [{
+                name: 'abc',
+                domain: ['A'],
+                sameOperation: false
+            }]
+        });
+
+
+        const pconf = await configLoader.go('yo', [], [], [], undefined as any);
+        expect(pconf.getRelationDefinitions('A')[0].sameMainTypeResource)
+            .toBe(false);
+        done();
+    });
+
+
     it('preprocessConfigurationValidation - reject if isRecordedIn defined for operation subtype', async (done) => {
 
         Object.assign(configuration, {
