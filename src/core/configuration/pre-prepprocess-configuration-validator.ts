@@ -40,7 +40,7 @@ export module PrePrepprocessConfigurationValidator {
 
     function checkForExtraneousFields(appConfiguration: any): Array<Array<string>> {
 
-        const allowedFields = ['domain', 'range', 'name', 'label', 'inverse'];
+        const allowedFields = ['domain', 'range', 'name', 'label', 'inverse', 'sameMainTypeResource'];
 
         return appConfiguration.relations
             .reduce((errs: Array<Array<string>>, relation: RelationDefinition) => {
