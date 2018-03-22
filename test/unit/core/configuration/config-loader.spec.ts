@@ -108,4 +108,26 @@ describe('ConfigLoader',() => {
         }
         done();
     });
+
+
+    it('preprocessConfigurationValidation - reject if field not allowed in relation', async (done) => {
+
+        Object.assign(configuration, {
+            identifier: 'Conf',
+            types: [{type: 'A'}],
+            relations: [{
+                name: 'abc',
+                visible: 'true'
+            }]
+        });
+
+
+        try {
+            await configLoader.go('yo', [], [], [], undefined as any);
+            fail();
+        } catch (expected) {
+            expect(expected[0]).toContain('relation field not allowed');
+        }
+        done();
+    });
 });

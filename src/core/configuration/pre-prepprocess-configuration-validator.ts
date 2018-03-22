@@ -33,13 +33,30 @@ export module PrePrepprocessConfigurationValidator {
         //         }
         //     }
         // }
-        return checkForForbiddenIsRecordedIns(appConfiguration);
+        return checkForForbiddenIsRecordedIns(appConfiguration)
+                .concat(checkForExtraneousFields(appConfiguration));
+    }
+
+
+    function checkForExtraneousFields(appConfiguration: any): Array<Array<string>> {
+
+        const allowedFields = ['domain', 'range', 'name', 'label', 'inverse'];
+
+        return appConfiguration.relations
+            .reduce((errs: Array<Array<string>>, relation: RelationDefinition) => {
+
+                if (subtract(allowedFields)(Object.keys(relation)).length > 0) {
+                    errs.push(["relation field not allowed", relation.name]);
+                }
+                return errs;
+
+            }, []);
     }
 
 
     function checkForForbiddenIsRecordedIns(appConfiguration: any): Array<Array<string>> {
 
-        return appConfiguration.relations
+        const errs = appConfiguration.relations
             .filter((relation: RelationDefinition) => relation.name === 'isRecordedIn')
             .reduce((errs: Array<Array<string>>, relation: RelationDefinition) => {
 
@@ -62,6 +79,8 @@ export module PrePrepprocessConfigurationValidator {
                 return errs;
 
             }, []);
+
+        return errs ? errs : [];
     }
 
 

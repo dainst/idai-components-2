@@ -155,5 +155,36 @@ describe('ConfigLoader', function () {
             }
         });
     }); });
+    it('preprocessConfigurationValidation - reject if field not allowed in relation', function (done) { return __awaiter(_this, void 0, void 0, function () {
+        var expected_3;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    Object.assign(configuration, {
+                        identifier: 'Conf',
+                        types: [{ type: 'A' }],
+                        relations: [{
+                                name: 'abc',
+                                visible: 'true'
+                            }]
+                    });
+                    _a.label = 1;
+                case 1:
+                    _a.trys.push([1, 3, , 4]);
+                    return [4 /*yield*/, configLoader.go('yo', [], [], [], undefined)];
+                case 2:
+                    _a.sent();
+                    fail();
+                    return [3 /*break*/, 4];
+                case 3:
+                    expected_3 = _a.sent();
+                    expect(expected_3[0]).toContain('relation field not allowed');
+                    return [3 /*break*/, 4];
+                case 4:
+                    done();
+                    return [2 /*return*/];
+            }
+        });
+    }); });
 });
 //# sourceMappingURL=config-loader.spec.js.map
