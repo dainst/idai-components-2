@@ -5,6 +5,10 @@
  *
  * @author Daniel de Oliveira
  */
+import {TypeDefinition} from './type-definition';
+import {intersection, subtract} from 'tsfun/src/sets';
+import {RelationDefinition} from './relation-definition';
+
 export module PrePrepprocessConfigurationValidator {
 
 
@@ -20,16 +24,51 @@ export module PrePrepprocessConfigurationValidator {
 
         if (!appConfiguration.types) return [];
 
-        let errs: string[][] = [];
-        for (let type of appConfiguration.types) {
-            if (type.fields) {
-                for (let field of type.fields) {
-                    if (field.editable != undefined) errs.push(['field.editable/forbidden configuration',field] as never);
-                    if (field.visible != undefined) errs.push(['field.visible/forbidden configuration',field] as never);
-                }
-            }
-        }
+        // let errs: string[][] = [];
+        // for (let type of appConfiguration.types) {
+        //     if (type.fields) {
+        //         for (let field of type.fields) {
+        //             if (field.editable != undefined) errs.push(['field.editable/forbidden configuration',field] as never);
+        //             if (field.visible != undefined) errs.push(['field.visible/forbidden configuration',field] as never);
+        //         }
+        //     }
+        // }
+        return checkForForbiddenIsRecordedIns(appConfiguration);
+    }
 
-        return errs;
+
+    function checkForForbiddenIsRecordedIns(appConfiguration: any): Array<Array<string>> {
+
+        return appConfiguration.relations
+            .filter((relation: RelationDefinition) => relation.name === 'isRecordedIn')
+            .reduce((errs: Array<Array<string>>, relation: RelationDefinition) => {
+
+                if (intersection([relation.domain, operationSubtypes(appConfiguration)]).length > 0) {
+
+                    errs.push(['operation subtype as domain type/ isRecordedIn must not be defined manually', relation] as any);
+
+                } else {
+
+                    if (subtract(operationSubtypes(appConfiguration))(relation.domain).length > 0) {
+                        for (let rangeType of relation.range) {
+                            if (!operationSubtypes(appConfiguration).includes(rangeType)) {
+                                errs.push(['isRecordedIn - only operation subtypes allowed in range', relation] as any);
+                            }
+                        }
+                    }
+                }
+
+
+                return errs;
+
+            }, []);
+    }
+
+
+    function operationSubtypes(appConfiguration: any) {
+
+        return appConfiguration.types
+            .filter((type: TypeDefinition) => type.parent === 'Operation')
+            .map((type: TypeDefinition) => type.type);
     }
 }

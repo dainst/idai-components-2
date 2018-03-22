@@ -6,6 +6,7 @@ import {ConfigReader} from './config-reader';
 import {TypeDefinition} from './type-definition';
 import {RelationDefinition} from './relation-definition';
 import {FieldDefinition} from './field-definition';
+import {PrePrepprocessConfigurationValidator} from './pre-prepprocess-configuration-validator';
 
 @Injectable()
 /**
@@ -59,12 +60,9 @@ export class ConfigLoader {
 
         // PRE PREPROCESS VALIDATION
 
-        /*
         const prePreprocessValidationErrors = PrePrepprocessConfigurationValidator.go(appConfiguration);
-        if (prePreprocessValidationErrors.length > 0) {
-            return this.rejectFunction(prePreprocessValidationErrors);
-        }
-        */
+        if (prePreprocessValidationErrors.length > 0) throw prePreprocessValidationErrors;
+
 
         // PREPROCESS
 
