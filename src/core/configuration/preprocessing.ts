@@ -9,7 +9,16 @@ import {RelationDefinition} from './relation-definition';
 export module Preprocessing {
 
 
-    export function prepareSameMainTypeResource(configuration : ConfigurationDefinition) {
+    export function setIsRecordedInVisibilities(configuration: ConfigurationDefinition) {
+
+        if (!configuration.relations) return;
+
+        configuration.relations
+            .filter((relation: RelationDefinition) => relation.name === 'isRecordedIn')
+            .forEach((relation: RelationDefinition) => relation.editable = false)
+    }
+
+    export function prepareSameMainTypeResource(configuration: ConfigurationDefinition) {
 
         if (!configuration.relations) return;
 

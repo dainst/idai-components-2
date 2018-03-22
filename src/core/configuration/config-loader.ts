@@ -67,6 +67,7 @@ export class ConfigLoader {
         // PREPROCESS
 
         Preprocessing.prepareSameMainTypeResource(appConfiguration);
+        Preprocessing.setIsRecordedInVisibilities(appConfiguration);
 
         if (hiddenConfigurationPath) {
 
