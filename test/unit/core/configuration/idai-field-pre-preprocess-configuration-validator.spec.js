@@ -17,7 +17,7 @@ describe('PrePreprocessConfigurationValidator', function () {
                 }]
         };
         var result = new idai_field_pre_prepprocess_configuration_validator_1.IdaiFieldPrePreprocessConfigurationValidator().go(configuration);
-        expect(result[0]).toContain('image type/ isRecordedIn must not be defined manually');
+        expect(result[0][0]).toContain('image type/ isRecordedIn must not be defined manually');
     });
     it('reject if isRecordedIn defined for image subtype', function () {
         var configuration = {
@@ -31,7 +31,7 @@ describe('PrePreprocessConfigurationValidator', function () {
                 }]
         };
         var result = new idai_field_pre_prepprocess_configuration_validator_1.IdaiFieldPrePreprocessConfigurationValidator().go(configuration);
-        expect(result[0]).toContain('image type/ isRecordedIn must not be defined manually');
+        expect(result[0][0]).toContain('image type/ isRecordedIn must not be defined manually');
     });
     it('reject if isRecordedIn defined for operation subtype', function () {
         var configuration = {
@@ -45,7 +45,7 @@ describe('PrePreprocessConfigurationValidator', function () {
                 }]
         };
         var result = new idai_field_pre_prepprocess_configuration_validator_1.IdaiFieldPrePreprocessConfigurationValidator().go(configuration);
-        expect(result[0]).toContain('operation subtype as domain type/ isRecordedIn must not be defined manually');
+        expect(result[0][0]).toContain('operation subtype as domain type/ isRecordedIn must not be defined manually');
     });
     it('reject if isRecordedIn range not operation subtype', function () {
         var configuration = {
@@ -61,7 +61,7 @@ describe('PrePreprocessConfigurationValidator', function () {
                 }]
         };
         var result = new idai_field_pre_prepprocess_configuration_validator_1.IdaiFieldPrePreprocessConfigurationValidator().go(configuration);
-        expect(result[0]).toContain('isRecordedIn - only operation subtypes allowed in range');
+        expect(result[0][0]).toContain('isRecordedIn - only operation subtypes allowed in range');
     });
     it('reject if field not allowed in relation', function () {
         var configuration = {
@@ -73,7 +73,16 @@ describe('PrePreprocessConfigurationValidator', function () {
                 }]
         };
         var result = new idai_field_pre_prepprocess_configuration_validator_1.IdaiFieldPrePreprocessConfigurationValidator().go(configuration);
-        expect(result[0]).toContain('relation field not allowed');
+        expect(result[0][0]).toContain('relation field not allowed');
+    });
+    it('reject if field not allowed in type', function () {
+        var configuration = {
+            identifier: 'Conf',
+            types: [{ type: 'A', fields: { editable: true } }],
+            relations: []
+        };
+        var result = new idai_field_pre_prepprocess_configuration_validator_1.IdaiFieldPrePreprocessConfigurationValidator().go(configuration);
+        expect(result[0][0]).toContain('field not allowed');
     });
 });
 //# sourceMappingURL=idai-field-pre-preprocess-configuration-validator.spec.js.map

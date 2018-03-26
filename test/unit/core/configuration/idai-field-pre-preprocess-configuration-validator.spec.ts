@@ -1,5 +1,3 @@
-import {ConfigurationDefinition} from '../../../../src/core/configuration/configuration-definition';
-import {ConfigLoader} from '../../../../src/core/configuration/config-loader';
 import {IdaiFieldPrePreprocessConfigurationValidator} from '../../../../src/core/configuration/idai-field-pre-prepprocess-configuration-validator';
 
 /**
@@ -22,7 +20,7 @@ describe('PrePreprocessConfigurationValidator',() => {
 
 
         const result = new IdaiFieldPrePreprocessConfigurationValidator().go(configuration);
-        expect(result[0]).toContain('image type/ isRecordedIn must not be defined manually');
+        expect(result[0][0]).toContain('image type/ isRecordedIn must not be defined manually');
     });
 
 
@@ -41,7 +39,7 @@ describe('PrePreprocessConfigurationValidator',() => {
 
 
         const result = new IdaiFieldPrePreprocessConfigurationValidator().go(configuration);
-        expect(result[0]).toContain('image type/ isRecordedIn must not be defined manually');
+        expect(result[0][0]).toContain('image type/ isRecordedIn must not be defined manually');
     });
 
 
@@ -60,7 +58,7 @@ describe('PrePreprocessConfigurationValidator',() => {
 
 
         const result = new IdaiFieldPrePreprocessConfigurationValidator().go(configuration);
-        expect(result[0]).toContain('operation subtype as domain type/ isRecordedIn must not be defined manually');
+        expect(result[0][0]).toContain('operation subtype as domain type/ isRecordedIn must not be defined manually');
     });
 
 
@@ -80,7 +78,7 @@ describe('PrePreprocessConfigurationValidator',() => {
         };
 
         const result = new IdaiFieldPrePreprocessConfigurationValidator().go(configuration);
-        expect(result[0]).toContain('isRecordedIn - only operation subtypes allowed in range');
+        expect(result[0][0]).toContain('isRecordedIn - only operation subtypes allowed in range');
     });
 
 
@@ -96,6 +94,19 @@ describe('PrePreprocessConfigurationValidator',() => {
         };
 
         const result = new IdaiFieldPrePreprocessConfigurationValidator().go(configuration);
-        expect(result[0]).toContain('relation field not allowed');
+        expect(result[0][0]).toContain('relation field not allowed');
+    });
+
+
+    it('reject if field not allowed in type', () => {
+
+        const configuration = {
+            identifier: 'Conf',
+            types: [{type: 'A', fields: {editable: true}}],
+            relations: []
+        };
+
+        const result = new IdaiFieldPrePreprocessConfigurationValidator().go(configuration);
+        expect(result[0][0]).toContain('field not allowed');
     });
 });

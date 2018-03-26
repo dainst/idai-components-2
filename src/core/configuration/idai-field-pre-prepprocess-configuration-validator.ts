@@ -24,21 +24,31 @@ export class IdaiFieldPrePreprocessConfigurationValidator {
 
         if (!appConfiguration.types) return [];
 
-        // let errs: string[][] = [];
-        // for (let type of appConfiguration.types) {
-        //     if (type.fields) {
-        //         for (let field of type.fields) {
-        //             if (field.editable != undefined) errs.push(['field.editable/forbidden configuration',field] as never);
-        //             if (field.visible != undefined) errs.push(['field.visible/forbidden configuration',field] as never);
-        //         }
-        //     }
-        // }
+
         return IdaiFieldPrePreprocessConfigurationValidator.checkForForbiddenIsRecordedIns(appConfiguration)
-                .concat(IdaiFieldPrePreprocessConfigurationValidator.checkForExtraneousFields(appConfiguration));
+                .concat(IdaiFieldPrePreprocessConfigurationValidator.checkForExtraneousFieldsInRelations(appConfiguration))
+                .concat(IdaiFieldPrePreprocessConfigurationValidator.checkForExtraneousFieldsInTypes(appConfiguration));
     }
 
 
-    private static checkForExtraneousFields(appConfiguration: any): Array<Array<string>> {
+    private static checkForExtraneousFieldsInTypes(appConfiguration: any): Array<Array<string>> {
+
+        const allowedFields = ['description', 'inputType', 'name', 'valuelist', 'label'];
+
+        let errs: string[][] = [];
+        for (let type of appConfiguration.types) {
+
+            if (type.fields) {
+                if (subtract(allowedFields)(Object.keys(type.fields)).length > 0) {
+                    errs.push(['field not allowed in ',type.type] as never);
+                }
+            }
+        }
+        return errs;
+    }
+
+
+    private static checkForExtraneousFieldsInRelations(appConfiguration: any): Array<Array<string>> {
 
         const allowedFields = ['domain', 'range', 'name', 'label', 'inverse', 'sameOperation'];
 
@@ -46,7 +56,7 @@ export class IdaiFieldPrePreprocessConfigurationValidator {
             .reduce((errs: Array<Array<string>>, relation: RelationDefinition) => {
 
                 if (subtract(allowedFields)(Object.keys(relation)).length > 0) {
-                    errs.push(["relation field not allowed", relation.name]);
+                    errs.push(["relation field not allowed in ", relation.name]);
                 }
                 return errs;
 
