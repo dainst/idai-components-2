@@ -1,5 +1,8 @@
 import {ConfigurationDefinition} from '../../../../src/core/configuration/configuration-definition';
 import {ConfigLoader} from '../../../../src/core/configuration/config-loader';
+import {
+    IdaiFieldPrePreprocessConfigurationValidator
+} from '../../../../src/core/configuration/idai-field-pre-prepprocess-configuration-validator';
 
 /**
  * @author Daniel de Oliveira
@@ -49,7 +52,8 @@ describe('ConfigLoader',() => {
                 range: ['B:inherit']
             }],
             [],
-            undefined as any,
+            new IdaiFieldPrePreprocessConfigurationValidator(),
+            undefined as any
         );
         
         expect((pconf.getRelationDefinitions('A') as any)[0].range).toContain('B1');
@@ -73,81 +77,12 @@ describe('ConfigLoader',() => {
         });
 
 
-        const pconf = await configLoader.go('yo', [], [], [], undefined as any);
+        const pconf = await configLoader.go(
+            'yo', [], [], [],
+            new IdaiFieldPrePreprocessConfigurationValidator(),
+            undefined as any);
         expect(pconf.getRelationDefinitions('A')[0].sameMainTypeResource)
             .toBe(false);
-        done();
-    });
-
-
-    it('preprocessConfigurationValidation - reject if isRecordedIn defined for operation subtype', async (done) => {
-
-        Object.assign(configuration, {
-            identifier: 'Conf',
-            types: [
-                {type: 'A', parent: 'Operation'},
-            ],
-            relations: [{
-                name: 'isRecordedIn',
-                domain: ['A']
-            }]
-        });
-
-
-        try {
-            await configLoader.go('yo', [], [], [], undefined as any);
-            fail();
-        } catch (expected) {
-            expect(expected[0]).toContain('operation subtype as domain type/ isRecordedIn must not be defined manually');
-        }
-        done();
-    });
-
-
-    it('preprocessConfigurationValidation - reject if isRecordedIn range not operation subtype', async (done) => {
-
-        Object.assign(configuration, {
-            identifier: 'Conf',
-            types: [
-                {type: 'A'},
-                {type: 'B'}
-            ],
-            relations: [{
-                name: 'isRecordedIn',
-                domain: ['A'],
-                range: ['B']
-            }]
-        });
-
-
-        try {
-            await configLoader.go('yo', [], [], [], undefined as any);
-            fail();
-        } catch (expected) {
-            expect(expected[0]).toContain('isRecordedIn - only operation subtypes allowed in range');
-        }
-        done();
-    });
-
-
-    it('preprocessConfigurationValidation - reject if field not allowed in relation', async (done) => {
-
-        Object.assign(configuration, {
-            identifier: 'Conf',
-            types: [{type: 'A'}],
-            relations: [{
-                name: 'abc',
-                visible: 'true'
-            }]
-        });
-
-
-        try {
-            await configLoader.go('yo', [], [], [], undefined as any);
-            fail();
-        } catch (expected) {
-            expect(expected[0]).toContain('relation field not allowed');
-        }
         done();
     });
 });

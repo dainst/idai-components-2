@@ -6,7 +6,9 @@ import {ConfigReader} from './config-reader';
 import {TypeDefinition} from './type-definition';
 import {RelationDefinition} from './relation-definition';
 import {FieldDefinition} from './field-definition';
-import {PrePrepprocessConfigurationValidator} from './pre-prepprocess-configuration-validator';
+import {
+    IdaiFieldPrePreprocessConfigurationValidator
+} from './idai-field-pre-prepprocess-configuration-validator';
 
 @Injectable()
 /**
@@ -46,6 +48,7 @@ export class ConfigLoader {
                 extraTypes : Array<TypeDefinition>,
                 extraRelations : Array<RelationDefinition>,
                 extraFields: Array<FieldDefinition>,
+                prePreprocessConfigurationValidator: IdaiFieldPrePreprocessConfigurationValidator,
                 postPreprocessConfigurationValidator: ConfigurationValidator): Promise<ProjectConfiguration> {
 
         const appConfigurationPath = configDirPath + "/Configuration.json";
@@ -60,14 +63,14 @@ export class ConfigLoader {
 
         // PRE PREPROCESS VALIDATION
 
-        const prePreprocessValidationErrors = PrePrepprocessConfigurationValidator.go(appConfiguration);
+        const prePreprocessValidationErrors = prePreprocessConfigurationValidator.go(appConfiguration);
         if (prePreprocessValidationErrors.length > 0) throw prePreprocessValidationErrors;
 
 
         // PREPROCESS
 
         Preprocessing.prepareSameMainTypeResource(appConfiguration);
-        Preprocessing.setIsRecordedInVisibilities(appConfiguration);
+        Preprocessing.setIsRecordedInVisibilities(appConfiguration); // TODO rename and test
 
         if (hiddenConfigurationPath) {
 

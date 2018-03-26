@@ -9,7 +9,7 @@ import {TypeDefinition} from './type-definition';
 import {intersection, subtract} from 'tsfun';
 import {RelationDefinition} from './relation-definition';
 
-export module PrePrepprocessConfigurationValidator {
+export class IdaiFieldPrePreprocessConfigurationValidator {
 
 
     /**
@@ -20,7 +20,7 @@ export module PrePrepprocessConfigurationValidator {
      * This is to reduce the necessity to have different configurations which have to be
      * tracked, when the only thing they differ in is the visitiliy/editability settings.
      */
-    export function go(appConfiguration: any): Array<Array<string>> {
+    public go(appConfiguration: any): Array<Array<string>> {
 
         if (!appConfiguration.types) return [];
 
@@ -33,12 +33,12 @@ export module PrePrepprocessConfigurationValidator {
         //         }
         //     }
         // }
-        return checkForForbiddenIsRecordedIns(appConfiguration)
-                .concat(checkForExtraneousFields(appConfiguration));
+        return IdaiFieldPrePreprocessConfigurationValidator.checkForForbiddenIsRecordedIns(appConfiguration)
+                .concat(IdaiFieldPrePreprocessConfigurationValidator.checkForExtraneousFields(appConfiguration));
     }
 
 
-    function checkForExtraneousFields(appConfiguration: any): Array<Array<string>> {
+    private static checkForExtraneousFields(appConfiguration: any): Array<Array<string>> {
 
         const allowedFields = ['domain', 'range', 'name', 'label', 'inverse', 'sameOperation'];
 
@@ -54,21 +54,21 @@ export module PrePrepprocessConfigurationValidator {
     }
 
 
-    function checkForForbiddenIsRecordedIns(appConfiguration: any): Array<Array<string>> {
+    private static checkForForbiddenIsRecordedIns(appConfiguration: any): Array<Array<string>> {
 
         const errs = appConfiguration.relations
             .filter((relation: RelationDefinition) => relation.name === 'isRecordedIn')
             .reduce((errs: Array<Array<string>>, relation: RelationDefinition) => {
 
-                if (intersection([relation.domain, operationSubtypes(appConfiguration)]).length > 0) {
+                if (intersection([relation.domain, this.operationSubtypes(appConfiguration)]).length > 0) {
 
                     errs.push(['operation subtype as domain type/ isRecordedIn must not be defined manually', relation] as any);
 
                 } else {
 
-                    if (subtract(operationSubtypes(appConfiguration))(relation.domain).length > 0) {
+                    if (subtract(this.operationSubtypes(appConfiguration))(relation.domain).length > 0) {
                         for (let rangeType of relation.range) {
-                            if (!operationSubtypes(appConfiguration).includes(rangeType)) {
+                            if (!this.operationSubtypes(appConfiguration).includes(rangeType)) {
                                 errs.push(['isRecordedIn - only operation subtypes allowed in range', relation] as any);
                             }
                         }
@@ -84,7 +84,7 @@ export module PrePrepprocessConfigurationValidator {
     }
 
 
-    function operationSubtypes(appConfiguration: any) {
+    private static operationSubtypes(appConfiguration: any) {
 
         return appConfiguration.types
             .filter((type: TypeDefinition) => type.parent === 'Operation')

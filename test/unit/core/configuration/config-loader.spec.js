@@ -37,6 +37,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
 var config_loader_1 = require("../../../../src/core/configuration/config-loader");
+var idai_field_pre_prepprocess_configuration_validator_1 = require("../../../../src/core/configuration/idai-field-pre-prepprocess-configuration-validator");
 /**
  * @author Daniel de Oliveira
  */
@@ -75,7 +76,7 @@ describe('ConfigLoader', function () {
                                 name: 'connection',
                                 domain: ['A:inherit'],
                                 range: ['B:inherit']
-                            }], [], undefined)];
+                            }], [], new idai_field_pre_prepprocess_configuration_validator_1.IdaiFieldPrePreprocessConfigurationValidator(), undefined)];
                 case 1:
                     pconf = _a.sent();
                     expect(pconf.getRelationDefinitions('A')[0].range).toContain('B1');
@@ -101,110 +102,11 @@ describe('ConfigLoader', function () {
                                 sameOperation: false
                             }]
                     });
-                    return [4 /*yield*/, configLoader.go('yo', [], [], [], undefined)];
+                    return [4 /*yield*/, configLoader.go('yo', [], [], [], new idai_field_pre_prepprocess_configuration_validator_1.IdaiFieldPrePreprocessConfigurationValidator(), undefined)];
                 case 1:
                     pconf = _a.sent();
                     expect(pconf.getRelationDefinitions('A')[0].sameMainTypeResource)
                         .toBe(false);
-                    done();
-                    return [2 /*return*/];
-            }
-        });
-    }); });
-    it('preprocessConfigurationValidation - reject if isRecordedIn defined for operation subtype', function (done) { return __awaiter(_this, void 0, void 0, function () {
-        var expected_1;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    Object.assign(configuration, {
-                        identifier: 'Conf',
-                        types: [
-                            { type: 'A', parent: 'Operation' },
-                        ],
-                        relations: [{
-                                name: 'isRecordedIn',
-                                domain: ['A']
-                            }]
-                    });
-                    _a.label = 1;
-                case 1:
-                    _a.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, configLoader.go('yo', [], [], [], undefined)];
-                case 2:
-                    _a.sent();
-                    fail();
-                    return [3 /*break*/, 4];
-                case 3:
-                    expected_1 = _a.sent();
-                    expect(expected_1[0]).toContain('operation subtype as domain type/ isRecordedIn must not be defined manually');
-                    return [3 /*break*/, 4];
-                case 4:
-                    done();
-                    return [2 /*return*/];
-            }
-        });
-    }); });
-    it('preprocessConfigurationValidation - reject if isRecordedIn range not operation subtype', function (done) { return __awaiter(_this, void 0, void 0, function () {
-        var expected_2;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    Object.assign(configuration, {
-                        identifier: 'Conf',
-                        types: [
-                            { type: 'A' },
-                            { type: 'B' }
-                        ],
-                        relations: [{
-                                name: 'isRecordedIn',
-                                domain: ['A'],
-                                range: ['B']
-                            }]
-                    });
-                    _a.label = 1;
-                case 1:
-                    _a.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, configLoader.go('yo', [], [], [], undefined)];
-                case 2:
-                    _a.sent();
-                    fail();
-                    return [3 /*break*/, 4];
-                case 3:
-                    expected_2 = _a.sent();
-                    expect(expected_2[0]).toContain('isRecordedIn - only operation subtypes allowed in range');
-                    return [3 /*break*/, 4];
-                case 4:
-                    done();
-                    return [2 /*return*/];
-            }
-        });
-    }); });
-    it('preprocessConfigurationValidation - reject if field not allowed in relation', function (done) { return __awaiter(_this, void 0, void 0, function () {
-        var expected_3;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    Object.assign(configuration, {
-                        identifier: 'Conf',
-                        types: [{ type: 'A' }],
-                        relations: [{
-                                name: 'abc',
-                                visible: 'true'
-                            }]
-                    });
-                    _a.label = 1;
-                case 1:
-                    _a.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, configLoader.go('yo', [], [], [], undefined)];
-                case 2:
-                    _a.sent();
-                    fail();
-                    return [3 /*break*/, 4];
-                case 3:
-                    expected_3 = _a.sent();
-                    expect(expected_3[0]).toContain('relation field not allowed');
-                    return [3 /*break*/, 4];
-                case 4:
                     done();
                     return [2 /*return*/];
             }

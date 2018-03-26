@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var config_loader_1 = require("../../core/configuration/config-loader");
 var idai_field_configuration_validator_1 = require("./idai-field-configuration-validator");
+var idai_field_pre_prepprocess_configuration_validator_1 = require("../../core/configuration/idai-field-pre-prepprocess-configuration-validator");
 var IdaiFieldAppConfigurator = (function () {
     function IdaiFieldAppConfigurator(configLoader) {
         this.configLoader = configLoader;
@@ -122,7 +123,7 @@ var IdaiFieldAppConfigurator = (function () {
         ];
     }
     IdaiFieldAppConfigurator.prototype.go = function (configDirPath) {
-        return this.configLoader.go(configDirPath, this.defaultTypes, this.defaultRelations, this.defaultFields, new idai_field_configuration_validator_1.IdaiFieldConfigurationValidator());
+        return this.configLoader.go(configDirPath, this.defaultTypes, this.defaultRelations, this.defaultFields, new idai_field_pre_prepprocess_configuration_validator_1.IdaiFieldPrePreprocessConfigurationValidator(), new idai_field_configuration_validator_1.IdaiFieldConfigurationValidator());
     };
     return IdaiFieldAppConfigurator;
 }());

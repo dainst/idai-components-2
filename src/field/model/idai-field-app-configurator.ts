@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {ConfigLoader} from '../../core/configuration/config-loader';
 import {IdaiFieldConfigurationValidator} from './idai-field-configuration-validator';
 import {ProjectConfiguration} from '../../core/configuration/project-configuration';
+import {IdaiFieldPrePreprocessConfigurationValidator} from '../../core/configuration/idai-field-pre-prepprocess-configuration-validator';
 
 
 @Injectable()
@@ -130,6 +131,7 @@ export class IdaiFieldAppConfigurator {
             this.defaultTypes,
             this.defaultRelations,
             this.defaultFields,
+            new IdaiFieldPrePreprocessConfigurationValidator(),
             new IdaiFieldConfigurationValidator()
         );
     }
