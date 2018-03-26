@@ -53,6 +53,7 @@ export class ConfigLoader {
 
         const appConfigurationPath = configDirPath + "/Configuration.json";
         const hiddenConfigurationPath = configDirPath + "/Hidden.json";
+        const customHiddenConfigurationPath = configDirPath + "/Hidden-Custom.json";
 
         let appConfiguration;
         try {
@@ -66,20 +67,12 @@ export class ConfigLoader {
         const prePreprocessValidationErrors = prePreprocessConfigurationValidator.go(appConfiguration);
         if (prePreprocessValidationErrors.length > 0) throw prePreprocessValidationErrors;
 
-
         // PREPROCESS
 
         Preprocessing.prepareSameMainTypeResource(appConfiguration);
-        Preprocessing.setIsRecordedInVisibilities(appConfiguration); // TODO rename and test
+        Preprocessing.setIsRecordedInVisibilities(appConfiguration); // TODO rename and test / also: it is idai field specific
 
-        if (hiddenConfigurationPath) {
-
-            let hiddenConfiguration;
-            try {
-                hiddenConfiguration = await this.configReader.read(hiddenConfigurationPath);
-                if (hiddenConfiguration) ConfigLoader.hideFields(appConfiguration, hiddenConfiguration);
-            } catch (_) {}
-        }
+        this.applyHiddenConfs(appConfiguration, hiddenConfigurationPath, customHiddenConfigurationPath);
 
         if (!appConfiguration.relations) appConfiguration.relations = [];
         Preprocessing.addExtraTypes(appConfiguration, extraTypes);
@@ -96,6 +89,20 @@ export class ConfigLoader {
         } else {
             return new ProjectConfiguration(appConfiguration);
         }
+    }
+
+
+    private async applyHiddenConfs(appConfiguration: any, hiddenConfigurationPath: string, customHiddenConfigurationPath: string) {
+
+        try {
+            const hiddenConfiguration = await this.configReader.read(hiddenConfigurationPath);
+            ConfigLoader.hideFields(appConfiguration, hiddenConfiguration);
+        } catch (_) {}
+
+        try {
+            const customHiddenConfiguration = await this.configReader.read(customHiddenConfigurationPath);
+            ConfigLoader.hideFields(appConfiguration, customHiddenConfiguration);
+        } catch (_) {}
     }
 
 
