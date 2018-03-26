@@ -78,7 +78,7 @@ describe('PrePreprocessConfigurationValidator', function () {
     it('reject if field not allowed in type', function () {
         var configuration = {
             identifier: 'Conf',
-            types: [{ type: 'A', fields: { editable: true } }],
+            types: [{ type: 'A', fields: [{ editable: true }] }],
             relations: []
         };
         var result = new idai_field_pre_prepprocess_configuration_validator_1.IdaiFieldPrePreprocessConfigurationValidator().go(configuration);

@@ -102,7 +102,7 @@ describe('PrePreprocessConfigurationValidator',() => {
 
         const configuration = {
             identifier: 'Conf',
-            types: [{type: 'A', fields: {editable: true}}],
+            types: [{type: 'A', fields: [{editable: true}]}],
             relations: []
         };
 

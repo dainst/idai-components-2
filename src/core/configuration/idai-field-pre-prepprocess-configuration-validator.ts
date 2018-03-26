@@ -39,9 +39,11 @@ export class IdaiFieldPrePreprocessConfigurationValidator {
         for (let type of appConfiguration.types) {
 
             if (type.fields) {
-                const diff = subtract(allowedFields)(Object.keys(type.fields));
-                if (subtract(allowedFields)(Object.keys(type.fields)).length > 0) {
-                    errs.push(['field(s) not allowed:', diff] as never);
+
+                for (let field of type.fields) {
+
+                    const diff = subtract(allowedFields)(Object.keys(field));
+                    if (diff.length > 0) errs.push(['field(s) not allowed:', diff] as never);
                 }
             }
         }
