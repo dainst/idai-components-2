@@ -107,6 +107,6 @@ describe('PrePreprocessConfigurationValidator',() => {
         };
 
         const result = new IdaiFieldPrePreprocessConfigurationValidator().go(configuration);
-        expect(result[0][0]).toContain('field not allowed');
+        expect(result[0][0]).toContain('field(s) not allowed');
     });
 });

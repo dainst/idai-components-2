@@ -82,7 +82,7 @@ describe('PrePreprocessConfigurationValidator', function () {
             relations: []
         };
         var result = new idai_field_pre_prepprocess_configuration_validator_1.IdaiFieldPrePreprocessConfigurationValidator().go(configuration);
-        expect(result[0][0]).toContain('field not allowed');
+        expect(result[0][0]).toContain('field(s) not allowed');
     });
 });
 //# sourceMappingURL=idai-field-pre-preprocess-configuration-validator.spec.js.map
