@@ -33,7 +33,7 @@ export class IdaiFieldPrePreprocessConfigurationValidator {
 
     private static checkForExtraneousFieldsInTypes(appConfiguration: any): Array<Array<string>> {
 
-        const allowedFields = ['description', 'inputType', 'name', 'valuelist', 'label'];
+        const allowedFields = ['description', 'inputType', 'name', 'valuelist', 'label', 'position_values'];
 
         let errs: string[][] = [];
         for (let type of appConfiguration.types) {
