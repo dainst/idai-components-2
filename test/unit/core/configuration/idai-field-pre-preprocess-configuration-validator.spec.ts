@@ -7,21 +7,45 @@ import {IdaiFieldPrePreprocessConfigurationValidator} from '../../../../src/core
  */
 describe('PrePreprocessConfigurationValidator',() => {
 
-    const configuration = {} as ConfigurationDefinition;
-    let configLoader: ConfigLoader;
+    it('reject if isRecordedIn defined for image type', () => {
+
+        const configuration = {
+            identifier: 'Conf',
+            types: [
+                {type: 'Image'},
+            ],
+            relations: [{
+                name: 'isRecordedIn',
+                domain: ['Image']
+            }]
+        };
 
 
-    beforeEach(() => {
-
-        const configReader = jasmine.createSpyObj(
-            'confRead',['read']);
-        configReader.read.and.returnValue(Promise.resolve(configuration));
-        configLoader = new ConfigLoader(configReader);
+        const result = new IdaiFieldPrePreprocessConfigurationValidator().go(configuration);
+        expect(result[0]).toContain('image type/ isRecordedIn must not be defined manually');
     });
 
 
+    it('reject if isRecordedIn defined for image subtype', () => {
 
-    it('preprocessConfigurationValidation - reject if isRecordedIn defined for operation subtype', () => {
+        const configuration = {
+            identifier: 'Conf',
+            types: [
+                {type: 'Drawing', parent: 'Image'},
+            ],
+            relations: [{
+                name: 'isRecordedIn',
+                domain: ['Drawing']
+            }]
+        };
+
+
+        const result = new IdaiFieldPrePreprocessConfigurationValidator().go(configuration);
+        expect(result[0]).toContain('image type/ isRecordedIn must not be defined manually');
+    });
+
+
+    it('reject if isRecordedIn defined for operation subtype', () => {
 
         const configuration = {
             identifier: 'Conf',
@@ -40,7 +64,7 @@ describe('PrePreprocessConfigurationValidator',() => {
     });
 
 
-    it('preprocessConfigurationValidation - reject if isRecordedIn range not operation subtype', () => {
+    it('reject if isRecordedIn range not operation subtype', () => {
 
         const configuration = {
             identifier: 'Conf',
@@ -60,7 +84,7 @@ describe('PrePreprocessConfigurationValidator',() => {
     });
 
 
-    it('preprocessConfigurationValidation - reject if field not allowed in relation', () => {
+    it('reject if field not allowed in relation', () => {
 
         const configuration = {
             identifier: 'Conf',

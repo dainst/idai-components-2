@@ -60,22 +60,8 @@ export class IdaiFieldPrePreprocessConfigurationValidator {
             .filter((relation: RelationDefinition) => relation.name === 'isRecordedIn')
             .reduce((errs: Array<Array<string>>, relation: RelationDefinition) => {
 
-                if (intersection([relation.domain, this.operationSubtypes(appConfiguration)]).length > 0) {
-
-                    errs.push(['operation subtype as domain type/ isRecordedIn must not be defined manually', relation] as any);
-
-                } else {
-
-                    if (subtract(this.operationSubtypes(appConfiguration))(relation.domain).length > 0) {
-                        for (let rangeType of relation.range) {
-                            if (!this.operationSubtypes(appConfiguration).includes(rangeType)) {
-                                errs.push(['isRecordedIn - only operation subtypes allowed in range', relation] as any);
-                            }
-                        }
-                    }
-                }
-
-
+                const err = this.evaluateRelationDomain(relation, appConfiguration);
+                if (err) errs.push(err);
                 return errs;
 
             }, []);
@@ -84,10 +70,39 @@ export class IdaiFieldPrePreprocessConfigurationValidator {
     }
 
 
+    private static evaluateRelationDomain(relation: RelationDefinition, appConfiguration: any) {
+
+        if (intersection([relation.domain, this.imageTypes(appConfiguration)]).length > 0) {
+            return (['image type/ isRecordedIn must not be defined manually', relation] as any);
+
+        } else if (intersection([relation.domain, this.operationSubtypes(appConfiguration)]).length > 0) {
+            return ['operation subtype as domain type/ isRecordedIn must not be defined manually', relation] as any;
+        } else {
+
+            if (subtract(this.operationSubtypes(appConfiguration))(relation.domain).length > 0) {
+                for (let rangeType of relation.range) {
+                    if (!this.operationSubtypes(appConfiguration).includes(rangeType)) {
+                        return ['isRecordedIn - only operation subtypes allowed in range', relation] as any;
+                    }
+                }
+            }
+        }
+    }
+
+
     private static operationSubtypes(appConfiguration: any) {
 
         return appConfiguration.types
             .filter((type: TypeDefinition) => type.parent === 'Operation')
             .map((type: TypeDefinition) => type.type);
+    }
+
+
+    private static imageTypes(appConfiguration: any) {
+
+        return appConfiguration.types
+            .filter((type: TypeDefinition) => type.parent === 'Image')
+            .map((type: TypeDefinition) => type.type)
+            .concat(['Image']);
     }
 }
