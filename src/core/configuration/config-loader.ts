@@ -54,6 +54,8 @@ export class ConfigLoader {
         const appConfigurationPath = configDirPath + "/Configuration.json";
         const hiddenConfigurationPath = configDirPath + "/Hidden.json";
         const customHiddenConfigurationPath = configDirPath + "/Hidden-Custom.json";
+        const languageConfigurationPath = configDirPath + "/Language.json";
+        const customLanguageConfigurationPath = configDirPath + "/Language-Custom.json";
 
         let appConfiguration;
         try {
@@ -69,10 +71,11 @@ export class ConfigLoader {
 
         // PREPROCESS
 
+
         Preprocessing.prepareSameMainTypeResource(appConfiguration);
         Preprocessing.setIsRecordedInVisibilities(appConfiguration); // TODO rename and test / also: it is idai field specific
 
-        this.applyHiddenConfs(appConfiguration, hiddenConfigurationPath, customHiddenConfigurationPath);
+        await this.applyHiddenConfs(appConfiguration, hiddenConfigurationPath, customHiddenConfigurationPath);
 
         if (!appConfiguration.relations) appConfiguration.relations = [];
         Preprocessing.addExtraTypes(appConfiguration, extraTypes);
@@ -80,14 +83,35 @@ export class ConfigLoader {
         Preprocessing.addExtraRelations(appConfiguration, extraRelations);
         Preprocessing.addExtraFields(appConfiguration, ConfigLoader.defaultFields);
 
+        await this.applyLanguageConfs(appConfiguration, languageConfigurationPath, customLanguageConfigurationPath);
+
         // POST PREPROCESS VALIDATION
 
         let configurationErrors: any = [];
         if (postPreprocessConfigurationValidator) configurationErrors = postPreprocessConfigurationValidator.go(appConfiguration);
+
         if (configurationErrors.length > 0) {
             throw configurationErrors;
         } else {
             return new ProjectConfiguration(appConfiguration);
+        }
+    }
+
+
+    private async applyLanguageConfs(appConfiguration: any, languageConfigurationPath: string, customLanguageConfigurationPath: string) {
+
+        try {
+            const languageConfiguration = await this.configReader.read(languageConfigurationPath);
+            Preprocessing.applyLanguage(appConfiguration, languageConfiguration); // TODO test it
+        } catch (msgWithParams) {
+            throw [[msgWithParams]];
+        }
+
+        try {
+            const customLanguageConfiguration = await this.configReader.read(customLanguageConfigurationPath);
+            Preprocessing.applyLanguage(appConfiguration, customLanguageConfiguration); // TODO test it
+        } catch (msgWithParams) {
+            throw [[msgWithParams]];
         }
     }
 

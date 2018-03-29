@@ -13,7 +13,8 @@ describe('ConfigurationValidator', function () {
             types: [
                 { type: 'Tduplicate', fields: [] },
                 { type: 'Tduplicate', fields: [] }
-            ]
+            ],
+            relations: []
         };
         expect(new configuration_validator_1.ConfigurationValidator()
             .go(configuration))
@@ -22,7 +23,8 @@ describe('ConfigurationValidator', function () {
     it('should report missing parent type', function () {
         configuration = {
             identifier: 'test',
-            types: [{ type: 'T', fields: [], parent: 'P' }]
+            types: [{ type: 'T', fields: [], parent: 'P' }],
+            relations: []
         };
         expect(new configuration_validator_1.ConfigurationValidator()
             .go(configuration))
@@ -31,7 +33,8 @@ describe('ConfigurationValidator', function () {
     it('should report unnamed type', function () {
         configuration = {
             identifier: 'test',
-            types: [{ fields: [] }]
+            types: [{ fields: [] }],
+            relations: []
         };
         expect(new configuration_validator_1.ConfigurationValidator()
             .go(configuration))

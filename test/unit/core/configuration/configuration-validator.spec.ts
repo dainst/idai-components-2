@@ -18,7 +18,8 @@ describe('ConfigurationValidator', () => {
             types : [
                 { type: 'Tduplicate', fields: []},
                 { type: 'Tduplicate', fields: []}
-            ]
+            ],
+            relations: []
         };
 
         expect(new ConfigurationValidator()
@@ -31,7 +32,8 @@ describe('ConfigurationValidator', () => {
 
         configuration = {
             identifier: 'test',
-            types : [{ type: 'T', fields: [], parent: 'P'}]
+            types : [{ type: 'T', fields: [], parent: 'P'}],
+            relations: []
         };
 
         expect(new ConfigurationValidator()
@@ -44,7 +46,8 @@ describe('ConfigurationValidator', () => {
 
         configuration = {
             identifier: 'test',
-            types : [{ fields: []} as any]
+            types : [{ fields: []} as any],
+            relations: []
         };
 
         expect(new ConfigurationValidator()

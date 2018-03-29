@@ -44,8 +44,9 @@ var idai_field_pre_prepprocess_configuration_validator_1 = require("../../../../
 describe('ConfigLoader', function () {
     var configuration = {};
     var configLoader;
+    var configReader;
     beforeEach(function () {
-        var configReader = jasmine.createSpyObj('confRead', ['read']);
+        configReader = jasmine.createSpyObj('confRead', ['read']);
         configReader.read.and.returnValue(Promise.resolve(configuration));
         configLoader = new config_loader_1.ConfigLoader(configReader);
     });
@@ -107,6 +108,49 @@ describe('ConfigLoader', function () {
                     pconf = _a.sent();
                     expect(pconf.getRelationDefinitions('A')[0].sameMainTypeResource)
                         .toBe(false);
+                    done();
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+    it('preprocess - apply language confs', function (done) { return __awaiter(_this, void 0, void 0, function () {
+        var pconf;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    Object.assign(configuration, {
+                        identifier: 'Conf',
+                        types: [
+                            { type: 'A' },
+                            { type: 'B' },
+                            { type: 'C' }
+                        ],
+                        relations: [
+                            { name: 'r1', domain: ['A'] },
+                            { name: 'r2', domain: ['A'] }
+                        ]
+                    });
+                    configReader.read.and.returnValues(Promise.resolve(configuration), Promise.resolve({}), Promise.resolve({}), Promise.resolve({
+                        types: {
+                            A: { label: 'A_' },
+                            B: { label: 'B_' }
+                        },
+                        relations: {
+                            r1: { label: 'r1_' }
+                        }
+                    }), Promise.resolve({
+                        types: {
+                            B: { label: 'B__' }
+                        }
+                    }));
+                    return [4 /*yield*/, configLoader.go('yo', [], [], [], new idai_field_pre_prepprocess_configuration_validator_1.IdaiFieldPrePreprocessConfigurationValidator(), undefined)];
+                case 1:
+                    pconf = _a.sent();
+                    expect(pconf.getTypesList()[0].label).toEqual('A_');
+                    expect(pconf.getTypesList()[1].label).toEqual('B__');
+                    expect(pconf.getTypesList()[2].label).toEqual('C'); // took name as label
+                    expect(pconf.getRelationDefinitions('A')[0].label).toEqual('r1_');
+                    expect(pconf.getRelationDefinitions('A')[1].label).toBeUndefined();
                     done();
                     return [2 /*return*/];
             }

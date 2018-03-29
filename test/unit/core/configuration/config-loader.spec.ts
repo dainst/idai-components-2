@@ -11,11 +11,12 @@ describe('ConfigLoader',() => {
 
     const configuration = {} as ConfigurationDefinition;
     let configLoader: ConfigLoader;
+    let configReader;
 
 
     beforeEach(() => {
 
-        const configReader = jasmine.createSpyObj(
+        configReader = jasmine.createSpyObj(
             'confRead',['read']);
         configReader.read.and.returnValue(Promise.resolve(configuration));
         configLoader = new ConfigLoader(configReader);
@@ -83,6 +84,58 @@ describe('ConfigLoader',() => {
             undefined as any);
         expect(pconf.getRelationDefinitions('A')[0].sameMainTypeResource)
             .toBe(false);
+        done();
+    });
+
+
+    it('preprocess - apply language confs', async (done) => {
+
+        Object.assign(configuration, {
+            identifier: 'Conf',
+            types: [
+                { type: 'A' },
+                { type: 'B'},
+                { type: 'C'}
+            ],
+            relations: [
+                { name: 'r1', domain: ['A']},
+                { name: 'r2', domain: ['A']}
+            ]
+        });
+
+        configReader.read.and.returnValues(
+            Promise.resolve(configuration),
+            Promise.resolve({}),
+            Promise.resolve({}),
+            Promise.resolve({
+                    types: {
+                        A: { label: 'A_' },
+                        B: { label: 'B_' }
+                    },
+                    relations: {
+                        r1: { label: 'r1_'}
+                    }
+            }),
+            Promise.resolve({
+                types: {
+                    B: { label: 'B__' }
+                }
+            })
+        );
+
+
+        const pconf = await configLoader.go(
+            'yo', [], [], [],
+            new IdaiFieldPrePreprocessConfigurationValidator(),
+            undefined as any);
+
+
+        expect(pconf.getTypesList()[0].label).toEqual('A_');
+        expect(pconf.getTypesList()[1].label).toEqual('B__');
+        expect(pconf.getTypesList()[2].label).toEqual('C'); // took name as label
+
+        expect(pconf.getRelationDefinitions('A')[0].label).toEqual('r1_');
+        expect(pconf.getRelationDefinitions('A')[1].label).toBeUndefined();
         done();
     });
 });

@@ -9,6 +9,48 @@ import {RelationDefinition} from './relation-definition';
 export module Preprocessing {
 
 
+    export function applyLanguage(configuration: ConfigurationDefinition, language: any) {
+
+
+        if (language.types) {
+
+            for (let langConfTypeKey of Object.keys(language.types)) {
+                for (let confType of configuration.types) {
+                    if (confType.type !== langConfTypeKey) continue;
+
+                    const langConfType = language.types[langConfTypeKey];
+                    if (langConfType.label) confType.label = langConfType.label;
+
+                    if (langConfType.fields) {
+                        for (let langConfFieldKey of Object.keys(langConfType.fields)) {
+                            for (let confField of confType.fields) {
+                                if (confField.name !== langConfFieldKey) continue;
+
+                                const langConfField = langConfType.fields[langConfFieldKey];
+                                if (langConfField.label) confField.label = langConfField.label;
+                                if (langConfField.description) confField.description = langConfField.description;
+                            }
+                        }
+                    }
+
+                }
+            }
+        }
+
+        if (language.relations) {
+
+            for (let langConfRelationKey of Object.keys(language.relations)) {
+                for (let confRelation of configuration.relations as any) {
+                    if (confRelation.name !== langConfRelationKey) continue;
+
+                    const langConfRelation = language.relations[langConfRelationKey];
+                    if (langConfRelation.label) confRelation.label = langConfRelation.label;
+                }
+            }
+        }
+    }
+
+
     export function setIsRecordedInVisibilities(configuration: ConfigurationDefinition) {
 
         if (!configuration.relations) return;

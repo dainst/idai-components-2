@@ -149,7 +149,8 @@ describe('ConfigurationPreprocessor', () => {
             identifier: 'test',
             types: [
                 t
-            ]
+            ],
+            relations: []
         };
 
         Preprocessing.addExtraTypes(configuration, []);
@@ -293,5 +294,50 @@ describe('ConfigurationPreprocessor', () => {
         expect(configuration.relations[0].range[0]).toBe('T3');
         expect(configuration.relations[0].range.indexOf('T1')).toBe(-1);
         expect(configuration.relations[0].range.indexOf('T2')).toBe(-1);
+    });
+
+
+    it('apply language', () => {
+
+        configuration = {
+            identifier: 'test',
+            types: [
+                {type: 'A', fields: [{name: 'a'}, {name: 'a1'}]},
+                {type: 'B', fields: [{name: 'b'}]}
+            ],
+            relations: [{name: 'isRecordedIn'}, {name: 'isContemporaryWith'}]
+        };
+
+        const languageConfiguration = {
+            types: {
+                A: {
+                    label: 'A_',
+                    fields: {
+                        a: {
+                            label: 'a_'
+                        },
+                        a1: {
+                            description: 'a1_desc'
+                        }
+                    }
+                }
+            },
+            relations: {
+                isRecordedIn: {
+                    label: 'isRecordedIn_'
+                }
+            }
+        };
+
+        Preprocessing.applyLanguage(configuration, languageConfiguration);
+
+        expect(configuration.types[0].label).toEqual('A_');
+        expect(configuration.types[1].label).toBeUndefined();
+        expect(configuration.types[0].fields[0].label).toEqual('a_');
+        expect(configuration.types[0].fields[1].label).toBeUndefined();
+        expect(configuration.types[0].fields[0].description).toBeUndefined();
+        expect(configuration.types[0].fields[1].description).toEqual('a1_desc');
+        expect(configuration.relations[0].label).toEqual('isRecordedIn_');
+        expect(configuration.relations[1].label).toBeUndefined();
     });
 });
