@@ -33,7 +33,7 @@ export class IdaiFieldPrePreprocessConfigurationValidator {
 
     private static checkForExtraneousFieldsInTypes(appConfiguration: any): Array<Array<string>> {
 
-        const allowedFields = ['description', 'inputType', 'name', 'valuelist', 'label', 'position_values'];
+        const allowedFields = ['inputType', 'name', 'valuelist', 'position_values'];
 
         let errs: string[][] = [];
         for (let type of appConfiguration.types) {
@@ -53,7 +53,7 @@ export class IdaiFieldPrePreprocessConfigurationValidator {
 
     private static checkForExtraneousFieldsInRelations(appConfiguration: any): Array<Array<string>> {
 
-        const allowedFields = ['domain', 'range', 'name', 'label', 'inverse', 'sameOperation'];
+        const allowedFields = ['domain', 'range', 'name', 'inverse', 'sameOperation'];
 
         return appConfiguration.relations
             .reduce((errs: Array<Array<string>>, relation: RelationDefinition) => {
