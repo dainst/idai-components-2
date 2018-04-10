@@ -12,7 +12,9 @@
     </p>
 
     <ul>
-        <li *ngFor="let document of documents; let i=index"><button (click)="clicked(document['resource']['id'])">document['resource']['id']: {{document['resource']['id']}}</button></li>
+        <li *ngFor="let document of documents; let i=index">
+            <button (click)="clicked(document['resource']['id'])">document['resource']['id']: {{document['resource']['id']}}</button>
+        </li>
     </ul>
 
 

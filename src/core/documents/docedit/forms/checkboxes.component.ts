@@ -17,21 +17,17 @@ export class CheckboxesComponent {
     @Input() resource: Resource;
     @Input() field: any;
 
-    
     constructor(private documentEditChangeMonitor: DocumentEditChangeMonitor) {}
 
-    
     public addInputArrayItem(item: any) {
-        
+
         if (!this.resource[this.field.name]) this.resource[this.field.name] = [];
 
-        const index: number = this.resource[this.field.name].indexOf(item, 0);
-        if (index > -1) {
-            this.resource[this.field.name].splice(index, 1);
-        } else {
-            this.resource[this.field.name].push(item);
-        }
+        const index = this.resource[this.field.name].indexOf(item, 0);
+        if (index !== -1) this.resource[this.field.name].splice(index, 1);
+        else this.resource[this.field.name].push(item);
 
+        if (this.resource[this.field.name].length === 0) delete this.resource[this.field.name];
         this.documentEditChangeMonitor.setChanged();
     }
 }

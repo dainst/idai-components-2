@@ -35,10 +35,6 @@ export var OBJECTS: Document[] = [
         ],
         'unsigned_float_input': 0,
         'float_input': -42,
-        'localized_multiple_input' : [
-            { 'lang': 'de', 'content': [ 'a' , 'b' ]},
-            {'lang': 'en', 'content':  [ 'c' , 'd' ] }
-        ],
         'single_select_radio': 'CD',
         'relations': { 'Belongs to': ['/demo/2'] }}
     },

@@ -35,8 +35,6 @@ export class DocumentEditDemoComponent implements OnInit {
 
     private changeTo(id: string) {
 
-        this.datastore.get(id).then(document => {
-            this.selectedDocument = JSON.parse(JSON.stringify(document));
-        });
+        this.datastore.get(id).then(document => this.selectedDocument = document)
     }
 }
