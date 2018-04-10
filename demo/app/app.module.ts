@@ -24,6 +24,7 @@ import {ConfigLoader} from '../../src/core/configuration/config-loader';
 import {ConfigReader} from '../../src/core/configuration/config-reader';
 import {IdaiFieldPrePreprocessConfigurationValidator} from '../../src/core/configuration/idai-field-pre-prepprocess-configuration-validator';
 import {ConfigurationValidator} from '../../src/core/configuration/configuration-validator';
+import {IdaiFieldMapModule} from '../../src/field/map/idai-field-map.module';
 
 let pconf: any = undefined;
 
@@ -35,6 +36,7 @@ let pconf: any = undefined;
         IdaiDocumentsModule,
         IdaiMessagesModule,
         IdaiWidgetsModule,
+        IdaiFieldMapModule,
         routing
     ],
     declarations: [

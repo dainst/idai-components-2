@@ -28,5 +28,4 @@ IdaiFieldMapModule = __decorate([
     })
 ], IdaiFieldMapModule);
 exports.IdaiFieldMapModule = IdaiFieldMapModule;
-;
 //# sourceMappingURL=idai-field-map.module.js.map

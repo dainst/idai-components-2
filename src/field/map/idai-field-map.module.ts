@@ -13,4 +13,4 @@ import {CommonModule} from '@angular/common';
         MapComponent
     ]
 })
-export class IdaiFieldMapModule {};
+export class IdaiFieldMapModule {}

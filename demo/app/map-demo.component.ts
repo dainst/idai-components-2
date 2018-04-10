@@ -3,8 +3,7 @@ import {Document} from '../../src/core/model/document';
 
 @Component({
     selector: 'idai-field-map-demo',
-    template: ''
-    // templateUrl: 'demo/app/map-demo.html'
+    templateUrl: 'demo/app/map-demo.html'
 })
 
 /**
