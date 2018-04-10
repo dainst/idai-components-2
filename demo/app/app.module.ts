@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {APP_INITIALIZER, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {routing} from './app.routing';
 import {Datastore} from "../../src/core/datastore/datastore";
@@ -7,7 +7,7 @@ import {Messages} from "../../src/core/messages/messages";
 import {MemoryDatastore} from "./memory-datastore";
 import {MD} from "../../src/core/messages/md";
 import {M} from "./m";
-import {LocationStrategy, HashLocationStrategy} from '@angular/common';
+import {HashLocationStrategy, LocationStrategy} from '@angular/common';
 import {DocumentEditDemoComponent} from './document-edit-demo.component';
 import {DocumentViewDemoComponent} from "./document-view-demo.component";
 import {MessagesDemoComponent} from './messages-demo.component';
@@ -18,8 +18,14 @@ import {HttpModule} from '@angular/http';
 import {IdaiDocumentsModule} from '../../src/core/documents/idai-documents.module';
 import {IdaiMessagesModule} from '../../src/core/messages/idai-messages.module';
 import {IdaiWidgetsModule} from '../../src/core/widgets/idai-widgets.module';
-import {IdaiFieldMapModule} from '../../src/core/idai-field-map/idai-field-map.module';
 import {DocumentEditComponent} from "./document-edit.component";
+import {ProjectConfiguration} from '../../src/core/configuration/project-configuration';
+import {ConfigLoader} from '../../src/core/configuration/config-loader';
+import {ConfigReader} from '../../src/core/configuration/config-reader';
+import {IdaiFieldPrePreprocessConfigurationValidator} from '../../src/core/configuration/idai-field-pre-prepprocess-configuration-validator';
+import {ConfigurationValidator} from '../../src/core/configuration/configuration-validator';
+
+let pconf: any = undefined;
 
 @NgModule({
     imports: [
@@ -29,7 +35,6 @@ import {DocumentEditComponent} from "./document-edit.component";
         IdaiDocumentsModule,
         IdaiMessagesModule,
         IdaiWidgetsModule,
-        IdaiFieldMapModule,
         routing
     ],
     declarations: [
@@ -41,6 +46,34 @@ import {DocumentEditComponent} from "./document-edit.component";
         MapDemoComponent
     ],
     providers: [
+        ConfigReader,
+        ConfigLoader,
+        {
+            provide: APP_INITIALIZER,
+            multi: true,
+            deps: [ConfigLoader],
+            useFactory: (configLoader: ConfigLoader) => () => {
+                return configLoader.go(
+                    'demo/config',
+                    [{ 'type': 'Image', 'fields': [ { 'name': 'dimensions' } ]}],
+                    [
+                        { name: 'depicts', domain: ['Image:inherit'], inverse: 'isDepictedBy', visible: false,
+                            editable: false},
+                        { name: 'isDepictedBy', range: ['Image:inherit'], inverse: 'depicts', visible: false,
+                            editable: false}
+                    ],[
+                        { 'name': 'shortDescription' },
+                        { 'name': 'identifier' }
+                    ],
+                    new IdaiFieldPrePreprocessConfigurationValidator(),
+                    new ConfigurationValidator()
+                )
+                .then((projectConfiguration: ProjectConfiguration) => pconf = projectConfiguration)
+                .catch((msgsWithParams: any) =>{
+                    console.error(msgsWithParams);
+                });
+            }
+        },
         { provide: LocationStrategy, useClass: HashLocationStrategy },
         { provide: Datastore, useClass: MemoryDatastore },
         { provide: MD, useClass: M },
@@ -51,7 +84,18 @@ import {DocumentEditComponent} from "./document-edit.component";
             },
             deps: [MD]
         },
-        DocumentEditChangeMonitor
+        DocumentEditChangeMonitor,
+        {
+            provide: ProjectConfiguration,
+            useFactory: () => {
+                if (!pconf) {
+                    console.error('pconf has not yet been provided');
+                    throw 'pconf has not yet been provided';
+                }
+                return pconf;
+            },
+            deps: []
+        }
     ],
     bootstrap: [ AppComponent ]
 })

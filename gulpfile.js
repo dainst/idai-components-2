@@ -1,10 +1,5 @@
 var gulp = require('gulp');
 var sass = require('gulp-sass');
-var concat = require('gulp-concat');
-var typescript = require('gulp-typescript');
-var archiver = require('archiver');
-var fs = require('fs');
-var path = require('path');
 var pkg = require('./package.json');
 var webserver = require('gulp-webserver');
 
@@ -37,20 +32,4 @@ gulp.task('webserver-watch', function () {
             port: 8083
         }));
     watch();
-});
-
-function createConfig(path) {
-    fs.access(path, fs.F_OK, function (err) {
-
-        if (err) {
-            fs.createReadStream(path + '.template').pipe(fs.createWriteStream(path));
-        } else {
-            console.log('Will not create ' + path + ' from template because file already exists.');
-        }
-    });
-}
-
-// Creates config file if it doesn't exist already
-gulp.task('create-configs', function (callback) {
-    createConfig('./demo/config/Configuration.json');
 });

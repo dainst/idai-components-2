@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {ConfigLoader} from '../../src/core/configuration/config-loader';
 import {IdaiType} from '../../src/core/configuration/idai-type';
 import {Datastore} from '../../src/core/datastore/datastore';
 import {Document} from '../../src/core/model/document';
+import {ProjectConfiguration} from '../../src/core/configuration/project-configuration';
 
 @Component({
     selector: 'document-edit-demo',
@@ -10,27 +10,20 @@ import {Document} from '../../src/core/model/document';
 })
 export class DocumentEditDemoComponent implements OnInit {
 
-    private documents: Array<Document> = [];
+    public documents: Array<Document> = [];
     private selectedDocument: Document;
 
-    private types: Array<IdaiType>;
-
+    public types: Array<IdaiType>;
 
     constructor(
-        private configLoader: ConfigLoader,
+        private projectConfiguration: ProjectConfiguration,
         private datastore: Datastore) {
     }
 
-
     ngOnInit() {
 
-        (this.configLoader.getProjectConfiguration() as any).then(projectConfiguration => {
-            this.types = projectConfiguration.getTypesTreeList();
-        });
-
-        this.datastore.find({ q: '' }).then(result => {
-            this.documents = result.documents;
-        });
+        this.types = this.projectConfiguration.getTypesTreeList();
+        this.datastore.find({ q: '' }).then(result => this.documents = result.documents);
     }
 
 

@@ -15,7 +15,6 @@ import {DropdownComponent} from './docedit/forms/dropdown.component';
 import {InputComponent} from './docedit/forms/input.component';
 import {DimensionComponent} from './docedit/forms/dimension.component';
 import {InputsComponent} from './docedit/forms/inputs.component';
-import {InputsLocalizedComponent} from './docedit/forms/inputs-localized.component';
 import {MultiselectComponent} from './docedit/forms/multiselect.component';
 import {RadioComponent} from './docedit/forms/radio.component';
 import {TextComponent} from './docedit/forms/text.component';
@@ -48,7 +47,6 @@ import {DocumentTeaserComponent} from './document-teaser.component';
         DropdownComponent,
         InputComponent,
         InputsComponent,
-        InputsLocalizedComponent,
         MultiselectComponent,
         RadioComponent,
         TextComponent,

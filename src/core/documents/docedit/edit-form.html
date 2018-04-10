@@ -18,9 +18,6 @@
             <dai-inputs *ngIf="field.inputType == 'inputs'" [(resource)]="document['resource']"
                         [fieldName]="field.name"></dai-inputs>
 
-            <dai-inputs-localized *ngIf="field.inputType == 'inputs_localized'" [(resource)]="document['resource']"
-                                  [field]="field"></dai-inputs-localized>
-
             <dai-text *ngIf="field.inputType == 'text'" [(resource)]="document['resource']"
                       [fieldName]="field.name"></dai-text>
 

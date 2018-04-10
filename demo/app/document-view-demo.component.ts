@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {ConfigLoader} from '../../src/core/configuration/config-loader';
 import {FieldDefinition} from '../../src/core/configuration/field-definition';
 import {IdaiType} from '../../src/core/configuration/idai-type';
 import {Datastore} from '../../src/core/datastore/datastore';
 import {Document} from '../../src/core/model/document';
+import {ProjectConfiguration} from '../../src/core/configuration/project-configuration';
 
 @Component({
     selector: 'document-edit-demo',
@@ -11,28 +11,23 @@ import {Document} from '../../src/core/model/document';
 })
 export class DocumentViewDemoComponent implements OnInit {
 
-    private documents: Array<Document> = [];
+    public documents: Array<Document> = [];
     private selectedDocument: Document|undefined;
-    private fieldDefinitions: Array<FieldDefinition>;
+    public fieldDefinitions: Array<FieldDefinition>;
 
-    private types: IdaiType[];
+    public types: IdaiType[];
 
 
     constructor(
-        private configLoader: ConfigLoader,
+        private projectConfiguration: ProjectConfiguration,
         private datastore: Datastore) {
     }
 
 
     ngOnInit() {
 
-        (this.configLoader.getProjectConfiguration() as any).then(projectConfiguration=>{
-            this.types = projectConfiguration.getTypesTreeList();
-        });
-
-        this.datastore.find({q:''}).then(result => {
-            this.documents = result.documents;
-        });
+        this.types = this.projectConfiguration.getTypesTreeList();
+        this.datastore.find({q:''}).then(result => this.documents = result.documents);
     }
 
 
@@ -56,11 +51,9 @@ export class DocumentViewDemoComponent implements OnInit {
 
     private changeTo(id: string) {
 
-        (this.configLoader.getProjectConfiguration() as any).then(projectConfiguration => {
-            this.datastore.get(id).then(document => {
-                this.selectedDocument = JSON.parse(JSON.stringify(document));
-                this.fieldDefinitions = projectConfiguration.getFieldDefinitions((this.selectedDocument as any).resource.type);
-            });
+        this.datastore.get(id).then(document => {
+            this.selectedDocument = JSON.parse(JSON.stringify(document));
+            this.fieldDefinitions = this.projectConfiguration.getFieldDefinitions((this.selectedDocument as any).resource.type);
         });
     }
 }

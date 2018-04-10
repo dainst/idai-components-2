@@ -1,6 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {ProjectConfiguration} from '../../src/core/configuration/project-configuration';
-import {ConfigLoader} from '../../src/core/configuration/config-loader';
 
 @Component({
     moduleId: module.id,
@@ -12,23 +11,12 @@ import {ConfigLoader} from '../../src/core/configuration/config-loader';
  * @author Thomas Kleinke
  * @author Daniel de Oliveira
  */
-export class DocumentEditComponent implements OnInit {
+export class DocumentEditComponent {
 
     @Input() document: any;
     @Input() primary: string;
 
-    private projectConfiguration: ProjectConfiguration;
-
-
     constructor(
-        private configLoader: ConfigLoader
+        public projectConfiguration: ProjectConfiguration
     ) {}
-
-
-    ngOnInit(): any {
-
-        (this.configLoader.getProjectConfiguration() as any).then((projectConfiguration: any) => {
-            this.projectConfiguration = projectConfiguration;
-        });
-    }
 }
