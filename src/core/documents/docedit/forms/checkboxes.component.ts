@@ -19,7 +19,7 @@ export class CheckboxesComponent {
 
     constructor(private documentEditChangeMonitor: DocumentEditChangeMonitor) {}
 
-    public addInputArrayItem(item: any) {
+    public toggleBox(item: any) {
 
         if (!this.resource[this.field.name]) this.resource[this.field.name] = [];
 

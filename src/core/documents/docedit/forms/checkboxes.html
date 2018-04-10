@@ -2,7 +2,7 @@
      class="checkbox form-check form-check-inline">
     <label class="form-check-label">
         <input class="form-check-input" value="{{item}}" type="checkbox"
-               (click)="addInputArrayItem(item)"
+               (click)="toggleBox(item)"
                [checked]="resource[field.name] && resource[field.name].indexOf(item) > -1">
         {{item}}
     </label>
