@@ -115,11 +115,11 @@ var IdaiFieldAppConfigurator = (function () {
             { name: "includes", domain: ["Place"], label: "Enthält", inverse: "liesWithin",
                 range: ["Operation:inherit"], sameMainTypeResource: true },
             { name: "isAfter", inverse: "isBefore", label: "Zeitlich nach",
-                domain: ["Feature:inherit"], range: ["Feature:inherit"] },
+                domain: ["Feature:inherit"], range: ["Feature:inherit"], sameMainTypeResource: true },
             { name: "isBefore", inverse: "isAfter", label: "Zeitlich vor",
-                domain: ["Feature:inherit"], range: ["Feature:inherit"] },
+                domain: ["Feature:inherit"], range: ["Feature:inherit"], sameMainTypeResource: true },
             { name: "isContemporaryWith", inverse: "isContemporaryWith", label: "Zeitgleich mit",
-                domain: ["Feature:inherit"], range: ["Feature:inherit"] },
+                domain: ["Feature:inherit"], range: ["Feature:inherit"], sameMainTypeResource: true },
         ];
     }
     IdaiFieldAppConfigurator.prototype.go = function (configDirPath) {
