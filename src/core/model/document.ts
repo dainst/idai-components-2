@@ -14,9 +14,18 @@ export interface Document extends NewDocument {
 
 
 /**
- * Companion object
+ * Companion module
  */
 export module Document {
+
+
+    export function getLastModified(document: Document): Action {
+
+        return (document.modified && document.modified.length > 0)
+            ? document.modified[document.modified.length - 1]
+            : document.created as Action;
+    }
+
 
     export function isValid(document: Document, missingIdLegal = false): boolean {
 
