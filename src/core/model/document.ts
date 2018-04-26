@@ -26,13 +26,13 @@ export module Document {
     }
 
 
-    export function isValid(document: Document, missingIdLegal = false): boolean {
+    export function isValid(document: Document|NewDocument, newDocument = false): boolean {
 
         if (!document.resource) return false;
-        if (!document.resource.id && !missingIdLegal) return false;
+        if (!document.resource.id && !newDocument) return false;
         if (!document.resource.relations) return false;
-        if (!document.created) return false;
-        if (!document.modified || document.modified.length === 0) return false;
+        if (!newDocument && !(document as Document).created) return false;
+        if (!newDocument && (!(document as Document).modified || (document as Document).modified.length === 0)) return false;
 
         return true;
     }
