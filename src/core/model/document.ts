@@ -24,6 +24,7 @@ export module Document {
         if (!document.resource.id && !missingIdLegal) return false;
         if (!document.resource.relations) return false;
         if (!document.created) return false;
+        if (!document.modified || document.modified.length === 0) return false;
 
         return true;
     }
