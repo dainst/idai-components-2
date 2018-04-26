@@ -18,7 +18,6 @@ export interface Document extends NewDocument {
  */
 export module Document {
 
-
     export function getLastModified(document: Document): Action {
 
         return (document.modified && document.modified.length > 0)
@@ -56,5 +55,18 @@ export module Document {
             result.resource.relations = subtract(relations)(result.resource.relations);
             return result as D;
         };
+    }
+
+
+    export function hasRelationTarget(document: Document, relationName: string, targetId: string): boolean {
+
+        if (!document.resource.relations[relationName]) return false;
+        return document.resource.relations[relationName].indexOf(targetId) > -1;
+    }
+
+
+    export function hasRelations(document: Document, relationName: string): boolean {
+
+        return document.resource.relations[relationName] && document.resource.relations[relationName].length > 0;
     }
 }
