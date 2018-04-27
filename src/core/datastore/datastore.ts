@@ -37,7 +37,7 @@ export abstract class Datastore extends ReadDatastore {
      *
      * @param doc
      * @param username
-     * @param squashRevisionIds
+     * @param squashRevisionsIds
      * @returns {Promise<Document>} a document
      * @throws [GENERIC_ERROR (, cause: any)] - in case of error, optionally including a cause
      * @throws [SAVE_CONFLICT] - in case of conflict
@@ -45,7 +45,7 @@ export abstract class Datastore extends ReadDatastore {
      * @throws [INVALID_DOCUMENT] - in case doc is not valid
      * @throws [DOCUMENT_NOT_FOUND] - if document has a resource id, but does not exist in the db
      */
-    abstract update(doc: Document, username: string, squashRevisionIds?: string[]): Promise<Document>;
+    abstract update(doc: Document, username: string, squashRevisionsIds?: string[]): Promise<Document>;
 
     /**
      * Removes an existing document
