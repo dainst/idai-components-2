@@ -32,7 +32,7 @@ export module Document {
         if (!document.resource.id && !newDocument) return false;
         if (!document.resource.relations) return false;
         if (!newDocument && !(document as Document).created) return false;
-        if (!newDocument && (!(document as Document).modified || (document as Document).modified.length === 0)) return false;
+        if (!newDocument && !(document as Document).modified) return false;
 
         return true;
     }
