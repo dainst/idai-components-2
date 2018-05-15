@@ -202,7 +202,7 @@ export module Preprocessing {
                     == (<TypeDefinition>extraType).type) {
 
                     typeAlreadyPresent = true;
-                    mergeFields(typeDefinition,extraType);
+                    mergeFields(typeDefinition, extraType);
                 }
             }
 

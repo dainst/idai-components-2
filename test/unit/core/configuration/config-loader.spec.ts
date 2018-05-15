@@ -3,6 +3,7 @@ import {ConfigLoader} from '../../../../src/core/configuration/config-loader';
 import {
     IdaiFieldPrePreprocessConfigurationValidator
 } from '../../../../src/core/configuration/idai-field-pre-prepprocess-configuration-validator';
+import {ConfigurationValidator} from '../../../../src/core/configuration/configuration-validator';
 
 /**
  * @author Daniel de Oliveira
@@ -44,18 +45,25 @@ describe('ConfigLoader',() => {
             }]
         });
 
-        const pconf = await configLoader.go(
-            'yo',
-            [],
-            [{
-                name: 'connection',
-                domain: ['A:inherit'], // TODO reject config if not an array
-                range: ['B:inherit']
-            }],
-            [],
-            new IdaiFieldPrePreprocessConfigurationValidator(),
-            undefined as any
-        );
+        let pconf;
+
+        try {
+            pconf = await configLoader.go(
+                'yo',
+                [],
+                [{
+                    name: 'connection',
+                    domain: ['A:inherit'], // TODO reject config if not an array
+                    range: ['B:inherit']
+                }],
+                [],
+                new IdaiFieldPrePreprocessConfigurationValidator(),
+                new ConfigurationValidator()
+            );
+        } catch(err) {
+            fail(err);
+            done();
+        }
         
         expect((pconf.getRelationDefinitions('A') as any)[0].range).toContain('B1');
         expect((pconf.getRelationDefinitions('A1') as any)[0].range).toContain('B');
@@ -69,21 +77,22 @@ describe('ConfigLoader',() => {
 
         Object.assign(configuration, {
             identifier: 'Conf',
-            types: [{type: 'A'}],
-            relations: [{
-                name: 'abc',
-                domain: ['A'],
-                sameOperation: false
-            }]
+            types: [{ type: 'A' }, { type: 'B' }],
+            relations: [{ name: 'abc', domain: ['A'], range: ['B'], sameOperation: false }]
         });
 
+        let pconf;
+        try {
+            pconf = await configLoader.go(
+                'yo', [], [], [],
+                new IdaiFieldPrePreprocessConfigurationValidator(),
+                new ConfigurationValidator());
+        } catch(err) {
+            fail(err);
+            done();
+        }
 
-        const pconf = await configLoader.go(
-            'yo', [], [], [],
-            new IdaiFieldPrePreprocessConfigurationValidator(),
-            undefined as any);
-        expect(pconf.getRelationDefinitions('A')[0].sameMainTypeResource)
-            .toBe(false);
+        expect(pconf.getRelationDefinitions('A')[0].sameMainTypeResource).toBe(false);
         done();
     });
 
@@ -98,8 +107,8 @@ describe('ConfigLoader',() => {
                 { type: 'C'}
             ],
             relations: [
-                { name: 'r1', domain: ['A']},
-                { name: 'r2', domain: ['A']}
+                { name: 'r1', domain: ['A'], range: ['B']},
+                { name: 'r2', domain: ['A'], range: ['B']}
             ]
         });
 
@@ -123,11 +132,16 @@ describe('ConfigLoader',() => {
             })
         );
 
-
-        const pconf = await configLoader.go(
-            'yo', [], [], [],
-            new IdaiFieldPrePreprocessConfigurationValidator(),
-            undefined as any);
+        let pconf;
+        try {
+            pconf = await configLoader.go(
+                'yo', [], [], [],
+                new IdaiFieldPrePreprocessConfigurationValidator(),
+                new ConfigurationValidator());
+        } catch(err) {
+            fail(err);
+            done();
+        }
 
 
         expect(pconf.getTypesList()[0].label).toEqual('A_');

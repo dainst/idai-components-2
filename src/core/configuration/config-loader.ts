@@ -45,32 +45,46 @@ export class ConfigLoader {
 
     public async go(
                 configDirPath: string,
-                extraTypes : Array<TypeDefinition>,
-                extraRelations : Array<RelationDefinition>,
+                extraTypes: Array<TypeDefinition>,
+                extraRelations: Array<RelationDefinition>,
                 extraFields: Array<FieldDefinition>,
                 prePreprocessConfigurationValidator: IdaiFieldPrePreprocessConfigurationValidator,
                 postPreprocessConfigurationValidator: ConfigurationValidator): Promise<ProjectConfiguration> {
 
-        const appConfigurationPath = configDirPath + '/Configuration.json';
-        const hiddenConfigurationPath = configDirPath + '/Hidden.json';
-        const customHiddenConfigurationPath = configDirPath + '/Hidden-Custom.json';
-        const languageConfigurationPath = configDirPath + '/Language.json';
-        const customLanguageConfigurationPath = configDirPath + '/Language-Custom.json';
-
-        let appConfiguration;
-        try {
-            appConfiguration = await this.configReader.read(appConfigurationPath);
-        } catch (msgWithParams) {
-            throw [[msgWithParams]];
-        }
-
-        // PRE PREPROCESS VALIDATION
+        const appConfiguration: any = await this.readConfiguration(configDirPath);
 
         const prePreprocessValidationErrors = prePreprocessConfigurationValidator.go(appConfiguration);
         if (prePreprocessValidationErrors.length > 0) throw prePreprocessValidationErrors;
 
-        // PREPROCESS
+        await this.preprocess(configDirPath, appConfiguration, extraTypes, extraRelations, extraFields);
 
+        const postPreprovessValidationErrors = postPreprocessConfigurationValidator.go(appConfiguration);
+        if (postPreprovessValidationErrors.length > 0) throw postPreprovessValidationErrors;
+
+        return new ProjectConfiguration(appConfiguration);
+    }
+
+
+    private async readConfiguration(configDirPath: string): Promise<any> {
+
+        const appConfigurationPath = configDirPath + '/Configuration.json';
+
+        try {
+            return this.configReader.read(appConfigurationPath);
+        } catch (msgWithParams) {
+            throw [[msgWithParams]];
+        }
+    }
+
+
+    private async preprocess(configDirPath: string, appConfiguration: any, extraTypes : Array<TypeDefinition>,
+                             extraRelations : Array<RelationDefinition>,
+                             extraFields: Array<FieldDefinition>) {
+
+        const hiddenConfigurationPath = configDirPath + '/Hidden.json';
+        const customHiddenConfigurationPath = configDirPath + '/Hidden-Custom.json';
+        const languageConfigurationPath = configDirPath + '/Language.json';
+        const customLanguageConfigurationPath = configDirPath + '/Language-Custom.json';
 
         Preprocessing.prepareSameMainTypeResource(appConfiguration);
         Preprocessing.setIsRecordedInVisibilities(appConfiguration); // TODO rename and test / also: it is idai field specific
@@ -85,19 +99,6 @@ export class ConfigLoader {
 
         await this.applyLanguageConfs(appConfiguration, languageConfigurationPath,
             customLanguageConfigurationPath);
-
-        // POST PREPROCESS VALIDATION
-
-        let configurationErrors: any = [];
-        if (postPreprocessConfigurationValidator) {
-            configurationErrors = postPreprocessConfigurationValidator.go(appConfiguration);
-        }
-
-        if (configurationErrors.length > 0) {
-            throw configurationErrors;
-        } else {
-            return new ProjectConfiguration(appConfiguration);
-        }
     }
 
 
