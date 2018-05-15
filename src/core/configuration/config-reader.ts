@@ -1,5 +1,4 @@
 import {Injectable} from '@angular/core';
-import {ProjectConfiguration} from './project-configuration';
 import {Http} from '@angular/http';
 import {MDInternal} from '../messages/md-internal';
 
@@ -16,13 +15,16 @@ export class ConfigReader {
     public read(path: string): Promise<any> {
 
         return new Promise((resolve, reject) => {
+
             this.http.get(path).subscribe((data_: any) => {
+
                 let data;
                 try {
                     data = JSON.parse(data_['_body']);
                 } catch(e) {
                     reject([MDInternal.PARSE_ERROR_INVALID_JSON, path]);
                 }
+
                 try {
                     resolve(data);
                 } catch(e) {

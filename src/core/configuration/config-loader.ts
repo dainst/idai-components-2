@@ -51,11 +51,11 @@ export class ConfigLoader {
                 prePreprocessConfigurationValidator: IdaiFieldPrePreprocessConfigurationValidator,
                 postPreprocessConfigurationValidator: ConfigurationValidator): Promise<ProjectConfiguration> {
 
-        const appConfigurationPath = configDirPath + "/Configuration.json";
-        const hiddenConfigurationPath = configDirPath + "/Hidden.json";
-        const customHiddenConfigurationPath = configDirPath + "/Hidden-Custom.json";
-        const languageConfigurationPath = configDirPath + "/Language.json";
-        const customLanguageConfigurationPath = configDirPath + "/Language-Custom.json";
+        const appConfigurationPath = configDirPath + '/Configuration.json';
+        const hiddenConfigurationPath = configDirPath + '/Hidden.json';
+        const customHiddenConfigurationPath = configDirPath + '/Hidden-Custom.json';
+        const languageConfigurationPath = configDirPath + '/Language.json';
+        const customLanguageConfigurationPath = configDirPath + '/Language-Custom.json';
 
         let appConfiguration;
         try {
@@ -83,12 +83,15 @@ export class ConfigLoader {
         Preprocessing.addExtraRelations(appConfiguration, extraRelations);
         Preprocessing.addExtraFields(appConfiguration, ConfigLoader.defaultFields);
 
-        await this.applyLanguageConfs(appConfiguration, languageConfigurationPath, customLanguageConfigurationPath);
+        await this.applyLanguageConfs(appConfiguration, languageConfigurationPath,
+            customLanguageConfigurationPath);
 
         // POST PREPROCESS VALIDATION
 
         let configurationErrors: any = [];
-        if (postPreprocessConfigurationValidator) configurationErrors = postPreprocessConfigurationValidator.go(appConfiguration);
+        if (postPreprocessConfigurationValidator) {
+            configurationErrors = postPreprocessConfigurationValidator.go(appConfiguration);
+        }
 
         if (configurationErrors.length > 0) {
             throw configurationErrors;
@@ -98,7 +101,8 @@ export class ConfigLoader {
     }
 
 
-    private async applyLanguageConfs(appConfiguration: any, languageConfigurationPath: string, customLanguageConfigurationPath: string) {
+    private async applyLanguageConfs(appConfiguration: any, languageConfigurationPath: string,
+                                     customLanguageConfigurationPath: string) {
 
         try {
             const languageConfiguration = await this.configReader.read(languageConfigurationPath);
@@ -116,7 +120,8 @@ export class ConfigLoader {
     }
 
 
-    private async applyHiddenConfs(appConfiguration: any, hiddenConfigurationPath: string, customHiddenConfigurationPath: string) {
+    private async applyHiddenConfs(appConfiguration: any, hiddenConfigurationPath: string,
+                                   customHiddenConfigurationPath: string) {
 
         try {
             const hiddenConfiguration = await this.configReader.read(hiddenConfigurationPath);
@@ -138,8 +143,7 @@ export class ConfigLoader {
 
                     for (let i in appConfiguration.types) {
 
-                        if (appConfiguration.types[i].type === type
-                            && appConfiguration.types[i].fields) {
+                        if (appConfiguration.types[i].type === type && appConfiguration.types[i].fields) {
 
                             for (let j in appConfiguration.types[i].fields) {
 

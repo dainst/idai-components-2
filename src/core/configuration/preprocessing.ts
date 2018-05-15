@@ -8,9 +8,7 @@ import {RelationDefinition} from './relation-definition';
  */
 export module Preprocessing {
 
-
     export function applyLanguage(configuration: ConfigurationDefinition, language: any) {
-
 
         if (language.types) {
 
@@ -57,28 +55,23 @@ export module Preprocessing {
 
         configuration.relations
             .filter((relation: RelationDefinition) => relation.name === 'isRecordedIn')
-            .forEach((relation: RelationDefinition) => relation.editable = false)
+            .forEach((relation: RelationDefinition) => relation.editable = false);
     }
+
 
     export function prepareSameMainTypeResource(configuration: ConfigurationDefinition) {
 
         if (!configuration.relations) return;
 
         for (let relation of configuration.relations) {
-
-            if ((relation as any)['sameOperation'] != undefined && (relation as any)['sameOperation'] === false) {
-                relation.sameMainTypeResource = false;
-            } else {
-                relation.sameMainTypeResource = true;
-            }
+            relation.sameMainTypeResource = !((relation as any)['sameOperation'] != undefined
+                && (relation as any)['sameOperation'] === false);
         }
     }
 
 
-    export function addExtraFields(
-        configuration : ConfigurationDefinition,
-        extraFields: Array<FieldDefinition>
-        ) {
+    export function addExtraFields(configuration: ConfigurationDefinition,
+                                   extraFields: Array<FieldDefinition>) {
 
         for (let typeDefinition of configuration.types) {
             if (!typeDefinition.fields) typeDefinition.fields = [];
@@ -86,6 +79,7 @@ export module Preprocessing {
             if (typeDefinition.parent == undefined) {
                 _addExtraFields(typeDefinition, extraFields)
             }
+
             for (let fieldDefinition of typeDefinition.fields) {
                 if (fieldDefinition.editable == undefined) fieldDefinition.editable = true;
                 if (fieldDefinition.visible == undefined) fieldDefinition.visible = true;
@@ -94,18 +88,20 @@ export module Preprocessing {
     }
 
 
-    export function addExtraRelations(configuration : ConfigurationDefinition,
-                              extraRelations : Array<RelationDefinition>) {
+    export function addExtraRelations(configuration: ConfigurationDefinition,
+                                      extraRelations: Array<RelationDefinition>) {
 
         if (!configuration.relations) return;
 
         for (let extraRelation of extraRelations) {
             let relationAlreadyPresent = false;
+
             for (const relationDefinition of configuration.relations) {
                 if (relationAlreadyExists(relationDefinition, extraRelation)) {
                     relationAlreadyPresent = true;
                 }
             }
+
             if (!relationAlreadyPresent) {
                 configuration.relations.splice(0,0,extraRelation);
                 expandInherits(configuration, extraRelation, 'range');
@@ -136,8 +132,8 @@ export module Preprocessing {
     }
 
 
-    function expandInherits(configuration : ConfigurationDefinition,
-                           extraRelation : RelationDefinition, itemSet: string) {
+    function expandInherits(configuration: ConfigurationDefinition,
+                           extraRelation: RelationDefinition, itemSet: string) {
 
         if (!extraRelation) return;
         if (!(extraRelation as any)[itemSet]) return;
@@ -160,8 +156,8 @@ export module Preprocessing {
     }
 
 
-    function expandOnUndefined(configuration : ConfigurationDefinition,
-                              extraRelation_ : RelationDefinition, itemSet: string) {
+    function expandOnUndefined(configuration: ConfigurationDefinition,
+                              extraRelation_: RelationDefinition, itemSet: string) {
 
         const extraRelation: any = extraRelation_;
 
@@ -173,32 +169,29 @@ export module Preprocessing {
         extraRelation[itemSet] = [];
         for (let type of configuration.types) {
             if (extraRelation[opposite].indexOf(type.type) == -1) {
-                extraRelation[itemSet].push(type.type)
+                extraRelation[itemSet].push(type.type);
             }
         }
     }
 
 
-    function mergeFields(target:TypeDefinition, source:TypeDefinition) {
+    function mergeFields(target: TypeDefinition, source: TypeDefinition) {
 
         for (let sourceField of source.fields) {
-
             let alreadyPresentInTarget = false;
+
             for (let targetField of target.fields) {
                 if (targetField.name == sourceField.name) {
                     alreadyPresentInTarget = true;
                 }
             }
-            if (!alreadyPresentInTarget) {
-                target.fields.push(sourceField);
-            }
+
+            if (!alreadyPresentInTarget) target.fields.push(sourceField);
         }
     }
 
 
-    export function addExtraTypes(
-        configuration : ConfigurationDefinition,
-        extraTypes : Array<TypeDefinition>) {
+    export function addExtraTypes(configuration: ConfigurationDefinition, extraTypes: Array<TypeDefinition>) {
 
         for (let extraType of extraTypes) {
             let typeAlreadyPresent = false;
@@ -213,27 +206,23 @@ export module Preprocessing {
                 }
             }
 
-            if (!typeAlreadyPresent) {
-                configuration.types.push(extraType);
-            }
+            if (!typeAlreadyPresent) configuration.types.push(extraType);
         }
     }
 
 
-    function _addExtraFields(
-        typeDefinition : TypeDefinition,
-        extraFields : Array<FieldDefinition>) {
+    function _addExtraFields(typeDefinition: TypeDefinition, extraFields: Array<FieldDefinition>) {
 
         for (let extraField of extraFields) {
             let fieldAlreadyPresent = false;
+
             for (let fieldDefinition of (<TypeDefinition>typeDefinition).fields) {
                 if ((<FieldDefinition>fieldDefinition).name == extraField.name) {
                     fieldAlreadyPresent = true;
                 }
             }
-            if (!fieldAlreadyPresent) {
-                typeDefinition.fields.splice(0,0,extraField)
-            }
+
+            if (!fieldAlreadyPresent) typeDefinition.fields.splice(0, 0, extraField);
         }
     }
 }

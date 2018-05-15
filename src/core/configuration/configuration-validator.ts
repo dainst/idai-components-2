@@ -77,7 +77,7 @@ export class ConfigurationValidator {
                 if (o[type.type]) return true;
                 o[type.type] = true; return false;
             })
-            .reduce(this.addErrMsg(this.duplicateType), [])
+            .reduce(this.addErrMsg(this.duplicateType), []);
     }
 
 
@@ -111,7 +111,7 @@ export class ConfigurationValidator {
 
 
     private static findMissingRelationType(relations: Array<RelationDefinition>,
-                                    types: Array<TypeDefinition>): Array<Array<string>> {
+                                           types: Array<TypeDefinition>): Array<Array<string>> {
 
         let msgs = [] as any;
         const typeNames: Array<string> = types.map(type => type.type);
@@ -124,6 +124,7 @@ export class ConfigurationValidator {
                 if (typeNames.indexOf(type) == -1 && type != 'Project')
                     msgs.push([ConfigurationErrors.INVALID_CONFIG_MISSINGRELATIONTYPE, type] as never);
         }
+
         return msgs;
     }
 
@@ -147,8 +148,9 @@ export class ConfigurationValidator {
                         || !Array.isArray(fieldDef.valuelist)
                         || fieldDef.valuelist.length == 0
                 )
-            )
+            ) {
                 msgs.push([ConfigurationErrors.INVALID_CONFIG_MISSINGVALUELIST, fieldDef.name] as never);
+            }
         }
 
         return msgs;
