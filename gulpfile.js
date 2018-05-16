@@ -2,6 +2,13 @@ var gulp = require('gulp');
 var sass = require('gulp-sass');
 var pkg = require('./package.json');
 var webserver = require('gulp-webserver');
+var concat = require('gulp-concat');
+
+gulp.task('compile', ['convert-sass'], function () {
+    gulp.src([
+        'node_modules/mdi/fonts/**/*'
+    ]).pipe(gulp.dest('src/fonts'));
+});
 
 // compile sass and concatenate to single css file in build dir
 gulp.task('convert-sass', function () {
