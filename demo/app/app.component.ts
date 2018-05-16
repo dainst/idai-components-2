@@ -1,6 +1,4 @@
 import {Component} from '@angular/core';
-import {Messages} from '../../src/core/messages/messages';
-import {ConfigLoader} from '../../src/core/configuration/config-loader';
 import {OBJECTS} from './sample-objects';
 import {Datastore} from '../../src/core/datastore/datastore';
 
@@ -13,13 +11,10 @@ import {Datastore} from '../../src/core/datastore/datastore';
  */
 export class AppComponent {
 
-    constructor(
-        private configLoader: ConfigLoader,
-        private messages: Messages,
-        private datastore: Datastore
-    ) {
+    constructor(private datastore: Datastore) {
+
         for (let item of OBJECTS) {
-            this.datastore.update(item);
+            this.datastore.update(item, 'Demo');
         }
     }
 }

@@ -25,7 +25,9 @@ export class MapDemoComponent {
                     'coordinates': [ 1.5, 3.5 ]
                 },
                 'type': 'Object'
-            }
+            },
+            created: { user: 'Demo', date: new Date() },
+            modified: [ { user: 'Demo', date: new Date() } ]
         },
         {
             'resource': {
@@ -40,7 +42,9 @@ export class MapDemoComponent {
                     'coordinates': [[[3.0, 3.0], [4.0, 3.0], [4.5, 3.5], [4.5, 4.0], [3.5, 4.0], [3.0, 3.0]]]
                 },
                 'type': 'Object'
-            }
+            },
+            created: { user: 'Demo', date: new Date() },
+            modified: [ { user: 'Demo', date: new Date() } ]
         },
         {
             'resource': {
@@ -56,7 +60,9 @@ export class MapDemoComponent {
                         [[[-3.25, 4.0], [-3.25, 4.5], [-3.5, 5.0], [-3.75, 4.0], [-3.5, 4.25], [-3.25, 4.0]]]]
                 },
                 'type': 'Object'
-            }
+            },
+            created: { user: 'Demo', date: new Date() },
+            modified: [ { user: 'Demo', date: new Date() } ]
         },
         {
             'resource': {
@@ -71,7 +77,9 @@ export class MapDemoComponent {
                     'coordinates': [[1.0, 3.0], [1.5, 2.5], [1.75, 2.5], [1.9, 2.25], [1.35, 2.0], [1.0, 1.5]]
                 },
                 'type': 'Object'
-            }
+            },
+            created: { user: 'Demo', date: new Date() },
+            modified: [ { user: 'Demo', date: new Date() } ]
         },
         {
             'resource': {
@@ -87,7 +95,9 @@ export class MapDemoComponent {
                         [[6.0, 0.0], [6.5, 0.5], [6.5, 1.0], [6.25, 1.5]]]
                 },
                 'type': 'Object'
-            }
+            },
+            created: { user: 'Demo', date: new Date() },
+            modified: [ { user: 'Demo', date: new Date() } ]
         }
     ];
 
@@ -105,7 +115,9 @@ export class MapDemoComponent {
                     [-7.0, 7.0]]]
             },
             'type': 'Section'
-        }
+        },
+        created: { user: 'Demo', date: new Date() },
+        modified: [ { user: 'Demo', date: new Date() } ]
     };
 
     public projectDocument: Document = {
@@ -118,7 +130,9 @@ export class MapDemoComponent {
                 'isRecordedIn' : []
             },
             'type': 'Project'
-        }
+        },
+        created: { user: 'Demo', date: new Date() },
+        modified: [ { user: 'Demo', date: new Date() } ]
     };
 
     public parentDocument: Document|undefined;
