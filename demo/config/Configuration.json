@@ -1,0 +1,175 @@
+{
+  "types": [
+    {
+      "type": "Operation"
+    },
+    {
+      "type": "Object",
+      "parent": "Operation",
+      "fields": [
+        {
+          "name": "minimalist_default"
+        },
+        {
+          "name": "single_input",
+          "inputType": "input"
+        },
+        {
+          "name": "some_date",
+          "inputType": "date"
+        },
+        {
+          "name": "unsigned_integer_input",
+          "inputType": "unsignedInt"
+        },
+        {
+          "name": "float_input",
+          "inputType": "float"
+        },
+        {
+          "name": "unsigned_float_input",
+          "inputType": "unsignedFloat"
+        },
+        {
+          "name": "multiple_input",
+          "inputType": "inputs"
+        },
+        {
+          "name": "text",
+          "inputType": "text"
+        },
+        {
+          "name": "single_select_dropdown",
+          "inputType": "dropdown",
+          "valuelist": [
+            "Alabaster",
+            "Amber",
+            "Antler"
+          ]
+        },
+        {
+          "name": "single_select_radio",
+          "inputType": "radio",
+          "valuelist": [
+            "Radio",
+            "CD",
+            "Television",
+            "Internets"
+          ]
+        },
+        {
+          "name": "multiselect_checkbox",
+          "inputType": "checkboxes",
+          "valuelist": [
+            "check",
+            "this",
+            "and/or",
+            "that"
+          ]
+        },
+        {
+          "name": "multiselect_multiselect",
+          "inputType": "multiselect",
+          "valuelist": [
+            "Acid Jazz",
+            "Avant-Garde Jazz",
+            "Bebop",
+            "Big Band",
+            "Blue Note",
+            "Contemporary Jazz",
+            "Cool",
+            "Crossover Jazz",
+            "Dixieland",
+            "Ethio-jazz",
+            "Fusion",
+            "Gypsy Jazz",
+            "Hard Bop",
+            "Latin Jazz",
+            "Mainstream Jazz",
+            "Ragtime",
+            "Smooth Jazz",
+            "Trad Jazz"
+          ]
+        },
+        {
+          "name": "dating_input",
+          "inputType": "dating"
+        },
+        {
+          "name": "dimension",
+          "inputType": "dimension",
+          "unitSuffix": "ü.NN.",
+          "position_values": [
+            "am Bruch",
+            "oben",
+            "unten"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "Object_enhanced",
+      "parent": "Object",
+      "fields": [
+        {
+          "name": "Dimensions"
+        },
+        {
+          "name": "Storage"
+        },
+        {
+          "name": "Description"
+        },
+        {
+          "name": "range_start"
+        },
+        {
+          "name": "range_end"
+        }
+      ]
+    },
+    {
+      "type": "Section"
+    },
+    {
+      "type": "Drawing",
+      "parent": "Image"
+    }
+  ],
+  "relations": [
+    {
+      "domain": [
+        "Section"
+      ],
+      "inverse": "NO-INVERSE",
+      "name": "isRecordedIn",
+      "range": [
+        "Object"
+      ]
+    },
+    {
+      "name": "Belongs to",
+      "inverse": "Includes",
+      "domain": ["Object", "Object_enhanced", "Section"],
+      "range": ["Object", "Object_enhanced", "Section"]
+    },
+    {
+      "name": "Includes",
+      "inverse": "Belongs to",
+      "domain": ["Object", "Object_enhanced", "Section"],
+      "range": ["Object", "Object_enhanced", "Section"]
+    },
+    {
+      "name": "Found in",
+      "inverse": "Find spot of",
+      "domain": ["Object", "Object_enhanced"],
+      "range": ["Section"]
+    },
+    {
+      "name": "Find spot of",
+      "inverse": "Found in",
+      "domain": ["Section"],
+      "range": ["Object", "Object_enhanced"]
+    }
+  ]
+}

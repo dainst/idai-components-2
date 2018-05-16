@@ -58,7 +58,7 @@ export class IdaiFieldPrePreprocessConfigurationValidator {
             .reduce((errs: Array<Array<string>>, relation: RelationDefinition) => {
 
                 if (subtract(allowedFields)(Object.keys(relation)).length > 0) {
-                    errs.push(["relation field not allowed in ", relation.name]);
+                    errs.push(['relation field not allowed in ', relation.name]);
                 }
                 return errs;
 
