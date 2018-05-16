@@ -6,7 +6,7 @@
   "license": "Apache-2.0",
   "scripts": {
     "prebuild": "rimraf css/* && rimraf fonts/*",
-    "build": "tsc -p src/tsconfig.json && tsc -p test/tsconfig.json",
+    "build": "tsc -p tsconfig.json && tsc -p src/tsconfig.json && tsc -p test/tsconfig.json",
     "start": "npm run server",
     "test": "npm run jasmine",
     "jasmine": "jasmine JASMINE_CONFIG_PATH=test/unit/config/jasmine.json",
