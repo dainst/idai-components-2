@@ -58,8 +58,8 @@ export class ConfigLoader {
 
         await this.preprocess(configDirPath, appConfiguration, extraTypes, extraRelations, extraFields);
 
-        const postPreprovessValidationErrors = postPreprocessConfigurationValidator.go(appConfiguration);
-        if (postPreprovessValidationErrors.length > 0) throw postPreprovessValidationErrors;
+        const postPreprocessValidationErrors = postPreprocessConfigurationValidator.go(appConfiguration);
+        if (postPreprocessValidationErrors.length > 0) throw postPreprocessValidationErrors;
 
         return new ProjectConfiguration(appConfiguration);
     }
