@@ -7,6 +7,7 @@ import {ConfigurationValidator} from '../../../../src/core/configuration/configu
 
 /**
  * @author Daniel de Oliveira
+ * @author Thomas Kleinke
  */
 describe('ConfigLoader',() => {
 
@@ -24,7 +25,7 @@ describe('ConfigLoader',() => {
     });
 
 
-    it('mix extisting externally configured with internal inherits rel', async (done) => {
+    it('mix existing externally configured with internal inherits rel', async (done) => {
 
         Object.assign(configuration, {
             identifier: 'Conf',
@@ -103,8 +104,8 @@ describe('ConfigLoader',() => {
             identifier: 'Conf',
             types: [
                 { type: 'A' },
-                { type: 'B'},
-                { type: 'C'}
+                { type: 'B' },
+                { type: 'C' }
             ],
             relations: [
                 { name: 'r1', domain: ['A'], range: ['B']},
@@ -114,6 +115,7 @@ describe('ConfigLoader',() => {
 
         configReader.read.and.returnValues(
             Promise.resolve(configuration),
+            Promise.resolve({}),
             Promise.resolve({}),
             Promise.resolve({}),
             Promise.resolve({
@@ -151,5 +153,52 @@ describe('ConfigLoader',() => {
         expect(pconf.getRelationDefinitions('A')[0].label).toEqual('r1_');
         expect(pconf.getRelationDefinitions('A')[1].label).toBeUndefined();
         done();
+    });
+
+
+    it('preprocess - apply custom fields configuration', async done => {
+
+        Object.assign(configuration, {
+            identifier: 'Conf',
+            types: [
+                { type: 'A', fields: [ { name: 'fieldA1', inputType: 'unsignedInt' } ] },
+                { type: 'B', fields: [ { name: 'fieldB1', inputType: 'input' } ] },
+            ],
+            relations: [
+                { name: 'r1', domain: ['A'], range: ['B']},
+                { name: 'r2', domain: ['A'], range: ['B']}
+            ]
+        });
+
+        configReader.read.and.returnValues(
+            Promise.resolve(configuration),
+            Promise.resolve({
+                A: { fields: { fieldA1: { inputType: 'unsignedFloat' } } },
+                B: { fields: { fieldB2: { inputType: 'boolean' } } }
+            }),
+            Promise.resolve({}),
+            Promise.resolve({}),
+            Promise.resolve({}),
+            Promise.resolve({})
+        );
+
+        let pconf;
+        try {
+            pconf = await configLoader.go('', [], [], [],
+                new IdaiFieldPrePreprocessConfigurationValidator(), new ConfigurationValidator()
+            );
+
+            expect(pconf.getTypesList()[0].fields.find(field => field.name == 'fieldA1')
+                .inputType).toEqual('unsignedFloat');
+            expect(pconf.getTypesList()[1].fields.find(field => field.name == 'fieldB1')
+                .inputType).toEqual('input');
+            expect(pconf.getTypesList()[1].fields.find(field => field.name == 'fieldB2')
+                .inputType).toEqual('boolean');
+
+            done();
+        } catch(err) {
+            fail(err);
+            done();
+        }
     });
 });

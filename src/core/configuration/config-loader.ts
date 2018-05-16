@@ -81,6 +81,7 @@ export class ConfigLoader {
                              extraRelations : Array<RelationDefinition>,
                              extraFields: Array<FieldDefinition>) {
 
+        const customFieldsConfigurationPath = configDirPath + '/Fields-Custom.json';
         const hiddenConfigurationPath = configDirPath + '/Hidden.json';
         const customHiddenConfigurationPath = configDirPath + '/Hidden-Custom.json';
         const languageConfigurationPath = configDirPath + '/Language.json';
@@ -89,6 +90,7 @@ export class ConfigLoader {
         Preprocessing.prepareSameMainTypeResource(appConfiguration);
         Preprocessing.setIsRecordedInVisibilities(appConfiguration); // TODO rename and test / also: it is idai field specific
 
+        await this.applyCustomFieldsConfiguration(appConfiguration, customFieldsConfigurationPath);
         await this.applyHiddenConfs(appConfiguration, hiddenConfigurationPath, customHiddenConfigurationPath);
 
         if (!appConfiguration.relations) appConfiguration.relations = [];
@@ -99,6 +101,21 @@ export class ConfigLoader {
 
         await this.applyLanguageConfs(appConfiguration, languageConfigurationPath,
             customLanguageConfigurationPath);
+    }
+
+
+    private async applyCustomFieldsConfiguration(appConfiguration: any,
+                                                 customFieldsConfigurationPath: string) {
+
+        try {
+            const customConfiguration = await this.configReader.read(customFieldsConfigurationPath);
+            Object.keys(customConfiguration).forEach(typeName => {
+                Preprocessing.addCustomFields(appConfiguration, typeName,
+                    customConfiguration[typeName].fields);
+            });
+        } catch (msgWithParams) {
+            throw [[msgWithParams]];
+        }
     }
 
 

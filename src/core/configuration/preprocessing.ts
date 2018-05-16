@@ -5,8 +5,30 @@ import {RelationDefinition} from './relation-definition';
 
 /**
  * @author Daniel de Oliveira
+ * @author Thomas Kleinke
  */
 export module Preprocessing {
+
+    export function addCustomFields(configuration: ConfigurationDefinition, typeName: string, fields: any) {
+
+        const type: TypeDefinition|undefined = configuration.types
+            .find(type => type.type == typeName);
+
+        if (!type) return;
+
+        Object.keys(fields).forEach(fieldName => {
+            const field: any = { name: fieldName };
+            Object.assign(field, fields[fieldName]);
+            const existingField: any|undefined = type.fields
+                .find((field: any) => field.name == fieldName);
+            if (existingField) {
+                type.fields.splice(type.fields.indexOf(existingField), 1, field);
+            } else {
+                type.fields.push(field);
+            }
+        });
+    }
+
 
     export function applyLanguage(configuration: ConfigurationDefinition, language: any) {
 
@@ -103,7 +125,7 @@ export module Preprocessing {
             }
 
             if (!relationAlreadyPresent) {
-                configuration.relations.splice(0,0,extraRelation);
+                configuration.relations.splice(0,0, extraRelation);
                 expandInherits(configuration, extraRelation, 'range');
                 expandInherits(configuration, extraRelation, 'domain');
                 expandOnUndefined(configuration, extraRelation, 'range');
