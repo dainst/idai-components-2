@@ -79,8 +79,8 @@ export class ConfigLoader {
     }
 
 
-    private async preprocess(configDirPath: string, appConfiguration: any, extraTypes : Array<TypeDefinition>,
-                             extraRelations : Array<RelationDefinition>,
+    private async preprocess(configDirPath: string, appConfiguration: any, extraTypes: Array<TypeDefinition>,
+                             extraRelations: Array<RelationDefinition>,
                              extraFields: Array<FieldDefinition>,
                              applyMeninxFieldsConfiguration: boolean) {
 
