@@ -124,7 +124,8 @@ export class IdaiFieldAppConfigurator {
     constructor(private configLoader: ConfigLoader) { }
 
 
-    public go(configDirPath: string): Promise<ProjectConfiguration> {
+    public go(configDirPath: string,
+              applyMeninxFieldsConfiguration: boolean = false): Promise<ProjectConfiguration> {
 
         return this.configLoader.go(
             configDirPath,
@@ -132,7 +133,8 @@ export class IdaiFieldAppConfigurator {
             this.defaultRelations,
             this.defaultFields,
             new IdaiFieldPrePreprocessConfigurationValidator(),
-            new IdaiFieldConfigurationValidator()
+            new IdaiFieldConfigurationValidator(),
+            applyMeninxFieldsConfiguration
         );
     }
 }

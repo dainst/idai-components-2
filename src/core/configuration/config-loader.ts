@@ -49,14 +49,16 @@ export class ConfigLoader {
                 extraRelations: Array<RelationDefinition>,
                 extraFields: Array<FieldDefinition>,
                 prePreprocessConfigurationValidator: IdaiFieldPrePreprocessConfigurationValidator,
-                postPreprocessConfigurationValidator: ConfigurationValidator): Promise<ProjectConfiguration> {
+                postPreprocessConfigurationValidator: ConfigurationValidator,
+                applyMeninxFieldsConfiguration: boolean = false): Promise<ProjectConfiguration> {
 
         const appConfiguration: any = await this.readConfiguration(configDirPath);
 
         const prePreprocessValidationErrors = prePreprocessConfigurationValidator.go(appConfiguration);
         if (prePreprocessValidationErrors.length > 0) throw prePreprocessValidationErrors;
 
-        await this.preprocess(configDirPath, appConfiguration, extraTypes, extraRelations, extraFields);
+        await this.preprocess(configDirPath, appConfiguration, extraTypes, extraRelations, extraFields,
+            applyMeninxFieldsConfiguration);
 
         const postPreprocessValidationErrors = postPreprocessConfigurationValidator.go(appConfiguration);
         if (postPreprocessValidationErrors.length > 0) throw postPreprocessValidationErrors;
@@ -79,9 +81,11 @@ export class ConfigLoader {
 
     private async preprocess(configDirPath: string, appConfiguration: any, extraTypes : Array<TypeDefinition>,
                              extraRelations : Array<RelationDefinition>,
-                             extraFields: Array<FieldDefinition>) {
+                             extraFields: Array<FieldDefinition>,
+                             applyMeninxFieldsConfiguration: boolean) {
 
         const customFieldsConfigurationPath = configDirPath + '/Fields-Custom.json';
+        const meninxFieldsConfigurationPath = configDirPath + '/Fields-Meninx.json';
         const hiddenConfigurationPath = configDirPath + '/Hidden.json';
         const customHiddenConfigurationPath = configDirPath + '/Hidden-Custom.json';
         const languageConfigurationPath = configDirPath + '/Language.json';
@@ -90,7 +94,12 @@ export class ConfigLoader {
         Preprocessing.prepareSameMainTypeResource(appConfiguration);
         Preprocessing.setIsRecordedInVisibilities(appConfiguration); // TODO rename and test / also: it is idai field specific
 
-        await this.applyCustomFieldsConfiguration(appConfiguration, customFieldsConfigurationPath);
+        if (applyMeninxFieldsConfiguration) {
+            await this.applyCustomFieldsConfiguration(appConfiguration, meninxFieldsConfigurationPath);
+        } else {
+            await this.applyCustomFieldsConfiguration(appConfiguration, customFieldsConfigurationPath);
+        }
+
         await this.applyHiddenConfs(appConfiguration, hiddenConfigurationPath, customHiddenConfigurationPath);
 
         if (!appConfiguration.relations) appConfiguration.relations = [];
