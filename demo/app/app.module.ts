@@ -22,7 +22,7 @@ import {DocumentEditComponent} from "./document-edit.component";
 import {ProjectConfiguration} from '../../src/core/configuration/project-configuration';
 import {ConfigLoader} from '../../src/core/configuration/config-loader';
 import {ConfigReader} from '../../src/core/configuration/config-reader';
-import {IdaiFieldPrePreprocessConfigurationValidator} from '../../src/core/configuration/idai-field-pre-prepprocess-configuration-validator';
+import {IdaiFieldPrePreprocessConfigurationValidator} from '../../src/core/configuration/idai-field-pre-preprocess-configuration-validator';
 import {ConfigurationValidator} from '../../src/core/configuration/configuration-validator';
 import {IdaiFieldMapModule} from '../../src/field/map/idai-field-map.module';
 

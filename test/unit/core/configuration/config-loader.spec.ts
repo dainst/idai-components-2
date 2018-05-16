@@ -2,7 +2,7 @@ import {ConfigurationDefinition} from '../../../../src/core/configuration/config
 import {ConfigLoader} from '../../../../src/core/configuration/config-loader';
 import {
     IdaiFieldPrePreprocessConfigurationValidator
-} from '../../../../src/core/configuration/idai-field-pre-prepprocess-configuration-validator';
+} from '../../../../src/core/configuration/idai-field-pre-preprocess-configuration-validator';
 import {ConfigurationValidator} from '../../../../src/core/configuration/configuration-validator';
 
 /**

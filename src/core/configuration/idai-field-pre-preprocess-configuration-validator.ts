@@ -1,3 +1,7 @@
+import {TypeDefinition} from './type-definition';
+import {intersection, subtract} from 'tsfun';
+import {RelationDefinition} from './relation-definition';
+
 /**
  * Used to validate to configuration in the form it comes from the user, i.e.
  * as Configuration.json. This means before the preprocess step has been executed,
@@ -5,12 +9,7 @@
  *
  * @author Daniel de Oliveira
  */
-import {TypeDefinition} from './type-definition';
-import {intersection, subtract} from 'tsfun';
-import {RelationDefinition} from './relation-definition';
-
 export class IdaiFieldPrePreprocessConfigurationValidator {
-
 
     /**
      * Starting with 2.1.8 of idai-field we forbid visible and editable

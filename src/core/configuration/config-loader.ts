@@ -8,7 +8,7 @@ import {RelationDefinition} from './relation-definition';
 import {FieldDefinition} from './field-definition';
 import {
     IdaiFieldPrePreprocessConfigurationValidator
-} from './idai-field-pre-prepprocess-configuration-validator';
+} from './idai-field-pre-preprocess-configuration-validator';
 
 @Injectable()
 /**
