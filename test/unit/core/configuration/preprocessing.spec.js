@@ -161,7 +161,7 @@ describe('ConfigurationPreprocessor', function () {
         preprocessing_1.Preprocessing.addExtraRelations(configuration, [r2]);
         expect(configuration.relations.length).toBe(2);
     });
-    it('should replace range ALL with all types execpt the range types', function () {
+    it('should replace range ALL with all types except the domain types', function () {
         var r = { name: 'R',
             domain: ['T2', 'T3']
         };
@@ -171,7 +171,7 @@ describe('ConfigurationPreprocessor', function () {
         expect(configuration.relations[0].range[0]).toBe('T1');
         expect(configuration.relations[0].range[1]).toBe(undefined);
     });
-    it('should replace domain ALL with all types execpt the range types', function () {
+    it('should replace domain ALL with all types except the range types', function () {
         var r = { name: 'R',
             range: ['T2', 'T3']
         };

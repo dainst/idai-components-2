@@ -38,8 +38,10 @@ var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
 var config_loader_1 = require("../../../../src/core/configuration/config-loader");
 var idai_field_pre_prepprocess_configuration_validator_1 = require("../../../../src/core/configuration/idai-field-pre-prepprocess-configuration-validator");
+var configuration_validator_1 = require("../../../../src/core/configuration/configuration-validator");
 /**
  * @author Daniel de Oliveira
+ * @author Thomas Kleinke
  */
 describe('ConfigLoader', function () {
     var configuration = {};
@@ -50,8 +52,8 @@ describe('ConfigLoader', function () {
         configReader.read.and.returnValue(Promise.resolve(configuration));
         configLoader = new config_loader_1.ConfigLoader(configReader);
     });
-    it('mix extisting externally configured with internal inherits rel', function (done) { return __awaiter(_this, void 0, void 0, function () {
-        var pconf;
+    it('mix existing externally configured with internal inherits rel', function (done) { return __awaiter(_this, void 0, void 0, function () {
+        var pconf, err_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -73,13 +75,23 @@ describe('ConfigLoader', function () {
                                 range: ['D']
                             }]
                     });
+                    _a.label = 1;
+                case 1:
+                    _a.trys.push([1, 3, , 4]);
                     return [4 /*yield*/, configLoader.go('yo', [], [{
                                 name: 'connection',
                                 domain: ['A:inherit'],
                                 range: ['B:inherit']
-                            }], [], new idai_field_pre_prepprocess_configuration_validator_1.IdaiFieldPrePreprocessConfigurationValidator(), undefined)];
-                case 1:
+                            }], [], new idai_field_pre_prepprocess_configuration_validator_1.IdaiFieldPrePreprocessConfigurationValidator(), new configuration_validator_1.ConfigurationValidator())];
+                case 2:
                     pconf = _a.sent();
+                    return [3 /*break*/, 4];
+                case 3:
+                    err_1 = _a.sent();
+                    fail(err_1);
+                    done();
+                    return [3 /*break*/, 4];
+                case 4:
                     expect(pconf.getRelationDefinitions('A')[0].range).toContain('B1');
                     expect(pconf.getRelationDefinitions('A1')[0].range).toContain('B');
                     expect(pconf.getRelationDefinitions('A2')[0].range).toContain('B2');
@@ -90,31 +102,36 @@ describe('ConfigLoader', function () {
         });
     }); });
     it('preprocess - convert sameOperation to sameMainTypeResource', function (done) { return __awaiter(_this, void 0, void 0, function () {
-        var pconf;
+        var pconf, err_2;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     Object.assign(configuration, {
                         identifier: 'Conf',
-                        types: [{ type: 'A' }],
-                        relations: [{
-                                name: 'abc',
-                                domain: ['A'],
-                                sameOperation: false
-                            }]
+                        types: [{ type: 'A' }, { type: 'B' }],
+                        relations: [{ name: 'abc', domain: ['A'], range: ['B'], sameOperation: false }]
                     });
-                    return [4 /*yield*/, configLoader.go('yo', [], [], [], new idai_field_pre_prepprocess_configuration_validator_1.IdaiFieldPrePreprocessConfigurationValidator(), undefined)];
+                    _a.label = 1;
                 case 1:
+                    _a.trys.push([1, 3, , 4]);
+                    return [4 /*yield*/, configLoader.go('yo', [], [], [], new idai_field_pre_prepprocess_configuration_validator_1.IdaiFieldPrePreprocessConfigurationValidator(), new configuration_validator_1.ConfigurationValidator())];
+                case 2:
                     pconf = _a.sent();
-                    expect(pconf.getRelationDefinitions('A')[0].sameMainTypeResource)
-                        .toBe(false);
+                    return [3 /*break*/, 4];
+                case 3:
+                    err_2 = _a.sent();
+                    fail(err_2);
+                    done();
+                    return [3 /*break*/, 4];
+                case 4:
+                    expect(pconf.getRelationDefinitions('A')[0].sameMainTypeResource).toBe(false);
                     done();
                     return [2 /*return*/];
             }
         });
     }); });
     it('preprocess - apply language confs', function (done) { return __awaiter(_this, void 0, void 0, function () {
-        var pconf;
+        var pconf, err_3;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -126,11 +143,11 @@ describe('ConfigLoader', function () {
                             { type: 'C' }
                         ],
                         relations: [
-                            { name: 'r1', domain: ['A'] },
-                            { name: 'r2', domain: ['A'] }
+                            { name: 'r1', domain: ['A'], range: ['B'] },
+                            { name: 'r2', domain: ['A'], range: ['B'] }
                         ]
                     });
-                    configReader.read.and.returnValues(Promise.resolve(configuration), Promise.resolve({}), Promise.resolve({}), Promise.resolve({
+                    configReader.read.and.returnValues(Promise.resolve(configuration), Promise.resolve({}), Promise.resolve({}), Promise.resolve({}), Promise.resolve({
                         types: {
                             A: { label: 'A_' },
                             B: { label: 'B_' }
@@ -143,9 +160,19 @@ describe('ConfigLoader', function () {
                             B: { label: 'B__' }
                         }
                     }));
-                    return [4 /*yield*/, configLoader.go('yo', [], [], [], new idai_field_pre_prepprocess_configuration_validator_1.IdaiFieldPrePreprocessConfigurationValidator(), undefined)];
+                    _a.label = 1;
                 case 1:
+                    _a.trys.push([1, 3, , 4]);
+                    return [4 /*yield*/, configLoader.go('yo', [], [], [], new idai_field_pre_prepprocess_configuration_validator_1.IdaiFieldPrePreprocessConfigurationValidator(), new configuration_validator_1.ConfigurationValidator())];
+                case 2:
                     pconf = _a.sent();
+                    return [3 /*break*/, 4];
+                case 3:
+                    err_3 = _a.sent();
+                    fail(err_3);
+                    done();
+                    return [3 /*break*/, 4];
+                case 4:
                     expect(pconf.getTypesList()[0].label).toEqual('A_');
                     expect(pconf.getTypesList()[1].label).toEqual('B__');
                     expect(pconf.getTypesList()[2].label).toEqual('C'); // took name as label
@@ -153,6 +180,49 @@ describe('ConfigLoader', function () {
                     expect(pconf.getRelationDefinitions('A')[1].label).toBeUndefined();
                     done();
                     return [2 /*return*/];
+            }
+        });
+    }); });
+    it('preprocess - apply custom fields configuration', function (done) { return __awaiter(_this, void 0, void 0, function () {
+        var pconf, err_4;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    Object.assign(configuration, {
+                        identifier: 'Conf',
+                        types: [
+                            { type: 'A', fields: [{ name: 'fieldA1', inputType: 'unsignedInt' }] },
+                            { type: 'B', fields: [{ name: 'fieldB1', inputType: 'input' }] },
+                        ],
+                        relations: [
+                            { name: 'r1', domain: ['A'], range: ['B'] },
+                            { name: 'r2', domain: ['A'], range: ['B'] }
+                        ]
+                    });
+                    configReader.read.and.returnValues(Promise.resolve(configuration), Promise.resolve({
+                        A: { fields: { fieldA1: { inputType: 'unsignedFloat' } } },
+                        B: { fields: { fieldB2: { inputType: 'boolean' } } }
+                    }), Promise.resolve({}), Promise.resolve({}), Promise.resolve({}), Promise.resolve({}));
+                    _a.label = 1;
+                case 1:
+                    _a.trys.push([1, 3, , 4]);
+                    return [4 /*yield*/, configLoader.go('', [], [], [], new idai_field_pre_prepprocess_configuration_validator_1.IdaiFieldPrePreprocessConfigurationValidator(), new configuration_validator_1.ConfigurationValidator())];
+                case 2:
+                    pconf = _a.sent();
+                    expect(pconf.getTypesList()[0].fields.find(function (field) { return field.name == 'fieldA1'; })
+                        .inputType).toEqual('unsignedFloat');
+                    expect(pconf.getTypesList()[1].fields.find(function (field) { return field.name == 'fieldB1'; })
+                        .inputType).toEqual('input');
+                    expect(pconf.getTypesList()[1].fields.find(function (field) { return field.name == 'fieldB2'; })
+                        .inputType).toEqual('boolean');
+                    done();
+                    return [3 /*break*/, 4];
+                case 3:
+                    err_4 = _a.sent();
+                    fail(err_4);
+                    done();
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
             }
         });
     }); });

@@ -106,24 +106,25 @@ var IdaiFieldAppConfigurator = (function () {
                 inverse: 'isDepictedIn', label: 'Zeigt', editable: true },
             { name: 'isDepictedIn', range: ['Image:inherit'],
                 inverse: 'depicts', visible: false, editable: false },
-            { name: 'isRecordedIn', domain: ['Operation:inherit'], label: "Gehört zu",
+            { name: 'isRecordedIn', domain: ['Operation:inherit'], label: 'Gehört zu',
                 range: ['Project'], visible: false, editable: false },
-            { name: 'isRecordedIn', domain: ['Place'], label: "Gehört zu",
+            { name: 'isRecordedIn', domain: ['Place'], label: 'Gehört zu',
                 range: ['Project'], visible: false, editable: false },
-            { name: "liesWithin", domain: ["Operation:inherit"], label: "Liegt in",
-                inverse: "includes", range: ["Place"], sameMainTypeResource: true },
-            { name: "includes", domain: ["Place"], label: "Enthält", inverse: "liesWithin",
-                range: ["Operation:inherit"], sameMainTypeResource: true },
-            { name: "isAfter", inverse: "isBefore", label: "Zeitlich nach",
-                domain: ["Feature:inherit"], range: ["Feature:inherit"], sameMainTypeResource: true },
-            { name: "isBefore", inverse: "isAfter", label: "Zeitlich vor",
-                domain: ["Feature:inherit"], range: ["Feature:inherit"], sameMainTypeResource: true },
-            { name: "isContemporaryWith", inverse: "isContemporaryWith", label: "Zeitgleich mit",
-                domain: ["Feature:inherit"], range: ["Feature:inherit"], sameMainTypeResource: true },
+            { name: 'liesWithin', domain: ['Operation:inherit'], label: 'Liegt in',
+                inverse: 'includes', range: ['Place'], sameMainTypeResource: true },
+            { name: 'includes', domain: ['Place'], label: 'Enthält', inverse: 'liesWithin',
+                range: ['Operation:inherit'], sameMainTypeResource: true },
+            { name: 'isAfter', inverse: 'isBefore', label: 'Zeitlich nach',
+                domain: ['Feature:inherit'], range: ['Feature:inherit'], sameMainTypeResource: true },
+            { name: 'isBefore', inverse: 'isAfter', label: 'Zeitlich vor',
+                domain: ['Feature:inherit'], range: ['Feature:inherit'], sameMainTypeResource: true },
+            { name: 'isContemporaryWith', inverse: 'isContemporaryWith', label: 'Zeitgleich mit',
+                domain: ['Feature:inherit'], range: ['Feature:inherit'], sameMainTypeResource: true },
         ];
     }
-    IdaiFieldAppConfigurator.prototype.go = function (configDirPath) {
-        return this.configLoader.go(configDirPath, this.defaultTypes, this.defaultRelations, this.defaultFields, new idai_field_pre_prepprocess_configuration_validator_1.IdaiFieldPrePreprocessConfigurationValidator(), new idai_field_configuration_validator_1.IdaiFieldConfigurationValidator());
+    IdaiFieldAppConfigurator.prototype.go = function (configDirPath, applyMeninxFieldsConfiguration) {
+        if (applyMeninxFieldsConfiguration === void 0) { applyMeninxFieldsConfiguration = false; }
+        return this.configLoader.go(configDirPath, this.defaultTypes, this.defaultRelations, this.defaultFields, new idai_field_pre_prepprocess_configuration_validator_1.IdaiFieldPrePreprocessConfigurationValidator(), new idai_field_configuration_validator_1.IdaiFieldConfigurationValidator(), applyMeninxFieldsConfiguration);
     };
     return IdaiFieldAppConfigurator;
 }());
