@@ -208,7 +208,7 @@ describe('ConfigurationPreprocessor', () => {
     });
 
 
-    it('should replace range ALL with all types execpt the range types', function() {
+    it('should replace range ALL with all types except the domain types', function() {
 
         const r: RelationDefinition = { name: 'R',
             domain: [ 'T2', 'T3' ]
@@ -224,7 +224,7 @@ describe('ConfigurationPreprocessor', () => {
     });
 
 
-    it('should replace domain ALL with all types execpt the range types', function() {
+    it('should replace domain ALL with all types except the range types', function() {
 
         const r: RelationDefinition = { name: 'R',
             range: [ 'T2', 'T3' ]
