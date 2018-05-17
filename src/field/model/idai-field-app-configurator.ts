@@ -105,13 +105,11 @@ export class IdaiFieldAppConfigurator {
         { name: 'isDepictedIn', range: ['Image:inherit'],
             inverse: 'depicts', visible: false, editable: false },
 
+        { name: 'isLocatedIn', domain: ['Operation:inherit'], label: 'Liegt in',
+            inverse: 'locates', range: ['Place'] },
+        { name: 'locates', domain: ['Place'], label: 'Enthält', inverse: 'isLocatedIn',
+            range: ['Operation:inherit'] },
 
-
-
-        { name: 'liesWithin', domain: ['Operation:inherit'], label: 'Liegt in',
-            inverse: 'includes', range: ['Place'], sameMainTypeResource: true },
-        { name: 'includes', domain: ['Place'], label: 'Enthält', inverse: 'liesWithin',
-            range: ['Operation:inherit'], sameMainTypeResource: true },
         { name: 'isAfter', inverse: 'isBefore', label: 'Zeitlich nach',
             domain: ['Feature:inherit'], range: ['Feature:inherit'], sameMainTypeResource: true},
         { name: 'isBefore', inverse: 'isAfter', label: 'Zeitlich vor',
