@@ -5,12 +5,9 @@ node_modules
 typings
 demo/**/*.js
 demo/**/*.js.map
-test/browser/**/*.js
-test/browser/**/*.js.map
-test/e2e/**/*.js
-test/e2e/**/*.js.map
-!test/e2e/config/**/*
-!test/browser/config/**/*
+test/unit/**/*.js
+test/unit/**/*.js.map
+!test/unit/config/**/*
 persist.js*
 messages.js*
 datastore.js*
