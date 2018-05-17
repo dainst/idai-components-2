@@ -34,6 +34,7 @@ export class ConfigLoader {
         },
         {
             name: 'type',
+            label: 'Typ',
             visible: false,
             editable: false
         }
