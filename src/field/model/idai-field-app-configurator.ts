@@ -104,10 +104,10 @@ export class IdaiFieldAppConfigurator {
             inverse: 'isDepictedIn', label: 'Zeigt', editable: true },
         { name: 'isDepictedIn', range: ['Image:inherit'],
             inverse: 'depicts', visible: false, editable: false },
-        { name: 'isRecordedIn', domain: ['Operation:inherit'], label: 'Gehört zu',
-            range: ['Project'], visible: false, editable: false },
-        { name: 'isRecordedIn', domain: ['Place'], label: 'Gehört zu',
-            range: ['Project'], visible: false, editable: false },
+
+
+
+
         { name: 'liesWithin', domain: ['Operation:inherit'], label: 'Liegt in',
             inverse: 'includes', range: ['Place'], sameMainTypeResource: true },
         { name: 'includes', domain: ['Place'], label: 'Enthält', inverse: 'liesWithin',

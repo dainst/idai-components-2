@@ -37,7 +37,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
 var config_loader_1 = require("../../../../src/core/configuration/config-loader");
-var idai_field_pre_prepprocess_configuration_validator_1 = require("../../../../src/core/configuration/idai-field-pre-prepprocess-configuration-validator");
+var idai_field_pre_preprocess_configuration_validator_1 = require("../../../../src/core/configuration/idai-field-pre-preprocess-configuration-validator");
 var configuration_validator_1 = require("../../../../src/core/configuration/configuration-validator");
 /**
  * @author Daniel de Oliveira
@@ -82,7 +82,7 @@ describe('ConfigLoader', function () {
                                 name: 'connection',
                                 domain: ['A:inherit'],
                                 range: ['B:inherit']
-                            }], [], new idai_field_pre_prepprocess_configuration_validator_1.IdaiFieldPrePreprocessConfigurationValidator(), new configuration_validator_1.ConfigurationValidator())];
+                            }], [], new idai_field_pre_preprocess_configuration_validator_1.IdaiFieldPrePreprocessConfigurationValidator(), new configuration_validator_1.ConfigurationValidator())];
                 case 2:
                     pconf = _a.sent();
                     return [3 /*break*/, 4];
@@ -114,7 +114,7 @@ describe('ConfigLoader', function () {
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, configLoader.go('yo', [], [], [], new idai_field_pre_prepprocess_configuration_validator_1.IdaiFieldPrePreprocessConfigurationValidator(), new configuration_validator_1.ConfigurationValidator())];
+                    return [4 /*yield*/, configLoader.go('yo', [], [], [], new idai_field_pre_preprocess_configuration_validator_1.IdaiFieldPrePreprocessConfigurationValidator(), new configuration_validator_1.ConfigurationValidator())];
                 case 2:
                     pconf = _a.sent();
                     return [3 /*break*/, 4];
@@ -163,7 +163,7 @@ describe('ConfigLoader', function () {
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, configLoader.go('yo', [], [], [], new idai_field_pre_prepprocess_configuration_validator_1.IdaiFieldPrePreprocessConfigurationValidator(), new configuration_validator_1.ConfigurationValidator())];
+                    return [4 /*yield*/, configLoader.go('yo', [], [], [], new idai_field_pre_preprocess_configuration_validator_1.IdaiFieldPrePreprocessConfigurationValidator(), new configuration_validator_1.ConfigurationValidator())];
                 case 2:
                     pconf = _a.sent();
                     return [3 /*break*/, 4];
@@ -206,7 +206,7 @@ describe('ConfigLoader', function () {
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, configLoader.go('', [], [], [], new idai_field_pre_prepprocess_configuration_validator_1.IdaiFieldPrePreprocessConfigurationValidator(), new configuration_validator_1.ConfigurationValidator())];
+                    return [4 /*yield*/, configLoader.go('', [], [], [], new idai_field_pre_preprocess_configuration_validator_1.IdaiFieldPrePreprocessConfigurationValidator(), new configuration_validator_1.ConfigurationValidator())];
                 case 2:
                     pconf = _a.sent();
                     expect(pconf.getTypesList()[0].fields.find(function (field) { return field.name == 'fieldA1'; })
