@@ -155,7 +155,7 @@ export module Preprocessing {
 
 
     function expandInherits(configuration: ConfigurationDefinition,
-                           extraRelation: RelationDefinition, itemSet: string) {
+                            extraRelation: RelationDefinition, itemSet: string) {
 
         if (!extraRelation) return;
         if (!(extraRelation as any)[itemSet]) return;
@@ -179,7 +179,7 @@ export module Preprocessing {
 
 
     function expandOnUndefined(configuration: ConfigurationDefinition,
-                              extraRelation_: RelationDefinition, itemSet: string) {
+                               extraRelation_: RelationDefinition, itemSet: string) {
 
         const extraRelation: any = extraRelation_;
 
@@ -244,7 +244,9 @@ export module Preprocessing {
                 }
             }
 
-            if (!fieldAlreadyPresent) typeDefinition.fields.splice(0, 0, extraField);
+            if (!fieldAlreadyPresent) {
+                typeDefinition.fields.splice(0, 0, Object.assign({}, extraField));
+            }
         }
     }
 }
