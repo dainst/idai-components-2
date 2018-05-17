@@ -12,7 +12,6 @@ export class ConfigurationErrors {
 
     public static VALIDATION_ERROR_INVALIDINPUTTYPE = 'config/error/validationerrorinvalidinputtype';
     public static VALIDATION_ERROR_INCOMPLETERECORDEDIN = 'config/error/incompleterecordedin';
-    public static VALIDATION_ERROR_NOPROJECTRECORDEDIN = 'config/error/noprojectrecordedin';
     public static VALIDATION_ERROR_MISSINGVIEWTYPE = 'config/error/missingviewtype';
     public static VALIDATION_ERROR_NONOPERATIONVIEWTYPE = 'config/error/nonoperationviewtype';
 }

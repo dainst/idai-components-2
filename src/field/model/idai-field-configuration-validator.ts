@@ -48,24 +48,20 @@ export class IdaiFieldConfigurationValidator extends ConfigurationValidator{
             }
         }
 
-        if ('Project' in recordedInRelations) {
-            for (let type of recordedInRelations['Project']) {
+        for (let type of recordedInRelations['Project']) {
 
-                let isAbstract = false;
-                for (let t of types) {
-                    if (t.type == type && t.abstract) {
-                        isAbstract = true;
-                    }
-                }
-                if (isAbstract) continue;
-
-                if (!(type in recordedInRelations) || !recordedInRelations[type]
-                    || recordedInRelations[type].length == 0) {
-                    msgs.push([ConfigurationErrors.VALIDATION_ERROR_INCOMPLETERECORDEDIN, type] as never);
+            let isAbstract = false;
+            for (let t of types) {
+                if (t.type == type && t.abstract) {
+                    isAbstract = true;
                 }
             }
-        } else {
-            msgs.push([ConfigurationErrors.VALIDATION_ERROR_NOPROJECTRECORDEDIN] as never);
+            if (isAbstract) continue;
+
+            if (!(type in recordedInRelations) || !recordedInRelations[type]
+                || recordedInRelations[type].length == 0) {
+                msgs.push([ConfigurationErrors.VALIDATION_ERROR_INCOMPLETERECORDEDIN, type] as never);
+            }
         }
 
         return msgs;
