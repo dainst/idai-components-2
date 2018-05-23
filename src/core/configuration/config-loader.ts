@@ -197,24 +197,26 @@ export class ConfigLoader {
         if (orderConfiguration.types) {
             orderConfiguration.types.forEach((typeName: string) => {
                 const type: TypeDefinition | undefined = appConfiguration.types[typeName];
-                if (type) {
-                    type.type = typeName;
-                    type.fields = this.getOrderedFields(type, orderConfiguration);
-                    types.push(type);
-                }
+                if (type) this.addToOrderedTypes(type, typeName, types, orderConfiguration);
             });
         }
 
         Object.keys(appConfiguration.types).forEach(typeName => {
             if (!types.find(type => type.type === typeName)) {
-                const type = appConfiguration.types[typeName];
-                type.type = typeName;
-                type.fields = this.getOrderedFields(type, orderConfiguration);
-                types.push(type);
+                this.addToOrderedTypes(appConfiguration.types[typeName], typeName, types, orderConfiguration);
             }
         });
 
         return types;
+    }
+
+
+    private static addToOrderedTypes(type: TypeDefinition, typeName: string, types: Array<TypeDefinition>,
+                                     orderConfiguration: any) {
+
+        type.type = typeName;
+        type.fields = this.getOrderedFields(type, orderConfiguration);
+        types.push(type);
     }
 
 
@@ -227,22 +229,25 @@ export class ConfigLoader {
         if (orderConfiguration.fields && orderConfiguration.fields[type.type]) {
             orderConfiguration.fields[type.type].forEach((fieldName: string) => {
                 const field: FieldDefinition | undefined = type.fields[fieldName];
-                if (field) {
-                    field.name = fieldName;
-                    fields.push(field);
-                }
+                if (field) this.addToOrderedFields(field, fieldName, fields);
             });
         }
 
         Object.keys(type.fields).forEach(fieldName => {
             if (!fields.find(field => field.name === fieldName)) {
-                const field = type.fields[fieldName];
-                field.name = fieldName;
-                fields.push(field);
+                this.addToOrderedFields(type.fields[fieldName], fieldName, fields);
             }
         });
 
         return fields;
+    }
+
+
+    private static addToOrderedFields(field: FieldDefinition, fieldName: string,
+                                      fields: Array<FieldDefinition>) {
+
+        field.name = fieldName;
+        fields.push(field);
     }
 
 
