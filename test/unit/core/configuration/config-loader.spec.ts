@@ -237,7 +237,10 @@ describe('ConfigLoader',() => {
                 fields: {
                     'A': ['fieldA1', 'fieldA2'],
                     'B': ['fieldB1', 'fieldB2', 'fieldB3'],
-                    'C': ['fieldC1', 'fieldC2']
+                    'C': ['fieldC1', 'fieldC2'],
+
+                    // Ignore fields defined in Order.json but not in configuration silently
+                    'D': ['fieldD1', 'fieldD2']
                 }
             })
         );
