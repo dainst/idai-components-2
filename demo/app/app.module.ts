@@ -25,6 +25,8 @@ import {ConfigReader} from '../../src/core/configuration/config-reader';
 import {IdaiFieldPrePreprocessConfigurationValidator} from '../../src/core/configuration/idai-field-pre-preprocess-configuration-validator';
 import {ConfigurationValidator} from '../../src/core/configuration/configuration-validator';
 import {IdaiFieldMapModule} from '../../src/field/map/idai-field-map.module';
+import {TypeDefinition} from '../../src/core/configuration/type-definition';
+import {FieldDefinition} from '../../src/core/configuration/field-definition';
 
 let pconf: any = undefined;
 
@@ -57,16 +59,16 @@ let pconf: any = undefined;
             useFactory: (configLoader: ConfigLoader) => () => {
                 return configLoader.go(
                     'demo/config',
-                    [{ 'type': 'Image', 'fields': [ { 'name': 'dimensions' } ]}],
+                    { 'Image': { 'fields': { 'dimensions': {} } } as TypeDefinition },
                     [
                         { name: 'depicts', domain: ['Image:inherit'], inverse: 'isDepictedBy', visible: false,
                             editable: false},
                         { name: 'isDepictedBy', range: ['Image:inherit'], inverse: 'depicts', visible: false,
                             editable: false}
-                    ],[
-                        { 'name': 'shortDescription' },
-                        { 'name': 'identifier' }
-                    ],
+                    ],{
+                        'identifier': {} as FieldDefinition,
+                        'shortDescription': {} as FieldDefinition
+                    },
                     new IdaiFieldPrePreprocessConfigurationValidator(),
                     new ConfigurationValidator()
                 )
