@@ -101,6 +101,7 @@ export module Preprocessing {
                 _addExtraFields(typeDefinition, extraFields)
             }
 
+            // TODO Check if this is really the right place to do this
             for (let fieldName of Object.keys(typeDefinition.fields)) {
                 const fieldDefinition = typeDefinition.fields[fieldName];
 
