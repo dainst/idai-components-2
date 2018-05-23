@@ -3,10 +3,10 @@
  */
 export interface TypeDefinition {
 
-    label? : string;
+    label?: string;
     type: string;
-    abstract? : boolean;
-    fields? : any;
-    parent? : string;
-    color? : string;
+    abstract?: boolean;
+    fields?: any;
+    parent?: string;
+    color?: string;
 }

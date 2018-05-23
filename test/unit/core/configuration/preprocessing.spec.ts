@@ -1,7 +1,8 @@
 import {Preprocessing} from '../../../../src/core/configuration/preprocessing';
 import {TypeDefinition} from '../../../../src/core/configuration/type-definition'
 import {RelationDefinition} from '../../../../src/core/configuration/relation-definition'
-import {ConfigurationDefinition} from '../../../../src/core/configuration/configuration-definition';
+import {UnorderedConfigurationDefinition} from '../../../../src/core/configuration/unordered-configuration-definition';
+import {FieldDefinition} from '../../../../src/core/configuration/field-definition';
 
 /**
  * @author Daniel de Oliveira
@@ -9,35 +10,35 @@ import {ConfigurationDefinition} from '../../../../src/core/configuration/config
 
 describe('ConfigurationPreprocessor', () => {
 
-    let configuration: ConfigurationDefinition;
+    let configuration: UnorderedConfigurationDefinition;
     let t1: TypeDefinition;
 
-    beforeEach(function() {
+    beforeEach(() => {
 
-        t1 = { type: 'T1',
-            fields: [
-                {
-                    name: 'aField'
-                }]
-        };
+        t1 = {
+            fields: {
+                'aField': {}
+            }
+        } as TypeDefinition;
 
         configuration = {
             identifier: 'test',
-            types: [
-                t1
-            ]
+            types: {
+                'T1': t1
+            }
         } as any;
     });
 
 
-    function addType(configuration: ConfigurationDefinition, parent?: string) {
+    function addType(configuration: UnorderedConfigurationDefinition, parent?: string) {
 
-        const newT: TypeDefinition = {
-            type: 'T'+(configuration.types.length + 1),
-                fields: []
+        const newType: any = {
+            fields: []
         };
-        if (parent != undefined) newT.parent = parent;
-        configuration.types.push(newT);
+
+        if (parent !== undefined) newType.parent = parent;
+        configuration.types['T' + (Object.keys(configuration.types).length + 1)] = newType;
+
         return configuration;
     }
 
@@ -61,116 +62,120 @@ describe('ConfigurationPreprocessor', () => {
     */
 
 
-    it('should add extra fields', function() {
+    it('should add extra fields', () => {
 
-        Preprocessing.addExtraFields(configuration, [{ name: 'identifier' }]);
+        Preprocessing.addExtraFields(configuration, { 'identifier': {} as FieldDefinition });
 
-        expect(configuration.types[0].fields[0].name).toBe('identifier');
-        expect(configuration.types[0].fields[1].name).toBe('aField');
+        expect(configuration.types['T1'].fields['identifier']).toBeDefined();
+        expect(configuration.types['T1'].fields['aField']).toBeDefined();
     });
 
 
-    it('should add extra type', function() {
+    it('should add extra type', () => {
 
-        const et: TypeDefinition = { type: 'T2',
-            fields: [
-                {
-                    name: 'bField'
-                }]
+        const extraTypes = {
+            T2: {
+                fields: {
+                    bField: {}
+                }
+            } as TypeDefinition
         };
 
-        Preprocessing.addExtraTypes(configuration, [et]);
-        expect(configuration.types[1].fields[0].name).toBe('bField');
+        Preprocessing.addExtraTypes(configuration, extraTypes);
+        expect(configuration.types['T2'].fields['bField']).toBeDefined();
     });
 
 
-    it('should add and extra field to an extra type', function() {
+    it('should add an extra field to an extra type', () => {
 
-        const et: TypeDefinition = { type: 'T2',
-            fields: [
-                {
-                    name: 'bField'
-                }]
+        const extraTypes = {
+            T2: {
+                fields: {
+                    bField: {}
+                }
+            } as TypeDefinition
         };
 
-        Preprocessing.addExtraTypes(configuration, [et]);
-        Preprocessing.addExtraFields(configuration, [{name:'identifier'}]);
+        Preprocessing.addExtraTypes(configuration, extraTypes);
+        Preprocessing.addExtraFields(configuration, { 'identifier': {} as FieldDefinition });
 
-        expect(configuration.types[1].fields[0].name).toBe('identifier');
-        expect(configuration.types[1].fields[1].name).toBe('bField');
+        expect(configuration.types['T2'].fields['identifier']).toBeDefined();
+        expect(configuration.types['T2'].fields['bField']).toBeDefined();
     });
 
 
-    it('merge fields of extra type with existing type', function() {
+    it('merge fields of extra type with existing type', () => {
 
-        const et: TypeDefinition = { type: 'T1',
-            fields: [
-                {
-                    name: 'bField'
-                }]
+        const extraTypes = {
+            T1: {
+                fields: {
+                    bField: {}
+                }
+            } as TypeDefinition
         };
 
-        Preprocessing.addExtraTypes(configuration, [et]);
+        Preprocessing.addExtraTypes(configuration, extraTypes);
 
-        expect(configuration.types[0].fields[0].name).toBe('aField');
-        expect(configuration.types[0].fields[1].name).toBe('bField');
+        expect(configuration.types['T1'].fields['aField']).toBeDefined();
+        expect(configuration.types['T1'].fields['bField']).toBeDefined();
     });
 
 
-    it('merge fields of extra type with existing type and add extra field', function() {
+    it('merge fields of extra type with existing type and add extra field', () => {
 
-        const et: TypeDefinition = { type: 'T1',
-            fields: [
-                {
-                    name: 'bField'
-                }]
+        const extraTypes = {
+            T1: {
+                fields: {
+                    bField: {}
+                }
+            } as TypeDefinition
         };
 
-        Preprocessing.addExtraTypes(configuration, [et]);
-        Preprocessing.addExtraFields(configuration, [{name:'identifier'}]);
+        Preprocessing.addExtraTypes(configuration, extraTypes);
+        Preprocessing.addExtraFields(configuration, { 'identifier': {} as FieldDefinition });
 
-        expect(configuration.types[0].fields[0].name).toBe('identifier');
-        expect(configuration.types[0].fields[1].name).toBe('aField');
-        expect(configuration.types[0].fields[2].name).toBe('bField');
+        expect(configuration.types['T1'].fields['aField']).toBeDefined();
+        expect(configuration.types['T1'].fields['bField']).toBeDefined();
+        expect(configuration.types['T1'].fields['identifier']).toBeDefined();
     });
 
 
-    it('should not add extra fields to subtypes', function() {
+    it('should not add extra fields to subtypes', () => {
 
-        const t: TypeDefinition = { type: 'T1',
-            parent : 'SuperT',
-            fields: [
-                {
-                    name: 'aField'
-                }]
-        };
+        const t: TypeDefinition = {
+            parent: 'SuperT',
+            fields: {
+                aField: {}
+            }
+        } as TypeDefinition;
 
         configuration = {
             identifier: 'test',
-            types: [
-                t
-            ],
+            types: {
+                T1: t
+            },
             relations: []
         };
 
-        Preprocessing.addExtraTypes(configuration, []);
-        Preprocessing.addExtraFields(configuration, [{name:'identifier'}]);
+        Preprocessing.addExtraTypes(configuration, {});
+        Preprocessing.addExtraFields(configuration, { 'identifier': {} as FieldDefinition });
 
-        expect(configuration.types[0].fields[0].name).toBe('aField');
-        expect(configuration.types[0].fields[1]).toBe(undefined);
+        expect(configuration.types['T1'].fields['aField']).toBeDefined();
+        expect(configuration.types['T1'].fields['identifier']).toBeUndefined();
     });
 
 
     it('should add an extra relation', function() {
 
-        const r: RelationDefinition = { name: 'R',
-            domain: [ 'domainA' ],
-            range : [ 'rangeA' ]
+        const extraRelation: RelationDefinition = {
+            name: 'R',
+            domain: ['domainA'],
+            range : ['rangeA']
         };
         configuration.relations = [];
 
-        Preprocessing.addExtraFields(configuration, []);
-        Preprocessing.addExtraRelations(configuration, [r]);
+        Preprocessing.addExtraFields(configuration, {});
+        Preprocessing.addExtraRelations(configuration, [extraRelation]);
 
         expect(configuration.relations[0].name).toBe('R');
         expect(configuration.relations[1]).toBe(undefined); // to prevent reintroducing bug
@@ -180,28 +185,30 @@ describe('ConfigurationPreprocessor', () => {
     // there was a bug where relation was not added if one of the same name but with a different domain was configured
     it('should add an extra relation to an existing relation', function() {
 
-        const r1: RelationDefinition = { name: 'R',
-            domain: [ 'domainA' ],
-            range : [ 'rangeA' ]
+        const r1: RelationDefinition = {
+            name: 'R',
+            domain: ['domainA'],
+            range : ['rangeA']
         };
 
-        const r2: RelationDefinition = { name: 'R',
-            domain: [ 'domainB' ],
-            range : [ 'rangeA' ]
+        const r2: RelationDefinition = {
+            name: 'R',
+            domain: ['domainB'],
+            range : ['rangeA']
         };
 
         configuration = {
             identifier: 'test',
-            types: [
-                t1
-            ],
+            types: {
+                T1: t1
+            },
             relations: [
                 r1
             ]
         };
 
-        Preprocessing.addExtraTypes(configuration, []);
-        Preprocessing.addExtraFields(configuration, []);
+        Preprocessing.addExtraTypes(configuration, {});
+        Preprocessing.addExtraFields(configuration, {});
         Preprocessing.addExtraRelations(configuration, [r2]);
 
         expect(configuration.relations.length).toBe(2);
@@ -210,13 +217,14 @@ describe('ConfigurationPreprocessor', () => {
 
     it('should replace range ALL with all types except the domain types', function() {
 
-        const r: RelationDefinition = { name: 'R',
-            domain: [ 'T2', 'T3' ]
+        const r: RelationDefinition = {
+            name: 'R',
+            domain: ['T2', 'T3']
         };
 
         configuration.relations = [];
 
-        Preprocessing.addExtraFields(addType(addType(configuration)), []);
+        Preprocessing.addExtraFields(addType(addType(configuration)), {});
         Preprocessing.addExtraRelations(configuration, [r]);
 
         expect(configuration.relations[0].range[0]).toBe('T1');
@@ -226,16 +234,15 @@ describe('ConfigurationPreprocessor', () => {
 
     it('should replace domain ALL with all types except the range types', function() {
 
-        const r: RelationDefinition = { name: 'R',
-            range: [ 'T2', 'T3' ]
+        const r: RelationDefinition = {
+            name: 'R',
+            range: ['T2', 'T3']
         };
-
 
         configuration.relations = [];
 
-        Preprocessing.addExtraFields(addType(addType(configuration)), []);
+        Preprocessing.addExtraFields(addType(addType(configuration)), {});
         Preprocessing.addExtraRelations(configuration, [r]);
-
 
         expect(configuration.relations[0].domain[0]).toBe('T1');
         expect(configuration.relations[0].domain[1]).toBe(undefined);
@@ -251,7 +258,7 @@ describe('ConfigurationPreprocessor', () => {
 
         configuration.relations = [];
 
-        Preprocessing.addExtraFields(addType(addType(configuration,'T1')), []);
+        Preprocessing.addExtraFields(addType(addType(configuration,'T1')), {});
         Preprocessing.addExtraRelations(configuration, [r]);
 
         expect(configuration.relations[0].range.indexOf('T1')).not.toBe(-1);
@@ -270,7 +277,7 @@ describe('ConfigurationPreprocessor', () => {
 
         configuration.relations = [];
 
-        Preprocessing.addExtraFields(addType(addType(configuration,'T1')), []);
+        Preprocessing.addExtraFields(addType(addType(configuration,'T1')), {});
         Preprocessing.addExtraRelations(configuration, [r]);
 
         expect(configuration.relations[0].domain.indexOf('T1')).not.toBe(-1);
@@ -288,7 +295,7 @@ describe('ConfigurationPreprocessor', () => {
         };
 
         configuration.relations = [];
-        Preprocessing.addExtraFields(addType(addType(configuration,'T1')), []);
+        Preprocessing.addExtraFields(addType(addType(configuration,'T1')), {});
         Preprocessing.addExtraRelations(configuration, [r]);
 
         expect(configuration.relations[0].range[0]).toBe('T3');
@@ -301,11 +308,11 @@ describe('ConfigurationPreprocessor', () => {
 
         configuration = {
             identifier: 'test',
-            types: [
-                {type: 'A', fields: [{name: 'a'}, {name: 'a1'}]},
-                {type: 'B', fields: [{name: 'b'}]}
-            ],
-            relations: [{name: 'isRecordedIn'}, {name: 'isContemporaryWith'}]
+            types: {
+                A: { fields: { a: {}, a1: {} } } as TypeDefinition,
+                B: { fields: { b: {} } } as TypeDefinition
+            },
+            relations: [{ name: 'isRecordedIn' }, { name: 'isContemporaryWith' }]
         };
 
         const languageConfiguration = {
@@ -331,12 +338,12 @@ describe('ConfigurationPreprocessor', () => {
 
         Preprocessing.applyLanguage(configuration, languageConfiguration);
 
-        expect(configuration.types[0].label).toEqual('A_');
-        expect(configuration.types[1].label).toBeUndefined();
-        expect(configuration.types[0].fields[0].label).toEqual('a_');
-        expect(configuration.types[0].fields[1].label).toBeUndefined();
-        expect(configuration.types[0].fields[0].description).toBeUndefined();
-        expect(configuration.types[0].fields[1].description).toEqual('a1_desc');
+        expect(configuration.types['A'].label).toEqual('A_');
+        expect(configuration.types['B'].label).toBeUndefined();
+        expect(configuration.types['A'].fields['a'].label).toEqual('a_');
+        expect(configuration.types['A'].fields['a1'].label).toBeUndefined();
+        expect(configuration.types['A'].fields['a'].description).toBeUndefined();
+        expect(configuration.types['A'].fields['a1'].description).toEqual('a1_desc');
         expect(configuration.relations[0].label).toEqual('isRecordedIn_');
         expect(configuration.relations[1].label).toBeUndefined();
     });

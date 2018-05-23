@@ -9,9 +9,9 @@ describe('PrePreprocessConfigurationValidator',() => {
 
         const configuration = {
             identifier: 'Conf',
-            types: [
-                {type: 'Image'},
-            ],
+            types: {
+                'Image': {}
+            },
             relations: [{
                 name: 'isRecordedIn',
                 domain: ['Image']
@@ -28,9 +28,9 @@ describe('PrePreprocessConfigurationValidator',() => {
 
         const configuration = {
             identifier: 'Conf',
-            types: [
-                {type: 'Drawing', parent: 'Image'},
-            ],
+            types: {
+                'Drawing': { parent: 'Image' }
+            },
             relations: [{
                 name: 'isRecordedIn',
                 domain: ['Drawing']
@@ -47,9 +47,9 @@ describe('PrePreprocessConfigurationValidator',() => {
 
         const configuration = {
             identifier: 'Conf',
-            types: [
-                {type: 'A', parent: 'Operation'},
-            ],
+            types: {
+                'A': { parent: 'Operation' }
+            },
             relations: [{
                 name: 'isRecordedIn',
                 domain: ['A']
@@ -66,10 +66,10 @@ describe('PrePreprocessConfigurationValidator',() => {
 
         const configuration = {
             identifier: 'Conf',
-            types: [
-                {type: 'A'},
-                {type: 'B'}
-            ],
+            types: {
+                'A': {},
+                'B': {}
+            },
             relations: [{
                 name: 'isRecordedIn',
                 domain: ['A'],
@@ -86,7 +86,9 @@ describe('PrePreprocessConfigurationValidator',() => {
 
         const configuration = {
             identifier: 'Conf',
-            types: [{type: 'A'}],
+            types: {
+                'A': {}
+            },
             relations: [{
                 name: 'abc',
                 visible: 'true'
@@ -102,7 +104,9 @@ describe('PrePreprocessConfigurationValidator',() => {
 
         const configuration = {
             identifier: 'Conf',
-            types: [{type: 'A', fields: [{editable: true}]}],
+            types: {
+                'A': {  fields: { 'a1': { editable: true } } }
+            },
             relations: []
         };
 

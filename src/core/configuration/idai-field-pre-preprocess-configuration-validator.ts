@@ -23,10 +23,9 @@ export class IdaiFieldPrePreprocessConfigurationValidator {
 
         if (!appConfiguration.types) return [];
 
-
         return IdaiFieldPrePreprocessConfigurationValidator.checkForForbiddenIsRecordedIns(appConfiguration)
-                .concat(IdaiFieldPrePreprocessConfigurationValidator.checkForExtraneousFieldsInRelations(appConfiguration))
-                .concat(IdaiFieldPrePreprocessConfigurationValidator.checkForExtraneousFieldsInTypes(appConfiguration));
+            .concat(IdaiFieldPrePreprocessConfigurationValidator.checkForExtraneousFieldsInRelations(appConfiguration))
+            .concat(IdaiFieldPrePreprocessConfigurationValidator.checkForExtraneousFieldsInTypes(appConfiguration));
     }
 
 
@@ -35,12 +34,12 @@ export class IdaiFieldPrePreprocessConfigurationValidator {
         const allowedFields = ['inputType', 'name', 'valuelist', 'position_values', 'unitSuffix'];
 
         let errs: string[][] = [];
-        for (let type of appConfiguration.types) {
+        for (let typeName of Object.keys(appConfiguration.types)) {
+            const type = appConfiguration.types[typeName];
 
             if (type.fields) {
-
-                for (let field of type.fields) {
-
+                for (let fieldName of Object.keys(type.fields)) {
+                    const field = type.fields[fieldName];
                     const diff = subtract(allowedFields)(Object.keys(field));
                     if (diff.length > 0) errs.push(['field(s) not allowed:', diff] as never);
                 }
@@ -104,17 +103,15 @@ export class IdaiFieldPrePreprocessConfigurationValidator {
 
     private static operationSubtypes(appConfiguration: any) {
 
-        return appConfiguration.types
-            .filter((type: TypeDefinition) => type.parent === 'Operation')
-            .map((type: TypeDefinition) => type.type);
+        return Object.keys(appConfiguration.types)
+            .filter(typeName => appConfiguration.types[typeName].parent === 'Operation');
     }
 
 
     private static imageTypes(appConfiguration: any) {
 
-        return appConfiguration.types
-            .filter((type: TypeDefinition) => type.parent === 'Image')
-            .map((type: TypeDefinition) => type.type)
+        return Object.keys(appConfiguration.types)
+            .filter(typeName => appConfiguration.types[typeName].parent === 'Image')
             .concat(['Image']);
     }
 }
