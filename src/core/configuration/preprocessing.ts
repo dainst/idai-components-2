@@ -95,13 +95,15 @@ export module Preprocessing {
         for (let typeName of Object.keys(configuration.types)) {
             const typeDefinition = configuration.types[typeName];
 
-            if (!typeDefinition.fields) typeDefinition.fields = [];
+            if (!typeDefinition.fields) typeDefinition.fields = {};
 
             if (typeDefinition.parent == undefined) {
                 _addExtraFields(typeDefinition, extraFields)
             }
 
-            for (let fieldDefinition of typeDefinition.fields) {
+            for (let fieldName of Object.keys(typeDefinition.fields)) {
+                const fieldDefinition = typeDefinition.fields[fieldName];
+
                 if (fieldDefinition.editable == undefined) fieldDefinition.editable = true;
                 if (fieldDefinition.visible == undefined) fieldDefinition.visible = true;
             }
