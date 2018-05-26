@@ -6,7 +6,7 @@ var concat = require('gulp-concat');
 
 gulp.task('compile', ['convert-sass'], function () {
     gulp.src([
-        'node_modules/mdi/fonts/**/*'
+        'node_modules/@mdi/font/fonts/**/*'
     ]).pipe(gulp.dest('src/fonts'));
 });
 
@@ -21,7 +21,7 @@ gulp.task('convert-sass', function () {
         .pipe(sass({
             includePaths: [
                 'node_modules/bootstrap/scss',
-                'node_modules/mdi/scss/'
+                'node_modules/@mdi/font/scss/'
             ], precision: 8
         }))
         .pipe(concat(pkg.name + '.css'))
