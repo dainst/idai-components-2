@@ -15,7 +15,7 @@ export class IdaiType {
     private fields: FieldDefinition[];
 
 
-    constructor (definition: TypeDefinition) {
+    constructor(definition: TypeDefinition) {
 
         this.name = definition.type;
         this.label = definition.label || this.name;

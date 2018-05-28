@@ -3,6 +3,8 @@ import {ConfigLoader} from '../../core/configuration/config-loader';
 import {IdaiFieldConfigurationValidator} from './idai-field-configuration-validator';
 import {ProjectConfiguration} from '../../core/configuration/project-configuration';
 import {IdaiFieldPrePreprocessConfigurationValidator} from '../../core/configuration/idai-field-pre-preprocess-configuration-validator';
+import {TypeDefinition} from '../../core/configuration/type-definition';
+import {FieldDefinition} from '../../core/configuration/field-definition';
 
 
 @Injectable()
@@ -11,93 +13,81 @@ import {IdaiFieldPrePreprocessConfigurationValidator} from '../../core/configura
  */
 export class IdaiFieldAppConfigurator {
 
-    private defaultTypes = [
-    {
-        type: 'Place',
-        fields: []
-    },
-    {
-        type: 'Operation',
-        fields: [],
-        abstract: true
-    },
-    {
-       type: 'Feature',
-       fields: []
-    },
-    {
-        type: 'Image',
-        fields: [
-            {
-                name: 'height',
-                editable: false,
-                label: 'Höhe'
-            },
-            {
-                name: 'width',
-                editable: false,
-                label: 'Breite'
-            },
-            {
-                name : 'originalFilename',
-                visible: false,
-                editable: false
-            },
-            // TODO Delete the fields 'filename' and 'hasFilename' as soon as existing data has been migrated.
-            {
-                name : 'filename',
-                visible: false,
-                editable: false
-            },
-            {
-                name : 'hasFilename',
-                visible: false,
-                editable: false
-            },
-            {
-                name: 'georeference',
-                visible: false,
-                editable: false
+    private defaultTypes = {
+        Place: {
+            fields: {}
+        } as TypeDefinition,
+        Operation: {
+            fields: {},
+            abstract: true
+        } as TypeDefinition,
+        Feature: {
+            fields: {}
+        } as TypeDefinition,
+        Image: {
+            fields: {
+                height: {
+                    editable: false,
+                    label: 'Höhe'
+                },
+                width: {
+                    editable: false,
+                    label: 'Breite'
+                },
+                originalFilename: {
+                    visible: false,
+                    editable: false
+                },
+                // TODO Delete the fields 'filename' and 'hasFilename' as soon as existing data has been migrated.
+                filename: {
+                    visible: false,
+                    editable: false
+                },
+                hasFilename: {
+                    visible: false,
+                    editable: false
+                },
+                georeference: {
+                    visible: false,
+                    editable: false
+                }
             }
-        ]
-    }, {
-        type: 'Project',
-        label: 'Projekt',
-        fields: [
-            {
-                name: 'identifier',
-                editable: false
-            },
-            {
-                name: 'coordinateReferenceSystem',
-                label: 'Koordinatenbezugssystem',
-                inputType: 'dropdown',
-                valuelist: [
-                    'Eigenes Koordinatenbezugssystem',
-                    'EPSG4326 (WGS 84)',
-                    'EPSG3857 (WGS 84 Web Mercator)'
-                ]
+        } as TypeDefinition,
+        Project: {
+            label: 'Projekt',
+            fields: {
+                'identifier': {
+                    editable: false
+                },
+                'coordinateReferenceSystem': {
+                    label: 'Koordinatenbezugssystem',
+                    inputType: 'dropdown',
+                    valuelist: [
+                        'Eigenes Koordinatenbezugssystem',
+                        'EPSG4326 (WGS 84)',
+                        'EPSG3857 (WGS 84 Web Mercator)'
+                    ]
+                }
             }
-        ]
-    }];
+        } as TypeDefinition
+    };
 
-
-    private defaultFields = [{
-        name: 'shortDescription',
-        label: 'Kurzbeschreibung',
-        visible: false
-    }, {
-        name: 'identifier',
-        description: 'Eindeutiger Bezeichner dieser Ressource',
-        label: 'Bezeichner',
-        visible: false,
-        mandatory: true
-    }, {
-        name: 'geometry',
-        visible: false,
-        editable: false
-    }];
-
+    private defaultFields = {
+        shortDescription: {
+            label: 'Kurzbeschreibung',
+            visible: false
+        } as FieldDefinition,
+        identifier: {
+            description: 'Eindeutiger Bezeichner dieser Ressource',
+            label: 'Bezeichner',
+            visible: false,
+            mandatory: true
+        } as FieldDefinition,
+        geometry: {
+            visible: false,
+            editable: false
+        } as FieldDefinition
+    };
 
     private defaultRelations = [
         { name: 'depicts', domain: ['Image:inherit'],

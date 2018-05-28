@@ -1,7 +1,7 @@
 import {FieldDefinition} from './field-definition';
 import {TypeDefinition} from './type-definition';
-import {ConfigurationDefinition} from './configuration-definition';
 import {RelationDefinition} from './relation-definition';
+import {UnorderedConfigurationDefinition} from './unordered-configuration-definition';
 
 /**
  * @author Daniel de Oliveira
@@ -9,44 +9,41 @@ import {RelationDefinition} from './relation-definition';
  */
 export module Preprocessing {
 
-    export function addCustomFields(configuration: ConfigurationDefinition, typeName: string, fields: any) {
+    export function addCustomFields(configuration: UnorderedConfigurationDefinition, typeName: string, fields: any) {
 
-        const type: TypeDefinition|undefined = configuration.types
-            .find(type => type.type == typeName);
+        const type: TypeDefinition|undefined = configuration.types[typeName];
 
         if (!type) return;
 
         Object.keys(fields).forEach(fieldName => {
             const field: any = { name: fieldName };
             Object.assign(field, fields[fieldName]);
-            const existingField: any|undefined = type.fields
-                .find((field: any) => field.name == fieldName);
-            if (existingField) {
-                type.fields.splice(type.fields.indexOf(existingField), 1, field);
-            } else {
-                type.fields.push(field);
-            }
+            type.fields[fieldName] = field;
         });
     }
 
 
-    export function applyLanguage(configuration: ConfigurationDefinition, language: any) {
+    export function applyLanguage(configuration: UnorderedConfigurationDefinition, language: any) {
 
         if (language.types) {
 
-            for (let langConfTypeKey of Object.keys(language.types)) {
-                for (let confType of configuration.types) {
-                    if (confType.type !== langConfTypeKey) continue;
+            for (let langConfTypeName of Object.keys(language.types)) {
+                for (let confTypeName of Object.keys(configuration.types)) {
+                    if (confTypeName !== langConfTypeName) continue;
 
-                    const langConfType = language.types[langConfTypeKey];
+                    const confType = configuration.types[confTypeName];
+                    const langConfType = language.types[langConfTypeName];
+
                     if (langConfType.label) confType.label = langConfType.label;
 
                     if (langConfType.fields) {
-                        for (let langConfFieldKey of Object.keys(langConfType.fields)) {
-                            for (let confField of confType.fields) {
-                                if (confField.name !== langConfFieldKey) continue;
+                        for (let langConfFieldName of Object.keys(langConfType.fields)) {
+                            for (let confFieldName of Object.keys(confType.fields)) {
+                                if (confFieldName !== langConfFieldName) continue;
 
-                                const langConfField = langConfType.fields[langConfFieldKey];
+                                const confField = confType.fields[confFieldName];
+                                const langConfField = langConfType.fields[langConfFieldName];
+
                                 if (langConfField.label) confField.label = langConfField.label;
                                 if (langConfField.description) confField.description = langConfField.description;
                             }
@@ -71,7 +68,7 @@ export module Preprocessing {
     }
 
 
-    export function setIsRecordedInVisibilities(configuration: ConfigurationDefinition) {
+    export function setIsRecordedInVisibilities(configuration: UnorderedConfigurationDefinition) {
 
         if (!configuration.relations) return;
 
@@ -81,7 +78,7 @@ export module Preprocessing {
     }
 
 
-    export function prepareSameMainTypeResource(configuration: ConfigurationDefinition) {
+    export function prepareSameMainTypeResource(configuration: UnorderedConfigurationDefinition) {
 
         if (!configuration.relations) return;
 
@@ -92,17 +89,22 @@ export module Preprocessing {
     }
 
 
-    export function addExtraFields(configuration: ConfigurationDefinition,
-                                   extraFields: Array<FieldDefinition>) {
+    export function addExtraFields(configuration: UnorderedConfigurationDefinition,
+                                   extraFields: {[fieldName: string]: FieldDefinition }) {
 
-        for (let typeDefinition of configuration.types) {
-            if (!typeDefinition.fields) typeDefinition.fields = [];
+        for (let typeName of Object.keys(configuration.types)) {
+            const typeDefinition = configuration.types[typeName];
+
+            if (!typeDefinition.fields) typeDefinition.fields = {};
 
             if (typeDefinition.parent == undefined) {
                 _addExtraFields(typeDefinition, extraFields)
             }
 
-            for (let fieldDefinition of typeDefinition.fields) {
+            // TODO Check if this is really the right place to do this
+            for (let fieldName of Object.keys(typeDefinition.fields)) {
+                const fieldDefinition = typeDefinition.fields[fieldName];
+
                 if (fieldDefinition.editable == undefined) fieldDefinition.editable = true;
                 if (fieldDefinition.visible == undefined) fieldDefinition.visible = true;
             }
@@ -110,7 +112,7 @@ export module Preprocessing {
     }
 
 
-    export function addExtraRelations(configuration: ConfigurationDefinition,
+    export function addExtraRelations(configuration: UnorderedConfigurationDefinition,
                                       extraRelations: Array<RelationDefinition>) {
 
         if (!configuration.relations) return;
@@ -154,7 +156,7 @@ export module Preprocessing {
     }
 
 
-    function expandInherits(configuration: ConfigurationDefinition,
+    function expandInherits(configuration: UnorderedConfigurationDefinition,
                             extraRelation: RelationDefinition, itemSet: string) {
 
         if (!extraRelation) return;
@@ -162,23 +164,24 @@ export module Preprocessing {
 
         const itemsNew = [] as any;
         for (let item of (extraRelation as any)[itemSet]) {
-            if (item.indexOf(':inherit') != -1) {
+            if (item.indexOf(':inherit') !== -1) {
+                for (let typeName of Object.keys(configuration.types)) {
+                    const type = configuration.types[typeName];
 
-                for (let type of configuration.types) {
-                    if (type.parent==item.split(':')[0]) {
-                        itemsNew.push(type.type as never);
+                    if (type.parent === item.split(':')[0]) {
+                        itemsNew.push(typeName);
                     }
                 }
-                itemsNew.push(item.split(':')[0] as never);
+                itemsNew.push(item.split(':')[0]);
             } else {
-                itemsNew.push(item as never);
+                itemsNew.push(item);
             }
         }
         (extraRelation as any)[itemSet] = itemsNew;
     }
 
 
-    function expandOnUndefined(configuration: ConfigurationDefinition,
+    function expandOnUndefined(configuration: UnorderedConfigurationDefinition,
                                extraRelation_: RelationDefinition, itemSet: string) {
 
         const extraRelation: any = extraRelation_;
@@ -189,9 +192,9 @@ export module Preprocessing {
         if (itemSet == 'range') opposite = 'domain';
 
         extraRelation[itemSet] = [];
-        for (let type of configuration.types) {
-            if (extraRelation[opposite].indexOf(type.type) == -1) {
-                extraRelation[itemSet].push(type.type);
+        for (let typeName of Object.keys(configuration.types)) {
+            if (extraRelation[opposite].indexOf(typeName) == -1) {
+                extraRelation[itemSet].push(typeName);
             }
         }
     }
@@ -199,53 +202,51 @@ export module Preprocessing {
 
     function mergeFields(target: TypeDefinition, source: TypeDefinition) {
 
-        for (let sourceField of source.fields) {
+        for (let sourceFieldName of Object.keys(source.fields)) {
             let alreadyPresentInTarget = false;
 
-            for (let targetField of target.fields) {
-                if (targetField.name == sourceField.name) {
-                    alreadyPresentInTarget = true;
-                }
+            for (let targetFieldName of Object.keys(target.fields)) {
+                if (targetFieldName == sourceFieldName) alreadyPresentInTarget = true;
             }
 
-            if (!alreadyPresentInTarget) target.fields.push(sourceField);
+            if (!alreadyPresentInTarget) target.fields[sourceFieldName] = source.fields[sourceFieldName];
         }
     }
 
 
-    export function addExtraTypes(configuration: ConfigurationDefinition, extraTypes: Array<TypeDefinition>) {
+    export function addExtraTypes(configuration: UnorderedConfigurationDefinition,
+                                  extraTypes: {[typeName: string]: TypeDefinition }) {
 
-        for (let extraType of extraTypes) {
+        for (let extraTypeName of Object.keys(extraTypes)) {
+            const extraType = extraTypes[extraTypeName];
             let typeAlreadyPresent = false;
 
-            for (let typeDefinition of configuration.types) {
+            for (let typeName of Object.keys(configuration.types)) {
+                const typeDefinition = configuration.types[typeName];
 
-                if ((<TypeDefinition>typeDefinition).type
-                    == (<TypeDefinition>extraType).type) {
-
+                if (typeName === extraTypeName) {
                     typeAlreadyPresent = true;
                     mergeFields(typeDefinition, extraType);
                 }
             }
 
-            if (!typeAlreadyPresent) configuration.types.push(extraType);
+            if (!typeAlreadyPresent) configuration.types[extraTypeName] = extraType;
         }
     }
 
 
-    function _addExtraFields(typeDefinition: TypeDefinition, extraFields: Array<FieldDefinition>) {
+    function _addExtraFields(typeDefinition: TypeDefinition,
+                             extraFields: {[fieldName: string]: FieldDefinition }) {
 
-        for (let extraField of extraFields) {
+        for (let extraFieldName of Object.keys(extraFields)) {
             let fieldAlreadyPresent = false;
 
-            for (let fieldDefinition of (<TypeDefinition>typeDefinition).fields) {
-                if ((<FieldDefinition>fieldDefinition).name == extraField.name) {
-                    fieldAlreadyPresent = true;
-                }
+            for (let fieldName of Object.keys(typeDefinition.fields)) {
+                if (fieldName === extraFieldName) fieldAlreadyPresent = true;
             }
 
             if (!fieldAlreadyPresent) {
-                typeDefinition.fields.splice(0, 0, Object.assign({}, extraField));
+                typeDefinition.fields[extraFieldName] = Object.assign({}, extraFields[extraFieldName]);
             }
         }
     }

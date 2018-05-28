@@ -5,6 +5,7 @@ import {FieldDefinition} from './field-definition';
 import {RelationDefinition} from './relation-definition';
 import {ConfigurationDefinition} from './configuration-definition';
 
+@Injectable()
 /**
  * ProjectConfiguration maintains the current projects properties.
  * Amongst them is the set of types for the current project,
@@ -17,18 +18,15 @@ import {ConfigurationDefinition} from './configuration-definition';
  * @author Daniel de Oliveira
  * @author Sebastian Cuy
  */
-@Injectable()
 export class ProjectConfiguration {
 
+    private projectIdentifier: string;
+    
     private typesTree: { [typeName: string]: IdaiType } = {};
 
     private typesMap: { [typeName: string]: IdaiType } = {};
 
-    private projectIdentifier: string;
-
-    private typesList: Array<IdaiType>|undefined = undefined;
-
-    private typesTreeList: Array<IdaiType>|undefined = undefined;
+    private typesList: Array<IdaiType> = [];    
 
     private typesColorMap: { [typeName: string]: string } = {};
 
@@ -70,34 +68,20 @@ export class ProjectConfiguration {
 
 
     /**
-     * @returns {IdaiType[]} All types in flat array, ignoring hierarchy
+     * @returns {Array<IdaiType>} All types in flat array, ignoring hierarchy
      */
-    public getTypesList(): IdaiType[] {
+    public getTypesList(): Array<IdaiType> {
 
-        if (this.typesList) return this.typesList;
-
-        const types = [] as any;
-        for (let typeKey of Object.keys(this.typesMap)) {
-            types.push(this.typesMap[typeKey] as never);
-        }
-        this.typesList = types;
-        return this.typesList as any;
+        return this.typesList;
     }
 
 
     /**
-     * @returns {IdaiType[]} All root types in array, including child types
+     * @returns {Array<IdaiType>} All root types in array, including child types
      */
-    public getTypesTreeList(): IdaiType[] {
+    public getTypesTreeList(): Array<IdaiType> {
 
-        if (this.typesTreeList) return this.typesTreeList;
-
-        const types = [] as any;
-        for (let typeKey of Object.keys(this.typesTree)) {
-            types.push(this.typesTree[typeKey] as never);
-        }
-        this.typesTreeList = types;
-        return this.typesTreeList as any;
+        return this.typesList.filter(type => this.typesTree[type.name] !== undefined);
     }
 
 
@@ -186,7 +170,7 @@ export class ProjectConfiguration {
 
     public getTextColorForType(typeName: string): string {
 
-        return this.isBrightColor(this.getColorForType(typeName)) ? '#000000' : '#ffffff';
+        return ProjectConfiguration.isBrightColor(this.getColorForType(typeName)) ? '#000000' : '#ffffff';
     }
 
 
@@ -265,6 +249,7 @@ export class ProjectConfiguration {
         return this.projectIdentifier;
     }
 
+
     private hasProperty(typeName: string, fieldName: string, propertyName: string) {
 
         if (!this.typesMap[typeName]) return false;
@@ -284,32 +269,42 @@ export class ProjectConfiguration {
     private initTypes(configuration: ConfigurationDefinition) {
 
         for (let type of configuration.types) {
-            let typeName = ProjectConfiguration.getTypeName(type);
-            this.typesMap[typeName] = new IdaiType(type);
-            this.typesColorMap[typeName] = this.generateColorForType(typeName) as any;
+            this.typesMap[type.type] = new IdaiType(type);
+            this.typesColorMap[type.type] = this.generateColorForType(type.type) as any;
         }
 
         for (let type of configuration.types) {
-            let typeName = ProjectConfiguration.getTypeName(type);
             if (!type['parent']) {
-                this.typesTree[typeName] = this.typesMap[typeName];
+                this.typesTree[type.type] = this.typesMap[type.type];
             } else {
-                let parentType = this.typesMap[type.parent as any];
-                if (parentType == undefined)
-                    throw MDInternal.PC_GENERIC_ERROR;
-                parentType.addChildType(this.typesMap[typeName]);
+                const parentType = this.typesMap[type.parent as any];
+                if (parentType == undefined) throw MDInternal.PC_GENERIC_ERROR;
+                parentType.addChildType(this.typesMap[type.type]);
             }
+        }
+        
+        for (let type of configuration.types) {
+            this.typesList.push(this.typesMap[type.type]);
         }
     }
 
 
-    private static getTypeName(type: any): string {
+    private generateColorForType(typeName: string): string|undefined {
 
-        return type.type;
+        if (this.typesMap[typeName] && this.typesMap[typeName].color) {
+            return this.typesMap[typeName].color;
+        } else {
+            const hash = ProjectConfiguration.hashCode(typeName);
+            const r = (hash & 0xFF0000) >> 16;
+            const g = (hash & 0x00FF00) >> 8;
+            const b = hash & 0x0000FF;
+            return '#' + ('0' + r.toString(16)).substr(-2)
+                + ('0' + g.toString(16)).substr(-2) + ('0' + b.toString(16)).substr(-2);
+        }
     }
 
 
-    private hashCode(string: any): number {
+    private static hashCode(string: any): number {
 
         let hash = 0, i, chr;
         if (string.length === 0) return hash;
@@ -338,21 +333,7 @@ export class ProjectConfiguration {
     }
 
 
-    private generateColorForType(typeName: string): string|undefined {
-
-        if (this.typesMap[typeName] && this.typesMap[typeName].color) {
-            return this.typesMap[typeName].color;
-        } else {
-            var hash = this.hashCode(typeName);
-            var r = (hash & 0xFF0000) >> 16;
-            var g = (hash & 0x00FF00) >> 8;
-            var b = hash & 0x0000FF;
-            return "#" + ("0" + r.toString(16)).substr(-2) + ("0" + g.toString(16)).substr(-2) + ("0" + b.toString(16)).substr(-2);
-        }
-    }
-
-
-    private isBrightColor(color: string): boolean {
+    private static isBrightColor(color: string): boolean {
 
         color = color.substring(1); // strip #
         let rgb = parseInt(color, 16);   // convert rrggbb to decimal

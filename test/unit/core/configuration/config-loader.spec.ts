@@ -19,26 +19,34 @@ describe('ConfigLoader',() => {
     beforeEach(() => {
 
         configReader = jasmine.createSpyObj(
-            'confRead',['read']);
-        configReader.read.and.returnValue(Promise.resolve(configuration));
+            'confRead', ['read']);
+        configReader.read.and.returnValues(
+            Promise.resolve(configuration),
+            Promise.resolve({}),
+            Promise.resolve({}),
+            Promise.resolve({}),
+            Promise.resolve({}),
+            Promise.resolve({}),
+            Promise.resolve({})
+        );
         configLoader = new ConfigLoader(configReader);
     });
 
 
-    it('mix existing externally configured with internal inherits rel', async (done) => {
+    it('mix existing externally configured with internal inherits relation', async (done) => {
 
         Object.assign(configuration, {
             identifier: 'Conf',
-            types: [
-                {type: 'A'},
-                {type: 'B'},
-                {type: 'C'},
-                {type: 'D'},
-                {type: 'A1', parent: 'A'},
-                {type: 'A2', parent: 'A'},
-                {type: 'B1', parent: 'B'},
-                {type: 'B2', parent: 'B'},
-            ],
+            types: {
+                'A': {},
+                'B': {},
+                'C': {},
+                'D': {},
+                'A1': { parent: 'A' },
+                'A2': { parent: 'A' },
+                'B1': { parent: 'B' },
+                'B2': { parent: 'B' }
+            },
             relations: [{
                 name: 'connection',
                 domain: ['C'],
@@ -51,13 +59,13 @@ describe('ConfigLoader',() => {
         try {
             pconf = await configLoader.go(
                 'yo',
-                [],
+                {},
                 [{
                     name: 'connection',
                     domain: ['A:inherit'], // TODO reject config if not an array
                     range: ['B:inherit']
                 }],
-                [],
+                {},
                 new IdaiFieldPrePreprocessConfigurationValidator(),
                 new ConfigurationValidator()
             );
@@ -78,14 +86,14 @@ describe('ConfigLoader',() => {
 
         Object.assign(configuration, {
             identifier: 'Conf',
-            types: [{ type: 'A' }, { type: 'B' }],
+            types: { 'A': {}, 'B': {} },
             relations: [{ name: 'abc', domain: ['A'], range: ['B'], sameOperation: false }]
         });
 
         let pconf;
         try {
             pconf = await configLoader.go(
-                'yo', [], [], [],
+                'yo', {}, [], {},
                 new IdaiFieldPrePreprocessConfigurationValidator(),
                 new ConfigurationValidator());
         } catch(err) {
@@ -102,11 +110,11 @@ describe('ConfigLoader',() => {
 
         Object.assign(configuration, {
             identifier: 'Conf',
-            types: [
-                { type: 'A' },
-                { type: 'B' },
-                { type: 'C' }
-            ],
+            types: {
+                'A': {},
+                'B': {},
+                'C': {}
+            },
             relations: [
                 { name: 'r1', domain: ['A'], range: ['B']},
                 { name: 'r2', domain: ['A'], range: ['B']}
@@ -124,20 +132,21 @@ describe('ConfigLoader',() => {
                         B: { label: 'B_' }
                     },
                     relations: {
-                        r1: { label: 'r1_'}
+                        r1: { label: 'r1_' }
                     }
             }),
             Promise.resolve({
                 types: {
                     B: { label: 'B__' }
                 }
-            })
+            }),
+            Promise.resolve({})
         );
 
         let pconf;
         try {
             pconf = await configLoader.go(
-                'yo', [], [], [],
+                'yo', {}, [], {},
                 new IdaiFieldPrePreprocessConfigurationValidator(),
                 new ConfigurationValidator());
         } catch(err) {
@@ -160,10 +169,10 @@ describe('ConfigLoader',() => {
 
         Object.assign(configuration, {
             identifier: 'Conf',
-            types: [
-                { type: 'A', fields: [ { name: 'fieldA1', inputType: 'unsignedInt' } ] },
-                { type: 'B', fields: [ { name: 'fieldB1', inputType: 'input' } ] },
-            ],
+            types: {
+                A: { fields: { fieldA1: { inputType: 'unsignedInt' } } },
+                B: { fields: { fieldB1: { inputType: 'input' } } }
+            },
             relations: [
                 { name: 'r1', domain: ['A'], range: ['B']},
                 { name: 'r2', domain: ['A'], range: ['B']}
@@ -179,12 +188,13 @@ describe('ConfigLoader',() => {
             Promise.resolve({}),
             Promise.resolve({}),
             Promise.resolve({}),
+            Promise.resolve({}),
             Promise.resolve({})
         );
 
         let pconf;
         try {
-            pconf = await configLoader.go('', [], [], [],
+            pconf = await configLoader.go('', {}, [], {},
                 new IdaiFieldPrePreprocessConfigurationValidator(), new ConfigurationValidator()
             );
 
@@ -194,6 +204,63 @@ describe('ConfigLoader',() => {
                 .inputType).toEqual('input');
             expect(pconf.getTypesList()[1].fields.find(field => field.name == 'fieldB2')
                 .inputType).toEqual('boolean');
+
+            done();
+        } catch(err) {
+            fail(err);
+            done();
+        }
+    });
+
+
+    it('apply order configuration', async done => {
+
+        Object.assign(configuration, {
+            identifier: 'Conf',
+            types: {
+                B: { fields: { fieldB2: {}, fieldB3: {}, fieldB1: {} } },
+                C: { fields: { fieldC1: {}, fieldC2: {} } },
+                A: { fields: { fieldA2: {}, fieldA1: {} } }
+            },
+            relations: []
+        });
+
+        configReader.read.and.returnValues(
+            Promise.resolve(configuration),
+            Promise.resolve({}),
+            Promise.resolve({}),
+            Promise.resolve({}),
+            Promise.resolve({}),
+            Promise.resolve({}),
+            Promise.resolve({
+                types: ['A', 'B', 'C'],
+                fields: {
+                    'A': ['fieldA1', 'fieldA2'],
+                    'B': ['fieldB1', 'fieldB2', 'fieldB3'],
+                    'C': ['fieldC1', 'fieldC2'],
+
+                    // Ignore fields defined in Order.json but not in configuration silently
+                    'D': ['fieldD1', 'fieldD2']
+                }
+            })
+        );
+
+        let pconf;
+        try {
+            pconf = await configLoader.go('', {}, [], {},
+                new IdaiFieldPrePreprocessConfigurationValidator(), new ConfigurationValidator()
+            );
+
+            expect(pconf.getTypesList()[0].name).toEqual('A');
+            expect(pconf.getTypesList()[0].fields[0].name).toEqual('fieldA1');
+            expect(pconf.getTypesList()[0].fields[1].name).toEqual('fieldA2');
+            expect(pconf.getTypesList()[1].name).toEqual('B');
+            expect(pconf.getTypesList()[1].fields[0].name).toEqual('fieldB1');
+            expect(pconf.getTypesList()[1].fields[1].name).toEqual('fieldB2');
+            expect(pconf.getTypesList()[1].fields[2].name).toEqual('fieldB3');
+            expect(pconf.getTypesList()[2].name).toEqual('C');
+            expect(pconf.getTypesList()[2].fields[0].name).toEqual('fieldC1');
+            expect(pconf.getTypesList()[2].fields[1].name).toEqual('fieldC2');
 
             done();
         } catch(err) {

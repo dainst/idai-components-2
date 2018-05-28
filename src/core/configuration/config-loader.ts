@@ -9,6 +9,8 @@ import {FieldDefinition} from './field-definition';
 import {
     IdaiFieldPrePreprocessConfigurationValidator
 } from './idai-field-pre-preprocess-configuration-validator';
+import {UnorderedConfigurationDefinition} from './unordered-configuration-definition';
+import {ConfigurationDefinition} from './configuration-definition';
 
 @Injectable()
 /**
@@ -26,19 +28,17 @@ import {
  */
 export class ConfigLoader {
 
-    private static defaultFields = [
-        {
-            name: 'id',
+    private static defaultFields = {
+        'id': {
             editable: false,
             visible: false
-        },
-        {
-            name: 'type',
+        } as FieldDefinition,
+        'type': {
             label: 'Typ',
             visible: false,
             editable: false
-        }
-    ];
+        } as FieldDefinition
+    };
 
 
     constructor(private configReader: ConfigReader) {}
@@ -46,20 +46,20 @@ export class ConfigLoader {
 
     public async go(
                 configDirPath: string,
-                extraTypes: Array<TypeDefinition>,
+                extraTypes: {[typeName: string]: TypeDefinition },
                 extraRelations: Array<RelationDefinition>,
-                extraFields: Array<FieldDefinition>,
+                extraFields: {[fieldName: string]: FieldDefinition },
                 prePreprocessConfigurationValidator: IdaiFieldPrePreprocessConfigurationValidator,
                 postPreprocessConfigurationValidator: ConfigurationValidator,
                 applyMeninxFieldsConfiguration: boolean = false): Promise<ProjectConfiguration> {
 
-        const appConfiguration: any = await this.readConfiguration(configDirPath);
+        let appConfiguration: any = await this.readConfiguration(configDirPath);
 
         const prePreprocessValidationErrors = prePreprocessConfigurationValidator.go(appConfiguration);
         if (prePreprocessValidationErrors.length > 0) throw prePreprocessValidationErrors;
 
-        await this.preprocess(configDirPath, appConfiguration, extraTypes, extraRelations, extraFields,
-            applyMeninxFieldsConfiguration);
+        appConfiguration = await this.preprocess(configDirPath, appConfiguration, extraTypes, extraRelations,
+            extraFields, applyMeninxFieldsConfiguration);
 
         const postPreprocessValidationErrors = postPreprocessConfigurationValidator.go(appConfiguration);
         if (postPreprocessValidationErrors.length > 0) throw postPreprocessValidationErrors;
@@ -80,10 +80,11 @@ export class ConfigLoader {
     }
 
 
-    private async preprocess(configDirPath: string, appConfiguration: any, extraTypes: Array<TypeDefinition>,
+    private async preprocess(configDirPath: string, appConfiguration: any,
+                             extraTypes: {[typeName: string]: TypeDefinition } ,
                              extraRelations: Array<RelationDefinition>,
-                             extraFields: Array<FieldDefinition>,
-                             applyMeninxFieldsConfiguration: boolean) {
+                             extraFields: {[fieldName: string]: FieldDefinition },
+                             applyMeninxFieldsConfiguration: boolean): Promise<ConfigurationDefinition> {
 
         const customFieldsConfigurationPath = configDirPath + '/Fields-Custom.json';
         const meninxFieldsConfigurationPath = configDirPath + '/Fields-Meninx.json';
@@ -91,6 +92,7 @@ export class ConfigLoader {
         const customHiddenConfigurationPath = configDirPath + '/Hidden-Custom.json';
         const languageConfigurationPath = configDirPath + '/Language.json';
         const customLanguageConfigurationPath = configDirPath + '/Language-Custom.json';
+        const orderConfigurationPath = configDirPath + '/Order.json';
 
         Preprocessing.prepareSameMainTypeResource(appConfiguration);
         Preprocessing.setIsRecordedInVisibilities(appConfiguration); // TODO rename and test / also: it is idai field specific
@@ -111,6 +113,8 @@ export class ConfigLoader {
 
         await this.applyLanguageConfs(appConfiguration, languageConfigurationPath,
             customLanguageConfigurationPath);
+
+        return this.getOrderedConfiguration(appConfiguration, orderConfigurationPath);
     }
 
 
@@ -160,6 +164,90 @@ export class ConfigLoader {
             const customHiddenConfiguration = await this.configReader.read(customHiddenConfigurationPath);
             ConfigLoader.hideFields(appConfiguration, customHiddenConfiguration);
         } catch (_) {}
+    }
+
+
+    private async getOrderedConfiguration(appConfiguration: UnorderedConfigurationDefinition,
+                                    orderConfigurationPath: string): Promise<ConfigurationDefinition> {
+
+        let orderedConfiguration: ConfigurationDefinition;
+
+        try {
+            const orderConfiguration = await this.configReader.read(orderConfigurationPath);
+
+            orderedConfiguration = {
+                identifier: appConfiguration.identifier,
+                relations: appConfiguration.relations,
+                types: ConfigLoader.getOrderedTypes(appConfiguration, orderConfiguration)
+            };
+
+        } catch (msgWithParams) {
+            throw [[msgWithParams]];
+        }
+
+        return orderedConfiguration;
+    }
+
+
+    private static getOrderedTypes(appConfiguration: UnorderedConfigurationDefinition,
+                                   orderConfiguration: any): Array<TypeDefinition> {
+
+        const types: Array<TypeDefinition> = [];
+
+        if (orderConfiguration.types) {
+            orderConfiguration.types.forEach((typeName: string) => {
+                const type: TypeDefinition | undefined = appConfiguration.types[typeName];
+                if (type) this.addToOrderedTypes(type, typeName, types, orderConfiguration);
+            });
+        }
+
+        Object.keys(appConfiguration.types).forEach(typeName => {
+            if (!types.find(type => type.type === typeName)) {
+                this.addToOrderedTypes(appConfiguration.types[typeName], typeName, types, orderConfiguration);
+            }
+        });
+
+        return types;
+    }
+
+
+    private static addToOrderedTypes(type: TypeDefinition, typeName: string, types: Array<TypeDefinition>,
+                                     orderConfiguration: any) {
+
+        type.type = typeName;
+        type.fields = this.getOrderedFields(type, orderConfiguration);
+        types.push(type);
+    }
+
+
+    private static getOrderedFields(type: TypeDefinition, orderConfiguration: any): Array<FieldDefinition> {
+
+        const fields: Array<FieldDefinition> = [];
+
+        if (!type.fields) return fields;
+
+        if (orderConfiguration.fields && orderConfiguration.fields[type.type]) {
+            orderConfiguration.fields[type.type].forEach((fieldName: string) => {
+                const field: FieldDefinition | undefined = type.fields[fieldName];
+                if (field) this.addToOrderedFields(field, fieldName, fields);
+            });
+        }
+
+        Object.keys(type.fields).forEach(fieldName => {
+            if (!fields.find(field => field.name === fieldName)) {
+                this.addToOrderedFields(type.fields[fieldName], fieldName, fields);
+            }
+        });
+
+        return fields;
+    }
+
+
+    private static addToOrderedFields(field: FieldDefinition, fieldName: string,
+                                      fields: Array<FieldDefinition>) {
+
+        field.name = fieldName;
+        fields.push(field);
     }
 
 
