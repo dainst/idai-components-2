@@ -89,6 +89,13 @@ export class IdaiFieldAppConfigurator {
         } as FieldDefinition
     };
 
+
+    private defaultFieldsOrder = [
+        'identifier',
+        'shortDescription'
+    ];
+
+
     private defaultRelations = [
         { name: 'depicts', domain: ['Image:inherit'],
             inverse: 'isDepictedIn', label: 'Zeigt', editable: true },
@@ -120,6 +127,7 @@ export class IdaiFieldAppConfigurator {
             this.defaultTypes,
             this.defaultRelations,
             this.defaultFields,
+            this.defaultFieldsOrder,
             new IdaiFieldPrePreprocessConfigurationValidator(),
             new IdaiFieldConfigurationValidator(),
             applyMeninxFieldsConfiguration

@@ -4,12 +4,13 @@ import {
     IdaiFieldPrePreprocessConfigurationValidator
 } from '../../../../src/core/configuration/idai-field-pre-preprocess-configuration-validator';
 import {ConfigurationValidator} from '../../../../src/core/configuration/configuration-validator';
+import {FieldDefinition} from '../../../../src/core/configuration/field-definition';
 
 /**
  * @author Daniel de Oliveira
  * @author Thomas Kleinke
  */
-describe('ConfigLoader',() => {
+describe('ConfigLoader', () => {
 
     const configuration = {} as ConfigurationDefinition;
     let configLoader: ConfigLoader;
@@ -66,6 +67,7 @@ describe('ConfigLoader',() => {
                     range: ['B:inherit']
                 }],
                 {},
+                [],
                 new IdaiFieldPrePreprocessConfigurationValidator(),
                 new ConfigurationValidator()
             );
@@ -93,7 +95,7 @@ describe('ConfigLoader',() => {
         let pconf;
         try {
             pconf = await configLoader.go(
-                'yo', {}, [], {},
+                'yo', {}, [], {}, [],
                 new IdaiFieldPrePreprocessConfigurationValidator(),
                 new ConfigurationValidator());
         } catch(err) {
@@ -146,7 +148,7 @@ describe('ConfigLoader',() => {
         let pconf;
         try {
             pconf = await configLoader.go(
-                'yo', {}, [], {},
+                'yo', {}, [], {}, [],
                 new IdaiFieldPrePreprocessConfigurationValidator(),
                 new ConfigurationValidator());
         } catch(err) {
@@ -194,7 +196,7 @@ describe('ConfigLoader',() => {
 
         let pconf;
         try {
-            pconf = await configLoader.go('', {}, [], {},
+            pconf = await configLoader.go('', {}, [], {}, [],
                 new IdaiFieldPrePreprocessConfigurationValidator(), new ConfigurationValidator()
             );
 
@@ -248,7 +250,8 @@ describe('ConfigLoader',() => {
         let pconf;
         try {
             pconf = await configLoader.go('', {}, [], {},
-                new IdaiFieldPrePreprocessConfigurationValidator(), new ConfigurationValidator()
+                [], new IdaiFieldPrePreprocessConfigurationValidator(),
+                new ConfigurationValidator()
             );
 
             expect(pconf.getTypesList()[0].name).toEqual('A');
@@ -261,6 +264,60 @@ describe('ConfigLoader',() => {
             expect(pconf.getTypesList()[2].name).toEqual('C');
             expect(pconf.getTypesList()[2].fields[0].name).toEqual('fieldC1');
             expect(pconf.getTypesList()[2].fields[1].name).toEqual('fieldC2');
+
+            done();
+        } catch(err) {
+            fail(err);
+            done();
+        }
+    });
+
+
+    it('apply extra fields order', async done => {
+
+        Object.assign(configuration, {
+            identifier: 'Conf',
+            types: {
+                A: { fields: { fieldA2: {}, fieldA1: {} } },
+                B: { fields: { fieldB2: {}, fieldB1: {} } }
+            },
+            relations: []
+        });
+
+        configReader.read.and.returnValues(
+            Promise.resolve(configuration),
+            Promise.resolve({}),
+            Promise.resolve({}),
+            Promise.resolve({}),
+            Promise.resolve({}),
+            Promise.resolve({}),
+            Promise.resolve({
+                types: ['A', 'B'],
+                fields: {
+                    'A': ['fieldA1', 'fieldA2'],
+                    'B': ['fieldB1', 'fieldB2']
+                }
+            })
+        );
+
+        let pconf;
+        try {
+            pconf = await configLoader.go('', {}, [],
+                { extraField1: {} as FieldDefinition, extraField2: {} as FieldDefinition },
+                ['extraField1', 'extraField2'], new IdaiFieldPrePreprocessConfigurationValidator(),
+                new ConfigurationValidator()
+            );
+
+            expect(pconf.getTypesList()[0].name).toEqual('A');
+            expect(pconf.getTypesList()[0].fields[0].name).toEqual('extraField1');
+            expect(pconf.getTypesList()[0].fields[1].name).toEqual('extraField2');
+            expect(pconf.getTypesList()[0].fields[2].name).toEqual('fieldA1');
+            expect(pconf.getTypesList()[0].fields[3].name).toEqual('fieldA2');
+            expect(pconf.getTypesList()[1].name).toEqual('B');
+            expect(pconf.getTypesList()[1].fields[0].name).toEqual('extraField1');
+            expect(pconf.getTypesList()[1].fields[1].name).toEqual('extraField2');
+            expect(pconf.getTypesList()[1].fields[2].name).toEqual('fieldB1');
+            expect(pconf.getTypesList()[1].fields[3].name).toEqual('fieldB2');
 
             done();
         } catch(err) {

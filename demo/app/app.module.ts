@@ -69,6 +69,7 @@ let pconf: any = undefined;
                         'identifier': {} as FieldDefinition,
                         'shortDescription': {} as FieldDefinition
                     },
+                    ['identifier', 'shortDescription'],
                     new IdaiFieldPrePreprocessConfigurationValidator(),
                     new ConfigurationValidator()
                 )

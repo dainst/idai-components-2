@@ -49,6 +49,7 @@ export class ConfigLoader {
                 extraTypes: {[typeName: string]: TypeDefinition },
                 extraRelations: Array<RelationDefinition>,
                 extraFields: {[fieldName: string]: FieldDefinition },
+                extraFieldsOrder: string[],
                 prePreprocessConfigurationValidator: IdaiFieldPrePreprocessConfigurationValidator,
                 postPreprocessConfigurationValidator: ConfigurationValidator,
                 applyMeninxFieldsConfiguration: boolean = false): Promise<ProjectConfiguration> {
@@ -59,7 +60,7 @@ export class ConfigLoader {
         if (prePreprocessValidationErrors.length > 0) throw prePreprocessValidationErrors;
 
         appConfiguration = await this.preprocess(configDirPath, appConfiguration, extraTypes, extraRelations,
-            extraFields, applyMeninxFieldsConfiguration);
+            extraFields, extraFieldsOrder, applyMeninxFieldsConfiguration);
 
         const postPreprocessValidationErrors = postPreprocessConfigurationValidator.go(appConfiguration);
         if (postPreprocessValidationErrors.length > 0) throw postPreprocessValidationErrors;
@@ -84,6 +85,7 @@ export class ConfigLoader {
                              extraTypes: {[typeName: string]: TypeDefinition } ,
                              extraRelations: Array<RelationDefinition>,
                              extraFields: {[fieldName: string]: FieldDefinition },
+                             extraFieldsOrder: string[],
                              applyMeninxFieldsConfiguration: boolean): Promise<ConfigurationDefinition> {
 
         const customFieldsConfigurationPath = configDirPath + '/Fields-Custom.json';
@@ -114,7 +116,7 @@ export class ConfigLoader {
         await this.applyLanguageConfs(appConfiguration, languageConfigurationPath,
             customLanguageConfigurationPath);
 
-        return this.getOrderedConfiguration(appConfiguration, orderConfigurationPath);
+        return this.getOrderedConfiguration(appConfiguration, orderConfigurationPath, extraFieldsOrder);
     }
 
 
@@ -168,12 +170,14 @@ export class ConfigLoader {
 
 
     private async getOrderedConfiguration(appConfiguration: UnorderedConfigurationDefinition,
-                                    orderConfigurationPath: string): Promise<ConfigurationDefinition> {
+                                          orderConfigurationPath: string,
+                                          extraFieldsOrder: string[]): Promise<ConfigurationDefinition> {
 
         let orderedConfiguration: ConfigurationDefinition;
 
         try {
             const orderConfiguration = await this.configReader.read(orderConfigurationPath);
+            ConfigLoader.addExtraFieldsOrder(orderConfiguration, extraFieldsOrder);
 
             orderedConfiguration = {
                 identifier: appConfiguration.identifier,
@@ -186,6 +190,17 @@ export class ConfigLoader {
         }
 
         return orderedConfiguration;
+    }
+
+
+    private static addExtraFieldsOrder(orderConfiguration: any, extraFieldsOrder: string[]) {
+
+        if (!orderConfiguration.fields) orderConfiguration.fields = {};
+
+        Object.keys(orderConfiguration.fields).forEach(typeName => {
+            orderConfiguration.fields[typeName]
+                = extraFieldsOrder.concat(orderConfiguration.fields[typeName]);
+        });
     }
 
 
@@ -226,7 +241,7 @@ export class ConfigLoader {
 
         if (!type.fields) return fields;
 
-        if (orderConfiguration.fields && orderConfiguration.fields[type.type]) {
+        if (orderConfiguration.fields[type.type]) {
             orderConfiguration.fields[type.type].forEach((fieldName: string) => {
                 const field: FieldDefinition | undefined = type.fields[fieldName];
                 if (field) this.addToOrderedFields(field, fieldName, fields);
