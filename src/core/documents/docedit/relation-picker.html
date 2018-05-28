@@ -7,22 +7,25 @@
                    (focus)="enterSuggestionMode()" (blur)="leaveSuggestionMode()" class="form-control">
 
             <!-- SUGGESTIONS -->
-            <div *ngIf="suggestionsVisible" class="suggestion-container" (mouseout)="selectedSuggestionIndex = -1">
+            <div *ngIf="suggestionsVisible" class="suggestion-container" (mouseleave)="selectedSuggestionIndex = -1">
 
                 <div *ngIf="suggestions && suggestions.length > 0">
 
                     <div *ngFor="let suggestion of suggestions; let i = index">
-                        <div *ngIf="selectedSuggestionIndex != i" class="suggestion" (mousedown)="chooseTarget(suggestion)"
+                        <div *ngIf="selectedSuggestionIndex != i"
+                             class="suggestion"
+                             (mousedown)="createRelation(suggestion)"
                              (mouseover)="selectedSuggestionIndex = i">
                             <span class="badge">{{suggestion['resource'][primary]}}</span>
                         </div>
-                        <div *ngIf="selectedSuggestionIndex == i" class="suggestion selected-suggestion"
+                        <div *ngIf="selectedSuggestionIndex == i"
+                             class="suggestion selected-suggestion"
                              (mousedown)="createRelation(suggestion)">
                             <span class="badge">{{suggestion['resource'][primary]}}</span>
                         </div>
                     </div>
                 </div>
-                <div class="badge "*ngIf="!suggestions || suggestions.length == 0">
+                <div class="badge" *ngIf="!suggestions || suggestions.length == 0">
                     Keine Ziele gefunden
                 </div>
             </div>
