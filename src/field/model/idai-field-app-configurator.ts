@@ -10,6 +10,7 @@ import {FieldDefinition} from '../../core/configuration/field-definition';
 @Injectable()
 /**
  * @author Daniel de Oliveira
+ * @author Thomas Kleinke
  */
 export class IdaiFieldAppConfigurator {
 
@@ -120,7 +121,7 @@ export class IdaiFieldAppConfigurator {
 
 
     public go(configDirPath: string,
-              applyMeninxFieldsConfiguration: boolean = false): Promise<ProjectConfiguration> {
+              applyMeninxConfiguration: boolean = false): Promise<ProjectConfiguration> {
 
         return this.configLoader.go(
             configDirPath,
@@ -130,7 +131,7 @@ export class IdaiFieldAppConfigurator {
             this.defaultFieldsOrder,
             new IdaiFieldPrePreprocessConfigurationValidator(),
             new IdaiFieldConfigurationValidator(),
-            applyMeninxFieldsConfiguration
+            applyMeninxConfiguration
         );
     }
 }
