@@ -16,6 +16,7 @@ describe('ConfigurationPreprocessor', () => {
     beforeEach(() => {
 
         t1 = {
+            color: 'white',
             fields: {
                 'aField': {}
             }
@@ -108,6 +109,7 @@ describe('ConfigurationPreprocessor', () => {
 
         const extraTypes = {
             T1: {
+                abstract: true,
                 fields: {
                     bField: {}
                 }
@@ -116,6 +118,8 @@ describe('ConfigurationPreprocessor', () => {
 
         Preprocessing.addExtraTypes(configuration, extraTypes);
 
+        expect(configuration.types['T1'].abstract).toBeTruthy();
+        expect(configuration.types['T1'].color).toEqual('white');
         expect(configuration.types['T1'].fields['aField']).toBeDefined();
         expect(configuration.types['T1'].fields['bField']).toBeDefined();
     });

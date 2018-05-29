@@ -200,16 +200,18 @@ export module Preprocessing {
     }
 
 
-    function mergeFields(target: TypeDefinition, source: TypeDefinition) {
+    function merge(target: any, source: any) {
 
-        for (let sourceFieldName of Object.keys(source.fields)) {
+        for (let sourceFieldName of Object.keys(source)) {
+            if (sourceFieldName === 'fields') continue;
+
             let alreadyPresentInTarget = false;
 
-            for (let targetFieldName of Object.keys(target.fields)) {
-                if (targetFieldName == sourceFieldName) alreadyPresentInTarget = true;
+            for (let targetFieldName of Object.keys(target)) {
+                if (targetFieldName === sourceFieldName) alreadyPresentInTarget = true;
             }
 
-            if (!alreadyPresentInTarget) target.fields[sourceFieldName] = source.fields[sourceFieldName];
+            if (!alreadyPresentInTarget) target[sourceFieldName] = source[sourceFieldName];
         }
     }
 
@@ -226,7 +228,8 @@ export module Preprocessing {
 
                 if (typeName === extraTypeName) {
                     typeAlreadyPresent = true;
-                    mergeFields(typeDefinition, extraType);
+                    merge(typeDefinition, extraType);
+                    merge(typeDefinition.fields, extraType.fields);
                 }
             }
 
