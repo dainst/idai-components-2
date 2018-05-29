@@ -99,11 +99,11 @@ export class ConfigLoader {
         Preprocessing.prepareSameMainTypeResource(appConfiguration);
         Preprocessing.setIsRecordedInVisibilities(appConfiguration); // TODO rename and test / also: it is idai field specific
 
-        if (applyMeninxFieldsConfiguration) {
-            await this.applyCustomFieldsConfiguration(appConfiguration, meninxFieldsConfigurationPath);
-        } else {
-            await this.applyCustomFieldsConfiguration(appConfiguration, customFieldsConfigurationPath);
-        }
+        await this.applyCustomFieldsConfiguration(appConfiguration,
+            applyMeninxFieldsConfiguration ?
+                meninxFieldsConfigurationPath :
+                customFieldsConfigurationPath
+        );
 
         await this.applyHiddenConfs(appConfiguration, hiddenConfigurationPath, customHiddenConfigurationPath);
 
