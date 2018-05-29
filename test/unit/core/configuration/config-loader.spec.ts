@@ -370,4 +370,50 @@ describe('ConfigLoader', () => {
             done();
         }
     });
+
+
+    it('add types and fields only once even if they are mentioned multiple times in order configuration',
+        async done => {
+
+        Object.assign(configuration, {
+            identifier: 'Conf',
+            types: {
+                A: { fields: { fieldA2: {}, fieldA1: {} } }
+            },
+            relations: []
+        });
+
+        configReader.read.and.returnValues(
+            Promise.resolve(configuration),
+            Promise.resolve({}),
+            Promise.resolve({}),
+            Promise.resolve({}),
+            Promise.resolve({}),
+            Promise.resolve({}),
+            Promise.resolve({
+                types: ['A', 'A'],
+                fields: {
+                    'A': ['fieldA1', 'fieldA2', 'fieldA1']
+                }
+            })
+        );
+
+        let pconf;
+        try {
+            pconf = await configLoader.go('', {}, [], {},
+                [], new IdaiFieldPrePreprocessConfigurationValidator(),
+                new ConfigurationValidator()
+            );
+
+            expect(pconf.getTypesList().length).toBe(1);
+            expect(pconf.getTypesList()[0].fields.length).toBe(4);  // fieldA1, fieldA2, id, type
+            expect(pconf.getTypesList()[0].fields[0].name).toEqual('fieldA1');
+            expect(pconf.getTypesList()[0].fields[1].name).toEqual('fieldA2');
+
+            done();
+        } catch(err) {
+            fail(err);
+            done();
+        }
+    });
 });

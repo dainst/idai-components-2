@@ -231,6 +231,8 @@ export class ConfigLoader {
     private static addToOrderedTypes(type: TypeDefinition, typeName: string, types: Array<TypeDefinition>,
                                      orderConfiguration: any) {
 
+        if (types.includes(type)) return;
+
         type.type = typeName;
         type.fields = this.getOrderedFields(type, orderConfiguration);
         types.push(type);
@@ -262,6 +264,8 @@ export class ConfigLoader {
 
     private static addToOrderedFields(field: FieldDefinition, fieldName: string,
                                       fields: Array<FieldDefinition>) {
+
+        if (fields.includes(field)) return;
 
         field.name = fieldName;
         fields.push(field);
