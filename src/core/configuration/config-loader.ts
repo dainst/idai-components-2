@@ -177,7 +177,7 @@ export class ConfigLoader {
 
         try {
             const orderConfiguration = await this.configReader.read(orderConfigurationPath);
-            ConfigLoader.addExtraFieldsOrder(orderConfiguration, extraFieldsOrder);
+            ConfigLoader.addExtraFieldsOrder(appConfiguration, orderConfiguration, extraFieldsOrder);
 
             orderedConfiguration = {
                 identifier: appConfiguration.identifier,
@@ -193,11 +193,13 @@ export class ConfigLoader {
     }
 
 
-    private static addExtraFieldsOrder(orderConfiguration: any, extraFieldsOrder: string[]) {
+    private static addExtraFieldsOrder(appConfiguration: UnorderedConfigurationDefinition,
+                                       orderConfiguration: any, extraFieldsOrder: string[]) {
 
         if (!orderConfiguration.fields) orderConfiguration.fields = {};
 
-        Object.keys(orderConfiguration.fields).forEach(typeName => {
+        Object.keys(appConfiguration.types).forEach(typeName => {
+            if (!orderConfiguration.fields[typeName]) orderConfiguration.fields[typeName] = [];
             orderConfiguration.fields[typeName]
                 = extraFieldsOrder.concat(orderConfiguration.fields[typeName]);
         });

@@ -325,4 +325,49 @@ describe('ConfigLoader', () => {
             done();
         }
     });
+
+
+    it('apply extra fields order to an empty order configuration', async done => {
+
+        Object.assign(configuration, {
+            identifier: 'Conf',
+            types: {
+                A: { fields: { fieldA2: {}, fieldA1: {} } },
+                B: { fields: { fieldB2: {}, fieldB1: {} } }
+            },
+            relations: []
+        });
+
+        configReader.read.and.returnValues(
+            Promise.resolve(configuration),
+            Promise.resolve({}),
+            Promise.resolve({}),
+            Promise.resolve({}),
+            Promise.resolve({}),
+            Promise.resolve({}),
+            Promise.resolve({})
+        );
+
+        let pconf;
+        try {
+            pconf = await configLoader.go('', {}, [],
+                { extraField1: {} as FieldDefinition, extraField2: {} as FieldDefinition },
+                ['extraField1', 'extraField2'], new IdaiFieldPrePreprocessConfigurationValidator(),
+                new ConfigurationValidator()
+            );
+
+            const typeA = pconf.getTypesList().find(type => type.name === 'A');
+            const typeB = pconf.getTypesList().find(type => type.name === 'B');
+
+            expect(typeA.fields[0].name).toEqual('extraField1');
+            expect(typeA.fields[1].name).toEqual('extraField2');
+            expect(typeB.fields[0].name).toEqual('extraField1');
+            expect(typeB.fields[1].name).toEqual('extraField2');
+
+            done();
+        } catch(err) {
+            fail(err);
+            done();
+        }
+    });
 });
