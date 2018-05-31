@@ -81,7 +81,7 @@
         "dimension": {
           "inputType": "dimension",
           "unitSuffix": "ü.NN.",
-          "position_values": [
+          "positionValues": [
             "am Bruch",
             "oben",
             "unten"

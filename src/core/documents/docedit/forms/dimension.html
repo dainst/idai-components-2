@@ -61,11 +61,11 @@
 			</div>
 			<div class="form-inline form-group mx-2">
 				<label>Gemessen an</label>
-				<select *ngIf="this.field.position_values" [(ngModel)]="dimension.hasMeasurementPosition" class="ml-2 form-control">
+				<select *ngIf="this.field.positionValues" [(ngModel)]="dimension.hasMeasurementPosition" class="ml-2 form-control">
 					<option value=""></option>
-					<option *ngFor="let item of field.position_values" value="{{item}}">{{item}}</option>
+					<option *ngFor="let item of field.positionValues" value="{{item}}">{{item}}</option>
 				</select>
-				<input *ngIf="!this.field.position_values" [(ngModel)]="dimension.hasMeasurementPosition" class="form-control">
+				<input *ngIf="!this.field.positionValues" [(ngModel)]="dimension.hasMeasurementPosition" class="form-control">
 			</div>
 			
 			<div class="form-group mx-2">
