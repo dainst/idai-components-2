@@ -3,16 +3,17 @@ import {FieldDefinition} from './field-definition';
 
 /**
  * @author F.Z.
+ * @author Thomas Kleinke
  */
 export class IdaiType {
 
-    children: Array<IdaiType>;
-    parentType: IdaiType|undefined = undefined;
-    isAbstract: boolean;
-    name: string;
-    label: string;
-    color: string|undefined;
-    private fields: FieldDefinition[];
+    public children: Array<IdaiType>;
+    public parentType: IdaiType|undefined = undefined;
+    public isAbstract: boolean;
+    public name: string;
+    public label: string;
+    public color: string|undefined;
+    private fields: Array<FieldDefinition>;
 
 
     constructor(definition: TypeDefinition) {
@@ -28,7 +29,9 @@ export class IdaiType {
     private setParentType(parent: IdaiType) {
 
         this.parentType = parent;
-        this.fields = this.parentType.getFieldDefinitions().concat(this.fields);
+
+        // TODO This should probably better be done in ConfigLoader.
+        this.fields = this.getCombinedFields(parent.fields, this.fields);
     }
 
 
@@ -43,5 +46,30 @@ export class IdaiType {
     public getFieldDefinitions(): FieldDefinition[] {
 
         return this.fields;
+    }
+
+
+    private getCombinedFields(parentFields: Array<FieldDefinition>, childFields: Array<FieldDefinition>) {
+
+        const fields: Array<FieldDefinition> = parentFields.slice();
+
+        childFields.forEach(childField => {
+            const field: FieldDefinition|undefined
+                = fields.find(field => field.name === childField.name);
+
+            if (field) {
+                this.mergeFields(childField, field);
+            } else {
+                fields.push(childField);
+            }
+        });
+
+        return fields;
+    }
+
+
+    private mergeFields(sourceField: any, targetField: any) {
+
+        Object.keys(sourceField).forEach(key => targetField[key] = sourceField[key]);
     }
 }

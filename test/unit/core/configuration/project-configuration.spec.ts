@@ -3,6 +3,7 @@ import {MDInternal} from '../../../../src/core/messages/md-internal';
 
 /**
  * @author Daniel de Oliveira
+ * @author Thomas Kleinke
  */
 describe('ProjectConfiguration', () => {
 
@@ -11,17 +12,29 @@ describe('ProjectConfiguration', () => {
         fields: [
             {
                 name: 'fieldA',
-                label: 'Field A'
+                label: 'Field A',
+                inputType: 'text'
             }
         ]
     };
 
-    const secondLevelType = {
+    const secondLevelType1 = {
         type: 'SecondLevelType',
         parent: 'FirstLevelType',
         fields: [
             {
                 name: 'fieldB'
+            }
+        ]
+    };
+
+    const secondLevelType2 = {
+        type: 'SecondLevelType',
+        parent: 'FirstLevelType',
+        fields: [
+            {
+                name: 'fieldA',
+                inputType: 'unsignedFloat'
             }
         ]
     };
@@ -75,7 +88,7 @@ describe('ProjectConfiguration', () => {
     it('should let types inherit fields from parent types', () => {
 
         const configuration: ProjectConfiguration
-            = new ProjectConfiguration({ types: [firstLevelType, secondLevelType] });
+            = new ProjectConfiguration({ types: [firstLevelType, secondLevelType1] });
         const fields = configuration.getFieldDefinitions('SecondLevelType');
 
         expect(fields[0].name).toEqual('fieldA');
@@ -86,9 +99,9 @@ describe('ProjectConfiguration', () => {
     it('list parent type fields first', () => {
 
         const configuration: ProjectConfiguration
-            = new ProjectConfiguration({ types: [secondLevelType, firstLevelType]});
-
+            = new ProjectConfiguration({ types: [secondLevelType1, firstLevelType]});
         const fields = configuration.getFieldDefinitions('SecondLevelType');
+
         expect(fields[0].name).toEqual('fieldA');
         expect(fields[1].name).toEqual('fieldB');
     });
@@ -97,7 +110,19 @@ describe('ProjectConfiguration', () => {
     it('should fail if parent type is not defined', () => {
 
         expect(() => {
-            new ProjectConfiguration({ types: [secondLevelType] });
+            new ProjectConfiguration({ types: [secondLevelType1] });
         }).toThrow(MDInternal.PC_GENERIC_ERROR);
+    });
+
+
+    it('should merge child field with parent field of the same name', () => {
+
+        const configuration: ProjectConfiguration
+            = new ProjectConfiguration({ types: [secondLevelType2, firstLevelType]});
+        const fields = configuration.getFieldDefinitions('SecondLevelType');
+
+        expect(fields.length).toBe(1);
+        expect(fields[0].inputType).toEqual('unsignedFloat');
+        expect(fields[0].label).toEqual('Field A');
     });
 });
