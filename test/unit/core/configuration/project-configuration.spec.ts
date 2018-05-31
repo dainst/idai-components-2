@@ -1,5 +1,5 @@
-import {ProjectConfiguration} from "../../../../src/core/configuration/project-configuration";
-import {MDInternal} from "../../../../src/core/messages/md-internal";
+import {ProjectConfiguration} from '../../../../src/core/configuration/project-configuration';
+import {MDInternal} from '../../../../src/core/messages/md-internal';
 
 /**
  * @author Daniel de Oliveira
@@ -7,90 +7,97 @@ import {MDInternal} from "../../../../src/core/messages/md-internal";
 describe('ProjectConfiguration', () => {
 
     const firstLevelType = {
-        "type": "FirstLevelType",
-        "fields": [
+        type: 'FirstLevelType',
+        fields: [
             {
-                "name": "fieldA",
-                "label" : "Field A"
+                name: 'fieldA',
+                label: 'Field A'
             }
         ]
     };
 
     const secondLevelType = {
-        "type": "SecondLevelType",
-        "parent" : "FirstLevelType",
-        "fields": [
+        type: 'SecondLevelType',
+        parent: 'FirstLevelType',
+        fields: [
             {
-                "name": "fieldB"
+                name: 'fieldB'
             }
         ]
     };
 
-    const thirdLevelType = {
-        "type": "ThirdLevelType",
-        "parent" : "SecondLevelType",
-        "fields": [
-            {
-                "name": "fieldC"
-            }
-        ]
-    };
 
     it('should get label for type', () => {
-        const t = { "type": "T",
-            "fields": [
+
+        const type = {
+            type: 'T',
+            fields: [
                 {
-                    "name": "aField",
-                    "label" : "A Field"
-                }]
+                    name: 'aField',
+                    label: 'A Field'
+                }
+            ]
         };
-        const pc = new ProjectConfiguration({"types":[ t ]});
-        expect(pc.getFieldDefinitionLabel('T',"aField")).toBe('A Field');
+
+        const configuration: ProjectConfiguration = new ProjectConfiguration({ types: [type] });
+
+        expect(configuration.getFieldDefinitionLabel('T','aField')).toBe('A Field');
     });
 
-    it('should get default label when not defined', () => {
-        const t = { "type": "T",
-            "fields": [
-            {
-                "name": "aField",
-            }]
+
+    it('should get default label if not defined', () => {
+
+        const type = {
+            type: 'T',
+            fields: [
+                {
+                    name: 'aField'
+                }
+            ]
         };
-        const pc = new ProjectConfiguration({"types":[ t ]});
-        expect(pc.getFieldDefinitionLabel('T',"aField")).toBe('aField');
+
+        const configuration: ProjectConfiguration = new ProjectConfiguration({ types: [type] });
+
+        expect(configuration.getFieldDefinitionLabel('T','aField')).toBe('aField');
     });
 
-    it('should throw an error when field not defined', () => {
-        const pc = new ProjectConfiguration({"types":[ ]});
-        expect(function () { pc.getFieldDefinitionLabel('UndefinedType',"someField")})
-            .toThrow();
+
+    it('should throw an error if field is not defined', () => {
+
+        const configuration: ProjectConfiguration = new ProjectConfiguration({ types: [] });
+
+        expect(() => {
+            configuration.getFieldDefinitionLabel('UndefinedType','someField');
+        }).toThrow();
     });
 
-    it('should let types inherit fields from parent types',
-        () => {
 
-            const pc = new ProjectConfiguration({"types":[ firstLevelType, secondLevelType ]});
+    it('should let types inherit fields from parent types', () => {
 
-            const fields=pc.getFieldDefinitions('SecondLevelType');
-            expect(fields[0].name).toBe('fieldA');
-            expect(fields[1].name).toBe('fieldB');
-        }
-    );
+        const configuration: ProjectConfiguration
+            = new ProjectConfiguration({ types: [firstLevelType, secondLevelType] });
+        const fields = configuration.getFieldDefinitions('SecondLevelType');
+
+        expect(fields[0].name).toEqual('fieldA');
+        expect(fields[1].name).toEqual('fieldB');
+    });
 
 
-    it('list parent type fields first',
-        () => {
+    it('list parent type fields first', () => {
 
-            const pc = new ProjectConfiguration({"types":[ secondLevelType, firstLevelType ]});
+        const configuration: ProjectConfiguration
+            = new ProjectConfiguration({ types: [secondLevelType, firstLevelType]});
 
-            const fields=pc.getFieldDefinitions('SecondLevelType');
-            expect(fields[0].name).toBe('fieldA');
-            expect(fields[1].name).toBe('fieldB');
-        }
-    );
+        const fields = configuration.getFieldDefinitions('SecondLevelType');
+        expect(fields[0].name).toEqual('fieldA');
+        expect(fields[1].name).toEqual('fieldB');
+    });
 
-    it('should fail if parent type is not defined',
-        () => {
-            expect(function(){new ProjectConfiguration({"types":[ secondLevelType ]})}).toThrow(MDInternal.PC_GENERIC_ERROR)
-        }
-    );
+
+    it('should fail if parent type is not defined', () => {
+
+        expect(() => {
+            new ProjectConfiguration({ types: [secondLevelType] });
+        }).toThrow(MDInternal.PC_GENERIC_ERROR);
+    });
 });
