@@ -22,7 +22,7 @@ export interface Query {
 
     q?: string;
     types?: string[];
-    constraints?: { [name: string]: Constraint|string};
+    constraints?: { [name: string]: Constraint|string|string[]};
     limit?: number
 }
 

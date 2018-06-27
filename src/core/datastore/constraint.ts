@@ -1,5 +1,5 @@
 export interface Constraint {
-    value: string;
+    value: string|string[];
     type: string;   // add | subtract
 }
 
@@ -9,9 +9,10 @@ export interface Constraint {
  */
 export class Constraint {
 
-    public static convertTo(constraint: Constraint|string): Constraint {
+    public static convertTo(constraint: Constraint|string|string[]): Constraint {
 
-        return (typeof(constraint) == 'string') ?
-            {value: constraint, type: 'add' } : constraint;
+        return (Array.isArray(constraint) || typeof(constraint) == 'string')
+            ? { value: constraint, type: 'add' }
+            : constraint;
     }
 }
