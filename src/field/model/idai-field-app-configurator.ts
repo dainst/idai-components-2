@@ -18,7 +18,7 @@ export class IdaiFieldAppConfigurator {
         Place: {
             fields: {
                 hasGazId: {
-                    inputType: "unsignedInt"
+                    inputType: 'unsignedInt'
                 }
             }
         } as TypeDefinition,

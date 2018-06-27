@@ -1,14 +1,14 @@
 import {Resource} from './resource';
 import {copy} from 'tsfun';
 import {subtract} from 'tsfun/objects';
-import {NewDocument} from "./new-document";
+import {NewDocument} from './new-document';
 import {Action} from './action';
 
 
 export interface Document extends NewDocument {
 
     resource : Resource;
-    modified: Action[];
+    modified: Array<Action>;
     created: Action;
 }
 
@@ -39,6 +39,7 @@ export module Document {
 
 
     export function removeFields<D extends Document>(fields: Array<string>) {
+
         return (document: D): D => {
 
             const result = copy(document);
@@ -49,6 +50,7 @@ export module Document {
 
 
     export function removeRelations<D extends Document>(relations: Array<string>) {
+
         return (document: D): D => {
 
             const result = copy(document);
