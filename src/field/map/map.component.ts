@@ -78,7 +78,7 @@ export class MapComponent implements OnChanges {
 
         const map: L.Map = L.map('map-container', mapOptions);
 
-        let mapComponent = this;
+        const mapComponent = this;
         map.on('click', function(event: L.MouseEvent) {
             mapComponent.clickOnMap(event.latlng);
         });
@@ -241,13 +241,13 @@ export class MapComponent implements OnChanges {
 
     private addMarkerToMap(coordinates: any, document: IdaiFieldDocument): IdaiFieldMarker {
 
-        let latLng = L.latLng([coordinates[1], coordinates[0]]);
+        const latLng = L.latLng([coordinates[1], coordinates[0]]);
 
-        let color = this.typeColors[document.resource.type];
-        let extraClasses = (this.selectedDocument && this.selectedDocument.resource.id == document.resource.id) ?
+        const color = this.typeColors[document.resource.type];
+        const extraClasses = (this.selectedDocument && this.selectedDocument.resource.id == document.resource.id) ?
             'active' : '';
-        let icon = MapComponent.generateMarkerIcon(color, extraClasses);
-        let marker: IdaiFieldMarker = L.marker(latLng, {
+        const icon = MapComponent.generateMarkerIcon(color, extraClasses);
+        const marker: IdaiFieldMarker = L.marker(latLng, {
             icon: icon
         });
         marker.document = document;
@@ -257,7 +257,7 @@ export class MapComponent implements OnChanges {
             direction: 'top',
             opacity: 1.0});
 
-        let mapComponent = this;
+        const mapComponent = this;
         marker.on('click', function() {
             mapComponent.select(this.document);
         });
@@ -271,7 +271,7 @@ export class MapComponent implements OnChanges {
 
     private addPolylineToMap(coordinates: any, document: IdaiFieldDocument): IdaiFieldPolyline {
 
-        let polyline: IdaiFieldPolyline = MapComponent.getPolylineFromCoordinates(coordinates);
+        const polyline: IdaiFieldPolyline = MapComponent.getPolylineFromCoordinates(coordinates);
         polyline.document = document;
 
         if (this.isParentDocument(document)) {
@@ -280,7 +280,7 @@ export class MapComponent implements OnChanges {
             this.setPathOptions(polyline, document, 'polyline');
         }
 
-        let polylines: Array<IdaiFieldPolyline>
+        const polylines: Array<IdaiFieldPolyline>
             = this.polylines[document.resource.id as any] ? this.polylines[document.resource.id as any] : [];
         polylines.push(polyline);
         this.polylines[document.resource.id as any] = polylines;
@@ -291,7 +291,7 @@ export class MapComponent implements OnChanges {
 
     private addPolygonToMap(coordinates: any, document: IdaiFieldDocument): IdaiFieldPolygon {
 
-        let polygon: IdaiFieldPolygon = MapComponent.getPolygonFromCoordinates(coordinates);
+        const polygon: IdaiFieldPolygon = MapComponent.getPolygonFromCoordinates(coordinates);
         polygon.document = document;
 
         if (this.isParentDocument(document)) {
@@ -300,7 +300,7 @@ export class MapComponent implements OnChanges {
             this.setPathOptions(polygon, document, 'polygon');
         }
 
-        let polygons: Array<IdaiFieldPolygon>
+        const polygons: Array<IdaiFieldPolygon>
             = this.polygons[document.resource.id as any] ? this.polygons[document.resource.id as any] : [];
         polygons.push(polygon);
         this.polygons[document.resource.id as any] = polygons;
@@ -315,7 +315,7 @@ export class MapComponent implements OnChanges {
             className = className + ' active';
         }
 
-        let style = { color: this.typeColors[document.resource.type], className: className };
+        const style = { color: this.typeColors[document.resource.type], className: className };
 
         path.setStyle(style);
 
@@ -324,7 +324,7 @@ export class MapComponent implements OnChanges {
             opacity: 1.0
         });
 
-        let mapComponent = this;
+        const mapComponent = this;
         path.on('click', function (event: L.Event) {
             if (mapComponent.select(this.document)) L.DomEvent.stop(event);
         });
@@ -353,7 +353,7 @@ export class MapComponent implements OnChanges {
 
     private focusPolylines(polylines: Array<L.Polyline>) {
 
-        let bounds = [] as any;
+        const bounds = [] as any;
         for (let polyline of polylines) {
             bounds.push(polyline.getLatLngs() as never);
         }
@@ -363,7 +363,7 @@ export class MapComponent implements OnChanges {
 
     private focusPolygons(polygons: Array<L.Polygon>) {
 
-        let bounds = [] as any;
+        const bounds = [] as any;
         for (let polygon of polygons) {
             bounds.push(polygon.getLatLngs() as never);
         }
