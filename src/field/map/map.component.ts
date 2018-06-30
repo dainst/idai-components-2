@@ -246,7 +246,7 @@ export class MapComponent implements OnChanges {
         let color = this.typeColors[document.resource.type];
         let extraClasses = (this.selectedDocument && this.selectedDocument.resource.id == document.resource.id) ?
             'active' : '';
-        let icon = this.generateMarkerIcon(color, extraClasses);
+        let icon = MapComponent.generateMarkerIcon(color, extraClasses);
         let marker: IdaiFieldMarker = L.marker(latLng, {
             icon: icon
         });
@@ -271,7 +271,7 @@ export class MapComponent implements OnChanges {
 
     private addPolylineToMap(coordinates: any, document: IdaiFieldDocument): IdaiFieldPolyline {
 
-        let polyline: IdaiFieldPolyline = this.getPolylineFromCoordinates(coordinates);
+        let polyline: IdaiFieldPolyline = MapComponent.getPolylineFromCoordinates(coordinates);
         polyline.document = document;
 
         if (this.isParentDocument(document)) {
@@ -291,7 +291,7 @@ export class MapComponent implements OnChanges {
 
     private addPolygonToMap(coordinates: any, document: IdaiFieldDocument): IdaiFieldPolygon {
 
-        let polygon: IdaiFieldPolygon = this.getPolygonFromCoordinates(coordinates);
+        let polygon: IdaiFieldPolygon = MapComponent.getPolygonFromCoordinates(coordinates);
         polygon.document = document;
 
         if (this.isParentDocument(document)) {
@@ -407,29 +407,6 @@ export class MapComponent implements OnChanges {
     }
 
 
-    private getPolylineFromCoordinates(coordinates: Array<any>): L.Polyline {
-
-        return L.polyline(<any> CoordinatesUtility.convertPolylineCoordinatesFromLngLatToLatLng(coordinates));
-    }
-
-
-    private getPolygonFromCoordinates(coordinates: Array<any>): L.Polygon {
-
-        return L.polygon(<any> CoordinatesUtility.convertPolygonCoordinatesFromLngLatToLatLng(coordinates));
-    }
-
-
-    protected generateMarkerIcon(color: string, extraClasses: string = ''): L.Icon {
-
-        return L.VectorMarkers.icon({
-            prefix: 'mdi',
-            icon: 'checkbox-blank-circle',
-            markerColor: color,
-            extraClasses: extraClasses
-        });
-    }
-
-
     private updateCoordinateReferenceSystem() {
 
         this.map.options.crs = this.getCoordinateReferenceSystem();
@@ -448,5 +425,28 @@ export class MapComponent implements OnChanges {
             default:
                 return L.CRS.Simple;
         }
+    }
+
+
+    private static getPolylineFromCoordinates(coordinates: Array<any>): L.Polyline {
+
+        return L.polyline(<any> CoordinatesUtility.convertPolylineCoordinatesFromLngLatToLatLng(coordinates));
+    }
+
+
+    private static getPolygonFromCoordinates(coordinates: Array<any>): L.Polygon {
+
+        return L.polygon(<any> CoordinatesUtility.convertPolygonCoordinatesFromLngLatToLatLng(coordinates));
+    }
+
+
+    protected static generateMarkerIcon(color: string, extraClasses: string = ''): L.Icon {
+
+        return L.VectorMarkers.icon({
+            prefix: 'mdi',
+            icon: 'checkbox-blank-circle',
+            markerColor: color,
+            extraClasses: extraClasses
+        });
     }
 }
