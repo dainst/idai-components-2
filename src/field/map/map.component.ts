@@ -29,7 +29,7 @@ export class MapComponent implements OnChanges {
 
     @Input() documents: Array<IdaiFieldDocument>;
     @Input() selectedDocument: IdaiFieldDocument;
-    @Input() parentDocument: IdaiFieldDocument;
+    @Input() parentDocuments: Array<IdaiFieldDocument>;
     @Input() projectDocument: IdaiFieldDocument;
     @Input() update: boolean;
 
@@ -170,7 +170,7 @@ export class MapComponent implements OnChanges {
 
         this.bounds = [];
 
-        this.addParentDocumentGeometryToMap();
+        this.addParentDocumentGeometriesToMap();
 
         if (this.documents) {
             for (let document of this.documents) {
@@ -180,16 +180,26 @@ export class MapComponent implements OnChanges {
     }
 
 
-    protected addParentDocumentGeometryToMap() {
+    protected addParentDocumentGeometriesToMap() {
 
-        if (!this.parentDocument || !this.parentDocument.resource.geometry) return;
+        if (!this.parentDocuments) return;
+
+        this.parentDocuments.forEach(parentDocument => {
+            this.addParentDocumentGeometryToMap(parentDocument);
+        });
+    }
+
+
+    protected addParentDocumentGeometryToMap(parentDocument: IdaiFieldDocument) {
+
+        if (!parentDocument.resource.geometry) return;
 
         if (['LineString', 'MultiLineString', 'Polygon', 'MultiPolygon']
-                .indexOf(this.parentDocument.resource.geometry.type) == -1) {
+                .indexOf(parentDocument.resource.geometry.type) == -1) {
             return;
         }
 
-        this.addGeometryToMap(this.parentDocument);
+        this.addGeometryToMap(parentDocument);
     }
 
 
@@ -264,7 +274,7 @@ export class MapComponent implements OnChanges {
         let polyline: IdaiFieldPolyline = this.getPolylineFromCoordinates(coordinates);
         polyline.document = document;
 
-        if (document == this.parentDocument) {
+        if (this.isParentDocument(document)) {
             this.setPathOptionsForParentDocument(polyline, document);
         } else {
             this.setPathOptions(polyline, document, 'polyline');
@@ -284,7 +294,7 @@ export class MapComponent implements OnChanges {
         let polygon: IdaiFieldPolygon = this.getPolygonFromCoordinates(coordinates);
         polygon.document = document;
 
-        if (document == this.parentDocument) {
+        if (this.isParentDocument(document)) {
             this.setPathOptionsForParentDocument(polygon, document);
         } else {
             this.setPathOptions(polygon, document, 'polygon');
@@ -388,6 +398,12 @@ export class MapComponent implements OnChanges {
     protected deselect() {
 
         this.onSelectDocument.emit(null as any);
+    }
+
+
+    protected isParentDocument(document: IdaiFieldDocument) {
+
+        return this.parentDocuments && this.parentDocuments.includes(document);
     }
 
 

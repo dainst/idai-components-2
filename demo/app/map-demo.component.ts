@@ -135,7 +135,7 @@ export class MapDemoComponent {
         modified: [ { user: 'Demo', date: new Date() } ]
     };
 
-    public parentDocument: Document|undefined;
+    public parentDocuments: Array<Document>|undefined;
     public selectedDocument: Document|undefined;
     public liveUpdate: boolean = true;
 
@@ -158,10 +158,10 @@ export class MapDemoComponent {
 
     public toggleParentDocument() {
 
-        if (this.parentDocument) {
-            this.parentDocument = undefined;
+        if (this.parentDocuments) {
+            this.parentDocuments = undefined;
         } else {
-            this.parentDocument = this.parentDocumentTemplate;
+            this.parentDocuments = [this.parentDocumentTemplate];
         }
     }
 }
