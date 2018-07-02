@@ -6,6 +6,7 @@ import {IdaiFieldPolygon} from './idai-field-polygon';
 import {IdaiFieldMarker} from './idai-field-marker';
 import {CoordinatesUtility} from './coordinates-utility';
 import {ProjectConfiguration} from '../../core/configuration/project-configuration';
+import {IdaiFieldGeometry} from '../model/idai-field-geometry';
 
 // no typings for VectorMarkers available
 declare global {
@@ -103,7 +104,7 @@ export class MapComponent implements OnChanges {
 
         this.map.invalidateSize(true);
 
-        if (this.selectedDocument) {
+        if (this.selectedDocument && MapComponent.getGeometry(this.selectedDocument)) {
             if (this.polygons[this.selectedDocument.resource.id as any]) {
                 this.focusPolygons(this.polygons[this.selectedDocument.resource.id as any]);
             } else if (this.polylines[this.selectedDocument.resource.id as any]) {
@@ -205,10 +206,8 @@ export class MapComponent implements OnChanges {
 
     protected addGeometryToMap(document: IdaiFieldDocument) {
 
-        const geometry = document.resource.geometry;
-
+        const geometry: IdaiFieldGeometry|undefined = MapComponent.getGeometry(document);
         if (!geometry) return;
-        if (!geometry.coordinates || geometry.coordinates.length == 0) return;
 
         switch(geometry.type) {
             case 'Point':
@@ -437,6 +436,16 @@ export class MapComponent implements OnChanges {
     private static getPolygonFromCoordinates(coordinates: Array<any>): L.Polygon {
 
         return L.polygon(<any> CoordinatesUtility.convertPolygonCoordinatesFromLngLatToLatLng(coordinates));
+    }
+
+
+    private static getGeometry(document: IdaiFieldDocument): IdaiFieldGeometry|undefined {
+
+        const geometry: IdaiFieldGeometry|undefined = document.resource.geometry;
+
+        return (geometry && geometry.coordinates && geometry.coordinates.length > 0)
+            ? geometry
+            : undefined;
     }
 
 
