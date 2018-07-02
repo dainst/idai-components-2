@@ -251,7 +251,7 @@ export class MapComponent implements OnChanges {
         });
         marker.document = document;
 
-        marker.bindTooltip(this.getShortDescription(document.resource), {
+        marker.bindTooltip(MapComponent.getShortDescription(document.resource), {
             offset: L.point(0, -40),
             direction: 'top',
             opacity: 1.0});
@@ -318,7 +318,7 @@ export class MapComponent implements OnChanges {
 
         path.setStyle(style);
 
-        path.bindTooltip(this.getShortDescription(document.resource), {
+        path.bindTooltip(MapComponent.getShortDescription(document.resource), {
             direction: 'center',
             opacity: 1.0
         });
@@ -367,17 +367,6 @@ export class MapComponent implements OnChanges {
             bounds.push(polygon.getLatLngs() as never);
         }
         this.map.fitBounds(bounds);
-    }
-
-
-    private getShortDescription(resource: IdaiFieldResource) {
-
-        let shortDescription = resource.identifier;
-        if (resource.shortDescription && resource.shortDescription.length > 0) {
-            shortDescription += ' | ' + resource.shortDescription;
-        }
-
-        return shortDescription;
     }
 
 
@@ -446,6 +435,17 @@ export class MapComponent implements OnChanges {
         return (geometry && geometry.coordinates && geometry.coordinates.length > 0)
             ? geometry
             : undefined;
+    }
+
+
+    private static getShortDescription(resource: IdaiFieldResource) {
+
+        let shortDescription = resource.identifier;
+        if (resource.shortDescription && resource.shortDescription.length > 0) {
+            shortDescription += ' | ' + resource.shortDescription;
+        }
+
+        return shortDescription;
     }
 
 
