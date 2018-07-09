@@ -75,18 +75,22 @@ export module Preprocessing {
             const type: TypeDefinition = configuration.types[typeName];
             if (!type) return;
 
-            const fulltextFieldNames: string[] = searchConfiguration[typeName]['fulltext'];
-            const constraintFieldNames: string[] = searchConfiguration[typeName]['constraint'];
+            applySearchConfigurationForType(searchConfiguration, type, typeName, 'fulltext',
+                'fulltextIndexed');
+            applySearchConfigurationForType(searchConfiguration, type, typeName, 'constraint',
+                'constraintIndexed');
+        });
+    }
 
-            fulltextFieldNames.forEach(fieldName => {
-                const field = type.fields[fieldName];
-                if (field) field['fulltextIndexed'] = true;
-            });
 
-            constraintFieldNames.forEach(fieldName => {
-                const field = type.fields[fieldName];
-                if (field) field['constraintIndexed'] = true;
-            });
+    function applySearchConfigurationForType(searchConfiguration: any, type: TypeDefinition, typeName: string,
+                                             indexType: string, indexFieldName: string) {
+
+        const fulltextFieldNames: string[] = searchConfiguration[typeName][indexType];
+
+        fulltextFieldNames.forEach(fieldName => {
+            const field = type.fields[fieldName];
+            if (field) field[indexFieldName] = true;
         });
     }
 
