@@ -68,6 +68,29 @@ export module Preprocessing {
     }
 
 
+    export function applySearchConfiguration(configuration: UnorderedConfigurationDefinition,
+                                             searchConfiguration: any) {
+
+        Object.keys(searchConfiguration).forEach(typeName => {
+            const type: TypeDefinition = configuration.types[typeName];
+            if (!type) return;
+
+            const fulltextFieldNames: string[] = searchConfiguration[typeName]['fulltext'];
+            const constraintFieldNames: string[] = searchConfiguration[typeName]['constraint'];
+
+            fulltextFieldNames.forEach(fieldName => {
+                const field = type.fields[fieldName];
+                if (field) field['fulltextIndexed'] = true;
+            });
+
+            constraintFieldNames.forEach(fieldName => {
+                const field = type.fields[fieldName];
+                if (field) field['constraintIndexed'] = true;
+            });
+        });
+    }
+
+
     export function setIsRecordedInVisibilities(configuration: UnorderedConfigurationDefinition) {
 
         if (!configuration.relations) return;

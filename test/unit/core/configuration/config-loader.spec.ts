@@ -28,6 +28,7 @@ describe('ConfigLoader', () => {
             Promise.resolve({}),
             Promise.resolve({}),
             Promise.resolve({}),
+            Promise.resolve({}),
             Promise.resolve({})
         );
         configLoader = new ConfigLoader(configReader);
@@ -142,6 +143,7 @@ describe('ConfigLoader', () => {
                     B: { label: 'B__' }
                 }
             }),
+            Promise.resolve({}),
             Promise.resolve({})
         );
 
@@ -191,6 +193,7 @@ describe('ConfigLoader', () => {
             Promise.resolve({}),
             Promise.resolve({}),
             Promise.resolve({}),
+            Promise.resolve({}),
             Promise.resolve({})
         );
 
@@ -229,6 +232,7 @@ describe('ConfigLoader', () => {
 
         configReader.read.and.returnValues(
             Promise.resolve(configuration),
+            Promise.resolve({}),
             Promise.resolve({}),
             Promise.resolve({}),
             Promise.resolve({}),
@@ -291,6 +295,7 @@ describe('ConfigLoader', () => {
             Promise.resolve({}),
             Promise.resolve({}),
             Promise.resolve({}),
+            Promise.resolve({}),
             Promise.resolve({
                 types: ['A', 'B'],
                 fields: {
@@ -345,6 +350,7 @@ describe('ConfigLoader', () => {
             Promise.resolve({}),
             Promise.resolve({}),
             Promise.resolve({}),
+            Promise.resolve({}),
             Promise.resolve({})
         );
 
@@ -385,6 +391,7 @@ describe('ConfigLoader', () => {
 
         configReader.read.and.returnValues(
             Promise.resolve(configuration),
+            Promise.resolve({}),
             Promise.resolve({}),
             Promise.resolve({}),
             Promise.resolve({}),

@@ -96,6 +96,7 @@ export class ConfigLoader {
         const customLanguageConfigurationPath = configDirPath + '/Language-Custom.json';
         const meninxLanguageConfigurationPath = configDirPath + '/Language-Meninx.json';
         const orderConfigurationPath = configDirPath + '/Order.json';
+        const searchConfigurationPath = configDirPath + '/Search.json';
 
         Preprocessing.prepareSameMainTypeResource(appConfiguration);
         Preprocessing.setIsRecordedInVisibilities(appConfiguration); // TODO rename and test / also: it is idai field specific
@@ -119,6 +120,8 @@ export class ConfigLoader {
                 meninxLanguageConfigurationPath :
                 customLanguageConfigurationPath
         );
+
+        await this.applySearchConfiguration(appConfiguration, searchConfigurationPath);
 
         return this.getOrderedConfiguration(appConfiguration, orderConfigurationPath, extraFieldsOrder);
     }
@@ -153,6 +156,17 @@ export class ConfigLoader {
             const customLanguageConfiguration = await this.configReader.read(customLanguageConfigurationPath);
             Preprocessing.applyLanguage(appConfiguration, customLanguageConfiguration); // TODO test it
         } catch (msgWithParams) {
+            throw [[msgWithParams]];
+        }
+    }
+
+
+    private async applySearchConfiguration(appConfiguration: any, searchConfigurationPath: string) {
+
+        try {
+            const searchConfiguration = await this.configReader.read(searchConfigurationPath);
+            Preprocessing.applySearchConfiguration(appConfiguration, searchConfiguration);
+        }  catch (msgWithParams) {
             throw [[msgWithParams]];
         }
     }
