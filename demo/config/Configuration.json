@@ -76,7 +76,8 @@
           ]
         },
         "dating_input": {
-          "inputType": "dating"
+          "inputType": "dating",
+          "valuelist": ["a", "b", "c"]
         },
         "dimension": {
           "inputType": "dimension",

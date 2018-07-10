@@ -30,6 +30,13 @@ export class DatingComponent {
     constructor(private documentEditChangeMonitor: DocumentEditChangeMonitor) {}
 
 
+    public setValue(fieldName: string, value: any) {
+
+        if (value === '') delete this.resource[fieldName];
+        this.documentEditChangeMonitor.setChanged();
+    }
+
+
     public removeDating(index: number) {
 
         this.resource[this.field.name].splice(index, 1);

@@ -1,3 +1,22 @@
+<div *ngIf="resource.type !== 'Place'">
+    <label>Grobdatierung (von)</label>
+    <select [(ngModel)]="resource['hasPeriodBeginning']" (change)="setValue('hasPeriodBeginning', $event.target.value)"
+            class="form-control">
+        <option value="" [selected]="!resource.hasOwnProperty(field.name)"></option>
+        <option *ngFor="let item of field.valuelist" value="{{item}}">{{item}}</option>
+    </select>
+    <label>Grobdatierung (bis)</label>
+    <select [(ngModel)]="resource['hasPeriodEnd']" (change)="setValue('hasPeriodEnd', $event.target.value)"
+            class="form-control">
+        <option value="" [selected]="!resource.hasOwnProperty(field.name)"></option>
+        <option *ngFor="let item of field.valuelist" value="{{item}}">{{item}}</option>
+    </select>
+
+    <label>Weitere Datierungen</label>
+</div>
+
+
+
 <ng-template #editDate let-date="date" let-index="index">
     <input class="form-control" type="number" size="6" min="0" max="100000"
            [(ngModel)]="date.value" value="0" style="width:100px" name="value_{{index}}"
