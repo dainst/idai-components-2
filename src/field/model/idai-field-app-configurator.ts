@@ -27,7 +27,11 @@ export class IdaiFieldAppConfigurator {
             abstract: true
         } as TypeDefinition,
         Feature: {
-            fields: {}
+            fields: {
+                hasDating: {
+                    inputType: "dating"
+                }
+            }
         } as TypeDefinition,
         Image: {
             fields: {
