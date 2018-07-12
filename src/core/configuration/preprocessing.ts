@@ -83,6 +83,20 @@ export module Preprocessing {
     }
 
 
+    export function applyDatingConfiguration(configuration: UnorderedConfigurationDefinition,
+                                             datingConfiguration: any) {
+
+        Object.keys(configuration.types).forEach(typeName => {
+            const type: TypeDefinition = configuration.types[typeName];
+            if (!type) return;
+
+            Object.keys(type.fields)
+                .filter(field => type.fields[field].inputType === 'dating')
+                .forEach(field => type.fields[field].valuelist = datingConfiguration.valuelist);
+        });
+    }
+
+
     function applySearchConfigurationForType(searchConfiguration: any, type: TypeDefinition, typeName: string,
                                              indexType: string, indexFieldName: string) {
 

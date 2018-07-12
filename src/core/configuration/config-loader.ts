@@ -74,7 +74,7 @@ export class ConfigLoader {
         const appConfigurationPath = configDirPath + '/Configuration.json';
 
         try {
-            return this.configReader.read(appConfigurationPath);
+            return await this.configReader.read(appConfigurationPath);
         } catch (msgWithParams) {
             throw [[msgWithParams]];
         }
@@ -97,6 +97,8 @@ export class ConfigLoader {
         const meninxLanguageConfigurationPath = configDirPath + '/Language-Meninx.json';
         const orderConfigurationPath = configDirPath + '/Order.json';
         const searchConfigurationPath = configDirPath + '/Search.json';
+        const datingConfigurationPath = configDirPath + '/Dating.json';
+        const meninxDatingConfigurationPath = configDirPath + '/Dating-Meninx.json';
 
         Preprocessing.prepareSameMainTypeResource(appConfiguration);
         Preprocessing.setIsRecordedInVisibilities(appConfiguration); // TODO rename and test / also: it is idai field specific
@@ -122,8 +124,14 @@ export class ConfigLoader {
         );
 
         await this.applySearchConfiguration(appConfiguration, searchConfigurationPath);
+        await this.applyDatingConfiguration(appConfiguration,
+            applyMeninxConfiguration
+                ? meninxDatingConfigurationPath
+                : datingConfigurationPath
+        );
 
         return this.getOrderedConfiguration(appConfiguration, orderConfigurationPath, extraFieldsOrder);
+
     }
 
 
@@ -166,6 +174,17 @@ export class ConfigLoader {
         try {
             const searchConfiguration = await this.configReader.read(searchConfigurationPath);
             Preprocessing.applySearchConfiguration(appConfiguration, searchConfiguration);
+        }  catch (msgWithParams) {
+            throw [[msgWithParams]];
+        }
+    }
+
+
+    private async applyDatingConfiguration(appConfiguration: any, datingConfigurationPath: string) {
+
+        try {
+            const datingConfiguration = await this.configReader.read(datingConfigurationPath);
+            Preprocessing.applyDatingConfiguration(appConfiguration, datingConfiguration);
         }  catch (msgWithParams) {
             throw [[msgWithParams]];
         }
