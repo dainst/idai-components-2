@@ -21,6 +21,8 @@ export class DatingComponent {
         'bp': 'BP'
     };
 
+    public hasPeriodEndActivated: boolean = false;
+
     @Input() resource: Resource;
     @Input() field: any;
 
@@ -28,6 +30,11 @@ export class DatingComponent {
 
 
     constructor(private documentEditChangeMonitor: DocumentEditChangeMonitor) {}
+
+
+    public activateHasPeriodEnd = () => this.hasPeriodEndActivated = true;
+
+    public deactivateHasPeriodEnd = () => this.hasPeriodEndActivated = false;
 
 
     public setValue(fieldName: string, value: any) {
