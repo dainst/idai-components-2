@@ -1,21 +1,22 @@
 <div *ngIf="resource.type !== 'Place'">
 
 
-    <label>Grobdatierung{{hasPeriodEndActivated ? " (von):" : ":"}}</label>
+    <label>Grobdatierung{{hasPeriodEndActivated ||
+        (resource['hasPeriodEnd'] && resource['hasPeriodEnd'] !== '')  ? " (von):" : ":"}}</label>
     <div class="input-group">
         <select [(ngModel)]="resource['hasPeriodBeginning']" (change)="setValue('hasPeriodBeginning', $event.target.value)"
                 class="form-control">
             <option value="" [selected]="!resource.hasOwnProperty(field.name)"></option>
             <option *ngFor="let item of field.valuelist" value="{{item}}">{{item}}</option>
         </select>
-        <span *ngIf="!hasPeriodEndActivated" class="input-group-btn">
+        <span *ngIf="!hasPeriodEndActivated || !resource['hasPeriodEnd'] || resource['hasPeriodEnd'] === ''" class="input-group-btn">
             <button class="btn btn-success" type="button" (click)="activateHasPeriodEnd()">
                 <span class="mdi mdi-plus-circle"></span>
             </button>
         </span>
     </div>
 
-    <div *ngIf="hasPeriodEndActivated">
+    <div *ngIf="hasPeriodEndActivated || (resource['hasPeriodEnd'] && resource['hasPeriodEnd'] !== '')">
         <label>Grobdatierung (bis):</label>
         <div class="input-group">
             <select [(ngModel)]="resource['hasPeriodEnd']" (change)="setValue('hasPeriodEnd', $event.target.value)"
