@@ -34,7 +34,12 @@ export class DatingComponent {
 
     public activateHasPeriodEnd = () => this.hasPeriodEndActivated = true;
 
-    public deactivateHasPeriodEnd = () => this.hasPeriodEndActivated = false;
+
+    public deactivateHasPeriodEnd() {
+
+        delete this.resource.hasPeriodEnd;
+        this.hasPeriodEndActivated = false;
+    }
 
 
     public setValue(fieldName: string, value: any) {
