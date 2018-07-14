@@ -13,7 +13,7 @@ export class IdaiType {
     public name: string;
     public label: string;
     public color: string|undefined;
-    private fields: Array<FieldDefinition>;
+    public fields: Array<FieldDefinition>;
 
 
     constructor(definition: TypeDefinition) {
@@ -40,12 +40,6 @@ export class IdaiType {
         if (!this.children) this.children = [];
         child.setParentType(this);
         this.children.push(child)
-    }
-
-
-    public getFieldDefinitions(): FieldDefinition[] {
-
-        return this.fields;
     }
 
 

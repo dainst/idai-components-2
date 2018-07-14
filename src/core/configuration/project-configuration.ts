@@ -151,7 +151,7 @@ export class ProjectConfiguration {
     public getFieldDefinitions(typeName: string): FieldDefinition[] {
 
         if (!this.typesMap[typeName]) return [];
-        return this.typesMap[typeName].getFieldDefinitions();
+        return this.typesMap[typeName].fields;
     }
 
 
@@ -253,7 +253,7 @@ export class ProjectConfiguration {
     private hasProperty(typeName: string, fieldName: string, propertyName: string) {
 
         if (!this.typesMap[typeName]) return false;
-        const fields = this.typesMap[typeName].getFieldDefinitions();
+        const fields = this.typesMap[typeName].fields;
 
         for (let i in fields) {
             if (fields[i].name == fieldName) {
