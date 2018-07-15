@@ -69,7 +69,6 @@ import {EditFormFieldComponent} from './docedit/edit-form-field.component';
         RelationsViewComponent,
         RelationsFormComponent,
         EditFormComponent,
-        EditFormFieldComponent,
         DocumentTeaserComponent
     ]
 })
