@@ -9,42 +9,7 @@
         </div>
 
         <div class="card-block">
-
-            <dai-input *ngIf="field.inputType == 'input' || field.inputType == 'unsignedInt'
-                            || field.inputType == 'float' || field.inputType == 'unsignedFloat'
-                            || (field.inputType == undefined && field.inner == undefined)"
-                       [(resource)]="document['resource']" [fieldName]="field.name"></dai-input>
-
-            <dai-inputs *ngIf="field.inputType == 'inputs'" [(resource)]="document['resource']"
-                        [fieldName]="field.name"></dai-inputs>
-
-            <dai-text *ngIf="field.inputType == 'text'" [(resource)]="document['resource']"
-                      [fieldName]="field.name"></dai-text>
-
-            <dai-dropdown *ngIf="field.inputType == 'dropdown'" [(resource)]="document['resource']"
-                          [field]="field"></dai-dropdown>
-
-            <dai-radio *ngIf="field.inputType == 'radio'" [(resource)]="document['resource']"
-                       [field]="field"></dai-radio>
-
-            <dai-boolean *ngIf="field.inputType == 'boolean'" [(resource)]="document['resource']"
-                       [fieldName]="field.name"></dai-boolean>
-
-            <dai-checkboxes *ngIf="field.inputType == 'checkboxes'" [(resource)]="document['resource']"
-                            [field]="field"></dai-checkboxes>
-
-            <dai-multiselect *ngIf="field.inputType == 'multiselect'" [(resource)]="document['resource']"
-                             [field]="field"></dai-multiselect>
-
-            <dai-dating *ngIf="field.inputType == 'dating'" [(resource)]="document['resource']"
-                             [field]="field"></dai-dating>
-
-            <dai-date *ngIf="field.inputType == 'date'" [(resource)]="document['resource']"
-                             [field]="field"></dai-date>
-
-            <dai-dimension *ngIf="field.inputType == 'dimension'" [(resource)]="document['resource']"
-                             [field]="field"></dai-dimension>
-
+            <edit-form-field [resource]="document['resource']" [field]="field"></edit-form-field>
         </div>
     </div>
 </div>

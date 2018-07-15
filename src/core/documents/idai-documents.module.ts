@@ -26,6 +26,7 @@ import {RelationsViewComponent} from './docview/relations-view.component';
 import {IdaiWidgetsModule} from '../widgets/idai-widgets.module';
 import {BooleanComponent} from './docedit/forms/boolean.component';
 import {DocumentTeaserComponent} from './document-teaser.component';
+import {EditFormFieldComponent} from './docedit/edit-form-field.component';
 
 @NgModule({
     imports: [
@@ -39,6 +40,7 @@ import {DocumentTeaserComponent} from './document-teaser.component';
         FieldsViewComponent,
         RelationsViewComponent,
         EditFormComponent,
+        EditFormFieldComponent,
         RelationsFormComponent,
         RelationPickerComponent,
         RelationPickerGroupComponent,
@@ -67,6 +69,7 @@ import {DocumentTeaserComponent} from './document-teaser.component';
         RelationsViewComponent,
         RelationsFormComponent,
         EditFormComponent,
+        EditFormFieldComponent,
         DocumentTeaserComponent
     ]
 })
