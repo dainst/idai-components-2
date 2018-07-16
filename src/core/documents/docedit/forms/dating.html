@@ -1,40 +1,44 @@
-<div *ngIf="resource.type !== 'Place'">
+<div class="dating-component" *ngIf="resource.type !== 'Place'">
 
+    <div>
+        <label>Grobdatierung</label>
+        <button *ngIf="!hasPeriodEndActivated"
+                class="btn btn-sm btn-outline-primary" type="button" (click)="activateHasPeriodEnd()">
+            <span class="mdi mdi-arrow-expand-horizontal"></span>
+        </button>
+        <button *ngIf="hasPeriodEndActivated"
+                class="btn btn-sm btn-primary" type="button" (click)="deactivateHasPeriodEnd()">
+            <span class="mdi mdi-arrow-expand-horizontal"></span>
+        </button>
+    </div>
 
-    <label>Grobdatierung{{hasPeriodEndActivated ||
-        (resource['hasPeriodEnd'] && resource['hasPeriodEnd'] !== '')  ? " (von):" : ":"}}</label>
+    <br *ngIf="hasPeriodEndActivated || (resource['hasPeriodEnd'] && resource['hasPeriodEnd'] !== '')">
+    <label *ngIf="hasPeriodEndActivated || (resource['hasPeriodEnd'] && resource['hasPeriodEnd'] !== '')">
+        von
+    </label>
     <div class="input-group">
         <select [(ngModel)]="resource['hasPeriodBeginning']" (change)="setValue('hasPeriodBeginning', $event.target.value)"
                 class="form-control">
             <option value="" [selected]="!resource.hasOwnProperty(field.name)"></option>
             <option *ngFor="let item of field.valuelist" value="{{item}}">{{item}}</option>
         </select>
-        <span *ngIf="!hasPeriodEndActivated || !resource['hasPeriodEnd'] || resource['hasPeriodEnd'] === ''" class="input-group-btn">
-            <button class="btn btn-success" type="button" (click)="activateHasPeriodEnd()">
-                <span class="mdi mdi-plus-circle"></span>
-            </button>
-        </span>
     </div>
 
     <div *ngIf="hasPeriodEndActivated || (resource['hasPeriodEnd'] && resource['hasPeriodEnd'] !== '')">
-        <label>Grobdatierung (bis):</label>
+        <label>bis</label>
         <div class="input-group">
             <select [(ngModel)]="resource['hasPeriodEnd']" (change)="setValue('hasPeriodEnd', $event.target.value)"
                     class="form-control">
                 <option value="" [selected]="!resource.hasOwnProperty(field.name)"></option>
                 <option *ngFor="let item of field.valuelist" value="{{item}}">{{item}}</option>
             </select>
-            <span class="input-group-btn">
-                <button class="btn btn-danger" type="button" (click)="deactivateHasPeriodEnd()">
-                    <span class="mdi mdi-delete"></span>
-                </button>
-            </span>
         </div>
     </div>
 
-    <label>Weitere Datierungen:</label>
 </div>
 
+<hr>
+<label>Weitere Datierungen</label>
 
 
 <ng-template #editDate let-date="date" let-index="index">

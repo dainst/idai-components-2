@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {Resource} from '../../../model/resource';
 import {DocumentEditChangeMonitor} from '../document-edit-change-monitor';
 
@@ -37,14 +37,24 @@ export class DatingComponent {
 
     public deactivateHasPeriodEnd() {
 
-        delete this.resource.hasPeriodEnd;
+        delete this.resource['hasPeriodEnd'];
         this.hasPeriodEndActivated = false;
     }
+
 
 
     public setValue(fieldName: string, value: any) {
 
         if (value === '') delete this.resource[fieldName];
+
+        if (fieldName === 'hasPeriodEnd') {
+
+            if (value === undefined || value === "") {
+                this.hasPeriodEndActivated = false;
+            } else {
+                this.resource['hasPeriodEnd'] = value;
+            }
+        }
         this.documentEditChangeMonitor.setChanged();
     }
 
