@@ -3,16 +3,18 @@
     <label>Grobdatierung</label>
 
     <div class="input-group">
-        <label *ngIf="hasPeriodEndActivated || (resource['hasPeriodEnd'] && resource['hasPeriodEnd'] !== '')">
-            von
+        <label *ngIf="hasPeriodEndActivated || (resource['hasPeriodEnd'] && resource['hasPeriodEnd'] !== '')"
+            ngbTooltip="Zeitraum von">
+            <span class="mdi mdi-arrow-expand-right"></span>
         </label>
         <select [(ngModel)]="resource['hasPeriodBeginning']" (change)="setValue('hasPeriodBeginning', $event.target.value)"
                 class="form-control">
             <option value="" [selected]="!resource.hasOwnProperty(field.name)"></option>
             <option *ngFor="let item of field.valuelist" value="{{item}}">{{item}}</option>
         </select>
-        <label *ngIf="hasPeriodEndActivated || (resource['hasPeriodEnd'] && resource['hasPeriodEnd'] !== '')">
-            bis
+        <label *ngIf="hasPeriodEndActivated || (resource['hasPeriodEnd'] && resource['hasPeriodEnd'] !== '')"
+            ngbTooltip="Zeitraum bis">
+            <span class="mdi mdi-arrow-collapse-right"></span>
         </label>
         <select *ngIf="hasPeriodEndActivated || (resource['hasPeriodEnd'] && resource['hasPeriodEnd'] !== '')"
                 [(ngModel)]="resource['hasPeriodEnd']" (change)="setValue('hasPeriodEnd', $event.target.value)"
@@ -20,7 +22,7 @@
             <option value="" [selected]="!resource.hasOwnProperty(field.name)"></option>
             <option *ngFor="let item of field.valuelist" value="{{item}}">{{item}}</option>
         </select>
-        <button *ngIf="!hasPeriodEndActivated"
+        <button *ngIf="!hasPeriodEndActivated" ngbTooltip="Grobdatierung als Zeitraum angeben"
                 class="btn btn-outline-primary" type="button" (click)="activateHasPeriodEnd()">
             <span class="mdi mdi-arrow-expand-horizontal"></span>
         </button>
