@@ -4,7 +4,7 @@
 
     <div class="input-group">
         <label *ngIf="hasPeriodEndActivated || (resource['hasPeriodEnd'] && resource['hasPeriodEnd'] !== '')"
-            ngbTooltip="Zeitraum von">
+            ngbTooltip="Zeitraum von" placement="right">
             <span class="mdi mdi-arrow-expand-right"></span>
         </label>
         <select [(ngModel)]="resource['hasPeriodBeginning']" (change)="setValue('hasPeriodBeginning', $event.target.value)"
@@ -13,7 +13,7 @@
             <option *ngFor="let item of field.valuelist" value="{{item}}">{{item}}</option>
         </select>
         <label *ngIf="hasPeriodEndActivated || (resource['hasPeriodEnd'] && resource['hasPeriodEnd'] !== '')"
-            ngbTooltip="Zeitraum bis">
+            ngbTooltip="Zeitraum bis" placement="right">
             <span class="mdi mdi-arrow-collapse-right"></span>
         </label>
         <select *ngIf="hasPeriodEndActivated || (resource['hasPeriodEnd'] && resource['hasPeriodEnd'] !== '')"
