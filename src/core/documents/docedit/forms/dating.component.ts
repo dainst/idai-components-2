@@ -60,7 +60,7 @@ export class DatingComponent implements OnChanges {
 
     public setValue(value: any) {
 
-        if (value === '') delete this.resource['hasPeriodBeginning'];
+        if (value === '') delete this.resource['hasPeriod'];
         this.documentEditChangeMonitor.setChanged();
     }
 
@@ -69,6 +69,7 @@ export class DatingComponent implements OnChanges {
 
         if (value === undefined || value === '') {
             this.hasPeriodEndActivated = false;
+            this.resource['hasPeriodEnd'] = undefined;
         } else {
             this.resource['hasPeriodEnd'] = value;
         }
