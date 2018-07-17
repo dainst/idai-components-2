@@ -1,0 +1,52 @@
+<div class="dating-component" *ngIf="resource.type !== 'Place'">
+
+    <label>Grobdatierung</label>
+
+
+    <div class="input-group">
+        <label *ngIf="showPeriodEndElements()"
+               ngbTooltip="Zeitraum von" placement="right">
+            <span class="mdi mdi-arrow-expand-right"></span>
+        </label>
+
+
+        <!-- the following block is duplicated for
+        the reason that this way we can retrigger setValue() again and again,
+        even when no change occured. we use this to return to the mode
+        where only hasPeriod is used
+        -->
+        <select *ngIf="showPeriodEndElements()"
+                [(ngModel)]="resource['hasPeriod']" (change)="setValue($event.target.value)"
+                class="form-control">
+            <option value="" [selected]="!resource.hasOwnProperty(field.name)"></option>
+            <option *ngFor="let item of field.valuelist" value="{{item}}">{{item}}</option>
+        </select>
+        <select *ngIf="!showPeriodEndElements()"
+                [(ngModel)]="resource['hasPeriod']" (change)="setValue($event.target.value)"
+                class="form-control">
+            <option value="" [selected]="!resource.hasOwnProperty(field.name)"></option>
+            <option *ngFor="let item of field.valuelist" value="{{item}}">{{item}}</option>
+        </select>
+        <!-- end -->
+
+
+        <label *ngIf="showPeriodEndElements()"
+               ngbTooltip="Zeitraum bis" placement="right">
+            <span class="mdi mdi-arrow-collapse-right"></span>
+        </label>
+        <select *ngIf="showPeriodEndElements()" [disabled]="!resource['hasPeriod'] || resource['hasPeriod'] === ''"
+                [(ngModel)]="resource['hasPeriodEnd']" (change)="setEndValue($event.target.value)"
+                class="form-control">
+            <option value="" [selected]="!resource.hasOwnProperty(field.name)"></option>
+            <option *ngFor="let item of field.valuelist" value="{{item}}">{{item}}</option>
+        </select>
+        <button *ngIf="!showPeriodEndElements()"
+                ngbTooltip="Grobdatierung als Zeitraum angeben"
+                placement="left"
+                class="btn btn-outline-primary"
+                type="button"
+                (click)="activateHasPeriodEnd()">
+            <span class="mdi mdi-arrow-expand-horizontal"></span>
+        </button>
+    </div>
+</div>

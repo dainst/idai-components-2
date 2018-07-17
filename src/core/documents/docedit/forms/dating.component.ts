@@ -11,9 +11,8 @@ import {DocumentEditChangeMonitor} from '../document-edit-change-monitor';
 
 /**
  * @author Sebastian Cuy
- * @author Daniel de Oliveira
  */
-export class DatingComponent implements OnChanges {
+export class DatingComponent {
 
     // TODO: use this map in template as well
     public DATE_TYPES = {
@@ -22,8 +21,6 @@ export class DatingComponent implements OnChanges {
         'bp': 'BP'
     };
 
-    public hasPeriodEndActivated: boolean = false;
-
     @Input() resource: Resource;
     @Input() field: any;
 
@@ -31,48 +28,6 @@ export class DatingComponent implements OnChanges {
 
 
     constructor(private documentEditChangeMonitor: DocumentEditChangeMonitor) {}
-
-
-    public activateHasPeriodEnd = () => this.hasPeriodEndActivated = true;
-
-
-    ngOnChanges(changes: SimpleChanges): void {
-
-        if (this.resource && this.resource['hasPeriodBeginning']) {
-            this.resource['hasPeriod'] = this.resource['hasPeriodBeginning'];
-            delete this.resource['hasPeriodBeginning'];
-        }
-    }
-
-
-    public showPeriodEndElements() {
-
-        return this.hasPeriodEndActivated
-            || (this.resource['hasPeriodEnd'] && this.resource['hasPeriodEnd'] !== '');
-    }
-
-
-    public setValue(value: any) {
-
-        if (value === undefined || value === '') {
-            this.hasPeriodEndActivated = false;
-            delete this.resource['hasPeriod'];
-            this.resource['hasPeriodEnd'] = undefined;
-        }
-        this.documentEditChangeMonitor.setChanged();
-    }
-
-
-    public setEndValue(value: any) {
-
-        if (value === undefined || value === '') {
-            this.hasPeriodEndActivated = false;
-            this.resource['hasPeriodEnd'] = undefined;
-        } else {
-            this.resource['hasPeriodEnd'] = value;
-        }
-        this.documentEditChangeMonitor.setChanged();
-    }
 
 
     public removeDating(index: number) {
