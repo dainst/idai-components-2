@@ -28,6 +28,7 @@ export class DatingCoarseComponent implements OnChanges {
 
     ngOnChanges(changes: SimpleChanges): void {
 
+        // TODO this can be removed when the existing data has been adjusted via script
         if (this.resource && this.resource['hasPeriodBeginning']) {
             this.resource['hasPeriod'] = this.resource['hasPeriodBeginning'];
             delete this.resource['hasPeriodBeginning'];
