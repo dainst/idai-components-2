@@ -12,7 +12,7 @@ import {DocumentEditChangeMonitor} from '../document-edit-change-monitor';
 /**
  * @author Sebastian Cuy
  */
-export class DatingComponent {
+export class DatingComponent implements OnChanges {
 
     // TODO: use this map in template as well
     public DATE_TYPES = {
@@ -42,18 +42,34 @@ export class DatingComponent {
     }
 
 
+    ngOnChanges(changes: SimpleChanges): void {
 
-    public setValue(fieldName: string, value: any) {
+        if (this.resource && this.resource['hasPeriodBeginning']) {
+            this.resource['hasPeriod'] = this.resource['hasPeriodBeginning'];
+            delete this.resource['hasPeriodBeginning'];
+        }
+    }
 
-        if (value === '') delete this.resource[fieldName];
+    public showPeriodEndElements() {
 
-        if (fieldName === 'hasPeriodEnd') {
+        return this.hasPeriodEndActivated
+            || (this.resource['hasPeriodEnd'] && this.resource['hasPeriodEnd'] !== '');
+    }
 
-            if (value === undefined || value === "") {
-                this.hasPeriodEndActivated = false;
-            } else {
-                this.resource['hasPeriodEnd'] = value;
-            }
+
+    public setValue(value: any) {
+
+        if (value === '') delete this.resource['hasPeriodBeginning'];
+        this.documentEditChangeMonitor.setChanged();
+    }
+
+
+    public setEndValue(value: any) {
+
+        if (value === undefined || value === '') {
+            this.hasPeriodEndActivated = false;
+        } else {
+            this.resource['hasPeriodEnd'] = value;
         }
         this.documentEditChangeMonitor.setChanged();
     }
