@@ -22,8 +22,12 @@
             <option value="" [selected]="!resource.hasOwnProperty(field.name)"></option>
             <option *ngFor="let item of field.valuelist" value="{{item}}">{{item}}</option>
         </select>
-        <button *ngIf="!hasPeriodEndActivated" ngbTooltip="Grobdatierung als Zeitraum angeben"
-                class="btn btn-outline-primary" type="button" (click)="activateHasPeriodEnd()">
+        <button *ngIf="!showPeriodEndElements()"
+                ngbTooltip="Grobdatierung als Zeitraum angeben"
+                placement="left"
+                class="btn btn-outline-primary"
+                type="button"
+                (click)="activateHasPeriodEnd()">
             <span class="mdi mdi-arrow-expand-horizontal"></span>
         </button>
     </div>

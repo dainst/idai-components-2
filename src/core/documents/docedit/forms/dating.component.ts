@@ -50,6 +50,7 @@ export class DatingComponent implements OnChanges {
         }
     }
 
+
     public showPeriodEndElements() {
 
         return this.hasPeriodEndActivated
