@@ -11,6 +11,7 @@ import {DocumentEditChangeMonitor} from '../document-edit-change-monitor';
 
 /**
  * @author Sebastian Cuy
+ * @author Daniel de Oliveira
  */
 export class DatingComponent implements OnChanges {
 
@@ -35,13 +36,6 @@ export class DatingComponent implements OnChanges {
     public activateHasPeriodEnd = () => this.hasPeriodEndActivated = true;
 
 
-    public deactivateHasPeriodEnd() {
-
-        delete this.resource['hasPeriodEnd'];
-        this.hasPeriodEndActivated = false;
-    }
-
-
     ngOnChanges(changes: SimpleChanges): void {
 
         if (this.resource && this.resource['hasPeriodBeginning']) {
@@ -60,7 +54,11 @@ export class DatingComponent implements OnChanges {
 
     public setValue(value: any) {
 
-        if (value === '') delete this.resource['hasPeriod'];
+        if (value === undefined || value === '') {
+            this.hasPeriodEndActivated = false;
+            delete this.resource['hasPeriod'];
+            this.resource['hasPeriodEnd'] = undefined;
+        }
         this.documentEditChangeMonitor.setChanged();
     }
 
