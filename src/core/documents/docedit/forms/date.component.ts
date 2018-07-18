@@ -18,6 +18,8 @@ export class DateComponent {
         this._field = value;
         this.dateStruct = this.dateFormatter.parse(this.resource[this._field.name]);
         if (this.resource[this._field.name] && !this.dateStruct) this.dateNotParsed = true;
+        if (!this.dateStruct.month) this.dateStruct.month = 1;
+        if (!this.dateStruct.day) this.dateStruct.day = 1;
     }
 
     public dateStruct: NgbDateStruct;
