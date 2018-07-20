@@ -32,6 +32,13 @@ export class ConfigurationValidator {
         const duplicateTypeErrors = ConfigurationValidator.findDuplicateType(configuration.types);
         if (duplicateTypeErrors) msgs = msgs.concat(duplicateTypeErrors);
 
+        /*
+         * More than one use of dating has to be forbidden because a dating input
+         * also writes hasPeriod and hasPeriodEnd properties of resources and
+         * concurrent modification of those should not get prevented. Though this
+         * is a technical reason, it also does not make sense from the domain point
+         * of view, where a resource should have 0 or 1 'dating'.
+         */
         const multipleUseOfDating = ConfigurationValidator.findMultipleUseOfDating(configuration.types);
         if (multipleUseOfDating) msgs = msgs.concat(multipleUseOfDating);
 
