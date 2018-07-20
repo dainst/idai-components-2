@@ -32,6 +32,9 @@ export class ConfigurationValidator {
         const duplicateTypeErrors = ConfigurationValidator.findDuplicateType(configuration.types);
         if (duplicateTypeErrors) msgs = msgs.concat(duplicateTypeErrors);
 
+        const multipleUseOfDating = ConfigurationValidator.findMultipleUseOfDating(configuration.types);
+        if (multipleUseOfDating) msgs = msgs.concat(multipleUseOfDating);
+
         const missingParentTypeErrors = ConfigurationValidator.findMissingParentType(configuration.types);
         if (missingParentTypeErrors) msgs = msgs.concat(missingParentTypeErrors);
 
@@ -79,6 +82,22 @@ export class ConfigurationValidator {
     }
 
 
+    private static findMultipleUseOfDating(types: Array<TypeDefinition>): Array<Array<string>> {
+
+        let o: any = {};
+
+        return types
+            .filter(type => {
+                let found = 0;
+                for (let field of type.fields) {
+                    if (field.inputType ===  'dating') found++;
+                }
+                return found > 1;
+            })
+            .reduce(this.addErrMsg(this.duplicateType), []);
+    }
+
+
     private static findMissingParentType(types: Array<TypeDefinition>): Array<Array<string>> {
 
         return types
@@ -103,6 +122,8 @@ export class ConfigurationValidator {
     private static duplicateType = (type: TypeDefinition) =>
         [ConfigurationErrors.INVALID_CONFIG_DUPLICATETYPE, type.type];
 
+    private static multipleUseOfDating = (type: TypeDefinition) =>
+        [ConfigurationErrors.INVALID_CONFIG_MULTIPLEUSEOFDATING, type.type];
 
     private static invalidType = (type: TypeDefinition) =>
         [ConfigurationErrors.INVALID_CONFIG_INVALIDTYPE, JSON.stringify(type)];
