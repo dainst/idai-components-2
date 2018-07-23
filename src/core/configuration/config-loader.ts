@@ -97,7 +97,7 @@ export class ConfigLoader {
         const meninxLanguageConfigurationPath = configDirPath + '/Language-Meninx.json';
         const orderConfigurationPath = configDirPath + '/Order.json';
         const searchConfigurationPath = configDirPath + '/Search.json';
-        const datingConfigurationPath = configDirPath + '/Dating.json';
+        const datingConfigurationPath = configDirPath + '/Periods.json';
         const meninxDatingConfigurationPath = configDirPath + '/Dating-Meninx.json';
 
         Preprocessing.prepareSameMainTypeResource(appConfiguration);
