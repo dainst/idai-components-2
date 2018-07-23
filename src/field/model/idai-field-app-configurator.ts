@@ -29,7 +29,7 @@ export class IdaiFieldAppConfigurator {
         Feature: {
             fields: {
                 hasPeriod: {
-                    inputType: "dropdown-range"
+                    inputType: "dropdownRange"
                 }
             }
         } as TypeDefinition,
