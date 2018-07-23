@@ -1,12 +1,9 @@
 <div class="dating-component" *ngIf="resource.type !== 'Place'">
 
-    <label>Grobdatierung</label>
-
-
     <div class="input-group">
         <label *ngIf="showPeriodEndElements()"
                ngbTooltip="Zeitraum von" placement="right">
-            <span class="mdi mdi-arrow-expand-right"></span>
+            von
         </label>
 
 
@@ -32,7 +29,7 @@
 
         <label *ngIf="showPeriodEndElements()"
                ngbTooltip="Zeitraum bis" placement="right">
-            <span class="mdi mdi-arrow-collapse-right"></span>
+            bis
         </label>
         <select *ngIf="showPeriodEndElements()" [disabled]="!resource['hasPeriod'] || resource['hasPeriod'] === ''"
                 [(ngModel)]="resource['hasPeriodEnd']" (change)="setEndValue($event.target.value)"

@@ -5,15 +5,15 @@ import {DocumentEditChangeMonitor} from '../document-edit-change-monitor';
 
 @Component({
     moduleId: module.id,
-    selector: 'dai-dating-coarse',
-    templateUrl: './dating-coarse.html'
+    selector: 'dai-dropdown-range',
+    templateUrl: './dropdown-range.html'
 })
 
 /**
  * @author Sebastian Cuy
  * @author Daniel de Oliveira
  */
-export class DatingCoarseComponent implements OnChanges {
+export class DropdownRangeComponent implements OnChanges {
 
     public activateHasPeriodEnd = () => this.hasPeriodEndActivated = true;
 

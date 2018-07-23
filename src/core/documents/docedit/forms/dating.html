@@ -1,9 +1,3 @@
-<dai-dating-coarse [resource]="resource" [field]="field"></dai-dating-coarse>
-
-<hr>
-<label>Weitere Datierungen</label>
-
-
 <ng-template #editDate let-date="date" let-index="index">
     <input class="form-control" type="number" size="6" min="0" max="100000"
            [(ngModel)]="date.value" value="0" style="width:100px" name="value_{{index}}"

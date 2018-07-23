@@ -10,7 +10,7 @@ import {ConfigurationErrors} from './configuration-errors';
  */
 export class ConfigurationValidator {
 
-    private static VALID_INPUT_TYPES = ['input', 'inputs', 'text', 'dropdown', 'radio', 'checkboxes',
+    private static VALID_INPUT_TYPES = ['input', 'inputs', 'text', 'dropdown', 'dropdownRange', 'radio', 'checkboxes',
         'multiselect', 'unsignedInt', 'float', 'unsignedFloat', 'dating', 'dimension', 'boolean', 'date'];
     private static VALUELIST_INPUT_TYPES = ['dropdown', 'radio', 'checkboxes', 'multiselect'];
 

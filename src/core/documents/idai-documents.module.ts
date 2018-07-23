@@ -27,7 +27,7 @@ import {IdaiWidgetsModule} from '../widgets/idai-widgets.module';
 import {BooleanComponent} from './docedit/forms/boolean.component';
 import {DocumentTeaserComponent} from './document-teaser.component';
 import {EditFormFieldComponent} from './docedit/edit-form-field.component';
-import {DatingCoarseComponent} from './docedit/forms/dating-coarse.component';
+import {DropdownRangeComponent} from './docedit/forms/dropdown-range.component';
 
 @NgModule({
     imports: [
@@ -57,7 +57,7 @@ import {DatingCoarseComponent} from './docedit/forms/dating-coarse.component';
         DateComponent,
         DimensionComponent,
         DocumentTeaserComponent,
-        DatingCoarseComponent
+        DropdownRangeComponent
     ],
     providers: [
         ConfigLoader,
