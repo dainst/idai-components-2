@@ -32,16 +32,6 @@ export class ConfigurationValidator {
         const duplicateTypeErrors = ConfigurationValidator.findDuplicateType(configuration.types);
         if (duplicateTypeErrors) msgs = msgs.concat(duplicateTypeErrors);
 
-        /*
-         * More than one use of dating has to be forbidden because a dating input
-         * also writes hasPeriod and hasPeriodEnd properties of resources and
-         * concurrent modification of those should not get prevented. Though this
-         * is a technical reason, it also does not make sense from the domain point
-         * of view, where a resource should have 0 or 1 'dating'.
-         */
-        const multipleUseOfDating = ConfigurationValidator.findMultipleUseOfDating(configuration.types);
-        if (multipleUseOfDating) msgs = msgs.concat(multipleUseOfDating);
-
         const missingParentTypeErrors = ConfigurationValidator.findMissingParentType(configuration.types);
         if (missingParentTypeErrors) msgs = msgs.concat(missingParentTypeErrors);
 
@@ -84,22 +74,6 @@ export class ConfigurationValidator {
             .filter(type => {
                 if (o[type.type]) return true;
                 o[type.type] = true; return false;
-            })
-            .reduce(this.addErrMsg(this.duplicateType), []);
-    }
-
-
-    private static findMultipleUseOfDating(types: Array<TypeDefinition>): Array<Array<string>> {
-
-        let o: any = {};
-
-        return types
-            .filter(type => {
-                let found = 0;
-                for (let field of type.fields) {
-                    if (field.inputType ===  'dating') found++;
-                }
-                return found > 1;
             })
             .reduce(this.addErrMsg(this.duplicateType), []);
     }

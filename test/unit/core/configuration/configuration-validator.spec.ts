@@ -28,25 +28,6 @@ describe('ConfigurationValidator', () => {
     });
 
 
-    it('should report multiple use of dating per type type', function() {
-
-        configuration = {
-            identifier: 'test',
-            types : [
-                { type: 'Tduplicate', fields: [
-                    {name: 'a', inputType: 'dating'},
-                    {name: 'b', inputType: 'dating'}
-                ]},
-            ],
-            relations: []
-        };
-
-        expect(new ConfigurationValidator()
-            .go(configuration))
-            .toContain([ConfigurationErrors.INVALID_CONFIG_DUPLICATETYPE,'Tduplicate']);
-    });
-
-
     it('should report missing parent type', function() {
 
         configuration = {
