@@ -91,7 +91,7 @@ export module Preprocessing {
             if (!type) return;
 
             Object.keys(type.fields)
-                .filter(field => type.fields[field].name === 'hasPeriod')
+                .filter(field => field === 'hasPeriod')
                 .forEach(field => type.fields[field].valuelist = datingConfiguration.valuelist);
         });
     }

@@ -75,7 +75,7 @@
             "Trad Jazz"
           ]
         },
-        "dropdown_range_input": {
+        "hasPeriod": {
           "inputType": "dropdownRange"
         },
         "dating_input": {
