@@ -98,7 +98,7 @@ export class ConfigLoader {
         const orderConfigurationPath = configDirPath + '/Order.json';
         const searchConfigurationPath = configDirPath + '/Search.json';
         const datingConfigurationPath = configDirPath + '/Periods.json';
-        const meninxDatingConfigurationPath = configDirPath + '/Dating-Meninx.json';
+        const meninxDatingConfigurationPath = configDirPath + '/Periods-Meninx.json';
 
         Preprocessing.prepareSameMainTypeResource(appConfiguration);
         Preprocessing.setIsRecordedInVisibilities(appConfiguration); // TODO rename and test / also: it is idai field specific
