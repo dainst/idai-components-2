@@ -97,8 +97,8 @@ export class ConfigLoader {
         const meninxLanguageConfigurationPath = configDirPath + '/Language-Meninx.json';
         const orderConfigurationPath = configDirPath + '/Order.json';
         const searchConfigurationPath = configDirPath + '/Search.json';
-        const datingConfigurationPath = configDirPath + '/Periods.json';
-        const meninxDatingConfigurationPath = configDirPath + '/Periods-Meninx.json';
+        const periodConfigurationPath = configDirPath + '/Periods.json';
+        const meninxPeriodConfigurationPath = configDirPath + '/Periods-Meninx.json';
 
         Preprocessing.prepareSameMainTypeResource(appConfiguration);
         Preprocessing.setIsRecordedInVisibilities(appConfiguration); // TODO rename and test / also: it is idai field specific
@@ -124,10 +124,10 @@ export class ConfigLoader {
         );
 
         await this.applySearchConfiguration(appConfiguration, searchConfigurationPath);
-        await this.applyDatingConfiguration(appConfiguration,
+        await this.applyPeriodConfiguration(appConfiguration,
             applyMeninxConfiguration
-                ? meninxDatingConfigurationPath
-                : datingConfigurationPath
+                ? meninxPeriodConfigurationPath
+                : periodConfigurationPath
         );
 
         return this.getOrderedConfiguration(appConfiguration, orderConfigurationPath, extraFieldsOrder);
@@ -180,11 +180,12 @@ export class ConfigLoader {
     }
 
 
-    private async applyDatingConfiguration(appConfiguration: any, datingConfigurationPath: string) {
+    private async applyPeriodConfiguration(
+        appConfiguration: any, periodConfigurationPath: string) {
 
         try {
-            const datingConfiguration = await this.configReader.read(datingConfigurationPath);
-            Preprocessing.applyDatingConfiguration(appConfiguration, datingConfiguration);
+            const datingConfiguration = await this.configReader.read(periodConfigurationPath);
+            Preprocessing.applyPeriodConfiguration(appConfiguration, datingConfiguration);
         }  catch (msgWithParams) {
             throw [[msgWithParams]];
         }

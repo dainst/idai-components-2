@@ -83,8 +83,8 @@ export module Preprocessing {
     }
 
 
-    export function applyDatingConfiguration(configuration: UnorderedConfigurationDefinition,
-                                             datingConfiguration: any) {
+    export function applyPeriodConfiguration(configuration: UnorderedConfigurationDefinition,
+                                             periodConfiguration: any) {
 
         Object.keys(configuration.types).forEach(typeName => {
             const type: TypeDefinition = configuration.types[typeName];
@@ -92,7 +92,7 @@ export module Preprocessing {
 
             Object.keys(type.fields)
                 .filter(field => field === 'hasPeriod')
-                .forEach(field => type.fields[field].valuelist = datingConfiguration.valuelist);
+                .forEach(field => type.fields[field].valuelist = periodConfiguration.valuelist);
         });
     }
 
