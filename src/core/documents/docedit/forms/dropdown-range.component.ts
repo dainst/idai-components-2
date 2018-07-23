@@ -15,9 +15,9 @@ import {DocumentEditChangeMonitor} from '../document-edit-change-monitor';
  */
 export class DropdownRangeComponent implements OnChanges {
 
-    public activateHasPeriodEnd = () => this.hasPeriodEndActivated = true;
+    public activateEnd = () => this.endActivated = true;
 
-    public hasPeriodEndActivated: boolean = false;
+    private endActivated: boolean = false;
 
     @Input() resource: Resource;
     @Input() field: any;
@@ -29,26 +29,29 @@ export class DropdownRangeComponent implements OnChanges {
     ngOnChanges(changes: SimpleChanges): void {
 
         // TODO this can be removed when the existing data has been adjusted via script
-        if (this.resource && this.resource['hasPeriodBeginning']) {
+        if (this.field.name === "hasPeriod" &&
+            this.resource && this.resource['hasPeriodBeginning']) {
+
             this.resource['hasPeriod'] = this.resource['hasPeriodBeginning'];
             delete this.resource['hasPeriodBeginning'];
         }
     }
 
 
-    public showPeriodEndElements() {
+    public showEndElements() {
 
-        return this.hasPeriodEndActivated
-            || (this.resource['hasPeriodEnd'] && this.resource['hasPeriodEnd'] !== '');
+        return this.endActivated
+            || (this.resource[this.field.name + 'End']
+                && this.resource[this.field.name + 'End'] !== '');
     }
 
 
     public setValue(value: any) {
 
         if (value === undefined || value === '') {
-            this.hasPeriodEndActivated = false;
-            delete this.resource['hasPeriod'];
-            this.resource['hasPeriodEnd'] = undefined;
+            this.endActivated = false;
+            delete this.resource[this.field.name];
+            this.resource[this.field.name + 'End'] = undefined;
         }
         this.documentEditChangeMonitor.setChanged();
     }
@@ -57,10 +60,10 @@ export class DropdownRangeComponent implements OnChanges {
     public setEndValue(value: any) {
 
         if (value === undefined || value === '') {
-            this.hasPeriodEndActivated = false;
-            this.resource['hasPeriodEnd'] = undefined;
+            this.endActivated = false;
+            this.resource[this.field.name + 'End'] = undefined;
         } else {
-            this.resource['hasPeriodEnd'] = value;
+            this.resource[this.field.name + 'End'] = value;
         }
         this.documentEditChangeMonitor.setChanged();
     }
