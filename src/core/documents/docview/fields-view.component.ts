@@ -33,7 +33,7 @@ export class FieldsViewComponent implements OnChanges {
 
     public isBoolean(value: any): boolean {
 
-        return typeof value == 'boolean';
+        return typeof value === 'boolean';
     }
 
 
@@ -47,7 +47,7 @@ export class FieldsViewComponent implements OnChanges {
 
             if (!this.projectConfiguration.isVisible(resource.type, fieldName)) continue;
 
-            if (resource[fieldName] && ignoredFields.indexOf(fieldName) == -1) {
+            if (resource[fieldName] !== undefined && ignoredFields.indexOf(fieldName) === -1) {
                 this.fields.push({
                     name: this.projectConfiguration.getFieldDefinitionLabel(resource.type, fieldName),
                     value: FieldsViewComponent.getValue(resource, fieldName),
@@ -60,7 +60,7 @@ export class FieldsViewComponent implements OnChanges {
 
     private static getValue(resource: Resource, fieldName: string): any {
 
-        if (typeof resource[fieldName] == 'string') {
+        if (typeof resource[fieldName] === 'string') {
             return resource[fieldName]
                 .replace(/^\s+|\s+$/g, '')
                 .replace(/\n/g, '<br>');
