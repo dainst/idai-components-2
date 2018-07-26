@@ -26,6 +26,9 @@
         "text": {
           "inputType": "text"
         },
+        "boolean": {
+          "inputType": "boolean"
+        },
         "single_select_dropdown": {
           "inputType": "dropdown",
           "valuelist": [
