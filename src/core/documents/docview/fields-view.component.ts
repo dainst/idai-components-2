@@ -20,9 +20,9 @@ export class FieldsViewComponent implements OnChanges {
 
     protected fields: Array<any>;
 
-    constructor(
-        private projectConfiguration: ProjectConfiguration
-    ) { }
+
+    constructor(private projectConfiguration: ProjectConfiguration) {}
+
 
     ngOnChanges() {
 
@@ -30,10 +30,12 @@ export class FieldsViewComponent implements OnChanges {
         if (this.resource) this.processFields(this.resource);
     }
 
+
     public isBoolean(value: any): boolean {
 
         return typeof value == 'boolean';
     }
+
 
     private processFields(resource: Resource) {
 
@@ -54,6 +56,7 @@ export class FieldsViewComponent implements OnChanges {
             }
         }
     }
+
 
     private static getValue(resource: Resource, fieldName: string): any {
 
