@@ -1,6 +1,6 @@
 import {Resource} from './resource';
 import {copy} from 'tsfun';
-import {subtract} from 'tsfun/objects';
+import {subtractMap as subtract} from 'tsfun';
 import {NewDocument} from './new-document';
 import {Action} from './action';
 
