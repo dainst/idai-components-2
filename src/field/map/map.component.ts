@@ -34,7 +34,8 @@ export class MapComponent implements OnChanges {
     @Input() projectDocument: IdaiFieldDocument;
     @Input() update: boolean;
 
-    @Output() onSelectDocument: EventEmitter<IdaiFieldDocument> = new EventEmitter<IdaiFieldDocument>();
+    @Output() onSelectDocument: EventEmitter<IdaiFieldDocument|undefined>
+        = new EventEmitter<IdaiFieldDocument|undefined>();
 
     protected map: L.Map;
     protected polygons: { [resourceId: string]: Array<IdaiFieldPolygon> } = {};
@@ -383,7 +384,7 @@ export class MapComponent implements OnChanges {
 
     protected deselect() {
 
-        this.onSelectDocument.emit(null as any);
+        this.onSelectDocument.emit(undefined);
     }
 
 
