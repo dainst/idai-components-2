@@ -13,8 +13,6 @@ export {ReadDatastore, FindResult} from './src/core/datastore/read-datastore';
 export {DatastoreErrors} from './src/core/datastore/datastore-errors';
 
 export {IdaiDocumentsModule} from './src/core/documents/idai-documents.module';
-export {DocumentEditChangeMonitor} from './src/core/documents/docedit/document-edit-change-monitor';
-
 
 export {ConfigLoader} from './src/core/configuration/config-loader';
 export {ConfigReader} from './src/core/configuration/config-reader';

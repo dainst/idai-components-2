@@ -5,7 +5,6 @@ import {HttpModule} from '@angular/http';
 import {HashLocationStrategy, LocationStrategy} from '@angular/common';
 import {routing} from './app.routing';
 import {Datastore} from '../../src/core/datastore/datastore';
-import {DocumentEditChangeMonitor} from '../../src/core/documents/docedit/document-edit-change-monitor';
 import {Messages} from '../../src/core/messages/messages';
 import {MemoryDatastore} from './memory-datastore';
 import {MD} from '../../src/core/messages/md';
@@ -89,7 +88,6 @@ let pconf: any = undefined;
             },
             deps: [MD]
         },
-        DocumentEditChangeMonitor,
         {
             provide: ProjectConfiguration,
             useFactory: () => {
