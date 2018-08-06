@@ -101,7 +101,8 @@ export class ConfigLoader {
         const meninxPeriodConfigurationPath = configDirPath + '/Periods-Meninx.json';
 
         Preprocessing.prepareSameMainTypeResource(appConfiguration);
-        Preprocessing.setIsRecordedInVisibilities(appConfiguration); // TODO rename and test / also: it is idai field specific
+        // TODO rename and test / also: it is idai field specific
+        // Preprocessing.setIsRecordedInVisibilities(appConfiguration); See #8992
 
         await this.applyCustomFieldsConfiguration(appConfiguration,
             applyMeninxConfiguration ?
