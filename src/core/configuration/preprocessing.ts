@@ -124,6 +124,12 @@ export module Preprocessing {
         if (!configuration.relations) return;
 
         for (let relation of configuration.relations) {
+
+            if (relation.name === 'isRecordedIn') { // See #8992
+                relation.sameMainTypeResource = false;
+                continue;
+            }
+
             relation.sameMainTypeResource = !((relation as any)['sameOperation'] != undefined
                 && (relation as any)['sameOperation'] === false);
         }
