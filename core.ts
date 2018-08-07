@@ -5,6 +5,7 @@ export {NewDocument} from './src/core/model/new-document';
 export {Resource} from './src/core/model/resource';
 export {NewResource} from './src/core/model/new-resource';
 export {Relations} from './src/core/model/relations';
+export {getAllTargets} from './src/core/model/relations';
 export {Action} from './src/core/model/action';
 
 export {Query} from './src/core/datastore/query';

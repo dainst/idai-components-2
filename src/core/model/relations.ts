@@ -1,9 +1,20 @@
-import {unique, arrayEquivalent} from 'tsfun';
+import {unique, arrayEquivalent,flatMap, flow} from 'tsfun';
 
 
 export interface Relations {
     [propName: string]: string[];
 }
+
+
+export function getAllTargets(relations: Relations): Array<string> {
+
+    return flow<any>((Object.keys(relations))
+            .filter(prop => relations.hasOwnProperty(prop))
+            .filter(prop => this.projectConfiguration.isRelationProperty(prop)),
+        flatMap((prop: string) => relations[prop as string]));
+}
+
+
 
 /**
  * @author Thomas Kleinke
