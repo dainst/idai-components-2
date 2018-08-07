@@ -1,4 +1,4 @@
-import {unique, arrayEquivalent,flatMap, flow} from 'tsfun';
+import {unique, arrayEquivalent, flatMap, flow} from 'tsfun';
 
 
 export interface Relations {
@@ -6,21 +6,21 @@ export interface Relations {
 }
 
 
-export function getAllTargets(relations: Relations): Array<string> {
-
-    return flow<any>((Object.keys(relations))
-            .filter(prop => relations.hasOwnProperty(prop))
-            .filter(prop => this.projectConfiguration.isRelationProperty(prop)),
-        flatMap((prop: string) => relations[prop as string]));
-}
-
-
-
 /**
  * @author Thomas Kleinke
  * @author Daniel de Oliveira
  */
 export module Relations {
+
+
+    export function getAllTargets(relations: Relations): Array<string> {
+
+        return flow<any>((Object.keys(relations))
+                .filter(prop => relations.hasOwnProperty(prop))
+                .filter(prop => this.projectConfiguration.isRelationProperty(prop)),
+            flatMap((prop: string) => relations[prop as string]));
+    }
+
 
     export function getDifferent(relations1: Relations, relations2: Relations): string[] {
 
