@@ -3,6 +3,7 @@ export {IdaiFieldDocument} from './src/field/model/idai-field-document';
 export {IdaiFieldResource} from './src/field/model/idai-field-resource';
 export {IdaiFieldRelations} from './src/field/model/idai-field-relations';
 export {IdaiFieldGeometry} from './src/field/model/idai-field-geometry';
+export {IdaiFieldGeoreference} from './src/field/model/idai-field-georeference'
 
 export {IdaiFieldFeatureDocument} from './src/field/model/idai-field-feature-document';
 export {IdaiFieldFeatureResource} from './src/field/model/idai-field-feature-resource';
