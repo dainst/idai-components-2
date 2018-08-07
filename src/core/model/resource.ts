@@ -14,7 +14,7 @@ export interface Resource extends NewResource {
 export module Resource {
 
     // TODO unit test
-    export function findDifferingFields(resource1: Resource, resource2: Resource): string[] {
+    export function getDifferingFields(resource1: Resource, resource2: Resource): string[] {
 
         const differingFieldsNames: string[]
             = findDifferingFieldsInResource(resource1, resource2)
