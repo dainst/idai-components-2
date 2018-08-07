@@ -1,6 +1,5 @@
 import {Resource} from './resource';
-import {copy} from 'tsfun';
-import {subtractMap as subtract} from 'tsfun';
+import {subtractMap, copy, to} from 'tsfun';
 import {NewDocument} from './new-document';
 import {Action} from './action';
 
@@ -11,6 +10,9 @@ export interface Document extends NewDocument {
     modified: Array<Action>;
     created: Action;
 }
+
+
+export const toResourceId = (doc: Document) => to('resource.id')(doc);
 
 
 /**
@@ -43,7 +45,7 @@ export module Document {
         return (document: D): D => {
 
             const result = copy(document);
-            result.resource = subtract(fields)(document.resource) as Resource;
+            result.resource = subtractMap(fields)(document.resource) as Resource;
             return result as D;
         };
     }
@@ -54,7 +56,7 @@ export module Document {
         return (document: D): D => {
 
             const result = copy(document);
-            result.resource.relations = subtract(relations)(result.resource.relations);
+            result.resource.relations = subtractMap(relations)(result.resource.relations);
             return result as D;
         };
     }
