@@ -1,4 +1,5 @@
 import {unique, arrayEquivalent, flatMap, flow} from 'tsfun';
+import {ProjectConfiguration} from '../configuration/project-configuration';
 
 
 export interface Relations {
@@ -13,11 +14,11 @@ export interface Relations {
 export module Relations {
 
 
-    export function getAllTargets(relations: Relations): Array<string> {
+    export function getAllTargets(relations: Relations, projectConfiguration: ProjectConfiguration): Array<string> {
 
         return flow<any>((Object.keys(relations))
                 .filter(prop => relations.hasOwnProperty(prop))
-                .filter(prop => this.projectConfiguration.isRelationProperty(prop)),
+                .filter(prop => projectConfiguration.isRelationProperty(prop)),
             flatMap((prop: string) => relations[prop as string]));
     }
 
