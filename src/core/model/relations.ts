@@ -13,16 +13,6 @@ export interface Relations {
  */
 export module Relations {
 
-
-    export function getAllTargets(relations: Relations, projectConfiguration: ProjectConfiguration): Array<string> {
-
-        return flow<any>((Object.keys(relations))
-                .filter(prop => relations.hasOwnProperty(prop))
-                .filter(prop => projectConfiguration.isRelationProperty(prop)),
-            flatMap((prop: string) => relations[prop as string]));
-    }
-
-
     export function getDifferent(relations1: Relations, relations2: Relations): string[] {
 
         const differingRelationNames: string[]
