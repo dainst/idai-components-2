@@ -67,6 +67,14 @@ export class ProjectConfiguration {
     }
 
 
+    public getAllRelationDefinitions(): Array<RelationDefinition> {
+
+        return this.relationFields
+            ? this.relationFields as Array<RelationDefinition>
+            : [];
+    }
+
+
     /**
      * @returns {Array<IdaiType>} All types in flat array, ignoring hierarchy
      */
