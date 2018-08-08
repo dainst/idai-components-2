@@ -1,5 +1,4 @@
-import {unique, arrayEquivalent, flatMap, flow} from 'tsfun';
-import {ProjectConfiguration} from '../configuration/project-configuration';
+import {unique, arrayEquivalent, flatMap, flow, includedIn} from 'tsfun';
 
 
 export interface Relations {
@@ -12,6 +11,20 @@ export interface Relations {
  * @author Daniel de Oliveira
  */
 export module Relations {
+
+
+    export function getAllTargets(relations: Relations, allowedRelations?: string[]): Array<string> {
+
+        const ownKeys = Object.keys(relations)
+            .filter(prop => relations.hasOwnProperty(prop));
+
+        const usableRelations = allowedRelations
+            ? ownKeys.filter(includedIn(allowedRelations))
+            : ownKeys;
+
+        return flatMap((prop: string) => relations[prop as string])(usableRelations);
+    }
+
 
     export function getDifferent(relations1: Relations, relations2: Relations): string[] {
 
