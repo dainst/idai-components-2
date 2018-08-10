@@ -1,4 +1,4 @@
-import {unique, arrayEquivalent, flatMap, flow, includedIn} from 'tsfun';
+import {unique, arrayEquivalent, flatMap, flow, includedIn, objectEquivalentBy} from 'tsfun';
 
 
 export interface Relations {
@@ -6,12 +6,17 @@ export interface Relations {
 }
 
 
+export const relationsEquivalent = (r1: Relations) => (r2: Relations) => {
+
+    return objectEquivalentBy(arrayEquivalent)(r1)(r2);
+};
+
+
 /**
  * @author Thomas Kleinke
  * @author Daniel de Oliveira
  */
 export module Relations {
-
 
     export function getAllTargets(relations: Relations, allowedRelations?: string[]): Array<string> {
 
