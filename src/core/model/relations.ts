@@ -1,4 +1,4 @@
-import {unique, arrayEquivalent, flatMap, flow, includedIn, objectEquivalentBy} from 'tsfun';
+import {unique, arrayEquivalent, flatMap, flow, includedIn, objectEqualBy} from 'tsfun';
 
 
 export interface Relations {
@@ -8,7 +8,7 @@ export interface Relations {
 
 export const relationsEquivalent = (r1: Relations) => (r2: Relations) => {
 
-    return objectEquivalentBy(arrayEquivalent)(r1)(r2);
+    return objectEqualBy(arrayEquivalent)(r1)(r2);
 };
 
 

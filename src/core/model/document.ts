@@ -1,5 +1,5 @@
 import {Resource} from './resource';
-import {subtractMap, copy, to} from 'tsfun';
+import {subtractObject, copy, to} from 'tsfun';
 import {NewDocument} from './new-document';
 import {Action} from './action';
 
@@ -45,7 +45,7 @@ export module Document {
         return (document: D): D => {
 
             const result = copy(document);
-            result.resource = subtractMap(fields)(document.resource) as Resource;
+            result.resource = subtractObject(fields)(document.resource) as Resource;
             return result as D;
         };
     }
@@ -56,7 +56,7 @@ export module Document {
         return (document: D): D => {
 
             const result = copy(document);
-            result.resource.relations = subtractMap(relations)(result.resource.relations);
+            result.resource.relations = subtractObject(relations)(result.resource.relations);
             return result as D;
         };
     }
