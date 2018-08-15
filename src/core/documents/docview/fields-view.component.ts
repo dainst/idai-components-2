@@ -1,6 +1,7 @@
 import {Component, OnChanges, Input} from '@angular/core';
 import {Resource} from '../../model/resource';
 import {ProjectConfiguration} from '../../configuration/project-configuration';
+import {to, isUndefinedOrEmpty} from 'tsfun';
 
 @Component({
     selector: 'fields-view',
@@ -39,21 +40,50 @@ export class FieldsViewComponent implements OnChanges {
 
     private processFields(resource: Resource) {
 
-        const ignoredFields: string[] = ['relations'];
+        const fieldNames = this.projectConfiguration
+            .getFieldDefinitions(resource.type)
+            .map(to('name'));
 
-        for (let fieldDefinition of this.projectConfiguration.getFieldDefinitions(resource.type)) {
+        for (let fieldName of fieldNames) {
 
-            const fieldName = fieldDefinition.name;
+            if (fieldName === 'relations') continue;
+            if (resource[fieldName] === undefined) continue;
+
+            if (fieldName === 'hasPeriod') {
+                this.fields.push({
+                    name: 'Grobdatierung' +
+                        !isUndefinedOrEmpty(resource['hasPeriodEnd']) ? ' (von)' : '',
+                    value: FieldsViewComponent.getValue(resource, fieldName),
+                    isArray: false
+                });
+                continue;
+            }
+            if (fieldName === 'hasPeriodBeginning') {
+                this.fields.push({
+                    name: 'Grobdatierung' +
+                    !isUndefinedOrEmpty(resource['hasPeriodEnd']) ? ' (von)' : '',
+                    value: FieldsViewComponent.getValue(resource, fieldName),
+                    isArray: false
+                });
+                continue;
+            }
+            if (fieldName === 'hasPeriodEnd') {
+                this.fields.push({
+                    name: 'Grobdatierung (bis)',
+                    value: FieldsViewComponent.getValue(resource, fieldName),
+                    isArray: false
+                });
+                continue;
+            }
+
 
             if (!this.projectConfiguration.isVisible(resource.type, fieldName)) continue;
 
-            if (resource[fieldName] !== undefined && ignoredFields.indexOf(fieldName) === -1) {
-                this.fields.push({
-                    name: this.projectConfiguration.getFieldDefinitionLabel(resource.type, fieldName),
-                    value: FieldsViewComponent.getValue(resource, fieldName),
-                    isArray: Array.isArray(resource[fieldName])
-                });
-            }
+            this.fields.push({
+                name: this.projectConfiguration.getFieldDefinitionLabel(resource.type, fieldName),
+                value: FieldsViewComponent.getValue(resource, fieldName),
+                isArray: Array.isArray(resource[fieldName])
+            });
         }
     }
 
