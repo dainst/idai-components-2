@@ -2,6 +2,7 @@ import {Component, OnChanges, Input} from '@angular/core';
 import {Resource} from '../../model/resource';
 import {ProjectConfiguration} from '../../configuration/project-configuration';
 import {to} from 'tsfun';
+import {isUndefinedOrEmpty} from 'tsfun/src/predicates';
 
 @Component({
     selector: 'fields-view',
@@ -51,7 +52,7 @@ export class FieldsViewComponent implements OnChanges {
 
             if (fieldName === 'hasPeriod') {
                 this.fields.push({
-                    name: ('Grobdatierung' + resource['hasPeriodEnd'] && resource['hasPeriodEnd'] !== '' ? ' (von)' : ''),
+                    name: ('Grobdatierung' + (!isUndefinedOrEmpty(resource['hasPeriodEnd']) ? ' (von)' : '')),
                     value: FieldsViewComponent.getValue(resource, fieldName),
                     isArray: false
                 });
@@ -59,7 +60,7 @@ export class FieldsViewComponent implements OnChanges {
             }
             if (fieldName === 'hasPeriodBeginning') {
                 this.fields.push({
-                    name: ('Grobdatierung' + resource['hasPeriodEnd'] && resource['hasPeriodEnd'] !== '' ? ' (von)' : ''),
+                    name: ('Grobdatierung' + (!isUndefinedOrEmpty(resource['hasPeriodEnd']) ? ' (von)' : '')),
                     value: FieldsViewComponent.getValue(resource, fieldName),
                     isArray: false
                 });
