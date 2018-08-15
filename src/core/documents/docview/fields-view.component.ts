@@ -43,7 +43,8 @@ export class FieldsViewComponent implements OnChanges {
 
         const fieldNames = this.projectConfiguration
             .getFieldDefinitions(resource.type)
-            .map(to('name'));
+            .map(to('name'))
+            .concat(['hasPeriodBeginning', 'hasPeriodEnd']);
 
         for (let fieldName of fieldNames) {
 
