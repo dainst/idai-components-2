@@ -9,7 +9,8 @@ import {UnorderedConfigurationDefinition} from './unordered-configuration-defini
  */
 export module Preprocessing {
 
-    export function addCustomFields(configuration: UnorderedConfigurationDefinition, typeName: string, fields: any) {
+    export function addCustomFields(configuration: UnorderedConfigurationDefinition, typeName: string,
+                                    fields: any) {
 
         const type: TypeDefinition|undefined = configuration.types[typeName];
 
@@ -100,7 +101,8 @@ export module Preprocessing {
     function applySearchConfigurationForType(searchConfiguration: any, type: TypeDefinition, typeName: string,
                                              indexType: string, indexFieldName: string) {
 
-        const fulltextFieldNames: string[] = searchConfiguration[typeName][indexType];
+        const fulltextFieldNames: string[]|undefined = searchConfiguration[typeName][indexType];
+        if (!fulltextFieldNames) return;
 
         fulltextFieldNames.forEach(fieldName => {
             const field = type.fields[fieldName];
