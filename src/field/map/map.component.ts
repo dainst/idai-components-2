@@ -37,6 +37,8 @@ export class MapComponent implements OnChanges {
     @Output() onSelectDocument: EventEmitter<IdaiFieldDocument|undefined>
         = new EventEmitter<IdaiFieldDocument|undefined>();
 
+    protected ready: Promise<any>;
+
     protected map: L.Map;
     protected polygons: { [resourceId: string]: Array<IdaiFieldPolygon> } = {};
     protected polylines: { [resourceId: string]: Array<IdaiFieldPolyline> } = {};
@@ -45,10 +47,10 @@ export class MapComponent implements OnChanges {
     protected bounds: any[] = []; // in fact L.LatLng[], but leaflet typings are incomplete
     protected typeColors: { [typeName: string]: string } = {};
 
-
     constructor(projectConfiguration: ProjectConfiguration) {
 
         this.typeColors = projectConfiguration.getTypeColors();
+        this.ready = Promise.resolve();
     }
 
 
@@ -58,11 +60,11 @@ export class MapComponent implements OnChanges {
     }
 
 
-    public async ngOnChanges(changes: SimpleChanges) {
+    public ngOnChanges(changes: SimpleChanges) {
 
         if (!this.map) this.map = this.createMap();
 
-        await this.updateMap(changes);
+        this.ready.then(() => this.updateMap(changes));
     }
 
 
