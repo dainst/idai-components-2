@@ -37,8 +37,6 @@ export class MapComponent implements OnChanges {
     @Output() onSelectDocument: EventEmitter<IdaiFieldDocument|undefined>
         = new EventEmitter<IdaiFieldDocument|undefined>();
 
-    protected ready: Promise<any>;
-
     protected map: L.Map;
     protected polygons: { [resourceId: string]: Array<IdaiFieldPolygon> } = {};
     protected polylines: { [resourceId: string]: Array<IdaiFieldPolyline> } = {};
@@ -50,7 +48,6 @@ export class MapComponent implements OnChanges {
     constructor(projectConfiguration: ProjectConfiguration) {
 
         this.typeColors = projectConfiguration.getTypeColors();
-        this.ready = Promise.resolve();
     }
 
 
@@ -64,7 +61,8 @@ export class MapComponent implements OnChanges {
 
         if (!this.map) this.map = this.createMap();
 
-        this.ready.then(() => this.updateMap(changes));
+        // The promise is necessary to make sure the map is updated based on the current map container size
+        Promise.resolve().then(() => this.updateMap(changes));
     }
 
 
