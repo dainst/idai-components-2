@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {Document} from '../../src/ts/model/core/document';
+import {Document} from '../../src/core/model/core/document';
 
 @Component({
     selector: 'idai-field-map-demo',

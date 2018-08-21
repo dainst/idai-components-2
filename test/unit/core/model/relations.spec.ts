@@ -1,4 +1,4 @@
-import {Relations} from '../../../../src/ts/model/core/relations';
+import {Relations} from '../../../../src/core/model/core/relations';
 
 /**
  * @author Daniel de Oliveira

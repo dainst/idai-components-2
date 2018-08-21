@@ -1,10 +1,10 @@
-import {ConfigurationDefinition} from '../../../../src/ts/configuration/configuration-definition';
-import {ConfigLoader} from '../../../../src/ts/configuration/config-loader';
+import {ConfigurationDefinition} from '../../../../src/core/configuration/configuration-definition';
+import {ConfigLoader} from '../../../../src/core/configuration/config-loader';
 import {
     IdaiFieldPrePreprocessConfigurationValidator
-} from '../../../../src/ts/configuration/idai-field-pre-preprocess-configuration-validator';
-import {ConfigurationValidator} from '../../../../src/ts/configuration/configuration-validator';
-import {FieldDefinition} from '../../../../src/ts/configuration/field-definition';
+} from '../../../../src/core/configuration/idai-field-pre-preprocess-configuration-validator';
+import {ConfigurationValidator} from '../../../../src/core/configuration/configuration-validator';
+import {FieldDefinition} from '../../../../src/core/configuration/field-definition';
 
 /**
  * @author Daniel de Oliveira

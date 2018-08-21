@@ -1,8 +1,8 @@
-import {Preprocessing} from '../../../../src/ts/configuration/preprocessing';
-import {TypeDefinition} from '../../../../src/ts/configuration/type-definition'
-import {RelationDefinition} from '../../../../src/ts/configuration/relation-definition'
-import {UnorderedConfigurationDefinition} from '../../../../src/ts/configuration/unordered-configuration-definition';
-import {FieldDefinition} from '../../../../src/ts/configuration/field-definition';
+import {Preprocessing} from '../../../../src/core/configuration/preprocessing';
+import {TypeDefinition} from '../../../../src/core/configuration/type-definition'
+import {RelationDefinition} from '../../../../src/core/configuration/relation-definition'
+import {UnorderedConfigurationDefinition} from '../../../../src/core/configuration/unordered-configuration-definition';
+import {FieldDefinition} from '../../../../src/core/configuration/field-definition';
 
 /**
  * @author Daniel de Oliveira
