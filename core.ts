@@ -54,3 +54,6 @@ export {MapComponent} from './src/core/map/map.component';
 export {IdaiFieldPolygon} from './src/core/map/idai-field-polygon';
 export {IdaiFieldPolyline} from './src/core/map/idai-field-polyline';
 export {IdaiFieldMarker} from './src/core/map/idai-field-marker';
+
+export {IdaiWidgetsModule} from './src/core/widgets/idai-widgets.module';
+export {TypeIconComponent} from './src/core/widgets/type-icon';
