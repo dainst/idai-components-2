@@ -1,2 +1,2 @@
-export {IdaiWidgetsModule} from './src/core/widgets/idai-widgets.module';
-export {TypeIconComponent} from './src/core/widgets/type-icon';
+export {IdaiWidgetsModule} from './src/ts/widgets/idai-widgets.module';
+export {TypeIconComponent} from './src/ts/widgets/type-icon';

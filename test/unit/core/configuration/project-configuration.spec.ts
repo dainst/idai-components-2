@@ -1,5 +1,5 @@
-import {ProjectConfiguration} from '../../../../src/core/configuration/project-configuration';
-import {MDInternal} from '../../../../src/core/messages/md-internal';
+import {ProjectConfiguration} from '../../../../src/ts/configuration/project-configuration';
+import {MDInternal} from '../../../../src/ts/messages/md-internal';
 
 /**
  * @author Daniel de Oliveira

@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {FieldDefinition} from '../../src/core/configuration/field-definition';
-import {IdaiType} from '../../src/core/configuration/idai-type';
-import {Datastore} from '../../src/core/datastore/datastore';
-import {Document} from '../../src/core/model/core/document';
-import {ProjectConfiguration} from '../../src/core/configuration/project-configuration';
+import {FieldDefinition} from '../../src/ts/configuration/field-definition';
+import {IdaiType} from '../../src/ts/configuration/idai-type';
+import {Datastore} from '../../src/ts/datastore/datastore';
+import {Document} from '../../src/ts/model/core/document';
+import {ProjectConfiguration} from '../../src/ts/configuration/project-configuration';
 
 @Component({
     selector: 'document-edit-demo',

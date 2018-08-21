@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
-import {MD} from '../../src/core/messages/md';
-import {Messages} from '../../src/core/messages/messages';
+import {MD} from '../../src/ts/messages/md';
+import {Messages} from '../../src/ts/messages/messages';
 
 @Component({
     selector: 'messages-demo',
