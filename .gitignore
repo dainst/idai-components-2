@@ -8,15 +8,7 @@ demo/**/*.js.map
 test/unit/**/*.js
 test/unit/**/*.js.map
 !test/unit/config/**/*
-persist.js*
-messages.js*
-datastore.js*
-documents.js*
-idai-field-map.js*
-idai-field-model.js*
-widgets.js*
-configuration.js*
-core.js*
+index.js*
 references.js
 references.js.map
 *.DS_Store
