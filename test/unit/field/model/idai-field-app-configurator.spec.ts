@@ -1,4 +1,4 @@
-import {IdaiFieldAppConfigurator} from '../../../../src/core/model/idai-field-app-configurator';
+import {IdaiFieldAppConfigurator} from '../../../../src/field/model/idai-field-app-configurator';
 import {ConfigLoader} from '../../../../src/core/configuration/config-loader';
 
 /**

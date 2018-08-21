@@ -1,5 +1,5 @@
 import {Component, OnChanges, Input} from '@angular/core';
-import {Resource} from '../../model/core/resource';
+import {Resource} from '../../model/resource';
 import {ProjectConfiguration} from '../../configuration/project-configuration';
 import {to} from 'tsfun';
 import {isUndefinedOrEmpty} from 'tsfun/src/predicates';

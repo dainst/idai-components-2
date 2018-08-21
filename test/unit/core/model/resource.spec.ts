@@ -1,7 +1,7 @@
 /**
  * @author Daniel de Oliveira
  */
-import {Resource} from '../../../../src/core/model/core/resource';
+import {Resource} from '../../../../src/core/model/resource';
 
 describe('Resource', () => {
 

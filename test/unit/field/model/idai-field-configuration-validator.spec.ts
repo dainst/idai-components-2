@@ -1,5 +1,5 @@
 import {ConfigurationDefinition} from '../../../../src/core/configuration/configuration-definition';
-import {IdaiFieldConfigurationValidator} from '../../../../src/core/model/idai-field-configuration-validator';
+import {IdaiFieldConfigurationValidator} from '../../../../src/field/model/idai-field-configuration-validator';
 import {ConfigurationErrors} from '../../../../src/core/configuration/configuration-errors';
 
 /**

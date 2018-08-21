@@ -1,4 +1,4 @@
-import {CoordinatesUtility} from '../../../../src/core/map/coordinates-utility';
+import {CoordinatesUtility} from '../../../../src/field/map/coordinates-utility';
 
 /**
  * @author Thomas Kleinke

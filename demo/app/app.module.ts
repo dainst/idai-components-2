@@ -21,7 +21,7 @@ import {ConfigLoader} from '../../src/core/configuration/config-loader';
 import {ConfigReader} from '../../src/core/configuration/config-reader';
 import {IdaiFieldPrePreprocessConfigurationValidator} from '../../src/core/configuration/idai-field-pre-preprocess-configuration-validator';
 import {ConfigurationValidator} from '../../src/core/configuration/configuration-validator';
-import {IdaiFieldMapModule} from '../../src/core/map/idai-field-map.module';
+import {IdaiFieldMapModule} from '../../src/field/map/idai-field-map.module';
 import {TypeDefinition} from '../../src/core/configuration/type-definition';
 import {FieldDefinition} from '../../src/core/configuration/field-definition';
 

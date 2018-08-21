@@ -1,4 +1,4 @@
-import {Document} from '../model/core/document';
+import {Document} from '../model/document';
 import {ReadDatastore} from './read-datastore';
 
 /**

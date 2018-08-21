@@ -1,4 +1,4 @@
-import {Document} from '../../src/core/model/core/document';
+import {Document} from '../../src/core/model/document';
 
 
 export const OBJECTS: Document[] = [
