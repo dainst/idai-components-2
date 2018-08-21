@@ -1,5 +1,5 @@
-import {Messages} from "../../../../src/core/messages/messages";
-import {MDInternal} from "../../../../src/core/messages/md-internal";
+import {Messages} from "../../../../src/messages/messages";
+import {MDInternal} from "../../../../src/messages/md-internal";
 
 /**
  * @author Daniel de Oliveira

@@ -1,10 +1,10 @@
-import {ConfigurationDefinition} from '../../../../src/core/configuration/configuration-definition';
-import {ConfigLoader} from '../../../../src/core/configuration/config-loader';
+import {ConfigurationDefinition} from '../../../../src/configuration/configuration-definition';
+import {ConfigLoader} from '../../../../src/configuration/config-loader';
 import {
     IdaiFieldPrePreprocessConfigurationValidator
-} from '../../../../src/core/configuration/idai-field-pre-preprocess-configuration-validator';
-import {ConfigurationValidator} from '../../../../src/core/configuration/configuration-validator';
-import {FieldDefinition} from '../../../../src/core/configuration/field-definition';
+} from '../../../../src/configuration/idai-field-pre-preprocess-configuration-validator';
+import {ConfigurationValidator} from '../../../../src/configuration/configuration-validator';
+import {FieldDefinition} from '../../../../src/configuration/field-definition';
 
 /**
  * @author Daniel de Oliveira

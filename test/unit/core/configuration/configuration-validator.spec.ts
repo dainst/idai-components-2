@@ -1,6 +1,6 @@
-import {ConfigurationDefinition} from '../../../../src/core/configuration/configuration-definition';
-import {ConfigurationValidator} from '../../../../src/core/configuration/configuration-validator';
-import {ConfigurationErrors} from '../../../../src/core/configuration/configuration-errors';
+import {ConfigurationDefinition} from '../../../../src/configuration/configuration-definition';
+import {ConfigurationValidator} from '../../../../src/configuration/configuration-validator';
+import {ConfigurationErrors} from '../../../../src/configuration/configuration-errors';
 
 
 /**

@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {OBJECTS} from './sample-objects';
-import {Datastore} from '../../src/core/datastore/datastore';
+import {Datastore} from '../../src/datastore/datastore';
 
 @Component({
     selector: 'idai-components-demo-app',

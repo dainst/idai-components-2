@@ -1,6 +1,6 @@
-import {ConfigurationDefinition} from '../../../../src/core/configuration/configuration-definition';
-import {IdaiFieldConfigurationValidator} from '../../../../src/core/model/idai-field-configuration-validator';
-import {ConfigurationErrors} from '../../../../src/core/configuration/configuration-errors';
+import {ConfigurationDefinition} from '../../../../src/configuration/configuration-definition';
+import {IdaiFieldConfigurationValidator} from '../../../../src/model/idai-field-configuration-validator';
+import {ConfigurationErrors} from '../../../../src/configuration/configuration-errors';
 
 /**
  * @author Daniel de Oliveira

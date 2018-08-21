@@ -1,5 +1,5 @@
-import {IdaiFieldAppConfigurator} from '../../../../src/core/model/idai-field-app-configurator';
-import {ConfigLoader} from '../../../../src/core/configuration/config-loader';
+import {IdaiFieldAppConfigurator} from '../../../../src/model/idai-field-app-configurator';
+import {ConfigLoader} from '../../../../src/configuration/config-loader';
 
 /**
  * @author Daniel de Oliveira

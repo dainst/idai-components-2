@@ -1,4 +1,4 @@
-import {IdaiFieldPrePreprocessConfigurationValidator} from '../../../../src/core/configuration/idai-field-pre-preprocess-configuration-validator';
+import {IdaiFieldPrePreprocessConfigurationValidator} from '../../../../src/configuration/idai-field-pre-preprocess-configuration-validator';
 
 /**
  * @author Daniel de Oliveira
