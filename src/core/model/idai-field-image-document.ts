@@ -1,4 +1,4 @@
-import {Document} from '../../core/model/document';
+import {Document} from './core/document';
 import {IdaiFieldImageResource} from './idai-field-image-resource';
 
 /**

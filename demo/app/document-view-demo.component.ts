@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FieldDefinition} from '../../src/core/configuration/field-definition';
 import {IdaiType} from '../../src/core/configuration/idai-type';
 import {Datastore} from '../../src/core/datastore/datastore';
-import {Document} from '../../src/core/model/document';
+import {Document} from '../../src/core/model/core/document';
 import {ProjectConfiguration} from '../../src/core/configuration/project-configuration';
 
 @Component({

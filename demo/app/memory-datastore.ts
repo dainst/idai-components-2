@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
-import {Document} from '../../src/core/model/document';
+import {Document} from '../../src/core/model/core/document';
 import {Query} from '../../src/core/datastore/query';
 import {Datastore} from '../../src/core/datastore/datastore';
 import {FindResult} from '../../src/core/datastore/read-datastore';

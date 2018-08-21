@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnChanges, Output} from '@angular/core';
-import {Document} from '../../model/document';
-import {Resource} from '../../model/resource';
+import {Document} from '../../model/core/document';
+import {Resource} from '../../model/core/resource';
 import {ReadDatastore} from '../../datastore/read-datastore';
 import {ProjectConfiguration} from '../../configuration/project-configuration';
 
