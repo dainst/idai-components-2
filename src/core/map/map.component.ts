@@ -5,8 +5,8 @@ import {IdaiFieldPolyline} from './idai-field-polyline';
 import {IdaiFieldPolygon} from './idai-field-polygon';
 import {IdaiFieldMarker} from './idai-field-marker';
 import {CoordinatesUtility} from './coordinates-utility';
-import {ProjectConfiguration} from '../../core/configuration/project-configuration';
 import {IdaiFieldGeometry} from '../model/idai-field-geometry';
+import {ProjectConfiguration} from '../configuration/project-configuration';
 
 // no typings for VectorMarkers available
 declare global {

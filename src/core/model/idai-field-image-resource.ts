@@ -1,6 +1,6 @@
 import {IdaiFieldImageRelations} from './idai-field-image-relations';
 import {IdaiFieldImageResourceBase} from "./idai-field-image-resource-base";
-import {Resource} from '../../core/model/resource';
+import {Resource} from '../../core/model/core/resource';
 
 
 export interface IdaiFieldImageResource

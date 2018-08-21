@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {Document} from '../model/document';
+import {Document} from '../model/core/document';
 
 @Component({
     selector: 'document-teaser',

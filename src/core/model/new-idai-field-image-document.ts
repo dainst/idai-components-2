@@ -1,5 +1,5 @@
 import {NewIdaiFieldImageResource} from "./new-idai-field-image-resource";
-import {NewDocument} from '../../core/model/new-document';
+import {NewDocument} from '../../core/model/core/new-document';
 
 /**
  * @author Daniel de Oliveira
