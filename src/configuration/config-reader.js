@@ -10,7 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
-var http_1 = require("@angular/http");
+var http_1 = require("@angular/common/http");
 var md_internal_1 = require("../messages/md-internal");
 var ConfigReader = (function () {
     function ConfigReader(http) {
@@ -43,7 +43,7 @@ var ConfigReader = (function () {
          * @author Thomas Kleinke
          */
         ,
-        __metadata("design:paramtypes", [http_1.Http])
+        __metadata("design:paramtypes", [http_1.HttpClient])
     ], ConfigReader);
     return ConfigReader;
 }());
