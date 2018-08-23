@@ -20,7 +20,9 @@ export class ConfigReader {
 
                 let data;
                 try {
-                    data = JSON.parse(data_['_body']);
+                    // data = JSON.parse(data_['_body']);
+                    console.log("data",data)
+                    data = data_;
                 } catch(e) {
                     reject([MDInternal.PARSE_ERROR_INVALID_JSON, path]);
                 }

@@ -22,7 +22,9 @@ var ConfigReader = (function () {
             _this.http.get(path).subscribe(function (data_) {
                 var data;
                 try {
-                    data = JSON.parse(data_['_body']);
+                    // data = JSON.parse(data_['_body']);
+                    console.log("data", data);
+                    data = _data;
                 }
                 catch (e) {
                     reject([md_internal_1.MDInternal.PARSE_ERROR_INVALID_JSON, path]);
@@ -36,16 +38,16 @@ var ConfigReader = (function () {
             });
         });
     };
-    ConfigReader = __decorate([
-        core_1.Injectable()
-        /**
-         * @author Daniel de Oliveira
-         * @author Thomas Kleinke
-         */
-        ,
-        __metadata("design:paramtypes", [http_1.HttpClient])
-    ], ConfigReader);
     return ConfigReader;
 }());
+ConfigReader = __decorate([
+    core_1.Injectable()
+    /**
+     * @author Daniel de Oliveira
+     * @author Thomas Kleinke
+     */
+    ,
+    __metadata("design:paramtypes", [http_1.HttpClient])
+], ConfigReader);
 exports.ConfigReader = ConfigReader;
 //# sourceMappingURL=config-reader.js.map
