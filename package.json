@@ -17,14 +17,17 @@
     "url": "git+http://bogusman03.dai-cloud.uni-koeln.de/idai-components-2-builds/build-number/.git"
   },
   "dependencies": {
-    "@angular/common": "4.2.2",
-    "@angular/compiler": "4.2.2",
-    "@angular/core": "4.2.2",
-    "@angular/forms": "4.2.2",
-    "@angular/http": "4.2.2",
-    "@angular/platform-browser": "4.2.2",
-    "@angular/platform-browser-dynamic": "4.2.2",
-    "@angular/router": "4.2.2",
+    "@angular/animations": "^4.4.7",
+    "@angular/common": "^4.4.7",
+    "@angular/compiler": "^4.4.7",
+    "@angular/compiler-cli": "^4.4.7",
+    "@angular/core": "^4.4.7",
+    "@angular/forms": "^4.4.7",
+    "@angular/http": "^4.4.7",
+    "@angular/platform-browser": "^4.4.7",
+    "@angular/platform-browser-dynamic": "^4.4.7",
+    "@angular/platform-server": "^4.4.7",
+    "@angular/router": "^4.4.7",
     "@mdi/font": "2.4.85",
     "@ng-bootstrap/ng-bootstrap": "1.0.0-beta.5",
     "Leaflet.vector-markers": "0.0.6",
@@ -36,8 +39,8 @@
     "reflect-metadata": "0.1.2",
     "rxjs": "5.0.1",
     "systemjs": "0.19.31",
-    "zone.js": "0.8.11",
-    "tsfun": "1.16.2"
+    "tsfun": "1.16.2",
+    "zone.js": "0.8.11"
   },
   "devDependencies": {
     "@types/electron": "1.4.31",
