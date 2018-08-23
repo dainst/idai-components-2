@@ -48,7 +48,7 @@ var core_1 = require("@angular/core");
 var resource_1 = require("../../model/core/resource");
 var read_datastore_1 = require("../../datastore/read-datastore");
 var project_configuration_1 = require("../../configuration/project-configuration");
-var RelationsViewComponent = (function () {
+var RelationsViewComponent = /** @class */ (function () {
     function RelationsViewComponent(datastore, projectConfiguration) {
         this.datastore = datastore;
         this.projectConfiguration = projectConfiguration;

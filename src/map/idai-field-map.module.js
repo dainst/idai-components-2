@@ -9,7 +9,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var map_component_1 = require("./map.component");
 var common_1 = require("@angular/common");
-var IdaiFieldMapModule = (function () {
+var IdaiFieldMapModule = /** @class */ (function () {
     function IdaiFieldMapModule() {
     }
     IdaiFieldMapModule = __decorate([

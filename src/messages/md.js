@@ -16,7 +16,7 @@ var core_1 = require("@angular/core");
  * @author Daniel de Oliveira
  * @author Jan G. Wieners
  */
-var MD = (function () {
+var MD = /** @class */ (function () {
     function MD() {
     }
     MD = __decorate([

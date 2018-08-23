@@ -13,7 +13,7 @@ var core_1 = require("@angular/core");
 var config_loader_1 = require("../configuration/config-loader");
 var idai_field_configuration_validator_1 = require("./idai-field-configuration-validator");
 var idai_field_pre_preprocess_configuration_validator_1 = require("../configuration/idai-field-pre-preprocess-configuration-validator");
-var IdaiFieldAppConfigurator = (function () {
+var IdaiFieldAppConfigurator = /** @class */ (function () {
     function IdaiFieldAppConfigurator(configLoader) {
         this.configLoader = configLoader;
         this.defaultTypes = {

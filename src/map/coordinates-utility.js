@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var CoordinatesUtility = (function () {
+var CoordinatesUtility = /** @class */ (function () {
     function CoordinatesUtility() {
     }
     CoordinatesUtility.convertPolygonCoordinatesFromLngLatToLatLng = function (coordinates) {

@@ -11,7 +11,7 @@ var common_1 = require("@angular/common");
 var forms_1 = require("@angular/forms");
 var ng_bootstrap_1 = require("@ng-bootstrap/ng-bootstrap");
 var type_icon_1 = require("./type-icon");
-var IdaiWidgetsModule = (function () {
+var IdaiWidgetsModule = /** @class */ (function () {
     function IdaiWidgetsModule() {
     }
     IdaiWidgetsModule = __decorate([

@@ -9,7 +9,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var messages_component_1 = require("./messages.component");
 var common_1 = require("@angular/common");
-var IdaiMessagesModule = (function () {
+var IdaiMessagesModule = /** @class */ (function () {
     function IdaiMessagesModule() {
     }
     IdaiMessagesModule = __decorate([

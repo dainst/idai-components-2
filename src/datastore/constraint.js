@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * Companion object
  */
-var Constraint = (function () {
+var Constraint = /** @class */ (function () {
     function Constraint() {
     }
     Constraint.convertTo = function (constraint) {

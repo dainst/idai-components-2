@@ -8,7 +8,7 @@ var tsfun_1 = require("tsfun");
  *
  * @author Daniel de Oliveira
  */
-var IdaiFieldPrePreprocessConfigurationValidator = (function () {
+var IdaiFieldPrePreprocessConfigurationValidator = /** @class */ (function () {
     function IdaiFieldPrePreprocessConfigurationValidator() {
     }
     /**

@@ -48,7 +48,7 @@ var core_1 = require("@angular/core");
 var project_configuration_1 = require("./project-configuration");
 var preprocessing_1 = require("./preprocessing");
 var config_reader_1 = require("./config-reader");
-var ConfigLoader = (function () {
+var ConfigLoader = /** @class */ (function () {
     function ConfigLoader(configReader) {
         this.configReader = configReader;
     }

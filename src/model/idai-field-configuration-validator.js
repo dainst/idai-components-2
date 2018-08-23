@@ -15,7 +15,7 @@ var configuration_validator_1 = require("../configuration/configuration-validato
  * @author Thomas Kleinke
  * @author Daniel de Oliveira
  */
-var IdaiFieldConfigurationValidator = (function (_super) {
+var IdaiFieldConfigurationValidator = /** @class */ (function (_super) {
     __extends(IdaiFieldConfigurationValidator, _super);
     function IdaiFieldConfigurationValidator() {
         return _super !== null && _super.apply(this, arguments) || this;

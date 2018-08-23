@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * @author Daniel de Oliveira
  */
-var DatastoreErrors = (function () {
+var DatastoreErrors = /** @class */ (function () {
     function DatastoreErrors() {
     }
     DatastoreErrors.INVALID_DOCUMENT = 'idai-components-2/datastore/invaliddocument';

@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var coordinates_utility_1 = require("./coordinates-utility");
 var project_configuration_1 = require("../configuration/project-configuration");
-var MapComponent = (function () {
+var MapComponent = /** @class */ (function () {
     function MapComponent(projectConfiguration) {
         this.onSelectDocument = new core_1.EventEmitter();
         this.polygons = {};

@@ -15,7 +15,7 @@ var messages_1 = require("./messages");
  * @author Jan G. Wieners
  * @author Thomas Kleinke
  */
-var MessagesComponent = (function () {
+var MessagesComponent = /** @class */ (function () {
     function MessagesComponent(messages) {
         this.messages = messages;
         this.alwaysShowClose = false;

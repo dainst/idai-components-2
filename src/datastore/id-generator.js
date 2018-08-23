@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var index_1 = require("angular2-uuid/index");
-var IdGenerator = (function () {
+var IdGenerator = /** @class */ (function () {
     function IdGenerator() {
     }
     IdGenerator.generateId = function () {

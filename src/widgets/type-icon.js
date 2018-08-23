@@ -11,7 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var project_configuration_1 = require("../configuration/project-configuration");
-var TypeIconComponent = (function () {
+var TypeIconComponent = /** @class */ (function () {
     function TypeIconComponent(projectConfiguration) {
         this.projectConfiguration = projectConfiguration;
     }

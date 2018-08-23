@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * @author Daniel de Oliveira
  */
-var ConfigurationErrors = (function () {
+var ConfigurationErrors = /** @class */ (function () {
     function ConfigurationErrors() {
     }
     ConfigurationErrors.INVALID_CONFIG_DUPLICATETYPE = 'config/error/duplicatetype';

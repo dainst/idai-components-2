@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var md_internal_1 = require("../messages/md-internal");
 var idai_type_1 = require("./idai-type");
-var ProjectConfiguration = (function () {
+var ProjectConfiguration = /** @class */ (function () {
     /**
      * @param configuration
      */

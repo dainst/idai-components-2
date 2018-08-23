@@ -4,7 +4,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * @author F.Z.
  * @author Thomas Kleinke
  */
-var IdaiType = (function () {
+var IdaiType = /** @class */ (function () {
     function IdaiType(definition) {
         this.parentType = undefined;
         this.name = definition.type;

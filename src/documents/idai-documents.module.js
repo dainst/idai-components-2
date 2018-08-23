@@ -18,7 +18,7 @@ var fields_view_component_1 = require("./docview/fields-view.component");
 var relations_view_component_1 = require("./docview/relations-view.component");
 var document_teaser_component_1 = require("./document-teaser.component");
 var idai_widgets_module_1 = require("../widgets/idai-widgets.module");
-var IdaiDocumentsModule = (function () {
+var IdaiDocumentsModule = /** @class */ (function () {
     function IdaiDocumentsModule() {
     }
     IdaiDocumentsModule = __decorate([

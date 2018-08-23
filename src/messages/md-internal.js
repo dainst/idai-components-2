@@ -27,7 +27,7 @@ var md_1 = require("./md");
  *
  * @author Daniel de Oliveira
  */
-var MDInternal = (function (_super) {
+var MDInternal = /** @class */ (function (_super) {
     __extends(MDInternal, _super);
     function MDInternal() {
         var _this = _super.call(this) || this;

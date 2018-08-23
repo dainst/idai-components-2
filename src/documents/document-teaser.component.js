@@ -11,7 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var document_1 = require("../model/core/document");
-var DocumentTeaserComponent = (function () {
+var DocumentTeaserComponent = /** @class */ (function () {
     function DocumentTeaserComponent() {
     }
     __decorate([

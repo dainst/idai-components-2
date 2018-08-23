@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * @author Daniel de Oliveira
  * @author Thomas Kleinke
  */
-var ReadDatastore = (function () {
+var ReadDatastore = /** @class */ (function () {
     function ReadDatastore() {
     }
     return ReadDatastore;

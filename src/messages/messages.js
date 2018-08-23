@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var md_1 = require("./md");
 var md_internal_1 = require("./md-internal");
-var Messages = (function () {
+var Messages = /** @class */ (function () {
     function Messages(messagesDictionary, timeout) {
         this.messagesDictionary = messagesDictionary;
         this.timeout = timeout;

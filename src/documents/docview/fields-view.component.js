@@ -14,7 +14,7 @@ var resource_1 = require("../../model/core/resource");
 var project_configuration_1 = require("../../configuration/project-configuration");
 var tsfun_1 = require("tsfun");
 var predicates_1 = require("tsfun/src/predicates");
-var FieldsViewComponent = (function () {
+var FieldsViewComponent = /** @class */ (function () {
     function FieldsViewComponent(projectConfiguration) {
         this.projectConfiguration = projectConfiguration;
     }

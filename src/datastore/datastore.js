@@ -24,7 +24,7 @@ var read_datastore_1 = require("./read-datastore");
  * @author Sebastian Cuy
  * @author Daniel de Oliveira
  */
-var Datastore = (function (_super) {
+var Datastore = /** @class */ (function (_super) {
     __extends(Datastore, _super);
     function Datastore() {
         return _super !== null && _super.apply(this, arguments) || this;

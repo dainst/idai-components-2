@@ -6,7 +6,7 @@ var configuration_errors_1 = require("./configuration-errors");
  * @author Daniel de Oliveira
  * @author Thomas Kleinke
  */
-var ConfigurationValidator = (function () {
+var ConfigurationValidator = /** @class */ (function () {
     function ConfigurationValidator() {
     }
     /**

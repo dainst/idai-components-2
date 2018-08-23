@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * Companion object
  */
-var Query = (function () {
+var Query = /** @class */ (function () {
     function Query() {
     }
     Query.isEmpty = function (query) {
