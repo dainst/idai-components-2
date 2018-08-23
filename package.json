@@ -29,7 +29,7 @@
     "@angular/platform-server": "6.0.0",
     "@angular/router": "6.0.0",
     "@mdi/font": "2.4.85",
-    "@ng-bootstrap/ng-bootstrap": "1.0.0-beta.5",
+    "@ng-bootstrap/ng-bootstrap": "2.0.0",
     "Leaflet.vector-markers": "0.0.6",
     "angular2-uuid": "1.0.6",
     "bootstrap": "4.0.0-beta",
@@ -41,7 +41,7 @@
     "rxjs-compat": "^6.2.2",
     "systemjs": "0.19.31",
     "tsfun": "1.16.11",
-    "zone.js": "0.8.11"
+    "zone.js": "0.8.26"
   },
   "devDependencies": {
     "@types/electron": "1.4.31",
