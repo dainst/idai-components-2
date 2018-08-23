@@ -39,7 +39,7 @@
     "reflect-metadata": "0.1.2",
     "rxjs": "6.0.0",
     "rxjs-compat": "6.0.0",
-    "systemjs": "0.19.31",
+    "systemjs": "0.21.4",
     "tsfun": "1.16.11",
     "zone.js": "0.8.26"
   },
@@ -58,6 +58,6 @@
     "jasmine": "2.5.2",
     "jasmine-core": "2.5.2",
     "rimraf": "2.5.2",
-    "typescript": "2.7.0"
+    "typescript": "2.4.2"
   }
 }
