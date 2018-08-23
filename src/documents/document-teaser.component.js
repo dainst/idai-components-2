@@ -14,18 +14,18 @@ var document_1 = require("../model/core/document");
 var DocumentTeaserComponent = (function () {
     function DocumentTeaserComponent() {
     }
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Object)
+    ], DocumentTeaserComponent.prototype, "document", void 0);
+    DocumentTeaserComponent = __decorate([
+        core_1.Component({
+            selector: 'document-teaser',
+            moduleId: module.id,
+            templateUrl: './document-teaser.html'
+        })
+    ], DocumentTeaserComponent);
     return DocumentTeaserComponent;
 }());
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Object)
-], DocumentTeaserComponent.prototype, "document", void 0);
-DocumentTeaserComponent = __decorate([
-    core_1.Component({
-        selector: 'document-teaser',
-        moduleId: module.id,
-        templateUrl: './document-teaser.html'
-    })
-], DocumentTeaserComponent);
 exports.DocumentTeaserComponent = DocumentTeaserComponent;
 //# sourceMappingURL=document-teaser.component.js.map

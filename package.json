@@ -17,17 +17,17 @@
     "url": "git+http://bogusman03.dai-cloud.uni-koeln.de/idai-components-2-builds/build-number/.git"
   },
   "dependencies": {
-    "@angular/animations": "5.0.0",
-    "@angular/common": "5.0.0",
-    "@angular/compiler": "5.0.0",
-    "@angular/compiler-cli": "5.0.0",
-    "@angular/core": "5.0.0",
-    "@angular/forms": "5.0.0",
-    "@angular/http": "5.0.0",
-    "@angular/platform-browser": "5.0.0",
-    "@angular/platform-browser-dynamic": "5.0.0",
-    "@angular/platform-server": "5.0.0",
-    "@angular/router": "5.0.0",
+    "@angular/animations": "6.0.0",
+    "@angular/common": "6.0.0",
+    "@angular/compiler": "6.0.0",
+    "@angular/compiler-cli": "6.0.0",
+    "@angular/core": "6.0.0",
+    "@angular/forms": "6.0.0",
+    "@angular/http": "6.0.0",
+    "@angular/platform-browser": "6.0.0",
+    "@angular/platform-browser-dynamic": "6.0.0",
+    "@angular/platform-server": "6.0.0",
+    "@angular/router": "6.0.0",
     "@mdi/font": "2.4.85",
     "@ng-bootstrap/ng-bootstrap": "1.0.0-beta.5",
     "Leaflet.vector-markers": "0.0.6",
@@ -37,9 +37,10 @@
     "es6-shim": "0.35.0",
     "leaflet": "1.2.0",
     "reflect-metadata": "0.1.2",
-    "rxjs": "5.0.1",
+    "rxjs": "6.0.0",
+    "rxjs-compat": "6.0.0-beta.1",
     "systemjs": "0.19.31",
-    "tsfun": "1.16.2",
+    "tsfun": "1.16.11",
     "zone.js": "0.8.11"
   },
   "devDependencies": {
@@ -57,6 +58,6 @@
     "jasmine": "2.5.2",
     "jasmine-core": "2.5.2",
     "rimraf": "2.5.2",
-    "typescript": "2.3.1"
+    "typescript": "2.4.2"
   }
 }

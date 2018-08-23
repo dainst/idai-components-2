@@ -19,10 +19,10 @@ var core_1 = require("@angular/core");
 var MD = (function () {
     function MD() {
     }
+    MD = __decorate([
+        core_1.Injectable()
+    ], MD);
     return MD;
 }());
-MD = __decorate([
-    core_1.Injectable()
-], MD);
 exports.MD = MD;
 //# sourceMappingURL=md.js.map

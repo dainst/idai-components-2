@@ -12,20 +12,20 @@ var common_1 = require("@angular/common");
 var IdaiFieldMapModule = (function () {
     function IdaiFieldMapModule() {
     }
+    IdaiFieldMapModule = __decorate([
+        core_1.NgModule({
+            imports: [
+                common_1.CommonModule
+            ],
+            declarations: [
+                map_component_1.MapComponent
+            ],
+            exports: [
+                map_component_1.MapComponent
+            ]
+        })
+    ], IdaiFieldMapModule);
     return IdaiFieldMapModule;
 }());
-IdaiFieldMapModule = __decorate([
-    core_1.NgModule({
-        imports: [
-            common_1.CommonModule
-        ],
-        declarations: [
-            map_component_1.MapComponent
-        ],
-        exports: [
-            map_component_1.MapComponent
-        ]
-    })
-], IdaiFieldMapModule);
 exports.IdaiFieldMapModule = IdaiFieldMapModule;
 //# sourceMappingURL=idai-field-map.module.js.map

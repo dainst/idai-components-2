@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var coordinates_utility_1 = require("./coordinates-utility");
 var project_configuration_1 = require("../configuration/project-configuration");
-var MapComponent = MapComponent_1 = (function () {
+var MapComponent = (function () {
     function MapComponent(projectConfiguration) {
         this.onSelectDocument = new core_1.EventEmitter();
         this.polygons = {};
@@ -22,6 +22,7 @@ var MapComponent = MapComponent_1 = (function () {
         this.typeColors = {};
         this.typeColors = projectConfiguration.getTypeColors();
     }
+    MapComponent_1 = MapComponent;
     MapComponent.prototype.ngAfterViewInit = function () {
         if (this.map)
             this.map.invalidateSize(false);
@@ -326,44 +327,44 @@ var MapComponent = MapComponent_1 = (function () {
             extraClasses: extraClasses
         });
     };
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Array)
+    ], MapComponent.prototype, "documents", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Object)
+    ], MapComponent.prototype, "selectedDocument", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Array)
+    ], MapComponent.prototype, "parentDocuments", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Object)
+    ], MapComponent.prototype, "projectDocument", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], MapComponent.prototype, "update", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], MapComponent.prototype, "onSelectDocument", void 0);
+    MapComponent = MapComponent_1 = __decorate([
+        core_1.Component({
+            moduleId: module.id,
+            selector: 'map',
+            template: '<div id="map-container"></div>'
+        })
+        /**
+         * @author Thomas Kleinke
+         */
+        ,
+        __metadata("design:paramtypes", [project_configuration_1.ProjectConfiguration])
+    ], MapComponent);
     return MapComponent;
+    var MapComponent_1;
 }());
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Array)
-], MapComponent.prototype, "documents", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Object)
-], MapComponent.prototype, "selectedDocument", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Array)
-], MapComponent.prototype, "parentDocuments", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Object)
-], MapComponent.prototype, "projectDocument", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Boolean)
-], MapComponent.prototype, "update", void 0);
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], MapComponent.prototype, "onSelectDocument", void 0);
-MapComponent = MapComponent_1 = __decorate([
-    core_1.Component({
-        moduleId: module.id,
-        selector: 'map',
-        template: '<div id="map-container"></div>'
-    })
-    /**
-     * @author Thomas Kleinke
-     */
-    ,
-    __metadata("design:paramtypes", [project_configuration_1.ProjectConfiguration])
-], MapComponent);
 exports.MapComponent = MapComponent;
-var MapComponent_1;
 //# sourceMappingURL=map.component.js.map

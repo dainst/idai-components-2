@@ -36,16 +36,16 @@ var ConfigReader = (function () {
             });
         });
     };
+    ConfigReader = __decorate([
+        core_1.Injectable()
+        /**
+         * @author Daniel de Oliveira
+         * @author Thomas Kleinke
+         */
+        ,
+        __metadata("design:paramtypes", [http_1.Http])
+    ], ConfigReader);
     return ConfigReader;
 }());
-ConfigReader = __decorate([
-    core_1.Injectable()
-    /**
-     * @author Daniel de Oliveira
-     * @author Thomas Kleinke
-     */
-    ,
-    __metadata("design:paramtypes", [http_1.Http])
-], ConfigReader);
 exports.ConfigReader = ConfigReader;
 //# sourceMappingURL=config-reader.js.map

@@ -109,35 +109,35 @@ var RelationsViewComponent = (function () {
         }
         return Promise.all(promises).then(function () { return Promise.resolve(targetDocuments); });
     };
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Object)
+    ], RelationsViewComponent.prototype, "resource", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Array)
+    ], RelationsViewComponent.prototype, "hideRelations", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], RelationsViewComponent.prototype, "onRelationTargetClicked", void 0);
+    RelationsViewComponent = __decorate([
+        core_1.Component({
+            selector: 'relations-view',
+            moduleId: module.id,
+            templateUrl: './relations-view.html'
+        })
+        /**
+         * Shows relations and fields of a document.
+         *
+         * @author Thomas Kleinke
+         * @author Sebastian Cuy
+         * @author Daniel de Oliveira
+         */
+        ,
+        __metadata("design:paramtypes", [read_datastore_1.ReadDatastore, project_configuration_1.ProjectConfiguration])
+    ], RelationsViewComponent);
     return RelationsViewComponent;
 }());
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Object)
-], RelationsViewComponent.prototype, "resource", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Array)
-], RelationsViewComponent.prototype, "hideRelations", void 0);
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], RelationsViewComponent.prototype, "onRelationTargetClicked", void 0);
-RelationsViewComponent = __decorate([
-    core_1.Component({
-        selector: 'relations-view',
-        moduleId: module.id,
-        templateUrl: './relations-view.html'
-    })
-    /**
-     * Shows relations and fields of a document.
-     *
-     * @author Thomas Kleinke
-     * @author Sebastian Cuy
-     * @author Daniel de Oliveira
-     */
-    ,
-    __metadata("design:paramtypes", [read_datastore_1.ReadDatastore, project_configuration_1.ProjectConfiguration])
-], RelationsViewComponent);
 exports.RelationsViewComponent = RelationsViewComponent;
 //# sourceMappingURL=relations-view.component.js.map

@@ -14,10 +14,11 @@ var resource_1 = require("../../model/core/resource");
 var project_configuration_1 = require("../../configuration/project-configuration");
 var tsfun_1 = require("tsfun");
 var predicates_1 = require("tsfun/src/predicates");
-var FieldsViewComponent = FieldsViewComponent_1 = (function () {
+var FieldsViewComponent = (function () {
     function FieldsViewComponent(projectConfiguration) {
         this.projectConfiguration = projectConfiguration;
     }
+    FieldsViewComponent_1 = FieldsViewComponent;
     FieldsViewComponent.prototype.ngOnChanges = function () {
         this.fields = [];
         if (this.resource)
@@ -80,27 +81,27 @@ var FieldsViewComponent = FieldsViewComponent_1 = (function () {
             return resource[fieldName];
         }
     };
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Object)
+    ], FieldsViewComponent.prototype, "resource", void 0);
+    FieldsViewComponent = FieldsViewComponent_1 = __decorate([
+        core_1.Component({
+            selector: 'fields-view',
+            moduleId: module.id,
+            templateUrl: './fields-view.html'
+        })
+        /**
+         * Shows fields of a document.
+         *
+         * @author Thomas Kleinke
+         * @author Sebastian Cuy
+         */
+        ,
+        __metadata("design:paramtypes", [project_configuration_1.ProjectConfiguration])
+    ], FieldsViewComponent);
     return FieldsViewComponent;
+    var FieldsViewComponent_1;
 }());
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Object)
-], FieldsViewComponent.prototype, "resource", void 0);
-FieldsViewComponent = FieldsViewComponent_1 = __decorate([
-    core_1.Component({
-        selector: 'fields-view',
-        moduleId: module.id,
-        templateUrl: './fields-view.html'
-    })
-    /**
-     * Shows fields of a document.
-     *
-     * @author Thomas Kleinke
-     * @author Sebastian Cuy
-     */
-    ,
-    __metadata("design:paramtypes", [project_configuration_1.ProjectConfiguration])
-], FieldsViewComponent);
 exports.FieldsViewComponent = FieldsViewComponent;
-var FieldsViewComponent_1;
 //# sourceMappingURL=fields-view.component.js.map

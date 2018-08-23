@@ -12,13 +12,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var md_1 = require("./md");
 var md_internal_1 = require("./md-internal");
-var Messages = Messages_1 = (function () {
+var Messages = (function () {
     function Messages(messagesDictionary, timeout) {
         this.messagesDictionary = messagesDictionary;
         this.timeout = timeout;
         this.internalMessagesDictionary = new md_internal_1.MDInternal();
         this.activeMessages = [];
     }
+    Messages_1 = Messages;
     /**
      * @param msgWithParams an array of strings and numbers
      *   msgWithParams[0] -> key. Used to identify the message. Must be an existing key.
@@ -89,24 +90,24 @@ var Messages = Messages_1 = (function () {
             hidden: false
         };
     };
+    // Messages of these types fade away after the given timeout.
+    Messages.TIMEOUT_TYPES = ['success', 'info'];
+    Messages = Messages_1 = __decorate([
+        core_1.Injectable()
+        /**
+         * Maintains a collection of currently active messages the
+         * user can see at a given moment. Message content is defined
+         * by message dictionary keys.
+         *
+         * @author Jan G. Wieners
+         * @author Daniel M. de Oliveira
+         * @author Thomas Kleinke
+         */
+        ,
+        __metadata("design:paramtypes", [md_1.MD, Number])
+    ], Messages);
     return Messages;
+    var Messages_1;
 }());
-// Messages of these types fade away after the given timeout.
-Messages.TIMEOUT_TYPES = ['success', 'info'];
-Messages = Messages_1 = __decorate([
-    core_1.Injectable()
-    /**
-     * Maintains a collection of currently active messages the
-     * user can see at a given moment. Message content is defined
-     * by message dictionary keys.
-     *
-     * @author Jan G. Wieners
-     * @author Daniel M. de Oliveira
-     * @author Thomas Kleinke
-     */
-    ,
-    __metadata("design:paramtypes", [md_1.MD, Number])
-], Messages);
 exports.Messages = Messages;
-var Messages_1;
 //# sourceMappingURL=messages.js.map

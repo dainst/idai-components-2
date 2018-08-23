@@ -27,7 +27,7 @@ var md_1 = require("./md");
  *
  * @author Daniel de Oliveira
  */
-var MDInternal = MDInternal_1 = (function (_super) {
+var MDInternal = (function (_super) {
     __extends(MDInternal, _super);
     function MDInternal() {
         var _this = _super.call(this) || this;
@@ -65,17 +65,18 @@ var MDInternal = MDInternal_1 = (function (_super) {
         };
         return _this;
     }
+    MDInternal_1 = MDInternal;
+    MDInternal.UNKOWN_ERROR = 'unknown-error';
+    MDInternal.MESSAGES_NOBODY = 'messages/nobody';
+    MDInternal.PC_GENERIC_ERROR = 'pmc/generic';
+    MDInternal.PARSE_ERROR_INVALID_JSON = 'parse/error/invalidjson';
+    MDInternal.PERSISTENCE_ERROR_TARGETNOTFOUND = 'persistence/error/targetnotfound';
+    MDInternal = MDInternal_1 = __decorate([
+        core_1.Injectable(),
+        __metadata("design:paramtypes", [])
+    ], MDInternal);
     return MDInternal;
+    var MDInternal_1;
 }(md_1.MD));
-MDInternal.UNKOWN_ERROR = 'unknown-error';
-MDInternal.MESSAGES_NOBODY = 'messages/nobody';
-MDInternal.PC_GENERIC_ERROR = 'pmc/generic';
-MDInternal.PARSE_ERROR_INVALID_JSON = 'parse/error/invalidjson';
-MDInternal.PERSISTENCE_ERROR_TARGETNOTFOUND = 'persistence/error/targetnotfound';
-MDInternal = MDInternal_1 = __decorate([
-    core_1.Injectable(),
-    __metadata("design:paramtypes", [])
-], MDInternal);
 exports.MDInternal = MDInternal;
-var MDInternal_1;
 //# sourceMappingURL=md-internal.js.map

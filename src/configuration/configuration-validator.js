@@ -109,28 +109,28 @@ var ConfigurationValidator = (function () {
         }
         return msgs;
     };
+    ConfigurationValidator.VALID_INPUT_TYPES = ['input', 'inputs', 'text', 'dropdown', 'dropdownRange', 'radio', 'checkboxes',
+        'multiselect', 'unsignedInt', 'float', 'unsignedFloat', 'dating', 'hasPeriod', 'dimension', 'boolean', 'date'];
+    ConfigurationValidator.VALUELIST_INPUT_TYPES = ['dropdown', 'radio', 'checkboxes', 'multiselect'];
+    ConfigurationValidator.addErrMsg = function (errFun) {
+        return function (msgs, type) {
+            msgs.push(errFun(type));
+            return msgs;
+        };
+    };
+    ConfigurationValidator.missingParentType = function (type) {
+        return [configuration_errors_1.ConfigurationErrors.INVALID_CONFIG_MISSINGPARENTTYPE, type.parent];
+    };
+    ConfigurationValidator.duplicateType = function (type) {
+        return [configuration_errors_1.ConfigurationErrors.INVALID_CONFIG_DUPLICATETYPE, type.type];
+    };
+    ConfigurationValidator.multipleUseOfDating = function (type) {
+        return [configuration_errors_1.ConfigurationErrors.INVALID_CONFIG_MULTIPLEUSEOFDATING, type.type];
+    };
+    ConfigurationValidator.invalidType = function (type) {
+        return [configuration_errors_1.ConfigurationErrors.INVALID_CONFIG_INVALIDTYPE, JSON.stringify(type)];
+    };
     return ConfigurationValidator;
 }());
-ConfigurationValidator.VALID_INPUT_TYPES = ['input', 'inputs', 'text', 'dropdown', 'dropdownRange', 'radio', 'checkboxes',
-    'multiselect', 'unsignedInt', 'float', 'unsignedFloat', 'dating', 'hasPeriod', 'dimension', 'boolean', 'date'];
-ConfigurationValidator.VALUELIST_INPUT_TYPES = ['dropdown', 'radio', 'checkboxes', 'multiselect'];
-ConfigurationValidator.addErrMsg = function (errFun) {
-    return function (msgs, type) {
-        msgs.push(errFun(type));
-        return msgs;
-    };
-};
-ConfigurationValidator.missingParentType = function (type) {
-    return [configuration_errors_1.ConfigurationErrors.INVALID_CONFIG_MISSINGPARENTTYPE, type.parent];
-};
-ConfigurationValidator.duplicateType = function (type) {
-    return [configuration_errors_1.ConfigurationErrors.INVALID_CONFIG_DUPLICATETYPE, type.type];
-};
-ConfigurationValidator.multipleUseOfDating = function (type) {
-    return [configuration_errors_1.ConfigurationErrors.INVALID_CONFIG_MULTIPLEUSEOFDATING, type.type];
-};
-ConfigurationValidator.invalidType = function (type) {
-    return [configuration_errors_1.ConfigurationErrors.INVALID_CONFIG_INVALIDTYPE, JSON.stringify(type)];
-};
 exports.ConfigurationValidator = ConfigurationValidator;
 //# sourceMappingURL=configuration-validator.js.map

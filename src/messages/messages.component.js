@@ -32,19 +32,19 @@ var MessagesComponent = (function () {
     MessagesComponent.prototype.closeAlert = function (message) {
         this.messages.hideMessage(message);
     };
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Object)
+    ], MessagesComponent.prototype, "alwaysShowClose", void 0);
+    MessagesComponent = __decorate([
+        core_1.Component({
+            moduleId: module.id,
+            selector: 'messages',
+            templateUrl: './messages.html'
+        }),
+        __metadata("design:paramtypes", [messages_1.Messages])
+    ], MessagesComponent);
     return MessagesComponent;
 }());
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Object)
-], MessagesComponent.prototype, "alwaysShowClose", void 0);
-MessagesComponent = __decorate([
-    core_1.Component({
-        moduleId: module.id,
-        selector: 'messages',
-        templateUrl: './messages.html'
-    }),
-    __metadata("design:paramtypes", [messages_1.Messages])
-], MessagesComponent);
 exports.MessagesComponent = MessagesComponent;
 //# sourceMappingURL=messages.component.js.map

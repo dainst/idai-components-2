@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var md_internal_1 = require("../messages/md-internal");
 var idai_type_1 = require("./idai-type");
-var ProjectConfiguration = ProjectConfiguration_1 = (function () {
+var ProjectConfiguration = (function () {
     /**
      * @param configuration
      */
@@ -26,6 +26,7 @@ var ProjectConfiguration = ProjectConfiguration_1 = (function () {
         this.projectIdentifier = configuration.identifier;
         this.relationFields = configuration.relations;
     }
+    ProjectConfiguration_1 = ProjectConfiguration;
     ProjectConfiguration.prototype.getInverseRelations = function (relationName) {
         if (!this.relationFields)
             return undefined;
@@ -269,25 +270,25 @@ var ProjectConfiguration = ProjectConfiguration_1 = (function () {
         var luma = 0.2126 * r + 0.7152 * g + 0.0722 * b; // per ITU-R BT.709
         return luma > 200;
     };
+    ProjectConfiguration = ProjectConfiguration_1 = __decorate([
+        core_1.Injectable()
+        /**
+         * ProjectConfiguration maintains the current projects properties.
+         * Amongst them is the set of types for the current project,
+         * which ProjectConfiguration provides to its clients.
+         *
+         * Within a project, objects of the available types can get created,
+         * where every type is a configuration of different fields.
+         *
+         * @author Thomas Kleinke
+         * @author Daniel de Oliveira
+         * @author Sebastian Cuy
+         */
+        ,
+        __metadata("design:paramtypes", [Object])
+    ], ProjectConfiguration);
     return ProjectConfiguration;
+    var ProjectConfiguration_1;
 }());
-ProjectConfiguration = ProjectConfiguration_1 = __decorate([
-    core_1.Injectable()
-    /**
-     * ProjectConfiguration maintains the current projects properties.
-     * Amongst them is the set of types for the current project,
-     * which ProjectConfiguration provides to its clients.
-     *
-     * Within a project, objects of the available types can get created,
-     * where every type is a configuration of different fields.
-     *
-     * @author Thomas Kleinke
-     * @author Daniel de Oliveira
-     * @author Sebastian Cuy
-     */
-    ,
-    __metadata("design:paramtypes", [Object])
-], ProjectConfiguration);
 exports.ProjectConfiguration = ProjectConfiguration;
-var ProjectConfiguration_1;
 //# sourceMappingURL=project-configuration.js.map

@@ -14,22 +14,22 @@ var type_icon_1 = require("./type-icon");
 var IdaiWidgetsModule = (function () {
     function IdaiWidgetsModule() {
     }
+    IdaiWidgetsModule = __decorate([
+        core_1.NgModule({
+            imports: [
+                common_1.CommonModule,
+                ng_bootstrap_1.NgbModule,
+                forms_1.FormsModule
+            ],
+            declarations: [
+                type_icon_1.TypeIconComponent
+            ],
+            exports: [
+                type_icon_1.TypeIconComponent
+            ]
+        })
+    ], IdaiWidgetsModule);
     return IdaiWidgetsModule;
 }());
-IdaiWidgetsModule = __decorate([
-    core_1.NgModule({
-        imports: [
-            common_1.CommonModule,
-            ng_bootstrap_1.NgbModule,
-            forms_1.FormsModule
-        ],
-        declarations: [
-            type_icon_1.TypeIconComponent
-        ],
-        exports: [
-            type_icon_1.TypeIconComponent
-        ]
-    })
-], IdaiWidgetsModule);
 exports.IdaiWidgetsModule = IdaiWidgetsModule;
 //# sourceMappingURL=idai-widgets.module.js.map

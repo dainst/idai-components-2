@@ -123,16 +123,16 @@ var IdaiFieldAppConfigurator = (function () {
         if (applyMeninxConfiguration === void 0) { applyMeninxConfiguration = false; }
         return this.configLoader.go(configDirPath, this.defaultTypes, this.defaultRelations, this.defaultFields, this.defaultFieldsOrder, new idai_field_pre_preprocess_configuration_validator_1.IdaiFieldPrePreprocessConfigurationValidator(), new idai_field_configuration_validator_1.IdaiFieldConfigurationValidator(), applyMeninxConfiguration);
     };
+    IdaiFieldAppConfigurator = __decorate([
+        core_1.Injectable()
+        /**
+         * @author Daniel de Oliveira
+         * @author Thomas Kleinke
+         */
+        ,
+        __metadata("design:paramtypes", [config_loader_1.ConfigLoader])
+    ], IdaiFieldAppConfigurator);
     return IdaiFieldAppConfigurator;
 }());
-IdaiFieldAppConfigurator = __decorate([
-    core_1.Injectable()
-    /**
-     * @author Daniel de Oliveira
-     * @author Thomas Kleinke
-     */
-    ,
-    __metadata("design:paramtypes", [config_loader_1.ConfigLoader])
-], IdaiFieldAppConfigurator);
 exports.IdaiFieldAppConfigurator = IdaiFieldAppConfigurator;
 //# sourceMappingURL=idai-field-app-configurator.js.map

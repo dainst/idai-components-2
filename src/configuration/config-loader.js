@@ -48,10 +48,11 @@ var core_1 = require("@angular/core");
 var project_configuration_1 = require("./project-configuration");
 var preprocessing_1 = require("./preprocessing");
 var config_reader_1 = require("./config-reader");
-var ConfigLoader = ConfigLoader_1 = (function () {
+var ConfigLoader = (function () {
     function ConfigLoader(configReader) {
         this.configReader = configReader;
     }
+    ConfigLoader_1 = ConfigLoader;
     ConfigLoader.prototype.go = function (configDirPath, extraTypes, extraRelations, extraFields, extraFieldsOrder, prePreprocessConfigurationValidator, postPreprocessConfigurationValidator, applyMeninxConfiguration) {
         if (applyMeninxConfiguration === void 0) { applyMeninxConfiguration = false; }
         return __awaiter(this, void 0, void 0, function () {
@@ -375,37 +376,37 @@ var ConfigLoader = ConfigLoader_1 = (function () {
             }
         }
     };
+    ConfigLoader.defaultFields = {
+        'id': {
+            editable: false,
+            visible: false
+        },
+        'type': {
+            label: 'Typ',
+            visible: false,
+            editable: false
+        }
+    };
+    ConfigLoader = ConfigLoader_1 = __decorate([
+        core_1.Injectable()
+        /**
+         * Lets clients subscribe for the app
+         * configuration. In order for this to work, they
+         * have to call <code>go</code> and <code>getProjectConfiguration</code>
+         *  (the call order does not matter).
+         *
+         * It is recommended to handle a promise rejection of
+         * <code>getProjectConfiguration</code> at a single place in your app.
+         *
+         * @author Daniel de Oliveira
+         * @author Thomas Kleinke
+         * @author Fabian Z.
+         */
+        ,
+        __metadata("design:paramtypes", [config_reader_1.ConfigReader])
+    ], ConfigLoader);
     return ConfigLoader;
+    var ConfigLoader_1;
 }());
-ConfigLoader.defaultFields = {
-    'id': {
-        editable: false,
-        visible: false
-    },
-    'type': {
-        label: 'Typ',
-        visible: false,
-        editable: false
-    }
-};
-ConfigLoader = ConfigLoader_1 = __decorate([
-    core_1.Injectable()
-    /**
-     * Lets clients subscribe for the app
-     * configuration. In order for this to work, they
-     * have to call <code>go</code> and <code>getProjectConfiguration</code>
-     *  (the call order does not matter).
-     *
-     * It is recommended to handle a promise rejection of
-     * <code>getProjectConfiguration</code> at a single place in your app.
-     *
-     * @author Daniel de Oliveira
-     * @author Thomas Kleinke
-     * @author Fabian Z.
-     */
-    ,
-    __metadata("design:paramtypes", [config_reader_1.ConfigReader])
-], ConfigLoader);
 exports.ConfigLoader = ConfigLoader;
-var ConfigLoader_1;
 //# sourceMappingURL=config-loader.js.map

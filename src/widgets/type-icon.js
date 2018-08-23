@@ -11,10 +11,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var project_configuration_1 = require("../configuration/project-configuration");
-var TypeIconComponent = TypeIconComponent_1 = (function () {
+var TypeIconComponent = (function () {
     function TypeIconComponent(projectConfiguration) {
         this.projectConfiguration = projectConfiguration;
     }
+    TypeIconComponent_1 = TypeIconComponent;
     TypeIconComponent.isColorTooBright = function (c) {
         c = c.substring(1); // strip #
         var rgb = parseInt(c, 16); // convert rrggbb to decimal
@@ -30,29 +31,29 @@ var TypeIconComponent = TypeIconComponent_1 = (function () {
         this.textColor = TypeIconComponent_1.isColorTooBright(this.color) ? 'black' : 'white';
         this.pxSize = this.size + 'px';
     };
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Number)
+    ], TypeIconComponent.prototype, "size", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], TypeIconComponent.prototype, "type", void 0);
+    TypeIconComponent = TypeIconComponent_1 = __decorate([
+        core_1.Component({
+            selector: 'type-icon',
+            template: '<div class="type-icon" [style.width]="pxSize" [style.height]="pxSize" [style.font-size]="pxSize" [style.line-height]="pxSize" [style.background-color]="color">' +
+                '<span class="character" [style.color]="textColor">{{character}}</span>' +
+                '</div>'
+        })
+        /**
+         * @author Sebastian Cuy
+         */
+        ,
+        __metadata("design:paramtypes", [project_configuration_1.ProjectConfiguration])
+    ], TypeIconComponent);
     return TypeIconComponent;
+    var TypeIconComponent_1;
 }());
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Number)
-], TypeIconComponent.prototype, "size", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", String)
-], TypeIconComponent.prototype, "type", void 0);
-TypeIconComponent = TypeIconComponent_1 = __decorate([
-    core_1.Component({
-        selector: 'type-icon',
-        template: '<div class="type-icon" [style.width]="pxSize" [style.height]="pxSize" [style.font-size]="pxSize" [style.line-height]="pxSize" [style.background-color]="color">' +
-            '<span class="character" [style.color]="textColor">{{character}}</span>' +
-            '</div>'
-    })
-    /**
-     * @author Sebastian Cuy
-     */
-    ,
-    __metadata("design:paramtypes", [project_configuration_1.ProjectConfiguration])
-], TypeIconComponent);
 exports.TypeIconComponent = TypeIconComponent;
-var TypeIconComponent_1;
 //# sourceMappingURL=type-icon.js.map

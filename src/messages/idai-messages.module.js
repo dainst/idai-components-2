@@ -12,21 +12,21 @@ var common_1 = require("@angular/common");
 var IdaiMessagesModule = (function () {
     function IdaiMessagesModule() {
     }
+    IdaiMessagesModule = __decorate([
+        core_1.NgModule({
+            imports: [
+                common_1.CommonModule,
+            ],
+            declarations: [
+                messages_component_1.MessagesComponent,
+            ],
+            exports: [
+                messages_component_1.MessagesComponent
+            ]
+        })
+    ], IdaiMessagesModule);
     return IdaiMessagesModule;
 }());
-IdaiMessagesModule = __decorate([
-    core_1.NgModule({
-        imports: [
-            common_1.CommonModule,
-        ],
-        declarations: [
-            messages_component_1.MessagesComponent,
-        ],
-        exports: [
-            messages_component_1.MessagesComponent
-        ]
-    })
-], IdaiMessagesModule);
 exports.IdaiMessagesModule = IdaiMessagesModule;
 ;
 //# sourceMappingURL=idai-messages.module.js.map
