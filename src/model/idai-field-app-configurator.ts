@@ -17,7 +17,7 @@ export class IdaiFieldAppConfigurator {
     private defaultTypes = {
         Place: {
             fields: {
-                hasGazId: {
+                gazId: {
                     inputType: 'unsignedInt'
                 }
             }
@@ -28,7 +28,7 @@ export class IdaiFieldAppConfigurator {
         } as TypeDefinition,
         Feature: {
             fields: {
-                hasPeriod: {
+                period: {
                     inputType: "dropdownRange"
                 }
             }
@@ -49,10 +49,6 @@ export class IdaiFieldAppConfigurator {
                 },
                 // TODO Delete the fields 'filename' and 'hasFilename' as soon as existing data has been migrated.
                 filename: {
-                    visible: false,
-                    editable: false
-                },
-                hasFilename: {
                     visible: false,
                     editable: false
                 },
