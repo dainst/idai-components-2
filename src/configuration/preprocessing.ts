@@ -92,7 +92,7 @@ export module Preprocessing {
             if (!type) return;
 
             Object.keys(type.fields)
-                .filter(field => field === 'hasPeriod')
+                .filter(field => field === 'period')
                 .forEach(field => type.fields[field].valuelist = periodConfiguration.valuelist);
         });
     }

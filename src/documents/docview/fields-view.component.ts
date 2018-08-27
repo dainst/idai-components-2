@@ -1,8 +1,8 @@
 import {Component, OnChanges, Input} from '@angular/core';
-import {Resource} from '../../model/core/resource';
-import {ProjectConfiguration} from '../../configuration/project-configuration';
 import {to} from 'tsfun';
 import {isUndefinedOrEmpty} from 'tsfun/src/predicates';
+import {Resource} from '../../model/core/resource';
+import {ProjectConfiguration} from '../../configuration/project-configuration';
 
 @Component({
     selector: 'fields-view',
@@ -44,30 +44,30 @@ export class FieldsViewComponent implements OnChanges {
         const fieldNames = this.projectConfiguration
             .getFieldDefinitions(resource.type)
             .map(to('name'))
-            .concat(['hasPeriodBeginning', 'hasPeriodEnd']);
+            .concat(['periodBeginning', 'periodEnd']);
 
         for (let fieldName of fieldNames) {
 
             if (fieldName === 'relations') continue;
             if (resource[fieldName] === undefined) continue;
 
-            if (fieldName === 'hasPeriod') {
+            if (fieldName === 'period') {
                 this.fields.push({
-                    name: ('Grobdatierung' + (!isUndefinedOrEmpty(resource['hasPeriodEnd']) ? ' (von)' : '')),
+                    name: ('Grobdatierung' + (!isUndefinedOrEmpty(resource['periodEnd']) ? ' (von)' : '')),
                     value: FieldsViewComponent.getValue(resource, fieldName),
                     isArray: false
                 });
                 continue;
             }
-            if (fieldName === 'hasPeriodBeginning') {
+            if (fieldName === 'periodBeginning') {
                 this.fields.push({
-                    name: ('Grobdatierung' + (!isUndefinedOrEmpty(resource['hasPeriodEnd']) ? ' (von)' : '')),
+                    name: ('Grobdatierung' + (!isUndefinedOrEmpty(resource['periodEnd']) ? ' (von)' : '')),
                     value: FieldsViewComponent.getValue(resource, fieldName),
                     isArray: false
                 });
                 continue;
             }
-            if (fieldName === 'hasPeriodEnd') {
+            if (fieldName === 'periodEnd') {
                 this.fields.push({
                     name: 'Grobdatierung (bis)',
                     value: FieldsViewComponent.getValue(resource, fieldName),
