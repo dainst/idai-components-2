@@ -3,6 +3,9 @@
 fonts
 node_modules
 typings
+src/**/*.js
+src/**/*.js.map
+src/css
 demo/**/*.js
 demo/**/*.js.map
 test/unit/**/*.js
