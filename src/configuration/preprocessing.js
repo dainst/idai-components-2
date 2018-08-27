@@ -107,7 +107,7 @@ var Preprocessing;
             return;
         for (var _i = 0, _a = configuration.relations; _i < _a.length; _i++) {
             var relation = _a[_i];
-            if (relation.name === 'isRecordedIn') {
+            if (relation.name === 'isRecordedIn') { // See #8992
                 relation.sameMainTypeResource = false;
                 continue;
             }

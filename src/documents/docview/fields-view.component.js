@@ -81,6 +81,7 @@ var FieldsViewComponent = /** @class */ (function () {
             return resource[fieldName];
         }
     };
+    var FieldsViewComponent_1;
     __decorate([
         core_1.Input(),
         __metadata("design:type", Object)
@@ -101,7 +102,6 @@ var FieldsViewComponent = /** @class */ (function () {
         __metadata("design:paramtypes", [project_configuration_1.ProjectConfiguration])
     ], FieldsViewComponent);
     return FieldsViewComponent;
-    var FieldsViewComponent_1;
 }());
 exports.FieldsViewComponent = FieldsViewComponent;
 //# sourceMappingURL=fields-view.component.js.map

@@ -31,6 +31,7 @@ var TypeIconComponent = /** @class */ (function () {
         this.textColor = TypeIconComponent_1.isColorTooBright(this.color) ? 'black' : 'white';
         this.pxSize = this.size + 'px';
     };
+    var TypeIconComponent_1;
     __decorate([
         core_1.Input(),
         __metadata("design:type", Number)
@@ -53,7 +54,6 @@ var TypeIconComponent = /** @class */ (function () {
         __metadata("design:paramtypes", [project_configuration_1.ProjectConfiguration])
     ], TypeIconComponent);
     return TypeIconComponent;
-    var TypeIconComponent_1;
 }());
 exports.TypeIconComponent = TypeIconComponent;
 //# sourceMappingURL=type-icon.js.map

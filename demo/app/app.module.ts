@@ -2,6 +2,7 @@ import {APP_INITIALIZER, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
+import {HttpClientModule} from '@angular/common/http';
 import {HashLocationStrategy, LocationStrategy} from '@angular/common';
 import {routing} from './app.routing';
 import {Datastore} from '../../src/datastore/datastore';
@@ -32,6 +33,7 @@ let pconf: any = undefined;
         BrowserModule,
         FormsModule,
         HttpModule,
+        HttpClientModule,
         IdaiDocumentsModule,
         IdaiMessagesModule,
         IdaiWidgetsModule,

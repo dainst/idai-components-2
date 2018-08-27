@@ -327,6 +327,7 @@ var MapComponent = /** @class */ (function () {
             extraClasses: extraClasses
         });
     };
+    var MapComponent_1;
     __decorate([
         core_1.Input(),
         __metadata("design:type", Array)
@@ -364,7 +365,6 @@ var MapComponent = /** @class */ (function () {
         __metadata("design:paramtypes", [project_configuration_1.ProjectConfiguration])
     ], MapComponent);
     return MapComponent;
-    var MapComponent_1;
 }());
 exports.MapComponent = MapComponent;
 //# sourceMappingURL=map.component.js.map

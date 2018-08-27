@@ -270,6 +270,7 @@ var ProjectConfiguration = /** @class */ (function () {
         var luma = 0.2126 * r + 0.7152 * g + 0.0722 * b; // per ITU-R BT.709
         return luma > 200;
     };
+    var ProjectConfiguration_1;
     ProjectConfiguration = ProjectConfiguration_1 = __decorate([
         core_1.Injectable()
         /**
@@ -288,7 +289,6 @@ var ProjectConfiguration = /** @class */ (function () {
         __metadata("design:paramtypes", [Object])
     ], ProjectConfiguration);
     return ProjectConfiguration;
-    var ProjectConfiguration_1;
 }());
 exports.ProjectConfiguration = ProjectConfiguration;
 //# sourceMappingURL=project-configuration.js.map

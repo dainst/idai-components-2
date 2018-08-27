@@ -20,6 +20,8 @@
     <script src="node_modules/Leaflet.vector-markers/dist/leaflet-vector-markers.js"></script>
 
     <script>
+        var defaultConfiguration = { main: 'index.js', defaultExtension: 'js' };
+
         System.config({
 
             paths: {
@@ -36,7 +38,7 @@
                 '@angular/router': 'node_modules/@angular/router',
                 '@angular/compiler': 'node_modules/@angular/compiler',
                 '@angular/forms': 'node_modules/@angular/forms',
-                '@ng-bootstrap/ng-bootstrap': 'node_modules/@ng-bootstrap/ng-bootstrap/bundles/ng-bootstrap.js',
+                '@ng-bootstrap/ng-bootstrap': 'node_modules/@ng-bootstrap/ng-bootstrap/bundles/ng-bootstrap.umd.js',
                 'rxjs': 'node_modules/rxjs',
                 'rxjs-compat': 'node_modules/rxjs-compat',
                 'ts-md5': 'node_modules/ts-md5',
@@ -52,11 +54,7 @@
                     format: 'cjs',
                     defaultExtension: 'js'
                 },
-                tsfun: {
-                    main: 'index.js',
-                    defaultExtension: 'js'
-                },
-                node_modules: {
+                'node_modules': {
                     defaultExtension: 'js'
                 },
                 'demo/config' : {
@@ -67,19 +65,30 @@
                         }
                     }
                 },
-                '@angular/core'                    : {main: 'bundles/core.umd.min.js'},
-                '@angular/common'                  : {main: 'bundles/common.umd.min.js'},
-                '@angular/compiler'                : {main: 'bundles/compiler.umd.min.js'},
-                '@angular/router'                  : {main: 'bundles/router.umd.min.js'},
-                '@angular/platform-browser'        : {main: 'bundles/platform-browser.umd.min.js'},
-                '@angular/platform-browser-dynamic': {main: 'bundles/platform-browser-dynamic.umd.min.js'},
-                '@angular/http'                    : {main: 'bundles/http.umd.min.js'},
-                '@angular/forms'                   : {main: 'bundles/forms.umd.min.js'},
-                'rxjs'                             : {main: 'index.js'}
+                'rxjs': defaultConfiguration,
+                'rxjs/operators': defaultConfiguration,
+                'rxjs/internal-compatibility': defaultConfiguration,
+                'rxjs/testing': defaultConfiguration,
+                'rxjs/ajax': defaultConfiguration,
+                'rxjs/webSocket': defaultConfiguration,
+                'rxjs-compat': defaultConfiguration,
+                'tsfun': defaultConfiguration,
+                '@angular/core'                    : { main: 'bundles/core.umd.min.js' },
+                '@angular/common'                  : { main: 'bundles/common.umd.min.js' },
+                '@angular/compiler'                : { main: 'bundles/compiler.umd.min.js' },
+                '@angular/router'                  : { main: 'bundles/router.umd.min.js' },
+                '@angular/platform-browser'        : { main: 'bundles/platform-browser.umd.min.js' },
+                '@angular/platform-browser-dynamic': { main: 'bundles/platform-browser-dynamic.umd.min.js' },
+                '@angular/http'                    : { main: 'bundles/http.umd.min.js' },
+                '@angular/forms'                   : { main: 'bundles/forms.umd.min.js' },
+                '@angular/common/http': {
+                    main: '../bundles/common-http.umd.js',
+                    defaultExtension: 'js'
+                }
             }
         });
         System.import('app')
-                .then(null, console.error.bind(console));
+            .then(null, console.error.bind(console));
     </script>
 
 </head>

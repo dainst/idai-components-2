@@ -90,6 +90,7 @@ var Messages = /** @class */ (function () {
             hidden: false
         };
     };
+    var Messages_1;
     // Messages of these types fade away after the given timeout.
     Messages.TIMEOUT_TYPES = ['success', 'info'];
     Messages = Messages_1 = __decorate([
@@ -107,7 +108,6 @@ var Messages = /** @class */ (function () {
         __metadata("design:paramtypes", [md_1.MD, Number])
     ], Messages);
     return Messages;
-    var Messages_1;
 }());
 exports.Messages = Messages;
 //# sourceMappingURL=messages.js.map
