@@ -1,8 +1,7 @@
 import {ConfigurationDefinition} from '../../../../src/configuration/configuration-definition';
 import {ConfigLoader} from '../../../../src/configuration/config-loader';
-import {
-    IdaiFieldPrePreprocessConfigurationValidator
-} from '../../../../src/configuration/idai-field-pre-preprocess-configuration-validator';
+import {IdaiFieldPrePreprocessConfigurationValidator}
+    from '../../../../src/configuration/idai-field-pre-preprocess-configuration-validator';
 import {ConfigurationValidator} from '../../../../src/configuration/configuration-validator';
 import {FieldDefinition} from '../../../../src/configuration/field-definition';
 
@@ -430,4 +429,110 @@ describe('ConfigLoader', () => {
             done();
         }
     });
+
+
+    it('apply hidden configurations', async done => {
+
+        Object.assign(configuration, {
+            identifier: 'Conf',
+            types: {
+                A: { fields: { fieldA1: {}, fieldA2: {}, fieldA3: {}  } }
+            },
+            relations: []
+        });
+
+        configReader.read.and.returnValues(
+            Promise.resolve(configuration),
+            Promise.resolve({}),
+            Promise.resolve({
+                'A': ['fieldA1']
+            }),
+            Promise.resolve({
+                'A': ['fieldA2']
+            }),
+            Promise.resolve({}),
+            Promise.resolve({}),
+            Promise.resolve({}),
+            Promise.resolve({}),
+            Promise.resolve({})
+        );
+
+        let pconf;
+        try {
+            pconf = await configLoader.go('', {}, [], {},
+                [], new IdaiFieldPrePreprocessConfigurationValidator(),
+                new ConfigurationValidator()
+            );
+
+            expect(pconf.getTypesList()[0].fields[0].name).toEqual('fieldA1');
+            expect(pconf.getTypesList()[0].fields[0].visible).toBe(false);
+            expect(pconf.getTypesList()[0].fields[0].editable).toBe(false);
+            expect(pconf.getTypesList()[0].fields[1].name).toEqual('fieldA2');
+            expect(pconf.getTypesList()[0].fields[1].visible).toBe(false);
+            expect(pconf.getTypesList()[0].fields[1].editable).toBe(false);
+            expect(pconf.getTypesList()[0].fields[2].name).toEqual('fieldA3');
+            expect(pconf.getTypesList()[0].fields[2].visible).toBe(true);
+            expect(pconf.getTypesList()[0].fields[2].editable).toBe(true);
+
+            done();
+        } catch(err) {
+            fail(err);
+            done();
+        }
+    });
+
+
+    it('apply hidden and order configuration', async done => {
+
+        Object.assign(configuration, {
+            identifier: 'Conf',
+            types: {
+                A: { fields: { fieldA1: {}, fieldA3: {}, fieldA2: {} } }
+            },
+            relations: []
+        });
+
+        configReader.read.and.returnValues(
+            Promise.resolve(configuration),
+            Promise.resolve({}),
+            Promise.resolve({
+                'A': ['fieldA1']
+            }),
+            Promise.resolve({}),
+            Promise.resolve({}),
+            Promise.resolve({}),
+            Promise.resolve({}),
+            Promise.resolve({}),
+            Promise.resolve({
+                types: ['A'],
+                fields: {
+                    'A': ['fieldA1', 'fieldA2', 'fieldA3']
+                }
+            })
+        );
+
+        let pconf;
+        try {
+            pconf = await configLoader.go('', {}, [], {},
+                [], new IdaiFieldPrePreprocessConfigurationValidator(),
+                new ConfigurationValidator()
+            );
+
+            expect(pconf.getTypesList()[0].fields[0].name).toEqual('fieldA1');
+            expect(pconf.getTypesList()[0].fields[0].visible).toBe(false);
+            expect(pconf.getTypesList()[0].fields[0].editable).toBe(false);
+            expect(pconf.getTypesList()[0].fields[1].name).toEqual('fieldA2');
+            expect(pconf.getTypesList()[0].fields[1].visible).toBe(true);
+            expect(pconf.getTypesList()[0].fields[1].editable).toBe(true);
+            expect(pconf.getTypesList()[0].fields[2].name).toEqual('fieldA3');
+            expect(pconf.getTypesList()[0].fields[2].visible).toBe(true);
+            expect(pconf.getTypesList()[0].fields[2].editable).toBe(true);
+
+            done();
+        } catch(err) {
+            fail(err);
+            done();
+        }
+    });
+
 });

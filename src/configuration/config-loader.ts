@@ -6,9 +6,8 @@ import {ConfigReader} from './config-reader';
 import {TypeDefinition} from './type-definition';
 import {RelationDefinition} from './relation-definition';
 import {FieldDefinition} from './field-definition';
-import {
-    IdaiFieldPrePreprocessConfigurationValidator
-} from './idai-field-pre-preprocess-configuration-validator';
+import {IdaiFieldPrePreprocessConfigurationValidator}
+    from './idai-field-pre-preprocess-configuration-validator';
 import {UnorderedConfigurationDefinition} from './unordered-configuration-definition';
 import {ConfigurationDefinition} from './configuration-definition';
 
@@ -313,27 +312,19 @@ export class ConfigLoader {
 
     private static hideFields(appConfiguration: any, hiddenConfiguration: any) {
 
-        if (appConfiguration.types) {
-            for (let type of Object.keys(hiddenConfiguration)) {
-                for (let fieldToHide of hiddenConfiguration[type]) {
+        if (!appConfiguration.types) return;
 
-                    for (let i in appConfiguration.types) {
+        Object.keys(hiddenConfiguration).forEach(typeName => {
+            const type: TypeDefinition|undefined = appConfiguration.types[typeName];
+            if (!type || !type.fields) return;
 
-                        if (appConfiguration.types[i].type === type && appConfiguration.types[i].fields) {
-
-                            for (let j in appConfiguration.types[i].fields) {
-
-                                if (appConfiguration.types[i].fields[j].name === fieldToHide) {
-
-                                    appConfiguration.types[i].fields[j].visible = false;
-                                    appConfiguration.types[i].fields[j].editable = false;
-                                }
-                            }
-                        }
-                    }
-
+            hiddenConfiguration[typeName].forEach((fieldName: string) => {
+                const field: FieldDefinition|undefined = type.fields[fieldName];
+                if (field) {
+                    field.visible = false;
+                    field.editable = false;
                 }
-            }
-        }
+            });
+        });
     }
 }
