@@ -28,19 +28,19 @@
     "@angular/platform-browser-dynamic": "6.1.4",
     "@angular/platform-server": "6.1.4",
     "@angular/router": "6.1.4",
-    "@mdi/font": "2.4.85",
+    "@mdi/font": "2.5.94",
     "@ng-bootstrap/ng-bootstrap": "3.0.0",
     "Leaflet.vector-markers": "0.0.6",
-    "angular2-uuid": "1.0.6",
+    "angular2-uuid": "1.1.0",
     "bootstrap": "4.0.0-beta",
     "es6-promise": "3.1.2",
     "es6-shim": "0.35.0",
     "leaflet": "1.2.0",
-    "reflect-metadata": "0.1.2",
+    "reflect-metadata": "0.1.8",
     "rxjs": "6.0.0",
     "rxjs-compat": "6.0.0",
     "systemjs": "0.21.4",
-    "tsfun": "1.16.11",
+    "tsfun": "1.16.12",
     "zone.js": "0.8.26"
   },
   "devDependencies": {
@@ -57,7 +57,7 @@
     "gulp-webserver": "0.9.1",
     "jasmine": "2.5.2",
     "jasmine-core": "2.5.2",
-    "rimraf": "2.5.2",
-    "typescript": "2.7.2"
+    "rimraf": "2.5.4",
+    "typescript": "3.0.1"
   }
 }
