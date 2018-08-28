@@ -44,7 +44,7 @@ export class FieldsViewComponent implements OnChanges {
         const fieldNames = this.projectConfiguration
             .getFieldDefinitions(resource.type)
             .map(to('name'))
-            .concat(['periodBeginning', 'periodEnd']);
+            .concat(['periodEnd']);
 
         for (let fieldName of fieldNames) {
 
@@ -59,14 +59,7 @@ export class FieldsViewComponent implements OnChanges {
                 });
                 continue;
             }
-            if (fieldName === 'periodBeginning') {
-                this.fields.push({
-                    name: ('Grobdatierung' + (!isUndefinedOrEmpty(resource['periodEnd']) ? ' (von)' : '')),
-                    value: FieldsViewComponent.getValue(resource, fieldName),
-                    isArray: false
-                });
-                continue;
-            }
+
             if (fieldName === 'periodEnd') {
                 this.fields.push({
                     name: 'Grobdatierung (bis)',
@@ -75,7 +68,6 @@ export class FieldsViewComponent implements OnChanges {
                 });
                 continue;
             }
-
 
             if (!this.projectConfiguration.isVisible(resource.type, fieldName)) continue;
 
