@@ -7,7 +7,7 @@
 	        		<b>{{array_item.lang}}:</b> {{array_item.content.join(", ")}}
 	        	</span>
 	        	<span *ngIf="!array_item.lang">
-	        		{{array_item.hasLabel ? array_item.hasLabel : array_item}}
+	        		{{array_item.label ? array_item.label : array_item}}
 	        	</span>
 	        </li>
 	    </ul>
