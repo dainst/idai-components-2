@@ -118,6 +118,9 @@ export class IdaiFieldAppConfigurator {
             domain: ['Feature:inherit'], range: ['Feature:inherit'], sameMainTypeResource: true},
         { name: 'isContemporaryWith', inverse: 'isContemporaryWith', label: 'Zeitgleich mit',
             domain: ['Feature:inherit'], range: ['Feature:inherit'], sameMainTypeResource: true},
+
+        { name: 'isRecordedIn', label: 'Aufgenommen in Maßnahme',
+            domain: ['Feature:inherit'], range: ['Operation:inherit']}
     ];
 
 
