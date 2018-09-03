@@ -138,24 +138,12 @@ export class IdaiFieldAppConfigurator {
             domain: ['Feature:inherit'], range: ['Feature:inherit'], sameMainTypeResource: true},
 
         { name: 'isRecordedIn', label: 'Aufgenommen in Maßnahme',
-            domain: ['Feature:inherit'], range: ['Operation:inherit']},
-        { name: 'isRecordedIn', label: 'Aufgenommen in Maßnahme',
-            domain: ['Find:inherit'], range: ['Operation:inherit']},
+            domain: ['Feature:inherit', 'Find:inherit', 'Inscription'], range: ['Operation:inherit']},
 
         { name: 'includes', inverse: 'liesWithin', label: 'Beinhaltet',
-            domain: ['Feature:inherit'], range: ['Find:inherit'], sameMainTypeResource: true},
+            domain: ['Feature:inherit', 'Find:inherit'], range: ['Feature:inherit', 'Find:inherit'], sameMainTypeResource: true},
         { name: 'liesWithin', inverse: 'includes', label: 'Liegt in',
-            domain: ['Find:inherit'], range: ['Feature:inherit'], sameMainTypeResource: true},
-
-        { name: 'includes', inverse: 'liesWithin', label: 'Beinhaltet',
-            domain: ['Feature:inherit'], range: ['Feature:inherit'], sameMainTypeResource: true},
-        { name: 'liesWithin', inverse: 'includes', label: 'Liegt in',
-            domain: ['Feature:inherit'], range: ['Feature:inherit'], sameMainTypeResource: true},
-
-        { name: 'includes', inverse: 'liesWithin', label: 'Beinhaltet',
-            domain: ['Find:inherit'], range: ['Find:inherit'], sameMainTypeResource: true},
-        { name: 'liesWithin', inverse: 'includes', label: 'Liegt in',
-            domain: ['Find:inherit'], range: ['Find:inherit'], sameMainTypeResource: true},
+            domain: ['Feature:inherit', 'Find:inherit'], range: ['Feature:inherit', 'Find:inherit'], sameMainTypeResource: true},
 
         { name: 'includes', inverse: 'liesWithin', label: 'Beinhaltet',
             domain: ['Feature:inherit', 'Find:inherit'], range: ['Inscription'], sameMainTypeResource: true},
