@@ -143,29 +143,29 @@ export class IdaiFieldAppConfigurator {
             domain: ['Find:inherit'], range: ['Operation:inherit']},
 
         { name: 'includes', inverse: 'liesWithin', label: 'Beinhaltet',
-            domain: ['Feature:inherit'], range: ['Find:inherit']},
+            domain: ['Feature:inherit'], range: ['Find:inherit'], sameMainTypeResource: true},
         { name: 'liesWithin', inverse: 'includes', label: 'Liegt in',
-            domain: ['Find:inherit'], range: ['Feature:inherit']},
+            domain: ['Find:inherit'], range: ['Feature:inherit'], sameMainTypeResource: true},
 
         { name: 'includes', inverse: 'liesWithin', label: 'Beinhaltet',
-            domain: ['Feature:inherit'], range: ['Feature:inherit']},
+            domain: ['Feature:inherit'], range: ['Feature:inherit'], sameMainTypeResource: true},
         { name: 'liesWithin', inverse: 'includes', label: 'Liegt in',
-            domain: ['Feature:inherit'], range: ['Feature:inherit']},
+            domain: ['Feature:inherit'], range: ['Feature:inherit'], sameMainTypeResource: true},
 
         { name: 'includes', inverse: 'liesWithin', label: 'Beinhaltet',
-            domain: ['Find:inherit'], range: ['Find:inherit']},
+            domain: ['Find:inherit'], range: ['Find:inherit'], sameMainTypeResource: true},
         { name: 'liesWithin', inverse: 'includes', label: 'Liegt in',
-            domain: ['Find:inherit'], range: ['Find:inherit']},
+            domain: ['Find:inherit'], range: ['Find:inherit'], sameMainTypeResource: true},
 
         { name: 'includes', inverse: 'liesWithin', label: 'Beinhaltet',
-            domain: ['Feature:inherit', 'Find:inherit'], range: ['Inscription']},
+            domain: ['Feature:inherit', 'Find:inherit'], range: ['Inscription'], sameMainTypeResource: true},
         { name: 'liesWithin', inverse: 'includes', label: 'Liegt in',
-            domain: ['Inscription'], range: ['Feature:inherit', 'Find:inherit']},
+            domain: ['Inscription'], range: ['Feature:inherit', 'Find:inherit'], sameMainTypeResource: true},
 
         { name: 'bears', inverse: 'isFoundOn', label: 'trägt',
-            domain: ['Find:inherit'], range: ['Inscription']},
+            domain: ['Find:inherit'], range: ['Inscription'], sameMainTypeResource: true},
         { name: 'isFoundOn', inverse: 'bears', label: 'ist aufgebracht auf',
-            domain: ['Inscription'], range: ['Find:inherit']},
+            domain: ['Inscription'], range: ['Find:inherit'], sameMainTypeResource: true},
     ];
 
 
