@@ -152,6 +152,16 @@ export class IdaiFieldAppConfigurator {
         { name: 'liesWithin', inverse: 'includes', label: 'Liegt in',
             domain: ['Feature:inherit'], range: ['Feature:inherit']},
 
+        { name: 'includes', inverse: 'liesWithin', label: 'Beinhaltet',
+            domain: ['Find:inherit'], range: ['Find:inherit']},
+        { name: 'liesWithin', inverse: 'includes', label: 'Liegt in',
+            domain: ['Find:inherit'], range: ['Find:inherit']},
+
+        { name: 'includes', inverse: 'liesWithin', label: 'Beinhaltet',
+            domain: ['Feature:inherit', 'Find:Inherit'], range: ['Inscription']},
+        { name: 'liesWithin', inverse: 'includes', label: 'Liegt in',
+            domain: ['Inscription'], range: ['Feature:inherit', 'Find:Inherit']},
+
         { name: 'bears', inverse: 'isFoundOn', label: 'trägt',
             domain: ['Find:inherit'], range: ['Inscription']},
         { name: 'isFoundOn', inverse: 'bears', label: 'ist aufgebracht auf',
