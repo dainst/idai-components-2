@@ -130,7 +130,12 @@ export class IdaiFieldAppConfigurator {
         { name: 'isRecordedIn', label: 'Aufgenommen in Maßnahme',
             domain: ['Feature:inherit'], range: ['Operation:inherit']},
         { name: 'isRecordedIn', label: 'Aufgenommen in Maßnahme',
-            domain: ['Find:inherit'], range: ['Operation:inherit']}
+            domain: ['Find:inherit'], range: ['Operation:inherit']},
+
+        { name: 'includes', inverse: 'liesWithin', label: 'Beinhaltet',
+            domain: ['Feature:inherit'], range: ['Find:inherit']},
+        { name: 'liesWithin', inverse: 'includes', label: 'Liegt in',
+            domain: ['Find:inherit'], range: ['Feature:inherit']},
     ];
 
 
