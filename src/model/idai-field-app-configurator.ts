@@ -36,6 +36,9 @@ export class IdaiFieldAppConfigurator {
         Find: {
             fields: {}
         } as TypeDefinition,
+        Inscription: {
+            fields: {}
+        } as TypeDefinition,
         Image: {
             fields: {
                 height: {
@@ -148,6 +151,11 @@ export class IdaiFieldAppConfigurator {
             domain: ['Feature:inherit'], range: ['Feature:inherit']},
         { name: 'liesWithin', inverse: 'includes', label: 'Liegt in',
             domain: ['Feature:inherit'], range: ['Feature:inherit']},
+
+        { name: 'bears', inverse: 'isFoundOn', label: 'trägt',
+            domain: ['Find:inherit'], range: ['Inscription']},
+        { name: 'isFoundOn', inverse: 'bears', label: 'ist aufgebracht auf',
+            domain: ['Inscription'], range: ['Find:inherit']},
     ];
 
 
