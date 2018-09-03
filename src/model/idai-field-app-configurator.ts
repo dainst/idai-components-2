@@ -127,6 +127,13 @@ export class IdaiFieldAppConfigurator {
         { name: 'isBelow', inverse: 'isAbove', label: 'Liegt unter',
             domain: ['Feature:inherit'], range: ['Feature:inherit'], sameMainTypeResource: true},
 
+        { name: 'cuts', inverse: 'isCutBy', label: 'Schneidet',
+            domain: ['Feature:inherit'], range: ['Feature:inherit'], sameMainTypeResource: true},
+        { name: 'isCutBy', inverse: 'cuts', label: 'Wird geschnitten von',
+            domain: ['Feature:inherit'], range: ['Feature:inherit'], sameMainTypeResource: true},
+        { name: 'borders', inverse: 'borders', label: 'Grenzt an',
+            domain: ['Feature:inherit'], range: ['Feature:inherit'], sameMainTypeResource: true},
+
         { name: 'isRecordedIn', label: 'Aufgenommen in Maßnahme',
             domain: ['Feature:inherit'], range: ['Operation:inherit']},
         { name: 'isRecordedIn', label: 'Aufgenommen in Maßnahme',
