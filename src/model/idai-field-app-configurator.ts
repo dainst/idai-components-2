@@ -33,6 +33,9 @@ export class IdaiFieldAppConfigurator {
                 }
             }
         } as TypeDefinition,
+        Find: {
+            fields: {}
+        } as TypeDefinition,
         Image: {
             fields: {
                 height: {
