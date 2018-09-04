@@ -103,6 +103,7 @@ export class ConfigLoader {
         // TODO rename and test / also: it is idai field specific
         // Preprocessing.setIsRecordedInVisibilities(appConfiguration); See #8992
 
+        // to be done before applyCustomFields so that extra types can get additional fields too
         Preprocessing.addExtraTypes(appConfiguration, extraTypes);
 
         await this.applyCustomFieldsConfiguration(appConfiguration,
