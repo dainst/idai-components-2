@@ -169,7 +169,13 @@ export class IdaiFieldAppConfigurator {
             (this.defaultTypes as any)['Wall_surface'] = {
                 color: "#ffff99",
                 fields: {}
-            }
+            };
+            this.defaultRelations.push({
+                domain: ["Wall_surface"],
+                name: "isRecordedIn",
+                label: "Aufgenommen in Maßnahme",
+                range: ["Operation:inherit"]
+            });
         }
 
         return this.configLoader.go(
