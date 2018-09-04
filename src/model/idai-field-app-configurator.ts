@@ -165,6 +165,13 @@ export class IdaiFieldAppConfigurator {
     public go(configDirPath: string,
               applyMeninxConfiguration: boolean = false): Promise<ProjectConfiguration> {
 
+        if (applyMeninxConfiguration) {
+            (this.defaultTypes as any)['Wall_surface'] = {
+                color: "#ffff99",
+                fields: {}
+            }
+        }
+
         return this.configLoader.go(
             configDirPath,
             this.defaultTypes,
