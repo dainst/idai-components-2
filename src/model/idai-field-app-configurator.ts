@@ -171,8 +171,9 @@ export class IdaiFieldAppConfigurator {
                 fields: {}
             };
             (this.defaultTypes as any)['Other'] = {
-                "color": "#CC6600",
-                "parent": "Feature"
+                color: "#CC6600",
+                parent: "Feature",
+                fields: {}
             };
             this.defaultRelations.push({
                 domain: ["Wall_surface"],
