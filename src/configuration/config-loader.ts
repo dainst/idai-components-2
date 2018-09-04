@@ -103,6 +103,8 @@ export class ConfigLoader {
         // TODO rename and test / also: it is idai field specific
         // Preprocessing.setIsRecordedInVisibilities(appConfiguration); See #8992
 
+        Preprocessing.addExtraTypes(appConfiguration, extraTypes);
+
         await this.applyCustomFieldsConfiguration(appConfiguration,
             applyMeninxConfiguration ?
                 meninxFieldsConfigurationPath :
@@ -112,7 +114,6 @@ export class ConfigLoader {
         await this.applyHiddenConfs(appConfiguration, hiddenConfigurationPath, customHiddenConfigurationPath);
 
         if (!appConfiguration.relations) appConfiguration.relations = [];
-        Preprocessing.addExtraTypes(appConfiguration, extraTypes);
         Preprocessing.addExtraFields(appConfiguration, extraFields);
         Preprocessing.addExtraRelations(appConfiguration, extraRelations);
         Preprocessing.addExtraFields(appConfiguration, ConfigLoader.defaultFields);
