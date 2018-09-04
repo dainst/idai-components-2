@@ -170,6 +170,10 @@ export class IdaiFieldAppConfigurator {
                 color: "#ffff99",
                 fields: {}
             };
+            (this.defaultTypes as any)['Other'] = {
+                "color": "#CC6600",
+                "parent": "Feature"
+            };
             this.defaultRelations.push({
                 domain: ["Wall_surface"],
                 name: "isRecordedIn",
