@@ -26,6 +26,21 @@ export class IdaiFieldAppConfigurator {
             fields: {},
             abstract: true
         } as TypeDefinition,
+        Building: {
+            fields: {},
+            parent: 'Operation'
+        } as TypeDefinition,
+        Survey: {
+            fields: {},
+            parent: 'Operation'
+        } as TypeDefinition,
+        Trench: {
+            fields: {},
+            parent: 'Operation'
+        } as TypeDefinition,
+        Room: {
+            fields: {}
+        } as TypeDefinition,
         Feature: {
             fields: {
                 period: {
@@ -138,8 +153,13 @@ export class IdaiFieldAppConfigurator {
             domain: ['Feature:inherit'], range: ['Feature:inherit'], sameMainTypeResource: true},
 
         { name: 'isRecordedIn', label: 'Aufgenommen in Maßnahme',
-            domain: ['Feature:inherit', 'Find:inherit', 'Inscription'], range: ['Operation:inherit']},
-
+            domain: ['Feature:inherit'], range: ['Trench']},
+        { name: 'isRecordedIn', label: 'Aufgenommen in Maßnahme',
+            domain: ['Find:inherit'], range: ['Trench','Survey']},
+        { name: 'isRecordedIn', label: 'Aufgenommen in Maßnahme',
+            domain: ['Inscription'], range: ['Trench']},
+        { name: 'isRecordedIn', label: 'Aufgenommen in Maßnahme',
+            domain: ['Room'], range: ['Building']},
 
         { name: 'includes', inverse: 'liesWithin', label: 'Beinhaltet',
             domain: ['Feature:inherit'], range: ['Find:inherit', 'Feature:inherit', 'Inscription'], sameMainTypeResource: true},
