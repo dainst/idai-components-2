@@ -53,7 +53,7 @@ export class ConfigLoader {
                 postPreprocessConfigurationValidator: ConfigurationValidator,
                 customConfigurationName: string|undefined): Promise<ProjectConfiguration> {
 
-        if (customConfigurationName) console.debug("Load custom configuration",customConfigurationName);
+        if (customConfigurationName) console.log("Load custom configuration",customConfigurationName);
 
         let appConfiguration: any = await this.readConfiguration(configDirPath);
 
@@ -104,14 +104,16 @@ export class ConfigLoader {
         // to be done before applyCustomFields so that extra types can get additional fields too
         Preprocessing.addExtraTypes(appConfiguration, extraTypes);
 
-        await this.applyCustomFieldsConfiguration(appConfiguration,
-            configDirPath
-                + '/Fields-'
-                + (customConfigurationName
-                        ? customConfigurationName
-                        : 'Custom')
-                + '.json'
-        );
+        const customConfigPath = configDirPath
+            + '/Fields-'
+            + (customConfigurationName
+                ? customConfigurationName
+                : 'Custom')
+            + '.json';
+
+        console.log("customConfigPath", customConfigPath);
+
+        await this.applyCustomFieldsConfiguration(appConfiguration, customConfigPath);
 
         await this.applyHiddenConfs(appConfiguration, hiddenConfigurationPath, customHiddenConfigurationPath);
 
