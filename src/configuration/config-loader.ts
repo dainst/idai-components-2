@@ -111,8 +111,6 @@ export class ConfigLoader {
                 : 'Custom')
             + '.json';
 
-        console.log("customConfigPath", customConfigPath);
-
         await this.applyCustomFieldsConfiguration(appConfiguration, customConfigPath);
 
         await this.applyHiddenConfs(appConfiguration, hiddenConfigurationPath, customHiddenConfigurationPath);

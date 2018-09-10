@@ -239,6 +239,16 @@ export class IdaiFieldAppConfigurator {
                 parent: "ProcessUnit",
                 fields: {}
             };
+
+            this.defaultRelations.push(
+                { name: 'isRecordedIn', label: 'Aufgenommen in Maßnahme',
+                    domain: ['ProcessUnit'], range: ['Trench', 'Survey', 'Building']});
+            this.defaultRelations.push(
+                { name: 'isRecordedIn', label: 'Aufgenommen in Maßnahme',
+                    domain: ['Feature:inherit'], range: ['Trench', 'Survey', 'Building']});
+            this.defaultRelations.push(
+                { name: 'isRecordedIn', label: 'Aufgenommen in Maßnahme',
+                    domain: ['Find:inherit'], range: ['Trench', 'Survey', 'Building']});
         }
 
 
