@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs';
 import {Document} from '../../src/model/core/document';
 import {Query} from '../../src/datastore/query';
 import {Datastore} from '../../src/datastore/datastore';
