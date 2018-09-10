@@ -51,7 +51,9 @@ export class ConfigLoader {
                 extraFieldsOrder: string[],
                 prePreprocessConfigurationValidator: IdaiFieldPrePreprocessConfigurationValidator,
                 postPreprocessConfigurationValidator: ConfigurationValidator,
-                applyMeninxConfiguration: boolean = false): Promise<ProjectConfiguration> {
+                customConfigurationName: string|undefined): Promise<ProjectConfiguration> {
+
+        if (customConfigurationName) console.debug("Load custom configuration",customConfigurationName);
 
         let appConfiguration: any = await this.readConfiguration(configDirPath);
 
@@ -59,7 +61,7 @@ export class ConfigLoader {
         if (prePreprocessValidationErrors.length > 0) throw prePreprocessValidationErrors;
 
         appConfiguration = await this.preprocess(configDirPath, appConfiguration, extraTypes, extraRelations,
-            extraFields, extraFieldsOrder, applyMeninxConfiguration);
+            extraFields, extraFieldsOrder, customConfigurationName);
 
         const postPreprocessValidationErrors = postPreprocessConfigurationValidator.go(appConfiguration);
         if (postPreprocessValidationErrors.length > 0) throw postPreprocessValidationErrors;
@@ -85,15 +87,11 @@ export class ConfigLoader {
                              extraRelations: Array<RelationDefinition>,
                              extraFields: {[fieldName: string]: FieldDefinition },
                              extraFieldsOrder: string[],
-                             applyMeninxConfiguration: boolean): Promise<ConfigurationDefinition> {
+                             customConfigurationName: string|undefined): Promise<ConfigurationDefinition> {
 
-        const customFieldsConfigurationPath = configDirPath + '/Fields-Custom.json';
-        const meninxFieldsConfigurationPath = configDirPath + '/Fields-Meninx.json';
         const hiddenConfigurationPath = configDirPath + '/Hidden.json';
         const customHiddenConfigurationPath = configDirPath + '/Hidden-Custom.json';
         const languageConfigurationPath = configDirPath + '/Language.json';
-        const customLanguageConfigurationPath = configDirPath + '/Language-Custom.json';
-        const meninxLanguageConfigurationPath = configDirPath + '/Language-Meninx.json';
         const orderConfigurationPath = configDirPath + '/Order.json';
         const searchConfigurationPath = configDirPath + '/Search.json';
         const periodConfigurationPath = configDirPath + '/Periods.json';
@@ -107,9 +105,12 @@ export class ConfigLoader {
         Preprocessing.addExtraTypes(appConfiguration, extraTypes);
 
         await this.applyCustomFieldsConfiguration(appConfiguration,
-            applyMeninxConfiguration ?
-                meninxFieldsConfigurationPath :
-                customFieldsConfigurationPath
+            configDirPath
+                + '/Fields-'
+                + (customConfigurationName
+                        ? customConfigurationName
+                        : 'Custom')
+                + '.json'
         );
 
         await this.applyHiddenConfs(appConfiguration, hiddenConfigurationPath, customHiddenConfigurationPath);
@@ -120,14 +121,16 @@ export class ConfigLoader {
         Preprocessing.addExtraFields(appConfiguration, ConfigLoader.defaultFields);
 
         await this.applyLanguageConfs(appConfiguration, languageConfigurationPath,
-            applyMeninxConfiguration ?
-                meninxLanguageConfigurationPath :
-                customLanguageConfigurationPath
+            + '/Language-'
+                + (customConfigurationName
+                    ? customConfigurationName
+                    : 'Custom')
+                    + '.json'
         );
 
         await this.applySearchConfiguration(appConfiguration, searchConfigurationPath);
         await this.applyPeriodConfiguration(appConfiguration,
-            applyMeninxConfiguration
+            customConfigurationName === 'Meninx'
                 ? meninxPeriodConfigurationPath
                 : periodConfigurationPath
         );

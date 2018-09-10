@@ -183,9 +183,9 @@ export class IdaiFieldAppConfigurator {
 
 
     public go(configDirPath: string,
-              applyMeninxConfiguration: boolean = false): Promise<ProjectConfiguration> {
+              customConfigurationName: string|undefined): Promise<ProjectConfiguration> {
 
-        if (applyMeninxConfiguration) {
+        if (customConfigurationName === 'Meninx') {
             (this.defaultTypes as any)['Wall_surface'] = {
                 color: "#ffff99",
                 fields: {}
@@ -203,6 +203,45 @@ export class IdaiFieldAppConfigurator {
             });
         }
 
+
+        if (customConfigurationName === 'Pergamon') {
+            (this.defaultTypes as any)['Other'] = {
+                color: "#CC6600",
+                parent: "Feature",
+                fields: {}
+            };
+            (this.defaultTypes as any)['ProcessUnit'] = {
+                color: "#08306b",
+                fields: {}
+            };
+            (this.defaultTypes as any)['Profile'] = {
+                color: "#c6dbef",
+                parent: "ProcessUnit",
+                fields: {}
+            };
+            (this.defaultTypes as any)['Drilling'] = {
+                color: "#08519c",
+                parent: "ProcessUnit",
+                fields: {}
+            };
+            (this.defaultTypes as any)['Planum'] = {
+                color: "#2171b5",
+                parent: "ProcessUnit",
+                fields: {}
+            };
+            (this.defaultTypes as any)['SurveyUnit'] = {
+                color: "#6baed6",
+                parent: "ProcessUnit",
+                fields: {}
+            };
+            (this.defaultTypes as any)['Sample'] = {
+                color: "#9ecae1",
+                parent: "ProcessUnit",
+                fields: {}
+            };
+        }
+
+
         return this.configLoader.go(
             configDirPath,
             this.defaultTypes,
@@ -211,7 +250,7 @@ export class IdaiFieldAppConfigurator {
             this.defaultFieldsOrder,
             new IdaiFieldPrePreprocessConfigurationValidator(),
             new IdaiFieldConfigurationValidator(),
-            applyMeninxConfiguration
+            customConfigurationName
         );
     }
 }

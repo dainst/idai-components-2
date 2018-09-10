@@ -68,7 +68,8 @@ let pconf: any = undefined;
                     },
                     ['identifier', 'shortDescription'],
                     new IdaiFieldPrePreprocessConfigurationValidator(),
-                    new ConfigurationValidator()
+                    new ConfigurationValidator(),
+                    undefined
                 )
                 .then((projectConfiguration: ProjectConfiguration) => pconf = projectConfiguration)
                 .catch((msgsWithParams: any) =>{
