@@ -123,7 +123,7 @@ export class ConfigLoader {
         Preprocessing.addExtraFields(appConfiguration, ConfigLoader.defaultFields);
 
         await this.applyLanguageConfs(appConfiguration, languageConfigurationPath,
-            + '/Language-'
+            configDirPath + '/Language-'
                 + (customConfigurationName
                     ? customConfigurationName
                     : 'Custom')
