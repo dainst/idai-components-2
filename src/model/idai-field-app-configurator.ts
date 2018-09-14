@@ -153,10 +153,6 @@ export class IdaiFieldAppConfigurator {
             domain: ['Feature:inherit'], range: ['Feature:inherit'], sameMainTypeResource: true},
 
         { name: 'isRecordedIn', label: 'Aufgenommen in Maßnahme',
-            domain: ['Feature:inherit'], range: ['Trench']},
-        { name: 'isRecordedIn', label: 'Aufgenommen in Maßnahme',
-            domain: ['Find:inherit'], range: ['Trench','Survey']},
-        { name: 'isRecordedIn', label: 'Aufgenommen in Maßnahme',
             domain: ['Inscription'], range: ['Trench']},
         { name: 'isRecordedIn', label: 'Aufgenommen in Maßnahme',
             domain: ['Room'], range: ['Building']},
@@ -170,7 +166,6 @@ export class IdaiFieldAppConfigurator {
             domain: ['Inscription'], range: ['Feature:inherit'], sameMainTypeResource: true},
         { name: 'liesWithin', inverse: 'includes', label: 'Liegt in',
             domain: ['Feature:inherit'], range: ['Feature:inherit'], sameMainTypeResource: true},
-
 
         { name: 'bears', inverse: 'isFoundOn', label: 'trägt',
             domain: ['Find:inherit'], range: ['Inscription'], sameMainTypeResource: true},
@@ -249,6 +244,14 @@ export class IdaiFieldAppConfigurator {
             this.defaultRelations.push(
                 { name: 'isRecordedIn', label: 'Aufgenommen in Maßnahme',
                     domain: ['Find:inherit'], range: ['Trench', 'Survey', 'Building']});
+        } else {
+
+            this.defaultRelations.push(
+                { name: 'isRecordedIn', label: 'Aufgenommen in Maßnahme',
+                    domain: ['Feature:inherit'], range: ['Trench']});
+            this.defaultRelations.push(
+                { name: 'isRecordedIn', label: 'Aufgenommen in Maßnahme',
+                    domain: ['Find:inherit'], range: ['Trench','Survey']});
         }
 
 
