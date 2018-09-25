@@ -232,18 +232,21 @@ export class IdaiFieldAppConfigurator {
             this.defaultRelations.push(
                 { name: 'isRecordedIn', label: 'Aufgenommen in Maßnahme',
                     domain: ['Feature:inherit'], range: ['Trench', 'Survey', 'Building']});
+
+
             this.defaultRelations.push(
                 { name: 'isRecordedIn', label: 'Aufgenommen in Maßnahme',
-                    domain: ['Find:inherit'], range: ['Trench', 'Survey', 'Building']});
+                    domain: ['Stone'], range: ['Building']});
         } else {
 
             this.defaultRelations.push(
                 { name: 'isRecordedIn', label: 'Aufgenommen in Maßnahme',
                     domain: ['Feature:inherit'], range: ['Trench']});
-            this.defaultRelations.push(
-                { name: 'isRecordedIn', label: 'Aufgenommen in Maßnahme',
-                    domain: ['Find:inherit'], range: ['Trench','Survey']});
         }
+
+        this.defaultRelations.push(
+            { name: 'isRecordedIn', label: 'Aufgenommen in Maßnahme',
+                domain: ['Find:inherit'], range: ['Trench','Survey']});
 
 
         return this.configLoader.go(
