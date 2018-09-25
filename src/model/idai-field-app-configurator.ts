@@ -199,7 +199,7 @@ export class IdaiFieldAppConfigurator {
                 domain: ["Wall_surface"],
                 name: "isRecordedIn",
                 label: "Aufgenommen in Maßnahme",
-                range: ["Operation:inherit"]
+                range: ["Trench"]
             });
         }
 
