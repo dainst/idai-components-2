@@ -211,6 +211,7 @@ export class IdaiFieldAppConfigurator {
                 fields: {}
             };
             (this.defaultTypes as any)['ProcessUnit'] = {
+                abstract: true,
                 color: "#08306b",
                 fields: {}
             };
