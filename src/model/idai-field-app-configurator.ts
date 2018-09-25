@@ -41,6 +41,9 @@ export class IdaiFieldAppConfigurator {
         Room: {
             fields: {}
         } as TypeDefinition,
+        SurveyUnit: {
+            fields: {}
+        } as TypeDefinition,
         Feature: {
             fields: {
                 period: {
@@ -156,6 +159,8 @@ export class IdaiFieldAppConfigurator {
             domain: ['Inscription'], range: ['Trench']},
         { name: 'isRecordedIn', label: 'Aufgenommen in Maßnahme',
             domain: ['Room'], range: ['Building']},
+        { name: 'isRecordedIn', label: 'Aufgenommen in Maßnahme',
+            domain: ['SurveyUnit'], range: ['Survey']},
 
         { name: 'includes', inverse: 'liesWithin', label: 'Beinhaltet',
             domain: ['Feature:inherit'], range: ['Find:inherit', 'Feature:inherit', 'Inscription'], sameMainTypeResource: true},
@@ -221,11 +226,6 @@ export class IdaiFieldAppConfigurator {
             };
             (this.defaultTypes as any)['Planum'] = {
                 color: "#2171b5",
-                parent: "ProcessUnit",
-                fields: {}
-            };
-            (this.defaultTypes as any)['SurveyUnit'] = {
-                color: "#6baed6",
                 parent: "ProcessUnit",
                 fields: {}
             };
