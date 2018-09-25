@@ -219,16 +219,6 @@ export class IdaiFieldAppConfigurator {
                 parent: "ProcessUnit",
                 fields: {}
             };
-            (this.defaultTypes as any)['Drilling'] = {
-                color: "#08519c",
-                parent: "ProcessUnit",
-                fields: {}
-            };
-            (this.defaultTypes as any)['Planum'] = {
-                color: "#2171b5",
-                parent: "ProcessUnit",
-                fields: {}
-            };
             (this.defaultTypes as any)['Sample'] = {
                 color: "#9ecae1",
                 parent: "ProcessUnit",
@@ -237,7 +227,7 @@ export class IdaiFieldAppConfigurator {
 
             this.defaultRelations.push(
                 { name: 'isRecordedIn', label: 'Aufgenommen in Maßnahme',
-                    domain: ['ProcessUnit'], range: ['Trench', 'Survey', 'Building']});
+                    domain: ['ProcessUnit'], range: ['Trench']});
             this.defaultRelations.push(
                 { name: 'isRecordedIn', label: 'Aufgenommen in Maßnahme',
                     domain: ['Feature:inherit'], range: ['Trench', 'Survey', 'Building']});
