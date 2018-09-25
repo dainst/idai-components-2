@@ -234,7 +234,7 @@ export class IdaiFieldAppConfigurator {
                     domain: ['Feature:inherit'], range: ['Trench', 'Survey', 'Building']});
 
 
-            this.defaultRelations.push(
+            this.defaultRelations.push( // TODO this currently leads to a duplicated isRecordedIn in project pergamongrabung, which is ugly, but currently better than allowing more Finds of other types to get created
                 { name: 'isRecordedIn', label: 'Aufgenommen in Maßnahme',
                     domain: ['Stone'], range: ['Building']});
         } else {
