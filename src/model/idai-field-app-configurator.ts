@@ -41,6 +41,9 @@ export class IdaiFieldAppConfigurator {
         Room: {
             fields: {}
         } as TypeDefinition,
+        ArchitecturalUnit: {
+            fields: {}
+        } as TypeDefinition,
         SurveyUnit: {
             fields: {}
         } as TypeDefinition,
@@ -161,6 +164,8 @@ export class IdaiFieldAppConfigurator {
             domain: ['Room'], range: ['Building']},
         { name: 'isRecordedIn', label: 'Aufgenommen in Maßnahme',
             domain: ['SurveyUnit'], range: ['Survey']},
+        { name: 'isRecordedIn', label: 'Aufgenommen in Maßnahme',
+            domain: ['ArchitecturalUnit'], range: ['Building', 'Survey']},
 
         { name: 'includes', inverse: 'liesWithin', label: 'Beinhaltet',
             domain: ['Feature:inherit'], range: ['Find:inherit', 'Feature:inherit', 'Inscription'], sameMainTypeResource: true},
