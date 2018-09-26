@@ -172,9 +172,13 @@ export class IdaiFieldAppConfigurator {
 
         { name: 'includes', inverse: 'liesWithin', label: 'Beinhaltet',
             domain: ['Feature:inherit'], range: ['Find:inherit', 'Feature:inherit', 'Inscription'], sameMainTypeResource: true},
+        { name: 'includes', inverse: 'liesWithin', label: 'Beinhaltet',
+            domain: ['Room'], range: ['Find:inherit'], sameMainTypeResource: true},
+        { name: 'includes', inverse: 'liesWithin', label: 'Beinhaltet',
+            domain: ['SurveyUnit'], range: ['Find:inherit'], sameMainTypeResource: true},
 
         { name: 'liesWithin', inverse: 'includes', label: 'Liegt in',
-            domain: ['Find:inherit'], range: ['Feature:inherit'], sameMainTypeResource: true},
+            domain: ['Find:inherit'], range: ['Feature:inherit', 'SurveyUnit', 'Room'], sameMainTypeResource: true},
         { name: 'liesWithin', inverse: 'includes', label: 'Liegt in',
             domain: ['Inscription'], range: ['Feature:inherit'], sameMainTypeResource: true},
         { name: 'liesWithin', inverse: 'includes', label: 'Liegt in',
