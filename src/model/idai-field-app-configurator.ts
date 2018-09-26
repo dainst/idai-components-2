@@ -41,7 +41,7 @@ export class IdaiFieldAppConfigurator {
         Room: {
             fields: {}
         } as TypeDefinition,
-        ArchitecturalUnit: {
+        BuildingPart: {
             fields: {}
         } as TypeDefinition,
         SurveyUnit: {
@@ -159,7 +159,7 @@ export class IdaiFieldAppConfigurator {
         { name: 'borders', inverse: 'borders', label: 'Grenzt an',
             domain: ['Feature:inherit'], range: ['Feature:inherit'], sameMainTypeResource: true},
         { name: 'borders', inverse: 'borders', label: 'Grenzt an',
-            domain: ['ArchitecturalUnit:inherit'], range: ['ArchitecturalUnit:inherit'], sameMainTypeResource: true},
+            domain: ['BuildingPart:inherit'], range: ['BuildingPart:inherit'], sameMainTypeResource: true},
 
         { name: 'isRecordedIn', label: 'Aufgenommen in Maßnahme',
             domain: ['Inscription'], range: ['Trench']},
@@ -168,7 +168,7 @@ export class IdaiFieldAppConfigurator {
         { name: 'isRecordedIn', label: 'Aufgenommen in Maßnahme',
             domain: ['SurveyUnit'], range: ['Survey']},
         { name: 'isRecordedIn', label: 'Aufgenommen in Maßnahme',
-            domain: ['ArchitecturalUnit'], range: ['Building', 'Survey']},
+            domain: ['BuildingPart'], range: ['Building', 'Survey']},
 
         { name: 'includes', inverse: 'liesWithin', label: 'Beinhaltet',
             domain: ['Feature:inherit'], range: ['Find:inherit', 'Feature:inherit', 'Inscription'], sameMainTypeResource: true},
