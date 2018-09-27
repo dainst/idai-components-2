@@ -170,7 +170,7 @@ describe('ConfigurationPreprocessor', () => {
     });
 
 
-    it('should add an extra relation', function() {
+    it('add an extra relation', () => {
 
         const extraRelation: RelationDefinition = {
             name: 'R',
@@ -188,7 +188,7 @@ describe('ConfigurationPreprocessor', () => {
 
 
     // there was a bug where relation was not added if one of the same name but with a different domain was configured
-    it('should add an extra relation to an existing relation', function() {
+    it('add an extra relation to an existing relation', () => {
 
         const r1: RelationDefinition = {
             name: 'R',
@@ -202,15 +202,7 @@ describe('ConfigurationPreprocessor', () => {
             range : ['rangeA']
         };
 
-        configuration = {
-            identifier: 'test',
-            types: {
-                T1: t1
-            },
-            relations: [
-                r1
-            ]
-        };
+        configuration = { identifier: 'test', types: { T1: t1 }, relations: [r1]};
 
         Preprocessing.addExtraTypes(configuration, {});
         Preprocessing.addExtraFields(configuration, {});
@@ -220,7 +212,33 @@ describe('ConfigurationPreprocessor', () => {
     });
 
 
-    it('should replace range ALL with all types except the domain types', function() {
+    it('overwrite relation for a part of a domain', () => {
+
+        const r1: RelationDefinition = {
+            name: 'R',
+            domain: ['domainA', 'domainB', 'domainC'],
+            range : ['rangeA']
+        };
+
+        const r2: RelationDefinition = {
+            name: 'R',
+            domain: ['domainB', 'domainC'],
+            range : ['rangeB']
+        };
+
+        configuration = { identifier: 'test', types: { T1: t1 }, relations: []};
+
+        Preprocessing.addExtraRelations(configuration, [r1, r2]);
+        expect(configuration.relations[0].domain).toContain('domainB');
+        expect(configuration.relations[0].domain).toContain('domainC');
+        expect(configuration.relations[0].range).toContain('rangeB');
+
+        expect(configuration.relations[1].domain).toContain('domainA');
+        expect(configuration.relations[1].range).toContain('rangeA');
+    });
+
+
+    it('replace range ALL with all types except the domain types', () => {
 
         const r: RelationDefinition = {
             name: 'R',
@@ -237,7 +255,7 @@ describe('ConfigurationPreprocessor', () => {
     });
 
 
-    it('should replace domain ALL with all types except the range types', function() {
+    it('should replace domain ALL with all types except the range types', () => {
 
         const r: RelationDefinition = {
             name: 'R',
@@ -254,7 +272,7 @@ describe('ConfigurationPreprocessor', () => {
     });
 
 
-    it('should replace range :inherit with all subtypes', function() {
+    it('should replace range :inherit with all subtypes', () => {
 
         const r: RelationDefinition = { name: 'R',
             domain: [ 'T3' ],

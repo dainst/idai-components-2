@@ -2,6 +2,8 @@ import {FieldDefinition} from './field-definition';
 import {TypeDefinition} from './type-definition';
 import {RelationDefinition} from './relation-definition';
 import {UnorderedConfigurationDefinition} from './unordered-configuration-definition';
+import {on, subtract} from 'tsfun';
+
 
 /**
  * @author Daniel de Oliveira
@@ -167,41 +169,17 @@ export module Preprocessing {
         if (!configuration.relations) return;
 
         for (let extraRelation of extraRelations) {
-            let relationAlreadyPresent = false;
 
-            for (const relationDefinition of configuration.relations) {
-                if (relationAlreadyExists(relationDefinition, extraRelation)) {
-                    relationAlreadyPresent = true;
-                }
-            }
+            configuration.relations
+                .filter(on('name')(extraRelation))
+                .forEach(snr => snr.domain = subtract(extraRelation.domain)(snr.domain));
 
-            if (!relationAlreadyPresent) {
-                configuration.relations.splice(0,0, extraRelation);
-                expandInherits(configuration, extraRelation, 'range');
-                expandInherits(configuration, extraRelation, 'domain');
-                expandOnUndefined(configuration, extraRelation, 'range');
-                expandOnUndefined(configuration, extraRelation, 'domain');
-            }
+            configuration.relations.splice(0,0, extraRelation);
+            expandInherits(configuration, extraRelation, 'range');
+            expandInherits(configuration, extraRelation, 'domain');
+            expandOnUndefined(configuration, extraRelation, 'range');
+            expandOnUndefined(configuration, extraRelation, 'domain');
         }
-    }
-
-
-    /**
-     * A relation definition is unique for each name/domain pair
-     *
-     * @param existingRelation
-     * @param extraRelation
-     * @returns {boolean}
-     */
-    function relationAlreadyExists(existingRelation: any, extraRelation: any) {
-
-        if (existingRelation.name == extraRelation.name) {
-            if (existingRelation.domain && extraRelation.domain) {
-                if (existingRelation.domain.sort().toString() ==
-                    extraRelation.domain.sort().toString()) return true;
-            }
-        }
-        return false;
     }
 
 
