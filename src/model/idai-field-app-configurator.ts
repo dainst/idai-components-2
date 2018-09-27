@@ -197,14 +197,18 @@ export class IdaiFieldAppConfigurator {
     public go(configDirPath: string,
               customConfigurationName: string|undefined): Promise<ProjectConfiguration> {
 
-        if (customConfigurationName === 'Meninx') {
-            (this.defaultTypes as any)['Wall_surface'] = {
-                color: "#ffff99",
-                fields: {}
-            };
+        if (customConfigurationName === 'Meninx' || customConfigurationName === 'Pergamon') {
             (this.defaultTypes as any)['Other'] = {
                 color: "#CC6600",
                 parent: "Feature",
+                fields: {}
+            };
+        }
+
+
+        if (customConfigurationName === 'Meninx') {
+            (this.defaultTypes as any)['Wall_surface'] = {
+                color: "#ffff99",
                 fields: {}
             };
             this.defaultRelations.push({
@@ -217,11 +221,6 @@ export class IdaiFieldAppConfigurator {
 
 
         if (customConfigurationName === 'Pergamon') {
-            (this.defaultTypes as any)['Other'] = {
-                color: "#CC6600",
-                parent: "Feature",
-                fields: {}
-            };
             (this.defaultTypes as any)['ProcessUnit'] = {
                 abstract: true,
                 color: "#08306b",
