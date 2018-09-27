@@ -5,6 +5,25 @@ import {IdaiFieldPrePreprocessConfigurationValidator} from '../../../../src/conf
  */
 describe('PrePreprocessConfigurationValidator',() => {
 
+
+    it('disallow defining relations', () => {
+
+        const configuration = {
+            identifier: 'Conf',
+            types: {
+                'Image': {}
+            },
+            relations: [{
+                name: 'isRecordedIn',
+                domain: ['Image']
+            }]
+        };
+
+        const result = new IdaiFieldPrePreprocessConfigurationValidator().go(configuration);
+        expect(result[0][0]).toContain('relations cannot be defined via external configuration');
+    });
+
+    /*
     it('reject if isRecordedIn defined for image type', () => {
 
         const configuration = {
@@ -82,7 +101,7 @@ describe('PrePreprocessConfigurationValidator',() => {
     });
 
 
-    it('reject if field not allowed in relation', () => {
+    xit('reject if field not allowed in relation', () => {
 
         const configuration = {
             identifier: 'Conf',
@@ -97,7 +116,7 @@ describe('PrePreprocessConfigurationValidator',() => {
 
         const result = new IdaiFieldPrePreprocessConfigurationValidator().go(configuration);
         expect(result[0][0]).toContain('relation field not allowed');
-    });
+    });*/
 
 
     it('reject if field not allowed in type', () => {
@@ -106,8 +125,7 @@ describe('PrePreprocessConfigurationValidator',() => {
             identifier: 'Conf',
             types: {
                 'A': {  fields: { 'a1': { editable: true } } }
-            },
-            relations: []
+            }
         };
 
         const result = new IdaiFieldPrePreprocessConfigurationValidator().go(configuration);

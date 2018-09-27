@@ -11,12 +11,15 @@ import {FieldDefinition} from '../../../../src/configuration/field-definition';
  */
 describe('ConfigLoader', () => {
 
-    const configuration = {} as ConfigurationDefinition;
+    let configuration = {} as ConfigurationDefinition;
     let configLoader: ConfigLoader;
     let configReader;
 
 
     beforeEach(() => {
+
+        // Object.assign(configuration, {});
+        configuration = {} as ConfigurationDefinition;
 
         configReader = jasmine.createSpyObj(
             'confRead', ['read']);
@@ -35,7 +38,7 @@ describe('ConfigLoader', () => {
     });
 
 
-    it('mix existing externally configured with internal inherits relation', async (done) => {
+    it('mix existing externally configured with internal inherits relation', async (done) => { // TODO check if it can be removed since external defintions of relations are now forbidden
 
         Object.assign(configuration, {
             identifier: 'Conf',
@@ -48,12 +51,7 @@ describe('ConfigLoader', () => {
                 'A2': { parent: 'A' },
                 'B1': { parent: 'B' },
                 'B2': { parent: 'B' }
-            },
-            relations: [{
-                name: 'connection',
-                domain: ['C'],
-                range: ['D']
-            }]
+            }
         });
 
         let pconf;
@@ -62,11 +60,16 @@ describe('ConfigLoader', () => {
             pconf = await configLoader.go(
                 'yo',
                 {},
-                [{
-                    name: 'connection',
-                    domain: ['A:inherit'], // TODO reject config if not an array
-                    range: ['B:inherit']
-                }],
+                [
+                    {
+                        name: 'connection',
+                        domain: ['C'],
+                        range: ['D']
+                    }, {
+                        name: 'connection',
+                        domain: ['A:inherit'], // TODO reject config if not an array
+                        range: ['B:inherit']
+                    }],
                 {},
                 [],
                 new IdaiFieldPrePreprocessConfigurationValidator(),
@@ -90,14 +93,14 @@ describe('ConfigLoader', () => {
 
         Object.assign(configuration, {
             identifier: 'Conf',
-            types: { 'A': {}, 'B': {} },
-            relations: [{ name: 'abc', domain: ['A'], range: ['B'], sameOperation: false }]
+            types: { 'A': {}, 'B': {} }
         });
 
         let pconf;
         try {
             pconf = await configLoader.go(
-                'yo', {}, [], {}, [],
+                'yo', {},
+                [{ name: 'abc', domain: ['A'], range: ['B'], sameMainTypeResource: false }], {}, [],
                 new IdaiFieldPrePreprocessConfigurationValidator(),
                 new ConfigurationValidator(), undefined);
         } catch(err) {
@@ -118,11 +121,7 @@ describe('ConfigLoader', () => {
                 'A': {},
                 'B': {},
                 'C': {}
-            },
-            relations: [
-                { name: 'r1', domain: ['A'], range: ['B']},
-                { name: 'r2', domain: ['A'], range: ['B']}
-            ]
+            }
         });
 
         configReader.read.and.returnValues(
@@ -152,7 +151,10 @@ describe('ConfigLoader', () => {
         let pconf;
         try {
             pconf = await configLoader.go(
-                'yo', {}, [], {}, [],
+                'yo', {}, [
+                         { name: 'r1', domain: ['A'], range: ['B']},
+                         { name: 'r2', domain: ['A'], range: ['B']}
+                    ], {}, [],
                 new IdaiFieldPrePreprocessConfigurationValidator(),
                 new ConfigurationValidator(), undefined);
         } catch(err) {
@@ -165,8 +167,8 @@ describe('ConfigLoader', () => {
         expect(pconf.getTypesList()[1].label).toEqual('B__');
         expect(pconf.getTypesList()[2].label).toEqual('C'); // took name as label
 
-        expect(pconf.getRelationDefinitions('A')[0].label).toEqual('r1_');
-        expect(pconf.getRelationDefinitions('A')[1].label).toBeUndefined();
+        expect(pconf.getRelationDefinitions('A')[1].label).toEqual('r1_');
+        expect(pconf.getRelationDefinitions('A')[0].label).toBeUndefined();
         done();
     });
 
@@ -178,11 +180,7 @@ describe('ConfigLoader', () => {
             types: {
                 A: { fields: { fieldA1: { inputType: 'unsignedInt' } } },
                 B: { fields: { fieldB1: { inputType: 'input' } } }
-            },
-            relations: [
-                { name: 'r1', domain: ['A'], range: ['B']},
-                { name: 'r2', domain: ['A'], range: ['B']}
-            ]
+            }
         });
 
         configReader.read.and.returnValues(
@@ -202,7 +200,10 @@ describe('ConfigLoader', () => {
 
         let pconf;
         try {
-            pconf = await configLoader.go('', {}, [], {}, [],
+            pconf = await configLoader.go('', {}, [
+                { name: 'r1', domain: ['A'], range: ['B']},
+                { name: 'r2', domain: ['A'], range: ['B']}
+            ], {}, [],
                 new IdaiFieldPrePreprocessConfigurationValidator(), new ConfigurationValidator(), undefined
             );
 
@@ -229,8 +230,7 @@ describe('ConfigLoader', () => {
                 B: { fields: { fieldB2: {}, fieldB3: {}, fieldB1: {} } },
                 C: { fields: { fieldC1: {}, fieldC2: {} } },
                 A: { fields: { fieldA2: {}, fieldA1: {} } }
-            },
-            relations: []
+            }
         });
 
         configReader.read.and.returnValues(
@@ -286,10 +286,9 @@ describe('ConfigLoader', () => {
         Object.assign(configuration, {
             identifier: 'Conf',
             types: {
-                A: { fields: { fieldA2: {}, fieldA1: {} } },
-                B: { fields: { fieldB2: {}, fieldB1: {} } }
-            },
-            relations: []
+                A: {fields: {fieldA2: {}, fieldA1: {}}},
+                B: {fields: {fieldB2: {}, fieldB1: {}}}
+            }
         });
 
         configReader.read.and.returnValues(
@@ -344,8 +343,7 @@ describe('ConfigLoader', () => {
             types: {
                 A: { fields: { fieldA2: {}, fieldA1: {} } },
                 B: { fields: { fieldB2: {}, fieldB1: {} } }
-            },
-            relations: []
+            }
         });
 
         configReader.read.and.returnValues(
@@ -391,8 +389,7 @@ describe('ConfigLoader', () => {
             identifier: 'Conf',
             types: {
                 A: { fields: { fieldA2: {}, fieldA1: {} } }
-            },
-            relations: []
+            }
         });
 
         configReader.read.and.returnValues(
@@ -438,8 +435,7 @@ describe('ConfigLoader', () => {
             identifier: 'Conf',
             types: {
                 A: { fields: { fieldA1: {}, fieldA2: {}, fieldA3: {}  } }
-            },
-            relations: []
+            }
         });
 
         configReader.read.and.returnValues(
@@ -489,8 +485,7 @@ describe('ConfigLoader', () => {
             identifier: 'Conf',
             types: {
                 A: { fields: { fieldA1: {}, fieldA3: {}, fieldA2: {} } }
-            },
-            relations: []
+            }
         });
 
         configReader.read.and.returnValues(

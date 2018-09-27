@@ -60,6 +60,8 @@ export class ConfigLoader {
         const prePreprocessValidationErrors = prePreprocessConfigurationValidator.go(appConfiguration);
         if (prePreprocessValidationErrors.length > 0) throw prePreprocessValidationErrors;
 
+        appConfiguration.relations = [];
+
         appConfiguration = await this.preprocess(configDirPath, appConfiguration, extraTypes, extraRelations,
             extraFields, extraFieldsOrder, customConfigurationName);
 

@@ -1,6 +1,7 @@
 import {TypeDefinition} from './type-definition';
 import {intersection, subtract} from 'tsfun';
 import {RelationDefinition} from './relation-definition';
+import {isNot, includedIn} from 'tsfun';
 
 /**
  * Used to validate to configuration in the form it comes from the user, i.e.
@@ -23,9 +24,22 @@ export class IdaiFieldPrePreprocessConfigurationValidator {
 
         if (!appConfiguration.types) return [];
 
-        return IdaiFieldPrePreprocessConfigurationValidator.checkForForbiddenIsRecordedIns(appConfiguration)
-            .concat(IdaiFieldPrePreprocessConfigurationValidator.checkForExtraneousFieldsInRelations(appConfiguration))
+        return IdaiFieldPrePreprocessConfigurationValidator.checkForForbiddenTopLevelFields(appConfiguration)
+            // .concat(IdaiFieldPrePreprocessConfigurationValidator.checkForForbiddenIsRecordedIns(appConfiguration))
+            // .concat(IdaiFieldPrePreprocessConfigurationValidator.checkForExtraneousFieldsInRelations(appConfiguration))
             .concat(IdaiFieldPrePreprocessConfigurationValidator.checkForExtraneousFieldsInTypes(appConfiguration));
+    }
+
+
+    private static checkForForbiddenTopLevelFields(appConfiguration: any): Array<Array<string>> {
+
+        const allowedFields = ['identifier', 'types'];
+
+        const result = Object.keys(appConfiguration).find(isNot(includedIn(allowedFields)));
+
+        return result
+            ? [['relations cannot be defined via external configuration']]
+            : [];
     }
 
 
