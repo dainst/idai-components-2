@@ -169,6 +169,8 @@ export class IdaiFieldAppConfigurator {
             domain: ['SurveyUnit'], range: ['Survey']},
         { name: 'isRecordedIn', label: 'Aufgenommen in Maßnahme',
             domain: ['BuildingPart'], range: ['Building', 'Survey']},
+        { name: 'isRecordedIn', label: 'Aufgenommen in Maßnahme',
+            domain: ['Find:inherit'], range: ['Trench','Survey']},
 
         { name: 'includes', inverse: 'liesWithin', label: 'Beinhaltet',
             domain: ['Feature:inherit'], range: ['Find:inherit', 'Feature:inherit', 'Inscription'], sameMainTypeResource: true},
@@ -242,21 +244,16 @@ export class IdaiFieldAppConfigurator {
             this.defaultRelations.push(
                 { name: 'isRecordedIn', label: 'Aufgenommen in Maßnahme',
                     domain: ['Feature:inherit'], range: ['Trench', 'Survey', 'Building']});
-
-
-            this.defaultRelations.push( // TODO this currently leads to a duplicated isRecordedIn in project pergamongrabung, which is ugly, but currently better than allowing more Finds of other types to get created
+            this.defaultRelations.push(
                 { name: 'isRecordedIn', label: 'Aufgenommen in Maßnahme',
-                    domain: ['Stone'], range: ['Building']});
+                    domain: ['Stone'], range: ['Building', 'Trench', 'Survey']});
+
         } else {
 
             this.defaultRelations.push(
                 { name: 'isRecordedIn', label: 'Aufgenommen in Maßnahme',
                     domain: ['Feature:inherit'], range: ['Trench']});
         }
-
-        this.defaultRelations.push(
-            { name: 'isRecordedIn', label: 'Aufgenommen in Maßnahme',
-                domain: ['Find:inherit'], range: ['Trench','Survey']});
 
 
         return this.configLoader.go(
