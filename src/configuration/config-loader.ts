@@ -46,7 +46,7 @@ export class ConfigLoader {
     public async go(
                 configDirPath: string,
                 extraTypes: {[typeName: string]: TypeDefinition },
-                extraRelations: Array<RelationDefinition>,
+                relations: Array<RelationDefinition>,
                 extraFields: {[fieldName: string]: FieldDefinition },
                 extraFieldsOrder: string[],
                 prePreprocessConfigurationValidator: IdaiFieldPrePreprocessConfigurationValidator,
@@ -60,9 +60,7 @@ export class ConfigLoader {
         const prePreprocessValidationErrors = prePreprocessConfigurationValidator.go(appConfiguration);
         if (prePreprocessValidationErrors.length > 0) throw prePreprocessValidationErrors;
 
-        appConfiguration.relations = [];
-
-        appConfiguration = await this.preprocess(configDirPath, appConfiguration, extraTypes, extraRelations,
+        appConfiguration = await this.preprocess(configDirPath, appConfiguration, extraTypes, relations,
             extraFields, extraFieldsOrder, customConfigurationName);
 
         const postPreprocessValidationErrors = postPreprocessConfigurationValidator.go(appConfiguration);
@@ -86,7 +84,7 @@ export class ConfigLoader {
 
     private async preprocess(configDirPath: string, appConfiguration: any,
                              extraTypes: {[typeName: string]: TypeDefinition } ,
-                             extraRelations: Array<RelationDefinition>,
+                             relations: Array<RelationDefinition>,
                              extraFields: {[fieldName: string]: FieldDefinition },
                              extraFieldsOrder: string[],
                              customConfigurationName: string|undefined): Promise<ConfigurationDefinition> {
@@ -117,9 +115,9 @@ export class ConfigLoader {
 
         await this.applyHiddenConfs(appConfiguration, hiddenConfigurationPath, customHiddenConfigurationPath);
 
-        if (!appConfiguration.relations) appConfiguration.relations = [];
+        appConfiguration.relations = [];
         Preprocessing.addExtraFields(appConfiguration, extraFields);
-        Preprocessing.addExtraRelations(appConfiguration, extraRelations);
+        Preprocessing.addExtraRelations(appConfiguration, relations);
         Preprocessing.addExtraFields(appConfiguration, ConfigLoader.defaultFields);
 
         await this.applyLanguageConfs(appConfiguration, languageConfigurationPath,
