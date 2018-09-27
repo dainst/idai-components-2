@@ -2,7 +2,7 @@ import {FieldDefinition} from './field-definition';
 import {TypeDefinition} from './type-definition';
 import {RelationDefinition} from './relation-definition';
 import {UnorderedConfigurationDefinition} from './unordered-configuration-definition';
-import {on, subtract} from 'tsfun';
+import {on, subtract, isNot, empty} from 'tsfun';
 
 
 /**
@@ -170,27 +170,35 @@ export module Preprocessing {
 
         for (let extraRelation of extraRelations) {
 
+            expandInherits(configuration, extraRelation, 'domain');
+
             configuration.relations
                 .filter(on('name')(extraRelation))
-                .forEach(snr => snr.domain = subtract(extraRelation.domain)(snr.domain));
+                .forEach(relation => {
+                    relation.domain = subtract(extraRelation.domain)(relation.domain)
+                });
+            configuration.relations = configuration.relations.filter(isNot(on('domain', empty)));
 
             configuration.relations.splice(0,0, extraRelation);
+
             expandInherits(configuration, extraRelation, 'range');
-            expandInherits(configuration, extraRelation, 'domain');
             expandOnUndefined(configuration, extraRelation, 'range');
             expandOnUndefined(configuration, extraRelation, 'domain');
         }
     }
 
 
-    function expandInherits(configuration: UnorderedConfigurationDefinition,
-                            extraRelation: RelationDefinition, itemSet: string) {
+    function expandInherits(configuration: Readonly<UnorderedConfigurationDefinition>,
+                            extraRelation: RelationDefinition,
+                            itemSet: string) {
 
         if (!extraRelation) return;
         if (!(extraRelation as any)[itemSet]) return;
 
         const itemsNew = [] as any;
         for (let item of (extraRelation as any)[itemSet]) {
+
+
             if (item.indexOf(':inherit') !== -1) {
                 for (let typeName of Object.keys(configuration.types)) {
                     const type = configuration.types[typeName];
@@ -203,6 +211,8 @@ export module Preprocessing {
             } else {
                 itemsNew.push(item);
             }
+
+
         }
         (extraRelation as any)[itemSet] = itemsNew;
     }

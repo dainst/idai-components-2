@@ -238,6 +238,33 @@ describe('ConfigurationPreprocessor', () => {
     });
 
 
+    it('overwrite relation with inheritance for a part of a domain', () => {
+
+        const r1: RelationDefinition = {
+            name: 'R',
+            domain: ['T1:inherit'],
+            range : ['rangeA']
+        };
+
+        const r2: RelationDefinition = {
+            name: 'R',
+            domain: ['T1:inherit'],
+            range : ['rangeA', 'rangeB', 'rangeC']
+        };
+
+        configuration = { identifier: 'test', types: { T1: t1 }, relations: []};
+        Preprocessing.addExtraFields(addType(addType(configuration,'T1'), 'T1'), {});
+
+
+        Preprocessing.addExtraRelations(configuration, [r1, r2]);
+
+        expect(configuration.relations.length).toEqual(1); // to make sure the relation is collapsed into one
+        expect(configuration.relations[0].range).toContain('rangeA');
+        expect(configuration.relations[0].range).toContain('rangeB');
+        expect(configuration.relations[0].range).toContain('rangeC');
+    });
+
+
     it('replace range ALL with all types except the domain types', () => {
 
         const r: RelationDefinition = {

@@ -171,6 +171,9 @@ export class IdaiFieldAppConfigurator {
             domain: ['BuildingPart'], range: ['Building', 'Survey']},
         { name: 'isRecordedIn', label: 'Aufgenommen in Maßnahme',
             domain: ['Find:inherit'], range: ['Trench','Survey']},
+        { name: 'isRecordedIn', label: 'Aufgenommen in Maßnahme',
+            domain: ['Feature:inherit'], range: ['Trench']},
+
 
         { name: 'includes', inverse: 'liesWithin', label: 'Beinhaltet',
             domain: ['Feature:inherit'], range: ['Find:inherit', 'Feature:inherit', 'Inscription'], sameMainTypeResource: true},
@@ -187,7 +190,7 @@ export class IdaiFieldAppConfigurator {
         { name: 'bears', inverse: 'isFoundOn', label: 'trägt',
             domain: ['Find:inherit'], range: ['Inscription'], sameMainTypeResource: true},
         { name: 'isFoundOn', inverse: 'bears', label: 'ist aufgebracht auf',
-            domain: ['Inscription'], range: ['Find:inherit'], sameMainTypeResource: true},
+            domain: ['Inscription'], range: ['Find:inherit'], sameMainTypeResource: true}
     ];
 
 
@@ -240,18 +243,14 @@ export class IdaiFieldAppConfigurator {
             this.defaultRelations.push(
                 { name: 'isRecordedIn', label: 'Aufgenommen in Maßnahme',
                     domain: ['ProcessUnit'], range: ['Trench']});
-            this.defaultRelations.push(
-                { name: 'isRecordedIn', label: 'Aufgenommen in Maßnahme',
-                    domain: ['Feature:inherit'], range: ['Trench', 'Survey', 'Building']});
-            this.defaultRelations.push(
+
+            this.defaultRelations.push( // overwrite existing definition
                 { name: 'isRecordedIn', label: 'Aufgenommen in Maßnahme',
                     domain: ['Stone'], range: ['Building', 'Trench', 'Survey']});
 
-        } else {
-
             this.defaultRelations.push(
                 { name: 'isRecordedIn', label: 'Aufgenommen in Maßnahme',
-                    domain: ['Feature:inherit'], range: ['Trench']});
+                    domain: ['Feature:inherit'], range: ['Trench', 'Survey', 'Building']});
         }
 
 
