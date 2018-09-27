@@ -201,6 +201,7 @@ export class IdaiFieldAppConfigurator {
               customConfigurationName: string|undefined): Promise<ProjectConfiguration> {
 
         if (customConfigurationName === 'Meninx' || customConfigurationName === 'Pergamon') {
+
             (this.defaultTypes as any)['Other'] = {
                 color: "#CC6600",
                 parent: "Feature",
@@ -211,6 +212,7 @@ export class IdaiFieldAppConfigurator {
 
         if (customConfigurationName === 'Meninx') {
             (this.defaultTypes as any)['Wall_surface'] = {
+
                 color: "#ffff99",
                 fields: {}
             };
@@ -224,6 +226,7 @@ export class IdaiFieldAppConfigurator {
 
 
         if (customConfigurationName === 'Pergamon') {
+
             (this.defaultTypes as any)['ProcessUnit'] = {
                 abstract: true,
                 color: "#08306b",
@@ -244,11 +247,11 @@ export class IdaiFieldAppConfigurator {
                 { name: 'isRecordedIn', label: 'Aufgenommen in Maßnahme',
                     domain: ['ProcessUnit'], range: ['Trench']});
 
-            this.defaultRelations.push( // overwrite existing definition
+            this.defaultRelations.push( // override existing definition
                 { name: 'isRecordedIn', label: 'Aufgenommen in Maßnahme',
                     domain: ['Stone'], range: ['Building', 'Trench', 'Survey']});
 
-            this.defaultRelations.push(
+            this.defaultRelations.push( // override existing definition
                 { name: 'isRecordedIn', label: 'Aufgenommen in Maßnahme',
                     domain: ['Feature:inherit'], range: ['Trench', 'Survey', 'Building']});
         }
