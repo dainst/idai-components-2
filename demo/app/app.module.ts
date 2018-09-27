@@ -58,6 +58,40 @@ let pconf: any = undefined;
                     'demo/config',
                     { 'Image': { 'fields': { 'dimensions': {} } } as TypeDefinition },
                     [
+                        {
+                            "domain": [
+                                "Section"
+                            ],
+                            "inverse": "NO-INVERSE",
+                            "name": "isRecordedIn",
+                            "range": [
+                                "Object"
+                            ]
+                        },
+                        {
+                            "name": "Belongs to",
+                            "inverse": "Includes",
+                            "domain": ["Object", "Object_enhanced", "Section"],
+                            "range": ["Object", "Object_enhanced", "Section"]
+                        },
+                        {
+                            "name": "Includes",
+                            "inverse": "Belongs to",
+                            "domain": ["Object", "Object_enhanced", "Section"],
+                            "range": ["Object", "Object_enhanced", "Section"]
+                        },
+                        {
+                            "name": "Found in",
+                            "inverse": "Find spot of",
+                            "domain": ["Object", "Object_enhanced"],
+                            "range": ["Section"]
+                        },
+                        {
+                            "name": "Find spot of",
+                            "inverse": "Found in",
+                            "domain": ["Section"],
+                            "range": ["Object", "Object_enhanced"]
+                        },
                         { name: 'depicts', domain: ['Image:inherit'], inverse: 'isDepictedBy', visible: false,
                             editable: false},
                         { name: 'isDepictedBy', range: ['Image:inherit'], inverse: 'depicts', visible: false,
