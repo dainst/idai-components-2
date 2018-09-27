@@ -174,7 +174,6 @@ export class IdaiFieldAppConfigurator {
         { name: 'isRecordedIn', label: 'Aufgenommen in Maßnahme',
             domain: ['Feature:inherit'], range: ['Trench']},
 
-
         { name: 'includes', inverse: 'liesWithin', label: 'Beinhaltet',
             domain: ['Feature:inherit'], range: ['Find:inherit', 'Feature:inherit', 'Inscription'], sameMainTypeResource: true},
         { name: 'includes', inverse: 'liesWithin', label: 'Beinhaltet',
@@ -211,8 +210,8 @@ export class IdaiFieldAppConfigurator {
 
 
         if (customConfigurationName === 'Meninx') {
-            (this.defaultTypes as any)['Wall_surface'] = {
 
+            (this.defaultTypes as any)['Wall_surface'] = {
                 color: "#ffff99",
                 fields: {}
             };
