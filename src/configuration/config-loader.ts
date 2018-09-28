@@ -72,10 +72,10 @@ export class ConfigLoader {
 
     private async readConfiguration(configDirPath: string): Promise<any> {
 
-        const appConfigurationPath = configDirPath + '/Configuration.json';
+        const appConfigurationPath = configDirPath + '/Fields.json';
 
         try {
-            return await this.configReader.read(appConfigurationPath);
+            return { types: await this.configReader.read(appConfigurationPath) };
         } catch (msgWithParams) {
             throw [[msgWithParams]];
         }

@@ -25,8 +25,6 @@ export class IdaiFieldPrePreprocessConfigurationValidator {
         if (!appConfiguration.types) return [];
 
         return IdaiFieldPrePreprocessConfigurationValidator.checkForForbiddenTopLevelFields(appConfiguration)
-            // .concat(IdaiFieldPrePreprocessConfigurationValidator.checkForForbiddenIsRecordedIns(appConfiguration))
-            // .concat(IdaiFieldPrePreprocessConfigurationValidator.checkForExtraneousFieldsInRelations(appConfiguration))
             .concat(IdaiFieldPrePreprocessConfigurationValidator.checkForExtraneousFieldsInTypes(appConfiguration));
     }
 
@@ -60,38 +58,6 @@ export class IdaiFieldPrePreprocessConfigurationValidator {
             }
         }
         return errs;
-    }
-
-
-    private static checkForExtraneousFieldsInRelations(appConfiguration: any): Array<Array<string>> {
-
-        const allowedFields = ['domain', 'range', 'name', 'inverse', 'sameOperation'];
-
-        return appConfiguration.relations
-            .reduce((errs: Array<Array<string>>, relation: RelationDefinition) => {
-
-                if (subtract(allowedFields)(Object.keys(relation)).length > 0) {
-                    errs.push(['relation field not allowed in ', relation.name]);
-                }
-                return errs;
-
-            }, []);
-    }
-
-
-    private static checkForForbiddenIsRecordedIns(appConfiguration: any): Array<Array<string>> {
-
-        const errs = appConfiguration.relations
-            .filter((relation: RelationDefinition) => relation.name === 'isRecordedIn')
-            .reduce((errs: Array<Array<string>>, relation: RelationDefinition) => {
-
-                const err = this.evaluateRelationDomain(relation, appConfiguration);
-                if (err) errs.push(err);
-                return errs;
-
-            }, []);
-
-        return errs ? errs : [];
     }
 
 

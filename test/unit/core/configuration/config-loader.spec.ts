@@ -41,17 +41,14 @@ describe('ConfigLoader', () => {
     it('mix existing externally configured with internal inherits relation', async (done) => { // TODO check if it can be removed since external defintions of relations are now forbidden
 
         Object.assign(configuration, {
-            identifier: 'Conf',
-            types: {
-                'A': {},
-                'B': {},
-                'C': {},
-                'D': {},
-                'A1': { parent: 'A' },
-                'A2': { parent: 'A' },
-                'B1': { parent: 'B' },
-                'B2': { parent: 'B' }
-            }
+            'A': {},
+            'B': {},
+            'C': {},
+            'D': {},
+            'A1': { parent: 'A' },
+            'A2': { parent: 'A' },
+            'B1': { parent: 'B' },
+            'B2': { parent: 'B' }
         });
 
         let pconf;
@@ -91,10 +88,7 @@ describe('ConfigLoader', () => {
 
     it('preprocess - convert sameOperation to sameMainTypeResource', async (done) => {
 
-        Object.assign(configuration, {
-            identifier: 'Conf',
-            types: { 'A': {}, 'B': {} }
-        });
+        Object.assign(configuration, { A: {}, B: {}});
 
         let pconf;
         try {
@@ -116,12 +110,9 @@ describe('ConfigLoader', () => {
     it('preprocess - apply language confs', async (done) => {
 
         Object.assign(configuration, {
-            identifier: 'Conf',
-            types: {
-                'A': {},
-                'B': {},
-                'C': {}
-            }
+            A: {},
+            B: {},
+            C: {}
         });
 
         configReader.read.and.returnValues(
@@ -176,11 +167,8 @@ describe('ConfigLoader', () => {
     it('preprocess - apply custom fields configuration', async done => {
 
         Object.assign(configuration, {
-            identifier: 'Conf',
-            types: {
-                A: { fields: { fieldA1: { inputType: 'unsignedInt' } } },
-                B: { fields: { fieldB1: { inputType: 'input' } } }
-            }
+            A: { fields: { fieldA1: { inputType: 'unsignedInt' } } },
+            B: { fields: { fieldB1: { inputType: 'input' } } }
         });
 
         configReader.read.and.returnValues(
@@ -225,12 +213,9 @@ describe('ConfigLoader', () => {
     it('apply order configuration', async done => {
 
         Object.assign(configuration, {
-            identifier: 'Conf',
-            types: {
-                B: { fields: { fieldB2: {}, fieldB3: {}, fieldB1: {} } },
-                C: { fields: { fieldC1: {}, fieldC2: {} } },
-                A: { fields: { fieldA2: {}, fieldA1: {} } }
-            }
+            B: { fields: { fieldB2: {}, fieldB3: {}, fieldB1: {} } },
+            C: { fields: { fieldC1: {}, fieldC2: {} } },
+            A: { fields: { fieldA2: {}, fieldA1: {} } }
         });
 
         configReader.read.and.returnValues(
@@ -284,11 +269,8 @@ describe('ConfigLoader', () => {
     it('apply extra fields order', async done => {
 
         Object.assign(configuration, {
-            identifier: 'Conf',
-            types: {
-                A: {fields: {fieldA2: {}, fieldA1: {}}},
-                B: {fields: {fieldB2: {}, fieldB1: {}}}
-            }
+            A: {fields: {fieldA2: {}, fieldA1: {}}},
+            B: {fields: {fieldB2: {}, fieldB1: {}}}
         });
 
         configReader.read.and.returnValues(
@@ -339,11 +321,8 @@ describe('ConfigLoader', () => {
     it('apply extra fields order to an empty order configuration', async done => {
 
         Object.assign(configuration, {
-            identifier: 'Conf',
-            types: {
-                A: { fields: { fieldA2: {}, fieldA1: {} } },
-                B: { fields: { fieldB2: {}, fieldB1: {} } }
-            }
+            A: { fields: { fieldA2: {}, fieldA1: {} } },
+            B: { fields: { fieldB2: {}, fieldB1: {} } }
         });
 
         configReader.read.and.returnValues(
@@ -386,10 +365,7 @@ describe('ConfigLoader', () => {
         async done => {
 
         Object.assign(configuration, {
-            identifier: 'Conf',
-            types: {
-                A: { fields: { fieldA2: {}, fieldA1: {} } }
-            }
+            A: { fields: { fieldA2: {}, fieldA1: {} } }
         });
 
         configReader.read.and.returnValues(
@@ -432,10 +408,7 @@ describe('ConfigLoader', () => {
     it('apply hidden configurations', async done => {
 
         Object.assign(configuration, {
-            identifier: 'Conf',
-            types: {
-                A: { fields: { fieldA1: {}, fieldA2: {}, fieldA3: {}  } }
-            }
+            A: { fields: { fieldA1: {}, fieldA2: {}, fieldA3: {}  } }
         });
 
         configReader.read.and.returnValues(
@@ -482,10 +455,7 @@ describe('ConfigLoader', () => {
     it('apply hidden and order configuration', async done => {
 
         Object.assign(configuration, {
-            identifier: 'Conf',
-            types: {
-                A: { fields: { fieldA1: {}, fieldA3: {}, fieldA2: {} } }
-            }
+            A: { fields: { fieldA1: {}, fieldA3: {}, fieldA2: {} } }
         });
 
         configReader.read.and.returnValues(
