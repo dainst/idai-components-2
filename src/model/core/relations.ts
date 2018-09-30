@@ -50,8 +50,12 @@ export module Relations {
     }
 
 
-    const notArrayEquivalentInBoth = (l: any, r: any) => (key: string) =>
-        !arrayEquivalent(l[key])(r[key]);
+    const notArrayEquivalentInBoth = (l: any, r: any) => (key: string) => {
+
+        if (!r[key]) return true;
+
+        return !arrayEquivalent(l[key])(r[key]);
+    };
 
 
     // TODO possibly put to tsfun
