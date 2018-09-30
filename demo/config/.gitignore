@@ -1,7 +1,7 @@
 *
 
 !.gitignore
-!Configuration.json
+!Fields.json
 !Fields-Custom.json
 !Hidden.json
 !Hidden-Custom.json
