@@ -132,7 +132,7 @@ export class IdaiFieldAppConfigurator {
         { name: 'depicts', domain: ['Image:inherit'],
             inverse: 'isDepictedIn', label: 'Zeigt', editable: true },
         { name: 'isDepictedIn', range: ['Image:inherit'],
-            inverse: 'depicts', visible: false, editable: false },
+            inverse: 'depicts', label: 'Wird gezeigt in', visible: false, editable: false },
 
         { name: 'isLocatedIn', domain: ['Operation:inherit'], label: 'Liegt im Ort',
             inverse: 'locates', range: ['Place'] },
