@@ -50,7 +50,7 @@ export class IdaiFieldAppConfigurator {
         Feature: {
             fields: {
                 period: {
-                    inputType: "dropdownRange"
+                    inputType: 'dropdownRange'
                 }
             }
         } as TypeDefinition,
@@ -204,8 +204,8 @@ export class IdaiFieldAppConfigurator {
         if (customConfigurationName === 'Meninx' || customConfigurationName === 'Pergamon') {
 
             (this.defaultTypes as any)['Other'] = {
-                color: "#CC6600",
-                parent: "Feature",
+                color: '#CC6600',
+                parent: 'Feature',
                 fields: {}
             };
         }
@@ -214,14 +214,14 @@ export class IdaiFieldAppConfigurator {
         if (customConfigurationName === 'Meninx') {
 
             (this.defaultTypes as any)['Wall_surface'] = {
-                color: "#ffff99",
+                color: '#ffff99',
                 fields: {}
             };
             this.defaultRelations.push({
-                domain: ["Wall_surface"],
-                name: "isRecordedIn",
-                label: "Aufgenommen in Maßnahme",
-                range: ["Trench"]
+                domain: ['Wall_surface'],
+                name: 'isRecordedIn',
+                label: 'Aufgenommen in Maßnahme',
+                range: ['Trench']
             });
         }
 
@@ -230,17 +230,17 @@ export class IdaiFieldAppConfigurator {
 
             (this.defaultTypes as any)['ProcessUnit'] = {
                 abstract: true,
-                color: "#08306b",
+                color: '#08306b',
                 fields: {}
             };
             (this.defaultTypes as any)['Profile'] = {
-                color: "#c6dbef",
-                parent: "ProcessUnit",
+                color: '#c6dbef',
+                parent: 'ProcessUnit',
                 fields: {}
             };
             (this.defaultTypes as any)['Sample'] = {
-                color: "#9ecae1",
-                parent: "ProcessUnit",
+                color: '#9ecae1',
+                parent: 'ProcessUnit',
                 fields: {}
             };
 
