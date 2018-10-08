@@ -19,7 +19,7 @@ import {ProjectConfiguration} from '../../configuration/project-configuration';
  */
 export class RelationsViewComponent implements OnChanges {
 
-    protected relations: Array<any>;
+    public relations: Array<any>;
 
     @Input() resource: Resource;
     @Input() hideRelations: Array<string> = [];

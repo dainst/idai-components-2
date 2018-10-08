@@ -1,6 +1,5 @@
 import {Component, OnChanges, Input} from '@angular/core';
-import {to} from 'tsfun';
-import {isUndefinedOrEmpty} from 'tsfun/src/predicates';
+import {to, isUndefinedOrEmpty} from 'tsfun';
 import {Resource} from '../../model/core/resource';
 import {ProjectConfiguration} from '../../configuration/project-configuration';
 
@@ -20,7 +19,7 @@ export class FieldsViewComponent implements OnChanges {
 
     @Input() resource: Resource;
 
-    protected fields: Array<any>;
+    public fields: Array<any>;
 
 
     constructor(private projectConfiguration: ProjectConfiguration) {}
@@ -47,7 +46,6 @@ export class FieldsViewComponent implements OnChanges {
             .concat(['periodEnd']);
 
         for (let fieldName of fieldNames) {
-
             if (fieldName === 'relations') continue;
             if (resource[fieldName] === undefined) continue;
 

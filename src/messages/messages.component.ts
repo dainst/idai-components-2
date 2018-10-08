@@ -16,7 +16,14 @@ export class MessagesComponent {
 
     @Input() alwaysShowClose = false;
 
+
     constructor(private messages: Messages) {}
+
+
+    public getActiveMessages = () => this.messages.getActiveMessages();
+
+    public closeAlert = (message: Message) => this.messages.hideMessage(message);
+
     
     public getMessageContent(message: Message): string {
 
@@ -29,10 +36,5 @@ export class MessagesComponent {
         }
 
         return content;
-    }
-
-    public closeAlert(message: Message) {
-
-        this.messages.hideMessage(message);
     }
 }

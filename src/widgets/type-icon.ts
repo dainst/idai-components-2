@@ -1,5 +1,4 @@
 import {Component, OnChanges, Input} from '@angular/core';
-import {ConfigLoader} from '../configuration/config-loader';
 import {ProjectConfiguration} from '../configuration/project-configuration';
 
 
@@ -18,12 +17,22 @@ export class TypeIconComponent implements OnChanges {
     @Input() size: number;
     @Input() type: string;
 
-    private character: string;
-    private color: string;
-    private textColor: string;
-    private pxSize: string;
+    public character: string;
+    public color: string;
+    public textColor: string;
+    public pxSize: string;
+
 
     constructor(private projectConfiguration: ProjectConfiguration) {}
+
+
+    ngOnChanges() {
+
+        this.character = this.projectConfiguration.getLabelForType(this.type).substr(0, 1);
+        this.color = this.projectConfiguration.getColorForType(this.type);
+        this.textColor = TypeIconComponent.isColorTooBright(this.color) ? 'black' : 'white';
+        this.pxSize = this.size + 'px';
+    }
 
 
     private static isColorTooBright(c: any): boolean {
@@ -35,14 +44,5 @@ export class TypeIconComponent implements OnChanges {
         let b = (rgb >>  0) & 0xff;  // extract blue
         let luma = 0.2126 * r + 0.7152 * g + 0.0722 * b; // per ITU-R BT.709
         return luma > 200;
-    }
-
-
-    ngOnChanges() {
-
-        this.character = this.projectConfiguration.getLabelForType(this.type).substr(0, 1);
-        this.color = this.projectConfiguration.getColorForType(this.type);
-        this.textColor = TypeIconComponent.isColorTooBright(this.color) ? 'black' : 'white';
-        this.pxSize = this.size + 'px';
     }
 }
