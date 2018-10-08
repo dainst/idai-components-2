@@ -1,11 +1,10 @@
-import {Injectable} from '@angular/core';
 import {MDInternal} from '../messages/md-internal';
 import {IdaiType} from './idai-type';
 import {FieldDefinition} from './field-definition';
 import {RelationDefinition} from './relation-definition';
 import {ConfigurationDefinition} from './configuration-definition';
 
-@Injectable()
+
 /**
  * ProjectConfiguration maintains the current projects properties.
  * Amongst them is the set of types for the current project,

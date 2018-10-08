@@ -1,9 +1,8 @@
-import {Injectable} from '@angular/core';
 import {Message} from './message';
 import {MD} from './md';
 import {MDInternal} from './md-internal';
 
-@Injectable()
+
 /**
  * Maintains a collection of currently active messages the
  * user can see at a given moment. Message content is defined
