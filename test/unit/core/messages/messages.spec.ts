@@ -12,17 +12,20 @@ let messagesDictionary = {
         'key1' : {
             content: 'content1',
             level: 'danger',
-            params: new Array(),
+            params: [],
             hidden: false
         },
         'key2' : {
             content: 'content2',
             level: 'danger',
-            params: new Array(),
+            params: [],
             hidden: false
         }
     }
 };
+
+let messages: Messages;
+
 
 const verifyUnknownError = (consoleError) => {
 
@@ -31,8 +34,6 @@ const verifyUnknownError = (consoleError) => {
     );
     expect(console.error).toHaveBeenCalledWith(consoleError);
 };
-
-let messages: Messages;
 
 
 beforeEach(() => {
