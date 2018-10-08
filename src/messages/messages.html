@@ -1,4 +1,4 @@
-<ng-container *ngFor="let message of messages.getActiveMessages().reverse(); let index = index">
+<ng-container *ngFor="let message of messages.getActiveMessages(); let index = index">
     <div *ngIf="!message.hidden" id="message-{{index}}" style="text-align: right;">
         <div class="alert alert-{{message.level}}" style="display: inline-block;">
             <button *ngIf="message.level == 'danger' || message.level == 'warning'" type="button" class="close"
