@@ -43,7 +43,7 @@ export class MDInternal extends MD {
             hidden: false
         };
         this.msgs[MDInternal.PARSE_ERROR_INVALID_JSON]={
-            content: 'Fehler beim Parsen der Konfigurationsdatei \'{0}\': Das JSON ist nicht valide.',
+            content: 'Fehler beim Parsen der Konfigurationsdatei \'[0]\': Das JSON ist nicht valide.',
             level: 'danger',
             params: [],
             hidden: false

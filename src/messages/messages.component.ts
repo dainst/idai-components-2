@@ -31,7 +31,7 @@ export class MessagesComponent {
 
         if (message.params) {
             for (let i in message.params) {
-                content = content.replace('{' + i + '}', message.params[i]);
+                content = content.replace('[' + i + ']', message.params[i]);
             }
         }
 
