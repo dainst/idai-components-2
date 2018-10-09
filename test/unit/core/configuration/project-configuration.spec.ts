@@ -111,7 +111,7 @@ describe('ProjectConfiguration', () => {
 
         expect(() => {
             new ProjectConfiguration({ types: [secondLevelType1] });
-        }).toThrow(MDInternal.PC_GENERIC_ERROR);
+        }).toThrow(MDInternal.PROJECT_CONFIGURATION_GENERIC_ERROR);
     });
 
 

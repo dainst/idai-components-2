@@ -285,7 +285,7 @@ export class ProjectConfiguration {
                 this.typesTree[type.type] = this.typesMap[type.type];
             } else {
                 const parentType = this.typesMap[type.parent as any];
-                if (parentType == undefined) throw MDInternal.PC_GENERIC_ERROR;
+                if (parentType == undefined) throw MDInternal.PROJECT_CONFIGURATION_GENERIC_ERROR;
                 parentType.addChildType(this.typesMap[type.type]);
             }
         }

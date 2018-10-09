@@ -10,27 +10,28 @@ import {MD} from './md'
 @Injectable()
 export class MDInternal extends MD {
 
-    public static UNKOWN_ERROR: string = 'unknown-error';
-    public static PC_GENERIC_ERROR: string = 'pmc/generic';
-    public static PARSE_ERROR_INVALID_JSON: string = 'parse/error/invalidjson';
+    public static MESSAGES_UNKNOWN_ERROR: string = 'messages/unknownerror';
+    public static PROJECT_CONFIGURATION_GENERIC_ERROR: string = 'projectconfiguration/generic';
+    public static CONFIG_READER_INVALID_JSON: string = 'configreader/invalidjson';
 
     public msgs: { [id: string]: Message } = {};
 
+
     constructor() {
         super();
-        this.msgs[MDInternal.UNKOWN_ERROR] = {
+        this.msgs[MDInternal.MESSAGES_UNKNOWN_ERROR] = {
             content: 'Ein unbekannter Fehler ist aufgetreten. Details können in der Developer Console eingesehen werden.',
             level: 'danger',
             params: [],
             hidden: false
         };
-        this.msgs[MDInternal.PC_GENERIC_ERROR] = {
+        this.msgs[MDInternal.PROJECT_CONFIGURATION_GENERIC_ERROR] = {
             content: 'Fehler beim Auswerten eines Konfigurationsobjektes.',
             level: 'danger',
             params: [],
             hidden: false
         };
-        this.msgs[MDInternal.PARSE_ERROR_INVALID_JSON] = {
+        this.msgs[MDInternal.CONFIG_READER_INVALID_JSON] = {
             content: 'Fehler beim Parsen der Konfigurationsdatei \'[0]\': Das JSON ist nicht valide.',
             level: 'danger',
             params: [],
