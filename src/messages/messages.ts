@@ -31,8 +31,8 @@ export class Messages {
      * @param msgWithParams an array of strings and numbers
      *   msgWithParams[0] -> key. Used to identify the message. Must be an existing key.
      *   msgWithParams[1..n] -> params. Contains strings which will be inserted into the message content.
-     *   Every occurrence of "{0}", "{1}", "{2}" etc. will be replaced with the param string at the corresponding
-     *   array position: {0} will be replaced with params[0] etc.
+     *   Every occurrence of "[0]", "[1]", "[2]" etc. will be replaced with the param string at the corresponding
+     *   array position: [0] will be replaced with params[0] etc.
      */
     public add(msgWithParams: Array<string>) {
 
