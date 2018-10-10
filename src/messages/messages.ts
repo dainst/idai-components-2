@@ -91,7 +91,7 @@ export class Messages {
         
         console.error(consoleError);
         const message = Messages.buildFromTemplate(
-            this.internalMessagesDictionary.msgs[MDInternal.MESSAGES_UNKNOWN_ERROR],
+            this.fetchTemplate(MDInternal.MESSAGES_UNKNOWN_ERROR),
             undefined
         );
         this.startTimeout(message);
@@ -101,11 +101,7 @@ export class Messages {
 
     private fetchTemplate(key: string): Message {
 
-        let message: Message = this.internalMessagesDictionary.msgs[key];
-        const providedMessage = this.messagesDictionary.msgs[key];
-        if (providedMessage) message = providedMessage;
-
-        return message;
+        return this.messagesDictionary.msgs[key] || this.internalMessagesDictionary.msgs[key];
     }
 
 
