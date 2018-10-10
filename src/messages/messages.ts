@@ -91,7 +91,7 @@ export class Messages {
         
         console.error(consoleError);
         const message = Messages.buildFromTemplate(
-            this.fetchTemplate(MDInternal.MESSAGES_UNKNOWN_ERROR),
+            this.fetchTemplate(MDInternal.MESSAGES_ERROR_UNKNOWN_MESSAGE),
             undefined
         );
         this.startTimeout(message);

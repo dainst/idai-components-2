@@ -22,7 +22,7 @@ export class ConfigReader {
                 try {
                     data = data_;
                 } catch(e) {
-                    reject([MDInternal.CONFIG_READER_INVALID_JSON, path]);
+                    reject([MDInternal.CONFIG_READER_ERROR_INVALID_JSON, path]);
                 }
 
                 try {

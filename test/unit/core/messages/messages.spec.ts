@@ -30,7 +30,7 @@ let messages: Messages;
 const verifyUnknownError = (consoleError) => {
 
     expect(messages.getActiveMessages()[1].content).toEqual(
-        (new MDInternal().msgs[MDInternal.MESSAGES_UNKNOWN_ERROR]).content
+        (new MDInternal().msgs[MDInternal.MESSAGES_ERROR_UNKNOWN_MESSAGE]).content
     );
     expect(console.error).toHaveBeenCalledWith(consoleError);
 };
@@ -86,21 +86,21 @@ describe('Messages', () => {
 
     it('should show a msg from the internal message dictionary', () => {
 
-        messages.add([MDInternal.PROJECT_CONFIGURATION_GENERIC_ERROR]);
-        expect(messages.getActiveMessages()[1]).toEqual((new MDInternal()).msgs[MDInternal.PROJECT_CONFIGURATION_GENERIC_ERROR]);
+        messages.add([MDInternal.PROJECT_CONFIGURATION_ERROR_GENERIC]);
+        expect(messages.getActiveMessages()[1]).toEqual((new MDInternal()).msgs[MDInternal.PROJECT_CONFIGURATION_ERROR_GENERIC]);
     });
 
 
     it('should override a msg from the internal message dictionary with the provided one', () => {
 
-        messagesDictionary.msgs[MDInternal.PROJECT_CONFIGURATION_GENERIC_ERROR]={
+        messagesDictionary.msgs[MDInternal.PROJECT_CONFIGURATION_ERROR_GENERIC]={
             content: 'test',
             level: 'danger',
             params: [],
             hidden: false
         };
-        messages.add([MDInternal.PROJECT_CONFIGURATION_GENERIC_ERROR]);
-        expect(messages.getActiveMessages()[1]).toEqual(messagesDictionary.msgs[MDInternal.PROJECT_CONFIGURATION_GENERIC_ERROR]);
+        messages.add([MDInternal.PROJECT_CONFIGURATION_ERROR_GENERIC]);
+        expect(messages.getActiveMessages()[1]).toEqual(messagesDictionary.msgs[MDInternal.PROJECT_CONFIGURATION_ERROR_GENERIC]);
     });
 
     it('should add a message with parameters', () => {
