@@ -2,6 +2,7 @@ import {LOCALE_ID, NgModule} from '@angular/core';
 import {CommonModule, DecimalPipe} from '@angular/common';
 import {RouterModule} from '@angular/router';
 import {FormsModule} from '@angular/forms';
+import {I18n} from '@ngx-translate/i18n-polyfill';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {Datastore} from '../datastore/datastore';
 import {ReadDatastore} from '../datastore/read-datastore';
@@ -30,7 +31,7 @@ import {IdaiWidgetsModule} from '../widgets/idai-widgets.module';
         DecimalPipe,
         { provide: LOCALE_ID, useValue: 'de-DE' }, // change when i18n is implemented
         { provide: ReadDatastore, useExisting: Datastore },
-
+        I18n
     ],
     exports: [
         FieldsViewComponent,

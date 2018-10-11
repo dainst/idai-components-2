@@ -1,4 +1,5 @@
 import {Component, OnChanges, Input} from '@angular/core';
+import {I18n} from '@ngx-translate/i18n-polyfill';
 import {to, isUndefinedOrEmpty} from 'tsfun';
 import {Resource} from '../../model/core/resource';
 import {ProjectConfiguration} from '../../configuration/project-configuration';
@@ -22,7 +23,8 @@ export class FieldsViewComponent implements OnChanges {
     public fields: Array<any>;
 
 
-    constructor(private projectConfiguration: ProjectConfiguration) {}
+    constructor(private projectConfiguration: ProjectConfiguration,
+                private i18n: I18n) {}
 
 
     ngOnChanges() {
@@ -51,7 +53,14 @@ export class FieldsViewComponent implements OnChanges {
 
             if (fieldName === 'period') {
                 this.fields.push({
-                    name: ('Grobdatierung' + (!isUndefinedOrEmpty(resource['periodEnd']) ? ' (von)' : '')),
+                    name: this.i18n({
+                        id: 'components.documents.docView.fieldsView.period',
+                        value: 'Grobdatierung'
+                    }) + (!isUndefinedOrEmpty(resource['periodEnd'])
+                        ? this.i18n({
+                        id: 'components.documents.docView.fieldsView.period.from',
+                        value: ' von'
+                    }) : ''),
                     value: FieldsViewComponent.getValue(resource, fieldName),
                     isArray: false
                 });
@@ -60,7 +69,10 @@ export class FieldsViewComponent implements OnChanges {
 
             if (fieldName === 'periodEnd') {
                 this.fields.push({
-                    name: 'Grobdatierung (bis)',
+                    name: this.i18n({
+                        id: 'components.documents.docView.fieldsView.period.to',
+                        value: 'Grobdatierung (bis)'
+                    }),
                     value: FieldsViewComponent.getValue(resource, fieldName),
                     isArray: false
                 });
