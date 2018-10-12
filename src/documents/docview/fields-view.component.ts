@@ -59,7 +59,7 @@ export class FieldsViewComponent implements OnChanges {
                     }) + (!isUndefinedOrEmpty(resource['periodEnd'])
                         ? this.i18n({
                         id: 'components.documents.docView.fieldsView.period.from',
-                        value: ' von'
+                        value: ' (von)'
                     }) : ''),
                     value: FieldsViewComponent.getValue(resource, fieldName),
                     isArray: false
