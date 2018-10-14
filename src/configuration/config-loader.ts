@@ -1,4 +1,5 @@
 import {Injectable} from '@angular/core';
+import {I18n} from '@ngx-translate/i18n-polyfill';
 import {ProjectConfiguration} from './project-configuration';
 import {Preprocessing} from './preprocessing';
 import {ConfigurationValidator} from './configuration-validator';
@@ -6,8 +7,7 @@ import {ConfigReader} from './config-reader';
 import {TypeDefinition} from './type-definition';
 import {RelationDefinition} from './relation-definition';
 import {FieldDefinition} from './field-definition';
-import {IdaiFieldPrePreprocessConfigurationValidator}
-    from './idai-field-pre-preprocess-configuration-validator';
+import {IdaiFieldPrePreprocessConfigurationValidator} from './idai-field-pre-preprocess-configuration-validator';
 import {UnorderedConfigurationDefinition} from './unordered-configuration-definition';
 import {ConfigurationDefinition} from './configuration-definition';
 
@@ -27,20 +27,21 @@ import {ConfigurationDefinition} from './configuration-definition';
  */
 export class ConfigLoader {
 
-    private static defaultFields = {
+    private defaultFields = {
         'id': {
             editable: false,
             visible: false
         } as FieldDefinition,
         'type': {
-            label: 'Typ',
+            label: this.i18n({ id: 'configuration.defaultFields.type', value: 'Typ' }),
             visible: false,
             editable: false
         } as FieldDefinition
     };
 
 
-    constructor(private configReader: ConfigReader) {}
+    constructor(private configReader: ConfigReader,
+                private i18n: I18n) {}
 
 
     public async go(
@@ -120,7 +121,7 @@ export class ConfigLoader {
         appConfiguration.relations = [];
         Preprocessing.addExtraFields(appConfiguration, extraFields);
         Preprocessing.addExtraRelations(appConfiguration, relations);
-        Preprocessing.addExtraFields(appConfiguration, ConfigLoader.defaultFields);
+        Preprocessing.addExtraFields(appConfiguration, this.defaultFields);
 
         await this.applyLanguageConfs(appConfiguration, languageConfigurationPath,
             configDirPath + '/Language-'

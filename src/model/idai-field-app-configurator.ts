@@ -1,4 +1,5 @@
 import {Injectable} from '@angular/core';
+import {I18n} from '@ngx-translate/i18n-polyfill';
 import {ConfigLoader} from '../configuration/config-loader';
 import {IdaiFieldConfigurationValidator} from './idai-field-configuration-validator';
 import {ProjectConfiguration} from '../configuration/project-configuration';
@@ -64,11 +65,11 @@ export class IdaiFieldAppConfigurator {
             fields: {
                 height: {
                     editable: false,
-                    label: 'Höhe'
+                    label: this.i18n({ id: 'configuration.image.height', value: 'Höhe' })
                 },
                 width: {
                     editable: false,
-                    label: 'Breite'
+                    label: this.i18n({ id: 'configuration.image.width', value: 'Breite' })
                 },
                 originalFilename: {
                     visible: false,
@@ -86,13 +87,13 @@ export class IdaiFieldAppConfigurator {
             }
         } as TypeDefinition,
         Project: {
-            label: 'Projekt',
+            label: this.i18n({ id: 'configuration.project', value: 'Projekt' }),
             fields: {
                 'identifier': {
                     editable: false
                 },
                 'coordinateReferenceSystem': {
-                    label: 'Koordinatenbezugssystem',
+                    label: this.i18n({ id: 'configuration.project.crs', value: 'Koordinatenbezugssystem' }),
                     inputType: 'dropdown',
                     valuelist: [
                         'Eigenes Koordinatenbezugssystem',
@@ -106,12 +107,15 @@ export class IdaiFieldAppConfigurator {
 
     private defaultFields = {
         shortDescription: {
-            label: 'Kurzbeschreibung',
+            label: this.i18n({ id: 'configuration.defaultFields.shortDescription', value: 'Kurzbeschreibung' }),
             visible: false
         } as FieldDefinition,
         identifier: {
-            description: 'Eindeutiger Bezeichner dieser Ressource',
-            label: 'Bezeichner',
+            description: this.i18n({
+                id: 'configuration.defaultFields.identifier.description',
+                value: 'Eindeutiger Bezeichner dieser Ressource'
+            }),
+            label: this.i18n({ id: 'configuration.defaultFields.identifier', value: 'Bezeichner' }),
             visible: false,
             mandatory: true
         } as FieldDefinition,
@@ -129,73 +133,212 @@ export class IdaiFieldAppConfigurator {
 
 
     private defaultRelations = [
-        { name: 'depicts', domain: ['Image:inherit'],
-            inverse: 'isDepictedIn', label: 'Zeigt', editable: true },
-        { name: 'isDepictedIn', range: ['Image:inherit'],
-            inverse: 'depicts', label: 'Wird gezeigt in', visible: false, editable: false },
-
-        { name: 'isLocatedIn', domain: ['Operation:inherit'], label: 'Liegt im Ort',
-            inverse: 'locates', range: ['Place'] },
-        { name: 'locates', domain: ['Place'], label: 'Enthält Maßnahme', inverse: 'isLocatedIn',
-            range: ['Operation:inherit'] },
-
-        { name: 'isAfter', inverse: 'isBefore', label: 'Zeitlich nach',
-            domain: ['Feature:inherit'], range: ['Feature:inherit'], sameMainTypeResource: true},
-        { name: 'isBefore', inverse: 'isAfter', label: 'Zeitlich vor',
-            domain: ['Feature:inherit'], range: ['Feature:inherit'], sameMainTypeResource: true},
-        { name: 'isContemporaryWith', inverse: 'isContemporaryWith', label: 'Zeitgleich mit',
-            domain: ['Feature:inherit'], range: ['Feature:inherit'], sameMainTypeResource: true},
-
-        { name: 'isAbove', inverse: 'isBelow', label: 'Liegt über',
-            domain: ['Feature:inherit'], range: ['Feature:inherit'], sameMainTypeResource: true},
-        { name: 'isBelow', inverse: 'isAbove', label: 'Liegt unter',
-            domain: ['Feature:inherit'], range: ['Feature:inherit'], sameMainTypeResource: true},
-
-        { name: 'cuts', inverse: 'isCutBy', label: 'Schneidet',
-            domain: ['Feature:inherit'], range: ['Feature:inherit'], sameMainTypeResource: true},
-        { name: 'isCutBy', inverse: 'cuts', label: 'Wird geschnitten von',
-            domain: ['Feature:inherit'], range: ['Feature:inherit'], sameMainTypeResource: true},
-
-        { name: 'borders', inverse: 'borders', label: 'Grenzt an',
-            domain: ['Feature:inherit'], range: ['Feature:inherit'], sameMainTypeResource: true},
-        { name: 'borders', inverse: 'borders', label: 'Grenzt an',
-            domain: ['BuildingPart:inherit'], range: ['BuildingPart:inherit'], sameMainTypeResource: true},
-
-        { name: 'isRecordedIn', label: 'Aufgenommen in Maßnahme',
-            domain: ['Inscription'], range: ['Trench']},
-        { name: 'isRecordedIn', label: 'Aufgenommen in Maßnahme',
-            domain: ['Room'], range: ['Building']},
-        { name: 'isRecordedIn', label: 'Aufgenommen in Maßnahme',
-            domain: ['SurveyUnit'], range: ['Survey']},
-        { name: 'isRecordedIn', label: 'Aufgenommen in Maßnahme',
-            domain: ['BuildingPart'], range: ['Building', 'Survey']},
-        { name: 'isRecordedIn', label: 'Aufgenommen in Maßnahme',
-            domain: ['Find:inherit'], range: ['Trench','Survey']},
-        { name: 'isRecordedIn', label: 'Aufgenommen in Maßnahme',
-            domain: ['Feature:inherit'], range: ['Trench']},
-
-        { name: 'includes', inverse: 'liesWithin', label: 'Beinhaltet',
-            domain: ['Feature:inherit'], range: ['Find:inherit', 'Feature:inherit', 'Inscription'], sameMainTypeResource: true},
-        { name: 'includes', inverse: 'liesWithin', label: 'Beinhaltet',
-            domain: ['SurveyUnit'], range: ['Find:inherit'], sameMainTypeResource: true},
-        { name: 'includes', inverse: 'liesWithin', label: 'Beinhaltet',
-            domain: ['Find:inherit'], range: ['Inscription'], sameMainTypeResource: true},
-
-        { name: 'liesWithin', inverse: 'includes', label: 'Liegt in',
-            domain: ['Find:inherit'], range: ['Feature:inherit', 'SurveyUnit'], sameMainTypeResource: true},
-        { name: 'liesWithin', inverse: 'includes', label: 'Liegt in',
-            domain: ['Inscription'], range: ['Feature:inherit', 'Find:inherit'], sameMainTypeResource: true},
-        { name: 'liesWithin', inverse: 'includes', label: 'Liegt in',
-            domain: ['Feature:inherit'], range: ['Feature:inherit'], sameMainTypeResource: true},
-
-        { name: 'bears', inverse: 'isFoundOn', label: 'Trägt',
-            domain: ['Find:inherit'], range: ['Inscription'], sameMainTypeResource: true},
-        { name: 'isFoundOn', inverse: 'bears', label: 'Ist aufgebracht auf',
-            domain: ['Inscription'], range: ['Find:inherit'], sameMainTypeResource: true}
+        {
+            name: 'depicts',
+            domain: ['Image:inherit'],
+            inverse: 'isDepictedIn',
+            label: this.i18n({ id: 'configuration.relations.depicts', value: 'Zeigt' }),
+            editable: true
+        },
+        {
+            name: 'isDepictedIn',
+            range: ['Image:inherit'],
+            inverse: 'depicts',
+            label: this.i18n({ id: 'configuration.relations.isDepictedIn', value: 'Wird gezeigt in' }),
+            visible: false,
+            editable: false
+        },
+        {
+            name: 'isLocatedIn',
+            domain: ['Operation:inherit'],
+            label: this.i18n({ id: 'configuration.relations.isLocatedIn', value: 'Liegt im Ort' }),
+            inverse: 'locates',
+            range: ['Place']
+        },
+        {
+            name: 'locates',
+            domain: ['Place'],
+            label: this.i18n({ id: 'configuration.relations.locates', value: 'Enthält Maßnahme' }),
+            inverse: 'isLocatedIn',
+            range: ['Operation:inherit']
+        },
+        {
+            name: 'isAfter',
+            inverse: 'isBefore',
+            label: this.i18n({ id: 'configuration.relations.isAfter', value: 'Zeitlich nach' }),
+            domain: ['Feature:inherit'],
+            range: ['Feature:inherit'],
+            sameMainTypeResource: true
+        },
+        {
+            name: 'isBefore',
+            inverse: 'isAfter',
+            label: this.i18n({ id: 'configuration.relations.isBefore', value: 'Zeitlich vor' }),
+            domain: ['Feature:inherit'],
+            range: ['Feature:inherit'],
+            sameMainTypeResource: true
+        },
+        {
+            name: 'isContemporaryWith',
+            inverse: 'isContemporaryWith',
+            label: this.i18n({ id: 'configuration.relations.isContemporaryWith', value: 'Zeitgleich mit' }),
+            domain: ['Feature:inherit'],
+            range: ['Feature:inherit'],
+            sameMainTypeResource: true
+        },
+        {
+            name: 'isAbove',
+            inverse: 'isBelow',
+            label: this.i18n({ id: 'configuration.relations.isAbove', value: 'Liegt über' }),
+            domain: ['Feature:inherit'],
+            range: ['Feature:inherit'],
+            sameMainTypeResource: true
+        },
+        {
+            name: 'isBelow',
+            inverse: 'isAbove',
+            label: this.i18n({ id: 'configuration.relations.isBelow', value: 'Liegt unter' }),
+            domain: ['Feature:inherit'],
+            range: ['Feature:inherit'],
+            sameMainTypeResource: true
+        },
+        {
+            name: 'cuts',
+            inverse: 'isCutBy',
+            label: this.i18n({ id: 'configuration.relations.cuts', value: 'Schneidet' }),
+            domain: ['Feature:inherit'],
+            range: ['Feature:inherit'],
+            sameMainTypeResource: true
+        },
+        {
+            name: 'isCutBy',
+            inverse: 'cuts',
+            label: this.i18n({ id: 'configuration.relations.isCutBy', value: 'Wird geschnitten von' }),
+            domain: ['Feature:inherit'],
+            range: ['Feature:inherit'],
+            sameMainTypeResource: true
+        },
+        {
+            name: 'borders',
+            inverse: 'borders',
+            label: this.i18n({ id: 'configuration.relations.borders', value: 'Grenzt an' }),
+            domain: ['Feature:inherit'],
+            range: ['Feature:inherit'],
+            sameMainTypeResource: true
+        },
+        {
+            name: 'borders',
+            inverse: 'borders',
+            label: this.i18n({ id: 'configuration.relations.borders', value: 'Grenzt an' }),
+            domain: ['BuildingPart:inherit'],
+            range: ['BuildingPart:inherit'],
+            sameMainTypeResource: true
+        },
+        {
+            name: 'isRecordedIn',
+            label: this.i18n({ id: 'configuration.relations.isRecordedIn', value: 'Aufgenommen in Maßnahme' }),
+            domain: ['Inscription'],
+            range: ['Trench']
+        },
+        {
+            name: 'isRecordedIn',
+            label: this.i18n({ id: 'configuration.relations.isRecordedIn', value: 'Aufgenommen in Maßnahme' }),
+            domain: ['Room'],
+            range: ['Building']
+        },
+        {
+            name: 'isRecordedIn',
+            label: this.i18n({ id: 'configuration.relations.isRecordedIn', value: 'Aufgenommen in Maßnahme' }),
+            domain: ['SurveyUnit'],
+            range: ['Survey']
+        },
+        {
+            name: 'isRecordedIn',
+            label: this.i18n({ id: 'configuration.relations.isRecordedIn', value: 'Aufgenommen in Maßnahme' }),
+            domain: ['BuildingPart'],
+            range: ['Building', 'Survey']
+        },
+        {
+            name: 'isRecordedIn',
+            label: this.i18n({ id: 'configuration.relations.isRecordedIn', value: 'Aufgenommen in Maßnahme' }),
+            domain: ['Find:inherit'],
+            range: ['Trench', 'Survey']
+        },
+        {
+            name: 'isRecordedIn',
+            label: this.i18n({ id: 'configuration.relations.isRecordedIn', value: 'Aufgenommen in Maßnahme' }),
+            domain: ['Feature:inherit'],
+            range: ['Trench']
+        },
+        {
+            name: 'includes',
+            inverse: 'liesWithin',
+            label: this.i18n({ id: 'configuration.relations.includes', value: 'Beinhaltet' }),
+            domain: ['Feature:inherit'],
+            range: ['Find:inherit', 'Feature:inherit', 'Inscription'],
+            sameMainTypeResource: true
+        },
+        {
+            name: 'includes',
+            inverse: 'liesWithin',
+            label: this.i18n({ id: 'configuration.relations.includes', value: 'Beinhaltet' }),
+            domain: ['SurveyUnit'],
+            range: ['Find:inherit'],
+            sameMainTypeResource: true
+        },
+        {
+            name: 'includes',
+            inverse: 'liesWithin',
+            label: this.i18n({ id: 'configuration.relations.includes', value: 'Beinhaltet' }),
+            domain: ['Find:inherit'],
+            range: ['Inscription'],
+            sameMainTypeResource: true
+        },
+        {
+            name: 'liesWithin',
+            inverse: 'includes',
+            label: this.i18n({ id: 'configuration.relations.liesWithin', value: 'Liegt in' }),
+            domain: ['Find:inherit'],
+            range: ['Feature:inherit', 'SurveyUnit'],
+            sameMainTypeResource: true
+        },
+        {
+            name: 'liesWithin',
+            inverse: 'includes',
+            label: this.i18n({ id: 'configuration.relations.liesWithin', value: 'Liegt in' }),
+            domain: ['Inscription'],
+            range: ['Feature:inherit', 'Find:inherit'],
+            sameMainTypeResource: true
+        },
+        {
+            name: 'liesWithin',
+            inverse: 'includes',
+            label: this.i18n({ id: 'configuration.relations.liesWithin', value: 'Liegt in' }),
+            domain: ['Feature:inherit'],
+            range: ['Feature:inherit'],
+            sameMainTypeResource: true
+        },
+        {
+            name: 'bears',
+            inverse: 'isFoundOn',
+            label: this.i18n({ id: 'configuration.relations.bears', value: 'Trägt' }),
+            domain: ['Find:inherit'],
+            range: ['Inscription'],
+            sameMainTypeResource: true
+        },
+        {
+            name: 'isFoundOn',
+            inverse: 'bears',
+            label: this.i18n({ id: 'configuration.relations.isFoundOn', value: 'Ist aufgebracht auf' }),
+            domain: ['Inscription'],
+            range: ['Find:inherit'],
+            sameMainTypeResource: true
+        }
     ];
 
 
-    constructor(private configLoader: ConfigLoader) {}
+    constructor(private configLoader: ConfigLoader,
+                private i18n: I18n) {}
 
 
     public go(configDirPath: string, customConfigurationName: string|undefined,
@@ -218,9 +361,9 @@ export class IdaiFieldAppConfigurator {
                 fields: {}
             };
             this.defaultRelations.push({
-                domain: ['Wall_surface'],
                 name: 'isRecordedIn',
-                label: 'Aufgenommen in Maßnahme',
+                label: this.i18n({ id: 'configuration.relations.isRecordedIn', value: 'Aufgenommen in Maßnahme' }),
+                domain: ['Wall_surface'],
                 range: ['Trench']
             });
         }
@@ -244,17 +387,26 @@ export class IdaiFieldAppConfigurator {
                 fields: {}
             };
 
-            this.defaultRelations.push(
-                { name: 'isRecordedIn', label: 'Aufgenommen in Maßnahme',
-                    domain: ['ProcessUnit'], range: ['Trench']});
+            this.defaultRelations.push({
+                name: 'isRecordedIn',
+                label: this.i18n({ id: 'configuration.relations.isRecordedIn', value: 'Aufgenommen in Maßnahme' }),
+                domain: ['ProcessUnit'],
+                range: ['Trench']
+            });
 
-            this.defaultRelations.push( // override existing definition
-                { name: 'isRecordedIn', label: 'Aufgenommen in Maßnahme',
-                    domain: ['Stone'], range: ['Building', 'Trench', 'Survey']});
+            this.defaultRelations.push({ // override existing definition
+                name: 'isRecordedIn',
+                label: this.i18n({ id: 'configuration.relations.isRecordedIn', value: 'Aufgenommen in Maßnahme' }),
+                domain: ['Stone'],
+                range: ['Building', 'Trench', 'Survey']
+            });
 
-            this.defaultRelations.push( // override existing definition
-                { name: 'isRecordedIn', label: 'Aufgenommen in Maßnahme',
-                    domain: ['Feature:inherit'], range: ['Trench', 'Survey', 'Building']});
+            this.defaultRelations.push({ // override existing definition
+                name: 'isRecordedIn',
+                label: this.i18n({ id: 'configuration.relations.isRecordedIn', value: 'Aufgenommen in Maßnahme' }),
+                domain: ['Feature:inherit'],
+                range: ['Trench', 'Survey', 'Building']
+            });
         }
 
 

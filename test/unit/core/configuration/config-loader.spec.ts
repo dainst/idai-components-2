@@ -21,8 +21,7 @@ describe('ConfigLoader', () => {
         // Object.assign(configuration, {});
         configuration = {} as ConfigurationDefinition;
 
-        configReader = jasmine.createSpyObj(
-            'confRead', ['read']);
+        configReader = jasmine.createSpyObj('confRead', ['read']);
         configReader.read.and.returnValues(
             Promise.resolve(configuration),
             Promise.resolve({}),
@@ -34,7 +33,8 @@ describe('ConfigLoader', () => {
             Promise.resolve({}),
             Promise.resolve({})
         );
-        configLoader = new ConfigLoader(configReader);
+
+        configLoader = new ConfigLoader(configReader, () => '');
     });
 
 
