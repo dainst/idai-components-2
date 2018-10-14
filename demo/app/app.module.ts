@@ -1,4 +1,4 @@
-import {APP_INITIALIZER, NgModule} from '@angular/core';
+import {APP_INITIALIZER, LOCALE_ID, NgModule, TRANSLATIONS, TRANSLATIONS_FORMAT} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
@@ -47,6 +47,9 @@ let pconf: any = undefined;
         MapDemoComponent
     ],
     providers: [
+        { provide: LOCALE_ID, useValue: 'de' },
+        { provide: TRANSLATIONS, useValue: '' },
+        { provide: TRANSLATIONS_FORMAT, useValue: 'xlf' },
         ConfigReader,
         ConfigLoader,
         {
