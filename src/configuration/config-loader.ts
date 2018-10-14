@@ -51,7 +51,8 @@ export class ConfigLoader {
                 extraFieldsOrder: string[],
                 prePreprocessConfigurationValidator: IdaiFieldPrePreprocessConfigurationValidator,
                 postPreprocessConfigurationValidator: ConfigurationValidator,
-                customConfigurationName: string|undefined): Promise<ProjectConfiguration> {
+                customConfigurationName: string|undefined,
+                locale: string): Promise<ProjectConfiguration> {
 
         if (customConfigurationName) console.log("Load custom configuration",customConfigurationName);
 
@@ -61,7 +62,7 @@ export class ConfigLoader {
         if (prePreprocessValidationErrors.length > 0) throw prePreprocessValidationErrors;
 
         appConfiguration = await this.preprocess(configDirPath, appConfiguration, extraTypes, relations,
-            extraFields, extraFieldsOrder, customConfigurationName);
+            extraFields, extraFieldsOrder, customConfigurationName, locale);
 
         const postPreprocessValidationErrors = postPreprocessConfigurationValidator.go(appConfiguration);
         if (postPreprocessValidationErrors.length > 0) throw postPreprocessValidationErrors;
@@ -87,11 +88,12 @@ export class ConfigLoader {
                              relations: Array<RelationDefinition>,
                              extraFields: {[fieldName: string]: FieldDefinition },
                              extraFieldsOrder: string[],
-                             customConfigurationName: string|undefined): Promise<ConfigurationDefinition> {
+                             customConfigurationName: string|undefined,
+                             locale: string): Promise<ConfigurationDefinition> {
 
         const hiddenConfigurationPath = configDirPath + '/Hidden.json';
         const customHiddenConfigurationPath = configDirPath + '/Hidden-Custom.json';
-        const languageConfigurationPath = configDirPath + '/Language.json';
+        const languageConfigurationPath = configDirPath + '/Language.' + locale + '.json';
         const orderConfigurationPath = configDirPath + '/Order.json';
         const searchConfigurationPath = configDirPath + '/Search.json';
         const periodConfigurationPath = configDirPath + '/Periods.json';
@@ -125,7 +127,7 @@ export class ConfigLoader {
                 + (customConfigurationName
                     ? customConfigurationName
                     : 'Custom')
-                    + '.json'
+                    + '.' + locale + '.json'
         );
 
         await this.applySearchConfiguration(appConfiguration, searchConfigurationPath);

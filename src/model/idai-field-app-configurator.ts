@@ -195,11 +195,11 @@ export class IdaiFieldAppConfigurator {
     ];
 
 
-    constructor(private configLoader: ConfigLoader) { }
+    constructor(private configLoader: ConfigLoader) {}
 
 
-    public go(configDirPath: string,
-              customConfigurationName: string|undefined): Promise<ProjectConfiguration> {
+    public go(configDirPath: string, customConfigurationName: string|undefined,
+              locale: string): Promise<ProjectConfiguration> {
 
         if (customConfigurationName === 'Meninx' || customConfigurationName === 'Pergamon') {
 
@@ -266,7 +266,8 @@ export class IdaiFieldAppConfigurator {
             this.defaultFieldsOrder,
             new IdaiFieldPrePreprocessConfigurationValidator(),
             new IdaiFieldConfigurationValidator(),
-            customConfigurationName
+            customConfigurationName,
+            locale
         );
     }
 }

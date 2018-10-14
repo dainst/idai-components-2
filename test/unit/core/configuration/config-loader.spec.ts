@@ -72,6 +72,7 @@ describe('ConfigLoader', () => {
                 new IdaiFieldPrePreprocessConfigurationValidator(),
                 new ConfigurationValidator(),
                 undefined,
+                'de'
             );
         } catch(err) {
             fail(err);
@@ -96,7 +97,7 @@ describe('ConfigLoader', () => {
                 'yo', {},
                 [{ name: 'abc', domain: ['A'], range: ['B'], sameMainTypeResource: false }], {}, [],
                 new IdaiFieldPrePreprocessConfigurationValidator(),
-                new ConfigurationValidator(), undefined);
+                new ConfigurationValidator(), undefined, 'de');
         } catch(err) {
             fail(err);
             done();
@@ -147,7 +148,7 @@ describe('ConfigLoader', () => {
                          { name: 'r2', domain: ['A'], range: ['B']}
                     ], {}, [],
                 new IdaiFieldPrePreprocessConfigurationValidator(),
-                new ConfigurationValidator(), undefined);
+                new ConfigurationValidator(), undefined, 'de');
         } catch(err) {
             fail(err);
             done();
@@ -192,7 +193,8 @@ describe('ConfigLoader', () => {
                 { name: 'r1', domain: ['A'], range: ['B']},
                 { name: 'r2', domain: ['A'], range: ['B']}
             ], {}, [],
-                new IdaiFieldPrePreprocessConfigurationValidator(), new ConfigurationValidator(), undefined
+                new IdaiFieldPrePreprocessConfigurationValidator(), new ConfigurationValidator(),
+                undefined, 'de'
             );
 
             expect(pconf.getTypesList()[0].fields.find(field => field.name == 'fieldA1')
@@ -244,7 +246,7 @@ describe('ConfigLoader', () => {
         try {
             pconf = await configLoader.go('', {}, [], {},
                 [], new IdaiFieldPrePreprocessConfigurationValidator(),
-                new ConfigurationValidator(), undefined
+                new ConfigurationValidator(), undefined, 'de'
             );
 
             expect(pconf.getTypesList()[0].name).toEqual('A');
@@ -296,7 +298,7 @@ describe('ConfigLoader', () => {
             pconf = await configLoader.go('', {}, [],
                 { extraField1: {} as FieldDefinition, extraField2: {} as FieldDefinition },
                 ['extraField1', 'extraField2'], new IdaiFieldPrePreprocessConfigurationValidator(),
-                new ConfigurationValidator(), undefined
+                new ConfigurationValidator(), undefined, 'de'
             );
 
             expect(pconf.getTypesList()[0].name).toEqual('A');
@@ -342,7 +344,7 @@ describe('ConfigLoader', () => {
             pconf = await configLoader.go('', {}, [],
                 { extraField1: {} as FieldDefinition, extraField2: {} as FieldDefinition },
                 ['extraField1', 'extraField2'], new IdaiFieldPrePreprocessConfigurationValidator(),
-                new ConfigurationValidator(), undefined
+                new ConfigurationValidator(), undefined, 'de'
             );
 
             const typeA = pconf.getTypesList().find(type => type.name === 'A');
@@ -389,7 +391,7 @@ describe('ConfigLoader', () => {
         try {
             pconf = await configLoader.go('', {}, [], {},
                 [], new IdaiFieldPrePreprocessConfigurationValidator(),
-                new ConfigurationValidator(), undefined
+                new ConfigurationValidator(), undefined, 'de'
             );
 
             expect(pconf.getTypesList().length).toBe(1);
@@ -431,7 +433,7 @@ describe('ConfigLoader', () => {
         try {
             pconf = await configLoader.go('', {}, [], {},
                 [], new IdaiFieldPrePreprocessConfigurationValidator(),
-                new ConfigurationValidator(), undefined
+                new ConfigurationValidator(), undefined, 'de'
             );
 
             expect(pconf.getTypesList()[0].fields[0].name).toEqual('fieldA1');
@@ -481,7 +483,7 @@ describe('ConfigLoader', () => {
         try {
             pconf = await configLoader.go('', {}, [], {},
                 [], new IdaiFieldPrePreprocessConfigurationValidator(),
-                new ConfigurationValidator(), undefined
+                new ConfigurationValidator(), undefined, 'de'
             );
 
             expect(pconf.getTypesList()[0].fields[0].name).toEqual('fieldA1');
