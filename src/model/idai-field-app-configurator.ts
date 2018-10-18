@@ -149,20 +149,6 @@ export class IdaiFieldAppConfigurator {
             editable: false
         },
         {
-            name: 'isLocatedIn',
-            domain: ['Operation:inherit'],
-            label: this.i18n({ id: 'configuration.relations.isLocatedIn', value: 'Liegt im Ort' }),
-            inverse: 'locates',
-            range: ['Place']
-        },
-        {
-            name: 'locates',
-            domain: ['Place'],
-            label: this.i18n({ id: 'configuration.relations.locates', value: 'Enthält Maßnahme' }),
-            inverse: 'isLocatedIn',
-            range: ['Operation:inherit']
-        },
-        {
             name: 'isAfter',
             inverse: 'isBefore',
             label: this.i18n({ id: 'configuration.relations.isAfter', value: 'Zeitlich nach' }),
@@ -273,6 +259,13 @@ export class IdaiFieldAppConfigurator {
         {
             name: 'includes',
             inverse: 'liesWithin',
+            label: this.i18n({ id: 'configuration.relations.includes', value: 'Enthält' }),
+            domain: ['Place'],
+            range: ['Operation:inherit']
+        },
+        {
+            name: 'includes',
+            inverse: 'liesWithin',
             label: this.i18n({ id: 'configuration.relations.includes', value: 'Beinhaltet' }),
             domain: ['Feature:inherit'],
             range: ['Find:inherit', 'Feature:inherit', 'Inscription'],
@@ -293,6 +286,13 @@ export class IdaiFieldAppConfigurator {
             domain: ['Find:inherit'],
             range: ['Inscription'],
             sameMainTypeResource: true
+        },
+        {
+            name: 'liesWithin',
+            inverse: 'includes',
+            label: this.i18n({ id: 'configuration.relations.liesWithin', value: 'Liegt in' }),
+            domain: ['Operation:inherit'],
+            range: ['Place']
         },
         {
             name: 'liesWithin',
