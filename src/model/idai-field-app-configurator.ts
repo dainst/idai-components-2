@@ -259,7 +259,7 @@ export class IdaiFieldAppConfigurator {
         {
             name: 'includes',
             inverse: 'liesWithin',
-            label: this.i18n({ id: 'configuration.relations.includes', value: 'Enthält' }),
+            label: this.i18n({ id: 'configuration.relations.includes', value: 'Beinhaltet' }),
             domain: ['Place'],
             range: ['Operation:inherit']
         },
