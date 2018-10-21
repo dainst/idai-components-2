@@ -38,6 +38,7 @@ export abstract class ReadDatastore {
 
 export interface FindResult {
 
-    documents: Array<Document>,
-    totalCount: number
+    documents: Array<Document>;
+    totalCount: number;
+    queryId?: string;
 }

@@ -17,13 +17,15 @@ import {Constraint} from './constraint';
  *   { 'resource.relations.isRecordedIn': { value: 'id1', type: 'subtract' }
  * @property limit the number of documents to be returned. If there are more matching
  *   documents, only the first documents are returned.
+ * @property id an optional id used to attribute find results to a query
  */
 export interface Query {
 
     q?: string;
     types?: string[];
     constraints?: { [name: string]: Constraint|string|string[]};
-    limit?: number
+    limit?: number;
+    id?: string;
 }
 
 
