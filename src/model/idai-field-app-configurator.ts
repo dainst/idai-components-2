@@ -402,12 +402,31 @@ export class IdaiFieldAppConfigurator {
                 parent: 'ProcessUnit',
                 fields: {}
             };
+            (this.defaultTypes as any)['Area'] = {
+                color: '#000000',
+                fields: {}
+            };
+            (this.defaultTypes as any)['Excavation'] = {
+                color: '#9ecae1',
+                fields: {}
+            };
+            (this.defaultTypes as any)['Findspot'] = {
+                color: '#339900',
+                fields: {}
+            };
 
             this.defaultRelations.push({
                 name: 'isRecordedIn',
                 label: this.i18n({ id: 'configuration.relations.isRecordedIn', value: 'Aufgenommen in Maßnahme' }),
                 domain: ['ProcessUnit'],
                 range: ['Trench']
+            });
+
+            this.defaultRelations.push({
+                name: 'isRecordedIn',
+                label: this.i18n({id: 'configuration.relations.isRecordedIn', value: 'Aufgenommen in Maßnahme'}),
+                domain: ['Area', 'Excavation', 'Findspot'],
+                range: ['Survey']
             });
 
             this.defaultRelations.push({ // override existing definition
