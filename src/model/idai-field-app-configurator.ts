@@ -442,6 +442,54 @@ export class IdaiFieldAppConfigurator {
                 domain: ['Feature:inherit'],
                 range: ['Trench', 'Survey', 'Building']
             });
+
+            this.defaultRelations.push({
+                name: 'includes',
+                inverse: 'liesWithin',
+                label: this.i18n({ id: 'configuration.relations.includes', value: 'Beinhaltet' }),
+                domain: ['Area'],
+                range: ['Excavation', 'BuildingPart', 'Find:inherit']
+            });
+
+            this.defaultRelations.push({
+                name: 'includes',
+                inverse: 'liesWithin',
+                label: this.i18n({ id: 'configuration.relations.includes', value: 'Beinhaltet' }),
+                domain: ['Excavation'],
+                range: ['Find:inherit', 'Burial']
+            });
+
+            this.defaultRelations.push({
+                name: 'liesWithin',
+                inverse: 'includes',
+                label: this.i18n({ id: 'configuration.relations.liesWithin', value: 'Liegt in' }),
+                domain: ['Excavation'],
+                range: ['Area']
+            });
+
+            this.defaultRelations.push({ // override existing definition
+                name: 'liesWithin',
+                inverse: 'includes',
+                label: this.i18n({ id: 'configuration.relations.liesWithin', value: 'Liegt in' }),
+                domain: ['BuildingPart'],
+                range: ['BuildingPart', 'Area']
+            });
+
+            this.defaultRelations.push({ // override existing definition
+                name: 'liesWithin',
+                inverse: 'includes',
+                label: this.i18n({ id: 'configuration.relations.liesWithin', value: 'Liegt in' }),
+                domain: ['Find:inherit'],
+                range: ['Feature:inherit', 'SurveyUnit', 'Area', 'Excavation']
+            });
+
+            this.defaultRelations.push({ // override existing definition
+                name: 'liesWithin',
+                inverse: 'includes',
+                label: this.i18n({ id: 'configuration.relations.liesWithin', value: 'Liegt in' }),
+                domain: ['Burial'],
+                range: ['Feature:inherit', 'Excavation']
+            });
         }
 
 
