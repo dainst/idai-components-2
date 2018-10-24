@@ -435,8 +435,15 @@ export class IdaiFieldAppConfigurator {
             this.defaultRelations.push({ // override existing definition
                 name: 'isRecordedIn',
                 label: this.i18n({ id: 'configuration.relations.isRecordedIn', value: 'Aufgenommen in Maßnahme' }),
-                domain: ['Feature:inherit'],
-                range: ['Trench', 'Survey', 'Building']
+                domain: ['Floor'],
+                range: ['Trench', 'Building']
+            });
+
+            this.defaultRelations.push({ // override existing definition
+                name: 'isRecordedIn',
+                label: this.i18n({ id: 'configuration.relations.isRecordedIn', value: 'Aufgenommen in Maßnahme' }),
+                domain: ['Burial'],
+                range: ['Trench', 'Survey']
             });
 
             this.defaultRelations.push({
