@@ -44,8 +44,7 @@ export class FieldsViewComponent implements OnChanges {
 
         const fieldNames = this.projectConfiguration
             .getFieldDefinitions(resource.type)
-            .map(to('name'))
-            .concat(['periodEnd']);
+            .map(to('name'));
 
         for (let fieldName of fieldNames) {
             if (fieldName === 'relations') continue;
@@ -64,18 +63,17 @@ export class FieldsViewComponent implements OnChanges {
                     value: FieldsViewComponent.getValue(resource, fieldName),
                     isArray: false
                 });
-                continue;
-            }
 
-            if (fieldName === 'periodEnd') {
-                this.fields.push({
-                    name: this.i18n({
-                        id: 'components.documents.docView.fieldsView.period.to',
-                        value: 'Grobdatierung (bis)'
-                    }),
-                    value: FieldsViewComponent.getValue(resource, fieldName),
-                    isArray: false
-                });
+                if (!isUndefinedOrEmpty(resource['periodEnd'])) {
+                    this.fields.push({
+                        name: this.i18n({
+                            id: 'components.documents.docView.fieldsView.period.to',
+                            value: 'Grobdatierung (bis)'
+                        }),
+                        value: FieldsViewComponent.getValue(resource, 'periodEnd'),
+                        isArray: false
+                    });
+                }
                 continue;
             }
 
