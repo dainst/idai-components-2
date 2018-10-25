@@ -527,12 +527,12 @@ export class IdaiFieldAppConfigurator {
                 sameMainTypeResource: true
             });
 
-            this.defaultRelations.push({
+            this.defaultRelations.push({ // override existing definition
                 name: 'borders',
                 inverse: 'borders',
                 label: this.i18n({ id: 'configuration.relations.borders', value: 'Grenzt an' }),
                 domain: ['BuildingPart:inherit'],
-                range: ['BuildingFloor'],
+                range: ['BuildingPart:inherit', 'BuildingFloor'],
                 sameMainTypeResource: true
             });
         }
