@@ -412,12 +412,20 @@ export class IdaiFieldAppConfigurator {
                 parent: 'ProcessUnit',
                 fields: {}
             };
+            (this.defaultTypes as any)['BuildingFloor'] = {
+                color: '#6600cc',
+                fields: {}
+            };
             (this.defaultTypes as any)['Area'] = {
                 color: '#000000',
                 fields: {}
             };
             (this.defaultTypes as any)['Excavation'] = {
                 color: '#9ecae1',
+                fields: {}
+            };
+            (this.defaultTypes as any)['SurveyBurial'] = {
+                color: '#45ff95',
                 fields: {}
             };
 
@@ -442,18 +450,18 @@ export class IdaiFieldAppConfigurator {
                 range: ['Building', 'Trench', 'Survey']
             });
 
-            this.defaultRelations.push({ // override existing definition
+            this.defaultRelations.push({
                 name: 'isRecordedIn',
                 label: this.i18n({ id: 'configuration.relations.isRecordedIn', value: 'Aufgenommen in Maßnahme' }),
-                domain: ['Floor'],
-                range: ['Trench', 'Building']
+                domain: ['BuildingFloor'],
+                range: ['Building']
             });
 
-            this.defaultRelations.push({ // override existing definition
+            this.defaultRelations.push({
                 name: 'isRecordedIn',
                 label: this.i18n({ id: 'configuration.relations.isRecordedIn', value: 'Aufgenommen in Maßnahme' }),
-                domain: ['Burial'],
-                range: ['Trench', 'Survey']
+                domain: ['SurveyBurial'],
+                range: ['Survey']
             });
 
             this.defaultRelations.push({
@@ -470,7 +478,7 @@ export class IdaiFieldAppConfigurator {
                 inverse: 'liesWithin',
                 label: this.i18n({ id: 'configuration.relations.includes', value: 'Beinhaltet' }),
                 domain: ['Excavation'],
-                range: ['Find:inherit', 'Burial'],
+                range: ['Find:inherit', 'SurveyBurial'],
                 sameMainTypeResource: true
             });
 
@@ -501,12 +509,12 @@ export class IdaiFieldAppConfigurator {
                 sameMainTypeResource: true
             });
 
-            this.defaultRelations.push({ // override existing definition
+            this.defaultRelations.push({
                 name: 'liesWithin',
                 inverse: 'includes',
                 label: this.i18n({ id: 'configuration.relations.liesWithin', value: 'Liegt in' }),
-                domain: ['Burial'],
-                range: ['Feature:inherit', 'Excavation'],
+                domain: ['SurveyBurial'],
+                range: ['Excavation'],
                 sameMainTypeResource: true
             });
         }
