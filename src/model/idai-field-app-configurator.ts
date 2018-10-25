@@ -517,6 +517,24 @@ export class IdaiFieldAppConfigurator {
                 range: ['Excavation'],
                 sameMainTypeResource: true
             });
+
+            this.defaultRelations.push({
+                name: 'borders',
+                inverse: 'borders',
+                label: this.i18n({ id: 'configuration.relations.borders', value: 'Grenzt an' }),
+                domain: ['BuildingFloor'],
+                range: ['BuildingPart:inherit'],
+                sameMainTypeResource: true
+            });
+
+            this.defaultRelations.push({
+                name: 'borders',
+                inverse: 'borders',
+                label: this.i18n({ id: 'configuration.relations.borders', value: 'Grenzt an' }),
+                domain: ['BuildingPart:inherit'],
+                range: ['BuildingFloor'],
+                sameMainTypeResource: true
+            });
         }
 
 
