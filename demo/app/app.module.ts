@@ -1,7 +1,6 @@
 import {APP_INITIALIZER, LOCALE_ID, NgModule, TRANSLATIONS, TRANSLATIONS_FORMAT} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule} from '@angular/forms';
-import {HttpModule} from '@angular/http';
 import {HttpClientModule} from '@angular/common/http';
 import {HashLocationStrategy, LocationStrategy} from '@angular/common';
 import {routing} from './app.routing';
@@ -32,7 +31,6 @@ let pconf: any = undefined;
     imports: [
         BrowserModule,
         FormsModule,
-        HttpModule,
         HttpClientModule,
         IdaiDocumentsModule,
         IdaiMessagesModule,
