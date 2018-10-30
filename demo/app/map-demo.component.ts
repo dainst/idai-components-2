@@ -156,7 +156,7 @@ export class MapDemoComponent {
     }
 
 
-    public toggleParentDocument() {
+    public toggleParentDocuments() {
 
         if (this.parentDocuments) {
             this.parentDocuments = undefined;

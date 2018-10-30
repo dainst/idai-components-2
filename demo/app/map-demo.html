@@ -4,18 +4,18 @@
          [projectDocument]="projectDocument" [update]="liveUpdate"
          (onSelectDocument)="selectDocument($event)"></map>
 
-    <div (click)="toggleParentDocument()" style="margin-top: 20px;">
-        <button class="btn btn" [class.btn-primary]="parentDocument" [class.btn-outline-primary]="!parentDocument"
-                style="cursor: pointer; float: left; margin-right: 10px;">
-            {{parentDocumentTemplate.resource.shortDescription}}
-        </button>
-    </div>
-
     <div *ngFor="let document of documents" (click)="toggleDocument(document)" style="margin-top: 20px;">
         <button class="btn btn" [class.btn-primary]="selectedDocument == document"
                 [class.btn-outline-primary]="selectedDocument != document"
                 style="cursor: pointer; float: left; margin-right: 10px;">
             {{document.resource.shortDescription}}
+        </button>
+    </div>
+
+    <div (click)="toggleParentDocuments()" style="margin-top: 20px;">
+        <button class="btn btn" [class.btn-primary]="parentDocuments" [class.btn-outline-primary]="!parentDocuments"
+                style="cursor: pointer; float: left; margin-right: 10px;">
+            {{parentDocumentTemplate.resource.shortDescription}}
         </button>
     </div>
 
