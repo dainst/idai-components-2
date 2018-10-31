@@ -40,7 +40,7 @@ export class MapComponent implements OnChanges {
     protected map: L.Map;
     protected polygons: { [resourceId: string]: Array<IdaiFieldPolygon> } = {};
     protected polylines: { [resourceId: string]: Array<IdaiFieldPolyline> } = {};
-    protected markers: { [resourceId: string]: IdaiFieldMarker } = {};
+    protected markers: { [resourceId: string]: Array<IdaiFieldMarker> } = {};
 
     protected bounds: any[] = []; // in fact L.LatLng[], but leaflet typings are incomplete
     protected typeColors: { [typeName: string]: string } = {};
@@ -109,7 +109,7 @@ export class MapComponent implements OnChanges {
             } else if (this.polylines[this.selectedDocument.resource.id as any]) {
                 this.focusPolylines(this.polylines[this.selectedDocument.resource.id as any]);
             } else if (this.markers[this.selectedDocument.resource.id as any]) {
-                this.focusMarker(this.markers[this.selectedDocument.resource.id as any]);
+                this.focusMarkers(this.markers[this.selectedDocument.resource.id as any]);
             }
         } else if (this.bounds.length > 1) {
             this.map.fitBounds(L.latLngBounds(this.bounds));
@@ -138,7 +138,9 @@ export class MapComponent implements OnChanges {
         }
 
         for (let i in this.markers) {
-            this.map.removeLayer(this.markers[i]);
+            for (let marker of this.markers[i]) {
+                this.map.removeLayer(marker);
+            }
         }
 
         this.polygons = {};
@@ -195,7 +197,7 @@ export class MapComponent implements OnChanges {
         if (!parentDocument.resource.geometry) return;
 
         if (['LineString', 'MultiLineString', 'Polygon', 'MultiPolygon']
-                .indexOf(parentDocument.resource.geometry.type) == -1) {
+                .indexOf(parentDocument.resource.geometry.type) === -1) {
             return;
         }
 
@@ -212,6 +214,12 @@ export class MapComponent implements OnChanges {
             case 'Point':
                 let marker: IdaiFieldMarker = this.addMarkerToMap(geometry.coordinates, document);
                 this.extendBounds(marker.getLatLng());
+                break;
+            case 'MultiPoint':
+                for (let pointCoordinates of geometry.coordinates) {
+                    let marker: IdaiFieldMarker = this.addMarkerToMap(pointCoordinates, document);
+                    this.extendBounds(marker.getLatLng());
+                }
                 break;
             case 'LineString':
                 let polyline: IdaiFieldPolyline = this.addPolylineToMap(geometry.coordinates, document);
@@ -261,7 +269,8 @@ export class MapComponent implements OnChanges {
         });
 
         marker.addTo(this.map);
-        this.markers[document.resource.id as any] = marker;
+        if (!this.markers[document.resource.id]) this.markers[document.resource.id] = [];
+        this.markers[document.resource.id].push(marker);
 
         return marker;
     }
@@ -343,9 +352,17 @@ export class MapComponent implements OnChanges {
     }
 
 
-    private focusMarker(marker: L.Marker) {
+    private focusMarkers(markers: Array<L.Marker>) {
 
-        this.map.panTo(marker.getLatLng(), { animate: true, easeLinearity: 0.3 });
+        if (markers.length === 1) {
+            this.map.panTo(markers[0].getLatLng(), {animate: true, easeLinearity: 0.3});
+        } else {
+            const bounds = [] as any;
+            for (let marker of markers) {
+                bounds.push(marker.getLatLng());
+            }
+            this.map.fitBounds(bounds);
+        }
     }
 
 
@@ -353,7 +370,7 @@ export class MapComponent implements OnChanges {
 
         const bounds = [] as any;
         for (let polyline of polylines) {
-            bounds.push(polyline.getLatLngs() as never);
+            bounds.push(polyline.getLatLngs());
         }
         this.map.fitBounds(bounds);
     }
@@ -363,7 +380,7 @@ export class MapComponent implements OnChanges {
 
         const bounds = [] as any;
         for (let polygon of polygons) {
-            bounds.push(polygon.getLatLngs() as never);
+            bounds.push(polygon.getLatLngs());
         }
         this.map.fitBounds(bounds);
     }

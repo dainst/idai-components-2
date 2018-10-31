@@ -33,6 +33,23 @@ export class MapDemoComponent {
             'resource': {
                 'id': 'obj2',
                 'identifier': 'object2',
+                'shortDescription': 'Multipunkt',
+                'relations': {
+                    'isRecordedIn' : []
+                },
+                'geometry': {
+                    'type': 'MultiPoint',
+                    'coordinates': [[-0.5, -0.5], [-1.0, -1.0], [-1.5, -1.5]]
+                },
+                'type': 'Object'
+            },
+            created: { user: 'Demo', date: new Date() },
+            modified: [ { user: 'Demo', date: new Date() } ]
+        },
+        {
+            'resource': {
+                'id': 'obj3',
+                'identifier': 'object3',
                 'shortDescription': 'Polygon',
                 'relations': {
                     'isRecordedIn' : []
@@ -48,8 +65,8 @@ export class MapDemoComponent {
         },
         {
             'resource': {
-                'id': 'obj3',
-                'identifier': 'object3',
+                'id': 'obj4',
+                'identifier': 'object4',
                 'shortDescription': 'Multipolygon',
                 'relations': {
                     'isRecordedIn' : []
@@ -66,8 +83,8 @@ export class MapDemoComponent {
         },
         {
             'resource': {
-                'id': 'obj4',
-                'identifier': 'object4',
+                'id': 'obj5',
+                'identifier': 'object5',
                 'shortDescription': 'Polyline',
                 'relations': {
                     'isRecordedIn' : []
@@ -83,8 +100,8 @@ export class MapDemoComponent {
         },
         {
             'resource': {
-                'id': 'obj5',
-                'identifier': 'object5',
+                'id': 'obj6',
+                'identifier': 'object6',
                 'shortDescription': 'Multipolyline',
                 'relations': {
                     'isRecordedIn' : []
