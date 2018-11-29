@@ -261,6 +261,13 @@ export class IdaiFieldAppConfigurator {
             inverse: 'liesWithin',
             label: this.i18n({ id: 'configuration.relations.includes', value: 'Beinhaltet' }),
             domain: ['Place'],
+            range: ['Place']
+        },
+        {
+            name: 'includes',
+            inverse: 'liesWithin',
+            label: this.i18n({ id: 'configuration.relations.includes', value: 'Beinhaltet' }),
+            domain: ['Place'],
             range: ['Operation:inherit']
         },
         {
@@ -294,6 +301,13 @@ export class IdaiFieldAppConfigurator {
             domain: ['BuildingPart'],
             range: ['BuildingPart'],
             sameMainTypeResource: true
+        },
+        {
+            name: 'liesWithin',
+            inverse: 'includes',
+            label: this.i18n({ id: 'configuration.relations.includes', value: 'Beinhaltet' }),
+            domain: ['Place'],
+            range: ['Place']
         },
         {
             name: 'liesWithin',
