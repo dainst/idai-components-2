@@ -25,8 +25,6 @@ export class RelationsViewComponent implements OnChanges {
     @Input() hideRelations: Array<string> = [];
     @Output() onRelationTargetClicked: EventEmitter<Document> = new EventEmitter<Document>();
 
-    public collapsed: boolean = false;
-
 
     constructor(private datastore: ReadDatastore, private projectConfiguration: ProjectConfiguration) {}
 
