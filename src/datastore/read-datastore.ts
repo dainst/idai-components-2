@@ -26,6 +26,14 @@ export abstract class ReadDatastore {
 
 
     /**
+     * @param resourceIds the resource ids of the documents to find
+     * @param options to control implementation specific behaviour
+     * @returns {Promise<Array<Document>>} list of found documents
+     */
+    abstract getMultiple(resourceIds: string[], options?: Object): Promise<Array<Document>>;
+
+
+    /**
      * Perform a fulltext query
      
      * @param query the query object

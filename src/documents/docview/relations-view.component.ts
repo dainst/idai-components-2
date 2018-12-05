@@ -29,10 +29,10 @@ export class RelationsViewComponent implements OnChanges {
     constructor(private datastore: ReadDatastore, private projectConfiguration: ProjectConfiguration) {}
 
 
-    ngOnChanges() {
+    async ngOnChanges() {
         
         this.relations = [];
-        if (this.resource) this.processRels(this.resource);
+        if (this.resource) await this.processRelations(this.resource);
     }
 
 
@@ -42,13 +42,14 @@ export class RelationsViewComponent implements OnChanges {
     }
 
 
-    private async processRels(resource: Resource) {
+    private async processRelations(resource: Resource) {
 
         Object.keys(resource.relations)
             .filter(name => this.projectConfiguration.isVisibleRelation(name, this.resource.type))
             .filter(name => this.hideRelations.indexOf(name) === -1)
             .forEach(name =>
-                this.addRel(resource, name, this.projectConfiguration.getRelationDefinitionLabel(name)));
+                this.addRel(resource, name, this.projectConfiguration.getRelationDefinitionLabel(name))
+            );
     }
 
 
@@ -65,21 +66,6 @@ export class RelationsViewComponent implements OnChanges {
 
     private getTargetDocuments(targetIds: Array<string>): Promise<Array<Document>> {
 
-        const promises = [] as any;
-        const targetDocuments = [] as any;
-
-        for (let i in targetIds) {
-            let targetId = targetIds[i];
-            promises.push(this.datastore.get(targetId).then(
-                targetDocument => {
-                    targetDocuments.push(targetDocument as never);
-                },
-                err => console.error('Relation target not found', err)
-            ) as never);
-        }
-
-        return Promise.all(promises).then(
-            () => Promise.resolve(targetDocuments)
-        );
+        return this.datastore.getMultiple(targetIds);
     }
 }

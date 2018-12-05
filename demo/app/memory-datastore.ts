@@ -60,6 +60,17 @@ export class MemoryDatastore implements Datastore {
     }
 
 
+    public getMultiple(ids: string[]): Promise<Array<Document>> {
+
+        return new Promise<Array<Document>>(resolve => {
+            resolve(ids
+                .map(id => this.objectCache[id])
+                .filter(id => id !== undefined)
+            );
+        });
+    }
+
+
     public remove(document: Document): Promise<any> {
 
         return Promise.resolve();
