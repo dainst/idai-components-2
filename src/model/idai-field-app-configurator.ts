@@ -376,21 +376,11 @@ export class IdaiFieldAppConfigurator {
                 color: '#ffff99',
                 fields: {}
             };
-            (this.defaultTypes as any)['Drilling'] = {
-                color: '#08519c',
-                fields: {}
-            };
             this.defaultRelations.push({
                 name: 'isRecordedIn',
                 label: this.i18n({ id: 'configuration.relations.isRecordedIn', value: 'Aufgenommen in Maßnahme' }),
                 domain: ['Wall_surface'],
                 range: ['Trench']
-            });
-            this.defaultRelations.push({
-                name: 'isRecordedIn',
-                label: this.i18n({ id: 'configuration.relations.isRecordedIn', value: 'Aufgenommen in Maßnahme' }),
-                domain: ['Drilling'],
-                range: ['Survey']
             });
         }
 
