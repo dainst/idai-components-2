@@ -335,6 +335,14 @@ export class IdaiFieldAppConfigurator {
             sameMainTypeResource: true
         },
         {
+            name: 'liesWithin',
+            inverse: 'includes',
+            label: this.i18n({ id: 'configuration.relations.liesWithin', value: 'Liegt in' }),
+            domain: ['Area:inherit'],
+            range: ['Area:inherit'],
+            sameMainTypeResource: true
+        },
+        {
             name: 'bears',
             inverse: 'isFoundOn',
             label: this.i18n({ id: 'configuration.relations.bears', value: 'Trägt' }),
