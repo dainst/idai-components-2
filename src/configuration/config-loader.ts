@@ -55,7 +55,7 @@ export class ConfigLoader {
                 customConfigurationName: string|undefined,
                 locale: string): Promise<ProjectConfiguration> {
 
-        if (customConfigurationName) console.log("Load custom configuration",customConfigurationName);
+        if (customConfigurationName) console.log('Load custom configuration', customConfigurationName);
 
         let appConfiguration: any = await this.readConfiguration(configDirPath);
 
@@ -93,12 +93,13 @@ export class ConfigLoader {
                              locale: string): Promise<ConfigurationDefinition> {
 
         const hiddenConfigurationPath = configDirPath + '/Hidden.json';
-        const customHiddenConfigurationPath = configDirPath + '/Hidden-Custom.json';
+        const customHiddenConfigurationPath = configDirPath + '/Hidden-'
+            + (customConfigurationName ? customConfigurationName : 'Custom') + '.json';
         const languageConfigurationPath = configDirPath + '/Language.' + locale + '.json';
         const orderConfigurationPath = configDirPath + '/Order.json';
         const searchConfigurationPath = configDirPath + '/Search.json';
-        const periodConfigurationPath = configDirPath + '/Periods.json';
-        const meninxPeriodConfigurationPath = configDirPath + '/Periods-Meninx.json';
+        const periodConfigurationPath = configDirPath + '/Periods'
+            + (customConfigurationName ? '-' + customConfigurationName : '') + '.json';
 
         Preprocessing.prepareSameMainTypeResource(appConfiguration);
         // TODO rename and test / also: it is idai field specific
@@ -132,14 +133,9 @@ export class ConfigLoader {
         );
 
         await this.applySearchConfiguration(appConfiguration, searchConfigurationPath);
-        await this.applyPeriodConfiguration(appConfiguration,
-            customConfigurationName === 'Meninx'
-                ? meninxPeriodConfigurationPath
-                : periodConfigurationPath
-        );
+        await this.applyPeriodConfiguration(appConfiguration, periodConfigurationPath);
 
         return this.getOrderedConfiguration(appConfiguration, orderConfigurationPath, extraFieldsOrder);
-
     }
 
 
