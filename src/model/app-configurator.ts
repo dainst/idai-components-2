@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {I18n} from '@ngx-translate/i18n-polyfill';
 import {ConfigLoader} from '../configuration/config-loader';
-import {IdaiFieldConfigurationValidator} from './idai-field-configuration-validator';
+import {ConfigurationValidator} from '../configuration/configuration-validator';
 import {ProjectConfiguration} from '../configuration/project-configuration';
 import {PrePreprocessConfigurationValidator} from '../configuration/pre-preprocess-configuration-validator';
 import {TypeDefinition} from '../configuration/type-definition';
@@ -502,7 +502,7 @@ export class AppConfigurator {
             this.defaultFields,
             this.defaultFieldsOrder,
             new PrePreprocessConfigurationValidator(),
-            new IdaiFieldConfigurationValidator(),
+            new ConfigurationValidator(),
             customConfigurationName,
             locale
         );
