@@ -3,7 +3,7 @@ import {I18n} from '@ngx-translate/i18n-polyfill';
 import {ConfigLoader} from '../configuration/config-loader';
 import {IdaiFieldConfigurationValidator} from './idai-field-configuration-validator';
 import {ProjectConfiguration} from '../configuration/project-configuration';
-import {IdaiFieldPrePreprocessConfigurationValidator} from '../configuration/idai-field-pre-preprocess-configuration-validator';
+import {PrePreprocessConfigurationValidator} from '../configuration/pre-preprocess-configuration-validator';
 import {TypeDefinition} from '../configuration/type-definition';
 import {FieldDefinition} from '../configuration/field-definition';
 
@@ -13,7 +13,7 @@ import {FieldDefinition} from '../configuration/field-definition';
  * @author Daniel de Oliveira
  * @author Thomas Kleinke
  */
-export class IdaiFieldAppConfigurator {
+export class AppConfigurator {
 
     private defaultTypes = {
         Place: {
@@ -501,7 +501,7 @@ export class IdaiFieldAppConfigurator {
             this.defaultRelations,
             this.defaultFields,
             this.defaultFieldsOrder,
-            new IdaiFieldPrePreprocessConfigurationValidator(),
+            new PrePreprocessConfigurationValidator(),
             new IdaiFieldConfigurationValidator(),
             customConfigurationName,
             locale

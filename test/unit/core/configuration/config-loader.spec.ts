@@ -1,7 +1,7 @@
 import {ConfigurationDefinition} from '../../../../src/configuration/configuration-definition';
 import {ConfigLoader} from '../../../../src/configuration/config-loader';
-import {IdaiFieldPrePreprocessConfigurationValidator}
-    from '../../../../src/configuration/idai-field-pre-preprocess-configuration-validator';
+import {PrePreprocessConfigurationValidator}
+    from '../../../../src/configuration/pre-preprocess-configuration-validator';
 import {ConfigurationValidator} from '../../../../src/configuration/configuration-validator';
 import {FieldDefinition} from '../../../../src/configuration/field-definition';
 
@@ -69,7 +69,7 @@ describe('ConfigLoader', () => {
                     }],
                 {},
                 [],
-                new IdaiFieldPrePreprocessConfigurationValidator(),
+                new PrePreprocessConfigurationValidator(),
                 new ConfigurationValidator(),
                 undefined,
                 'de'
@@ -96,7 +96,7 @@ describe('ConfigLoader', () => {
             pconf = await configLoader.go(
                 'yo', {},
                 [{ name: 'abc', domain: ['A'], range: ['B'], sameMainTypeResource: false }], {}, [],
-                new IdaiFieldPrePreprocessConfigurationValidator(),
+                new PrePreprocessConfigurationValidator(),
                 new ConfigurationValidator(), undefined, 'de');
         } catch(err) {
             fail(err);
@@ -147,7 +147,7 @@ describe('ConfigLoader', () => {
                          { name: 'r1', domain: ['A'], range: ['B']},
                          { name: 'r2', domain: ['A'], range: ['B']}
                     ], {}, [],
-                new IdaiFieldPrePreprocessConfigurationValidator(),
+                new PrePreprocessConfigurationValidator(),
                 new ConfigurationValidator(), undefined, 'de');
         } catch(err) {
             fail(err);
@@ -193,7 +193,7 @@ describe('ConfigLoader', () => {
                 { name: 'r1', domain: ['A'], range: ['B']},
                 { name: 'r2', domain: ['A'], range: ['B']}
             ], {}, [],
-                new IdaiFieldPrePreprocessConfigurationValidator(), new ConfigurationValidator(),
+                new PrePreprocessConfigurationValidator(), new ConfigurationValidator(),
                 undefined, 'de'
             );
 
@@ -245,7 +245,7 @@ describe('ConfigLoader', () => {
         let pconf;
         try {
             pconf = await configLoader.go('', {}, [], {},
-                [], new IdaiFieldPrePreprocessConfigurationValidator(),
+                [], new PrePreprocessConfigurationValidator(),
                 new ConfigurationValidator(), undefined, 'de'
             );
 
@@ -297,7 +297,7 @@ describe('ConfigLoader', () => {
         try {
             pconf = await configLoader.go('', {}, [],
                 { extraField1: {} as FieldDefinition, extraField2: {} as FieldDefinition },
-                ['extraField1', 'extraField2'], new IdaiFieldPrePreprocessConfigurationValidator(),
+                ['extraField1', 'extraField2'], new PrePreprocessConfigurationValidator(),
                 new ConfigurationValidator(), undefined, 'de'
             );
 
@@ -343,7 +343,7 @@ describe('ConfigLoader', () => {
         try {
             pconf = await configLoader.go('', {}, [],
                 { extraField1: {} as FieldDefinition, extraField2: {} as FieldDefinition },
-                ['extraField1', 'extraField2'], new IdaiFieldPrePreprocessConfigurationValidator(),
+                ['extraField1', 'extraField2'], new PrePreprocessConfigurationValidator(),
                 new ConfigurationValidator(), undefined, 'de'
             );
 
@@ -390,7 +390,7 @@ describe('ConfigLoader', () => {
         let pconf;
         try {
             pconf = await configLoader.go('', {}, [], {},
-                [], new IdaiFieldPrePreprocessConfigurationValidator(),
+                [], new PrePreprocessConfigurationValidator(),
                 new ConfigurationValidator(), undefined, 'de'
             );
 
@@ -432,7 +432,7 @@ describe('ConfigLoader', () => {
         let pconf;
         try {
             pconf = await configLoader.go('', {}, [], {},
-                [], new IdaiFieldPrePreprocessConfigurationValidator(),
+                [], new PrePreprocessConfigurationValidator(),
                 new ConfigurationValidator(), undefined, 'de'
             );
 
@@ -482,7 +482,7 @@ describe('ConfigLoader', () => {
         let pconf;
         try {
             pconf = await configLoader.go('', {}, [], {},
-                [], new IdaiFieldPrePreprocessConfigurationValidator(),
+                [], new PrePreprocessConfigurationValidator(),
                 new ConfigurationValidator(), undefined, 'de'
             );
 

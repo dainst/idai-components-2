@@ -1,4 +1,4 @@
-import {IdaiFieldPrePreprocessConfigurationValidator} from '../../../../src/configuration/idai-field-pre-preprocess-configuration-validator';
+import {PrePreprocessConfigurationValidator} from '../../../../src/configuration/pre-preprocess-configuration-validator';
 
 /**
  * @author Daniel de Oliveira
@@ -19,7 +19,7 @@ describe('PrePreprocessConfigurationValidator',() => {
             }]
         };
 
-        const result = new IdaiFieldPrePreprocessConfigurationValidator().go(configuration);
+        const result = new PrePreprocessConfigurationValidator().go(configuration);
         expect(result[0][0]).toContain('relations cannot be defined via external configuration');
     });
 
@@ -128,7 +128,7 @@ describe('PrePreprocessConfigurationValidator',() => {
             }
         };
 
-        const result = new IdaiFieldPrePreprocessConfigurationValidator().go(configuration);
+        const result = new PrePreprocessConfigurationValidator().go(configuration);
         expect(result[0][0]).toContain('field(s) not allowed');
     });
 });

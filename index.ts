@@ -31,7 +31,7 @@ export {Messages} from './src/messages/messages';
 export {Message} from './src/messages/message';
 export {MD} from './src/messages/md';
 
-export {IdaiFieldAppConfigurator} from './src/model/idai-field-app-configurator';
+export {AppConfigurator} from './src/model/app-configurator';
 export {FieldDocument} from './src/model/field-document';
 export {FieldResource} from './src/model/field-resource';
 export {FieldRelations} from './src/model/field-relations';

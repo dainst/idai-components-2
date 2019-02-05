@@ -1,10 +1,10 @@
-import {IdaiFieldAppConfigurator} from '../../../../src/model/idai-field-app-configurator';
+import {AppConfigurator} from '../../../../src/model/app-configurator';
 import {ConfigLoader} from '../../../../src/configuration/config-loader';
 
 /**
  * @author Daniel de Oliveira
  */
-describe('IdaiFieldAppConfigurator', () => {
+describe('AppConfigurator', () => {
 
     xit('should run', (done) => {
 
@@ -28,7 +28,7 @@ describe('IdaiFieldAppConfigurator', () => {
 
             const configLoader = new ConfigLoader(http);
 
-            new IdaiFieldAppConfigurator(configLoader).go(
+            new AppConfigurator(configLoader).go(
                 'democonf',
                 undefined
             );

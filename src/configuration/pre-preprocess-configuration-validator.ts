@@ -1,7 +1,5 @@
-import {TypeDefinition} from './type-definition';
-import {intersection, subtract} from 'tsfun';
+import {intersection, subtract, isNot, includedIn} from 'tsfun';
 import {RelationDefinition} from './relation-definition';
-import {isNot, includedIn} from 'tsfun';
 
 /**
  * Used to validate to configuration in the form it comes from the user, i.e.
@@ -10,7 +8,7 @@ import {isNot, includedIn} from 'tsfun';
  *
  * @author Daniel de Oliveira
  */
-export class IdaiFieldPrePreprocessConfigurationValidator {
+export class PrePreprocessConfigurationValidator {
 
     /**
      * Starting with 2.1.8 of idai-field we forbid visible and editable
@@ -24,8 +22,8 @@ export class IdaiFieldPrePreprocessConfigurationValidator {
 
         if (!appConfiguration.types) return [];
 
-        return IdaiFieldPrePreprocessConfigurationValidator.checkForForbiddenTopLevelFields(appConfiguration)
-            .concat(IdaiFieldPrePreprocessConfigurationValidator.checkForExtraneousFieldsInTypes(appConfiguration));
+        return PrePreprocessConfigurationValidator.checkForForbiddenTopLevelFields(appConfiguration)
+            .concat(PrePreprocessConfigurationValidator.checkForExtraneousFieldsInTypes(appConfiguration));
     }
 
 

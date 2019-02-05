@@ -7,7 +7,7 @@ import {ConfigReader} from './config-reader';
 import {TypeDefinition} from './type-definition';
 import {RelationDefinition} from './relation-definition';
 import {FieldDefinition} from './field-definition';
-import {IdaiFieldPrePreprocessConfigurationValidator} from './idai-field-pre-preprocess-configuration-validator';
+import {PrePreprocessConfigurationValidator} from './pre-preprocess-configuration-validator';
 import {UnorderedConfigurationDefinition} from './unordered-configuration-definition';
 import {ConfigurationDefinition} from './configuration-definition';
 
@@ -50,7 +50,7 @@ export class ConfigLoader {
                 relations: Array<RelationDefinition>,
                 extraFields: {[fieldName: string]: FieldDefinition },
                 extraFieldsOrder: string[],
-                prePreprocessConfigurationValidator: IdaiFieldPrePreprocessConfigurationValidator,
+                prePreprocessConfigurationValidator: PrePreprocessConfigurationValidator,
                 postPreprocessConfigurationValidator: ConfigurationValidator,
                 customConfigurationName: string|undefined,
                 locale: string): Promise<ProjectConfiguration> {
