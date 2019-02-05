@@ -32,22 +32,21 @@ export {Message} from './src/messages/message';
 export {MD} from './src/messages/md';
 
 export {IdaiFieldAppConfigurator} from './src/model/idai-field-app-configurator';
-export {IdaiFieldDocument} from './src/model/idai-field-document';
-export {IdaiFieldResource} from './src/model/idai-field-resource';
-export {IdaiFieldRelations} from './src/model/idai-field-relations';
-export {IdaiFieldGeometry} from './src/model/idai-field-geometry';
-export {IdaiFieldGeoreference} from './src/model/idai-field-georeference'
+export {FieldDocument} from './src/model/field-document';
+export {FieldResource} from './src/model/field-resource';
+export {FieldRelations} from './src/model/field-relations';
+export {FieldGeometry} from './src/model/field-geometry';
 
-export {IdaiFieldFeatureDocument} from './src/model/idai-field-feature-document';
-export {IdaiFieldFeatureResource} from './src/model/idai-field-feature-resource';
-export {IdaiFieldFeatureRelations} from './src/model/idai-field-feature-relations';
+export {FeatureDocument} from './src/model/feature-document';
+export {FeatureResource} from './src/model/feature-resource';
+export {FeatureRelations} from './src/model/feature-relations';
 
-export {IdaiFieldImageDocument} from './src/model/idai-field-image-document';
-export {IdaiFieldImageResource} from './src/model/idai-field-image-resource';
-export {IdaiFieldImageRelations} from './src/model/idai-field-image-relations';
-export {NewIdaiFieldImageDocument} from './src/model/new-idai-field-image-document';
-export {NewIdaiFieldImageResource} from './src/model/new-idai-field-image-resource';
-
+export {ImageDocument} from './src/model/image-document';
+export {ImageResource} from './src/model/image-resource';
+export {ImageRelations} from './src/model/image-relations';
+export {ImageGeoreference} from './src/model/image-georeference'
+export {NewImageDocument} from './src/model/new-image-document';
+export {NewImageResource} from './src/model/new-image-resource';
 
 export {IdaiFieldMapModule} from './src/map/idai-field-map.module';
 export {MapComponent} from './src/map/map.component';

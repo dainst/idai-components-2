@@ -1,4 +1,4 @@
-export interface IdaiFieldGeometry {
+export interface FieldGeometry {
 
     type: string;
     coordinates: Array<any>;

@@ -1,6 +1,6 @@
-import {IdaiFieldDocument} from '../model/idai-field-document';
+import {FieldDocument} from '../model/field-document';
 
 export interface IdaiFieldPolyline extends L.Polyline {
 
-    document?: IdaiFieldDocument;
+    document?: FieldDocument;
 }

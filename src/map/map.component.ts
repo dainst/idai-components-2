@@ -1,11 +1,11 @@
 import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
-import {IdaiFieldDocument} from '../model/idai-field-document';
-import {IdaiFieldResource} from '../model/idai-field-resource';
+import {FieldDocument} from '../model/field-document';
+import {FieldResource} from '../model/field-resource';
 import {IdaiFieldPolyline} from './idai-field-polyline';
 import {IdaiFieldPolygon} from './idai-field-polygon';
 import {IdaiFieldMarker} from './idai-field-marker';
 import {CoordinatesUtility} from './coordinates-utility';
-import {IdaiFieldGeometry} from '../model/idai-field-geometry';
+import {FieldGeometry} from '../model/field-geometry';
 import {ProjectConfiguration} from '../configuration/project-configuration';
 
 // no typings for VectorMarkers available
@@ -28,14 +28,14 @@ declare global {
  */
 export class MapComponent implements OnChanges {
 
-    @Input() documents: Array<IdaiFieldDocument>;
-    @Input() selectedDocument: IdaiFieldDocument;
-    @Input() parentDocuments: Array<IdaiFieldDocument>;
-    @Input() projectDocument: IdaiFieldDocument;
+    @Input() documents: Array<FieldDocument>;
+    @Input() selectedDocument: FieldDocument;
+    @Input() parentDocuments: Array<FieldDocument>;
+    @Input() projectDocument: FieldDocument;
     @Input() update: boolean;
 
-    @Output() onSelectDocument: EventEmitter<IdaiFieldDocument|undefined>
-        = new EventEmitter<IdaiFieldDocument|undefined>();
+    @Output() onSelectDocument: EventEmitter<FieldDocument|undefined>
+        = new EventEmitter<FieldDocument|undefined>();
 
     protected map: L.Map;
     protected polygons: { [resourceId: string]: Array<IdaiFieldPolygon> } = {};
@@ -192,7 +192,7 @@ export class MapComponent implements OnChanges {
     }
 
 
-    protected addParentDocumentGeometryToMap(parentDocument: IdaiFieldDocument) {
+    protected addParentDocumentGeometryToMap(parentDocument: FieldDocument) {
 
         if (!parentDocument.resource.geometry) return;
 
@@ -205,9 +205,9 @@ export class MapComponent implements OnChanges {
     }
 
 
-    protected addGeometryToMap(document: IdaiFieldDocument) {
+    protected addGeometryToMap(document: FieldDocument) {
 
-        const geometry: IdaiFieldGeometry|undefined = MapComponent.getGeometry(document);
+        const geometry: FieldGeometry|undefined = MapComponent.getGeometry(document);
         if (!geometry) return;
 
         switch(geometry.type) {
@@ -245,7 +245,7 @@ export class MapComponent implements OnChanges {
     }
 
 
-    private addMarkerToMap(coordinates: any, document: IdaiFieldDocument): IdaiFieldMarker {
+    private addMarkerToMap(coordinates: any, document: FieldDocument): IdaiFieldMarker {
 
         const latLng = L.latLng([coordinates[1], coordinates[0]]);
 
@@ -276,7 +276,7 @@ export class MapComponent implements OnChanges {
     }
 
 
-    private addPolylineToMap(coordinates: any, document: IdaiFieldDocument): IdaiFieldPolyline {
+    private addPolylineToMap(coordinates: any, document: FieldDocument): IdaiFieldPolyline {
 
         const polyline: IdaiFieldPolyline = MapComponent.getPolylineFromCoordinates(coordinates);
         polyline.document = document;
@@ -296,7 +296,7 @@ export class MapComponent implements OnChanges {
     }
 
 
-    private addPolygonToMap(coordinates: any, document: IdaiFieldDocument): IdaiFieldPolygon {
+    private addPolygonToMap(coordinates: any, document: FieldDocument): IdaiFieldPolygon {
 
         const polygon: IdaiFieldPolygon = MapComponent.getPolygonFromCoordinates(coordinates);
         polygon.document = document;
@@ -316,7 +316,7 @@ export class MapComponent implements OnChanges {
     }
 
 
-    private setPathOptions(path: L.Path, document: IdaiFieldDocument, className: string) {
+    private setPathOptions(path: L.Path, document: FieldDocument, className: string) {
 
         if (this.selectedDocument && this.selectedDocument.resource.id == document.resource.id) {
             className = className + ' active';
@@ -340,7 +340,7 @@ export class MapComponent implements OnChanges {
     }
 
 
-    private setPathOptionsForParentDocument(path: L.Path, document: IdaiFieldDocument) {
+    private setPathOptionsForParentDocument(path: L.Path, document: FieldDocument) {
 
         path.setStyle({
             color: this.typeColors[document.resource.type],
@@ -392,7 +392,7 @@ export class MapComponent implements OnChanges {
     }
 
 
-    protected select(document: IdaiFieldDocument): boolean {
+    protected select(document: FieldDocument): boolean {
 
         this.onSelectDocument.emit(document);
         return true;
@@ -405,7 +405,7 @@ export class MapComponent implements OnChanges {
     }
 
 
-    protected isParentDocument(document: IdaiFieldDocument) {
+    protected isParentDocument(document: FieldDocument) {
 
         return this.parentDocuments && this.parentDocuments.includes(document);
     }
@@ -444,9 +444,9 @@ export class MapComponent implements OnChanges {
     }
 
 
-    private static getGeometry(document: IdaiFieldDocument): IdaiFieldGeometry|undefined {
+    private static getGeometry(document: FieldDocument): FieldGeometry|undefined {
 
-        const geometry: IdaiFieldGeometry|undefined = document.resource.geometry;
+        const geometry: FieldGeometry|undefined = document.resource.geometry;
 
         return (geometry && geometry.coordinates && geometry.coordinates.length > 0)
             ? geometry
@@ -454,7 +454,7 @@ export class MapComponent implements OnChanges {
     }
 
 
-    private static getShortDescription(resource: IdaiFieldResource) {
+    private static getShortDescription(resource: FieldResource) {
 
         let shortDescription = resource.identifier;
         if (resource.shortDescription && resource.shortDescription.length > 0) {

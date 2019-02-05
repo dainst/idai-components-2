@@ -1,9 +1,9 @@
 import {Relations} from './core/relations';
+
 /**
  * @author Daniel de Oliveira
  */
-
-export interface IdaiFieldImageRelations extends Relations {
+export interface ImageRelations extends Relations {
 
     depicts: string[];
 }
