@@ -1,9 +1,9 @@
 import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
 import {FieldDocument} from '../model/field-document';
 import {FieldResource} from '../model/field-resource';
-import {IdaiFieldPolyline} from './idai-field-polyline';
-import {IdaiFieldPolygon} from './idai-field-polygon';
-import {IdaiFieldMarker} from './idai-field-marker';
+import {FieldPolyline} from './field-polyline';
+import {FieldPolygon} from './field-polygon';
+import {FieldMarker} from './field-marker';
 import {CoordinatesUtility} from './coordinates-utility';
 import {FieldGeometry} from '../model/field-geometry';
 import {ProjectConfiguration} from '../configuration/project-configuration';
@@ -38,9 +38,9 @@ export class MapComponent implements OnChanges {
         = new EventEmitter<FieldDocument|undefined>();
 
     protected map: L.Map;
-    protected polygons: { [resourceId: string]: Array<IdaiFieldPolygon> } = {};
-    protected polylines: { [resourceId: string]: Array<IdaiFieldPolyline> } = {};
-    protected markers: { [resourceId: string]: Array<IdaiFieldMarker> } = {};
+    protected polygons: { [resourceId: string]: Array<FieldPolygon> } = {};
+    protected polylines: { [resourceId: string]: Array<FieldPolyline> } = {};
+    protected markers: { [resourceId: string]: Array<FieldMarker> } = {};
 
     protected bounds: any[] = []; // in fact L.LatLng[], but leaflet typings are incomplete
     protected typeColors: { [typeName: string]: string } = {};
@@ -212,32 +212,32 @@ export class MapComponent implements OnChanges {
 
         switch(geometry.type) {
             case 'Point':
-                let marker: IdaiFieldMarker = this.addMarkerToMap(geometry.coordinates, document);
+                let marker: FieldMarker = this.addMarkerToMap(geometry.coordinates, document);
                 this.extendBounds(marker.getLatLng());
                 break;
             case 'MultiPoint':
                 for (let pointCoordinates of geometry.coordinates) {
-                    let marker: IdaiFieldMarker = this.addMarkerToMap(pointCoordinates, document);
+                    let marker: FieldMarker = this.addMarkerToMap(pointCoordinates, document);
                     this.extendBounds(marker.getLatLng());
                 }
                 break;
             case 'LineString':
-                let polyline: IdaiFieldPolyline = this.addPolylineToMap(geometry.coordinates, document);
+                let polyline: FieldPolyline = this.addPolylineToMap(geometry.coordinates, document);
                 this.extendBoundsForMultipleLatLngs(polyline.getLatLngs());
                 break;
             case 'MultiLineString':
                 for (let polylineCoordinates of geometry.coordinates) {
-                    let polyline: IdaiFieldPolyline = this.addPolylineToMap(polylineCoordinates, document);
+                    let polyline: FieldPolyline = this.addPolylineToMap(polylineCoordinates, document);
                     this.extendBoundsForMultipleLatLngs(polyline.getLatLngs());
                 }
                 break;
             case 'Polygon':
-                let polygon: IdaiFieldPolygon = this.addPolygonToMap(geometry.coordinates, document);
+                let polygon: FieldPolygon = this.addPolygonToMap(geometry.coordinates, document);
                 this.extendBoundsForMultipleLatLngs(polygon.getLatLngs());
                 break;
             case 'MultiPolygon':
                 for (let polygonCoordinates of geometry.coordinates) {
-                    let polygon: IdaiFieldPolygon = this.addPolygonToMap(polygonCoordinates, document);
+                    let polygon: FieldPolygon = this.addPolygonToMap(polygonCoordinates, document);
                     this.extendBoundsForMultipleLatLngs(polygon.getLatLngs());
                 }
                 break;
@@ -245,7 +245,7 @@ export class MapComponent implements OnChanges {
     }
 
 
-    private addMarkerToMap(coordinates: any, document: FieldDocument): IdaiFieldMarker {
+    private addMarkerToMap(coordinates: any, document: FieldDocument): FieldMarker {
 
         const latLng = L.latLng([coordinates[1], coordinates[0]]);
 
@@ -253,7 +253,7 @@ export class MapComponent implements OnChanges {
         const extraClasses = (this.selectedDocument && this.selectedDocument.resource.id == document.resource.id) ?
             'active' : '';
         const icon = MapComponent.generateMarkerIcon(color, extraClasses);
-        const marker: IdaiFieldMarker = L.marker(latLng, {
+        const marker: FieldMarker = L.marker(latLng, {
             icon: icon
         });
         marker.document = document;
@@ -276,9 +276,9 @@ export class MapComponent implements OnChanges {
     }
 
 
-    private addPolylineToMap(coordinates: any, document: FieldDocument): IdaiFieldPolyline {
+    private addPolylineToMap(coordinates: any, document: FieldDocument): FieldPolyline {
 
-        const polyline: IdaiFieldPolyline = MapComponent.getPolylineFromCoordinates(coordinates);
+        const polyline: FieldPolyline = MapComponent.getPolylineFromCoordinates(coordinates);
         polyline.document = document;
 
         if (this.isParentDocument(document)) {
@@ -287,7 +287,7 @@ export class MapComponent implements OnChanges {
             this.setPathOptions(polyline, document, 'polyline');
         }
 
-        const polylines: Array<IdaiFieldPolyline>
+        const polylines: Array<FieldPolyline>
             = this.polylines[document.resource.id as any] ? this.polylines[document.resource.id as any] : [];
         polylines.push(polyline);
         this.polylines[document.resource.id as any] = polylines;
@@ -296,9 +296,9 @@ export class MapComponent implements OnChanges {
     }
 
 
-    private addPolygonToMap(coordinates: any, document: FieldDocument): IdaiFieldPolygon {
+    private addPolygonToMap(coordinates: any, document: FieldDocument): FieldPolygon {
 
-        const polygon: IdaiFieldPolygon = MapComponent.getPolygonFromCoordinates(coordinates);
+        const polygon: FieldPolygon = MapComponent.getPolygonFromCoordinates(coordinates);
         polygon.document = document;
 
         if (this.isParentDocument(document)) {
@@ -307,7 +307,7 @@ export class MapComponent implements OnChanges {
             this.setPathOptions(polygon, document, 'polygon');
         }
 
-        const polygons: Array<IdaiFieldPolygon>
+        const polygons: Array<FieldPolygon>
             = this.polygons[document.resource.id as any] ? this.polygons[document.resource.id as any] : [];
         polygons.push(polygon);
         this.polygons[document.resource.id as any] = polygons;

@@ -50,9 +50,9 @@ export {NewImageResource} from './src/model/new-image-resource';
 
 export {IdaiFieldMapModule} from './src/map/idai-field-map.module';
 export {MapComponent} from './src/map/map.component';
-export {IdaiFieldPolygon} from './src/map/idai-field-polygon';
-export {IdaiFieldPolyline} from './src/map/idai-field-polyline';
-export {IdaiFieldMarker} from './src/map/idai-field-marker';
+export {FieldPolygon} from './src/map/field-polygon';
+export {FieldPolyline} from './src/map/field-polyline';
+export {FieldMarker} from './src/map/field-marker';
 
 export {IdaiWidgetsModule} from './src/widgets/idai-widgets.module';
 export {TypeIconComponent} from './src/widgets/type-icon';

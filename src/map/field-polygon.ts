@@ -1,6 +1,6 @@
 import {FieldDocument} from '../model/field-document';
 
-export interface IdaiFieldPolyline extends L.Polyline {
+export interface FieldPolygon extends L.Polygon {
 
     document?: FieldDocument;
 }

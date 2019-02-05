@@ -1,6 +1,6 @@
 import {FieldDocument} from '../model/field-document';
 
-export interface IdaiFieldMarker extends L.Marker {
+export interface FieldMarker extends L.Marker {
 
     document?: FieldDocument;
 }
