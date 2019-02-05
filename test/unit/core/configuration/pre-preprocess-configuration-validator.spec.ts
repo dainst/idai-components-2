@@ -5,7 +5,6 @@ import {PrePreprocessConfigurationValidator} from '../../../../src/configuration
  */
 describe('PrePreprocessConfigurationValidator',() => {
 
-
     it('disallow defining relations', () => {
 
         const configuration = {
