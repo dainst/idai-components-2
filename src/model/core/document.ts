@@ -1,5 +1,5 @@
 import {Resource} from './resource';
-import {subtractObject, copy, to} from 'tsfun';
+import {subtractObj, copyObj, to} from 'tsfun';
 import {NewDocument} from './new-document';
 import {Action} from './action';
 
@@ -44,8 +44,8 @@ export module Document {
 
         return (document: D): D => {
 
-            const result = copy(document);
-            result.resource = subtractObject(fields)(document.resource) as Resource;
+            const result = copyObj(document);
+            result.resource = subtractObj(fields)(document.resource) as Resource;
             return result as D;
         };
     }
@@ -55,8 +55,8 @@ export module Document {
 
         return (document: D): D => {
 
-            const result = copy(document);
-            result.resource.relations = subtractObject(relations)(result.resource.relations);
+            const result = copyObj(document);
+            result.resource.relations = subtractObj(relations)(result.resource.relations);
             return result as D;
         };
     }
