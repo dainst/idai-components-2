@@ -17,10 +17,6 @@ html {
   margin-top: 60px;
 }
 
-.collapse {
-	cursor: pointer;
-}
-
 /* override needed for buttons to look good in chrome with bootstrap 4 */
 button,
 html [type="button"],
@@ -37,12 +33,6 @@ html [type="button"],
 	> .list-group-item:first-child {
 		border-width: 0;
 	}
-}
-
-.fieldcollapse {
-	font-size: 1em !important;
-	font-weight: bold !important;;
-	cursor: pointer !important;;
 }
 
 .ng-invalid:not(form)  {
