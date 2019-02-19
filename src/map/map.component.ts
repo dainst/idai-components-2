@@ -30,7 +30,7 @@ export class MapComponent implements OnChanges {
 
     @Input() documents: Array<FieldDocument>;
     @Input() selectedDocument: FieldDocument;
-    @Input() parentDocuments: Array<FieldDocument>;
+    @Input() parentDocument: FieldDocument;
     @Input() projectDocument: FieldDocument;
     @Input() update: boolean;
 
@@ -44,6 +44,7 @@ export class MapComponent implements OnChanges {
 
     protected bounds: any[] = []; // in fact L.LatLng[], but leaflet typings are incomplete
     protected typeColors: { [typeName: string]: string } = {};
+
 
     constructor(projectConfiguration: ProjectConfiguration) {
 
@@ -172,7 +173,7 @@ export class MapComponent implements OnChanges {
 
         this.bounds = [];
 
-        this.addParentDocumentGeometriesToMap();
+        this.addParentDocumentGeometryToMap();
 
         if (this.documents) {
             for (let document of this.documents) {
@@ -182,26 +183,16 @@ export class MapComponent implements OnChanges {
     }
 
 
-    protected addParentDocumentGeometriesToMap() {
+    protected addParentDocumentGeometryToMap() {
 
-        if (!this.parentDocuments) return;
-
-        this.parentDocuments.forEach(parentDocument => {
-            this.addParentDocumentGeometryToMap(parentDocument);
-        });
-    }
-
-
-    protected addParentDocumentGeometryToMap(parentDocument: FieldDocument) {
-
-        if (!parentDocument.resource.geometry) return;
+        if (!this.parentDocument || !this.parentDocument.resource.geometry) return;
 
         if (['LineString', 'MultiLineString', 'Polygon', 'MultiPolygon']
-                .indexOf(parentDocument.resource.geometry.type) === -1) {
+                .indexOf(this.parentDocument.resource.geometry.type) === -1) {
             return;
         }
 
-        this.addGeometryToMap(parentDocument);
+        this.addGeometryToMap(this.parentDocument);
     }
 
 
@@ -407,7 +398,7 @@ export class MapComponent implements OnChanges {
 
     protected isParentDocument(document: FieldDocument) {
 
-        return this.parentDocuments && this.parentDocuments.includes(document);
+        return this.parentDocument && this.parentDocument === document;
     }
 
 
