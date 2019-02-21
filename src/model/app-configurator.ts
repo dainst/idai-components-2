@@ -132,7 +132,7 @@ export class AppConfigurator {
     ];
 
 
-    private defaultRelations = [
+    private defaultRelations: any[] = [
         {
             name: 'depicts',
             domain: ['Image:inherit'],
@@ -224,37 +224,43 @@ export class AppConfigurator {
             name: 'isRecordedIn',
             label: this.i18n({ id: 'configuration.relations.isRecordedIn', value: 'Aufgenommen in Maßnahme' }),
             domain: ['Inscription'],
-            range: ['Trench']
+            range: ['Trench'],
+            editable: false
         },
         {
             name: 'isRecordedIn',
             label: this.i18n({ id: 'configuration.relations.isRecordedIn', value: 'Aufgenommen in Maßnahme' }),
             domain: ['Room'],
-            range: ['Building']
+            range: ['Building'],
+            editable: false
         },
         {
             name: 'isRecordedIn',
             label: this.i18n({ id: 'configuration.relations.isRecordedIn', value: 'Aufgenommen in Maßnahme' }),
             domain: ['Area:inherit'],
-            range: ['Survey']
+            range: ['Survey'],
+            editable: false
         },
         {
             name: 'isRecordedIn',
             label: this.i18n({ id: 'configuration.relations.isRecordedIn', value: 'Aufgenommen in Maßnahme' }),
             domain: ['BuildingPart:inherit'],
-            range: ['Building', 'Survey']
+            range: ['Building', 'Survey'],
+            editable: false
         },
         {
             name: 'isRecordedIn',
             label: this.i18n({ id: 'configuration.relations.isRecordedIn', value: 'Aufgenommen in Maßnahme' }),
             domain: ['Find:inherit'],
-            range: ['Trench', 'Survey']
+            range: ['Trench', 'Survey'],
+            editable: false
         },
         {
             name: 'isRecordedIn',
             label: this.i18n({ id: 'configuration.relations.isRecordedIn', value: 'Aufgenommen in Maßnahme' }),
             domain: ['Feature:inherit'],
-            range: ['Trench']
+            range: ['Trench'],
+            editable: false
         },
         {
             name: 'includes',
@@ -300,7 +306,8 @@ export class AppConfigurator {
             inverse: 'includes',
             label: this.i18n({ id: 'configuration.relations.liesWithin', value: 'Liegt in' }),
             domain: ['Operation:inherit', 'Place'],
-            range: ['Place']
+            range: ['Place'],
+            editable: false
         },
         {
             name: 'liesWithin',
@@ -308,7 +315,8 @@ export class AppConfigurator {
             label: this.i18n({ id: 'configuration.relations.liesWithin', value: 'Liegt in' }),
             domain: ['Find:inherit'],
             range: ['Feature:inherit', 'Area:inherit'],
-            sameMainTypeResource: true
+            sameMainTypeResource: true,
+            editable: false
         },
         {
             name: 'liesWithin',
@@ -316,7 +324,8 @@ export class AppConfigurator {
             label: this.i18n({ id: 'configuration.relations.liesWithin', value: 'Liegt in' }),
             domain: ['Inscription'],
             range: ['Feature:inherit', 'Find:inherit'],
-            sameMainTypeResource: true
+            sameMainTypeResource: true,
+            editable: false
         },
         {
             name: 'liesWithin',
@@ -324,7 +333,8 @@ export class AppConfigurator {
             label: this.i18n({ id: 'configuration.relations.liesWithin', value: 'Liegt in' }),
             domain: ['Feature:inherit'],
             range: ['Feature:inherit'],
-            sameMainTypeResource: true
+            sameMainTypeResource: true,
+            editable: false
         },
         {
             name: 'liesWithin',
@@ -332,7 +342,8 @@ export class AppConfigurator {
             label: this.i18n({ id: 'configuration.relations.liesWithin', value: 'Liegt in' }),
             domain: ['BuildingPart:inherit'],
             range: ['BuildingPart:inherit', 'Area:inherit'],
-            sameMainTypeResource: true
+            sameMainTypeResource: true,
+            editable: false
         },
         {
             name: 'liesWithin',
@@ -340,7 +351,8 @@ export class AppConfigurator {
             label: this.i18n({ id: 'configuration.relations.liesWithin', value: 'Liegt in' }),
             domain: ['Area:inherit'],
             range: ['Area:inherit'],
-            sameMainTypeResource: true
+            sameMainTypeResource: true,
+            editable: false
         },
         {
             name: 'bears',
@@ -392,13 +404,15 @@ export class AppConfigurator {
                 name: 'isRecordedIn',
                 label: this.i18n({ id: 'configuration.relations.isRecordedIn', value: 'Aufgenommen in Maßnahme' }),
                 domain: ['Wall_surface'],
-                range: ['Trench']
+                range: ['Trench'],
+                editable: false
             });
             this.defaultRelations.push({
                 name: 'isRecordedIn',
                 label: this.i18n({ id: 'configuration.relations.isRecordedIn', value: 'Aufgenommen in Maßnahme' }),
                 domain: ['Drilling'],
-                range: ['Survey']
+                range: ['Survey'],
+                editable: false
             });
         }
 
@@ -433,28 +447,32 @@ export class AppConfigurator {
                 name: 'isRecordedIn',
                 label: this.i18n({ id: 'configuration.relations.isRecordedIn', value: 'Aufgenommen in Maßnahme' }),
                 domain: ['ProcessUnit'],
-                range: ['Trench']
+                range: ['Trench'],
+                editable: false
             });
 
             this.defaultRelations.push({ // override existing definition
                 name: 'isRecordedIn',
                 label: this.i18n({ id: 'configuration.relations.isRecordedIn', value: 'Aufgenommen in Maßnahme' }),
                 domain: ['Stone'],
-                range: ['Building', 'Trench', 'Survey']
+                range: ['Building', 'Trench', 'Survey'],
+                editable: false
             });
 
             this.defaultRelations.push({
                 name: 'isRecordedIn',
                 label: this.i18n({ id: 'configuration.relations.isRecordedIn', value: 'Aufgenommen in Maßnahme' }),
                 domain: ['BuildingFloor'],
-                range: ['Building']
+                range: ['Building'],
+                editable: false
             });
 
             this.defaultRelations.push({
                 name: 'isRecordedIn',
                 label: this.i18n({ id: 'configuration.relations.isRecordedIn', value: 'Aufgenommen in Maßnahme' }),
                 domain: ['SurveyBurial'],
-                range: ['Survey']
+                range: ['Survey'],
+                editable: false
             });
 
             this.defaultRelations.push({ // override existing definition
@@ -472,7 +490,8 @@ export class AppConfigurator {
                 label: this.i18n({ id: 'configuration.relations.liesWithin', value: 'Liegt in' }),
                 domain: ['SurveyBurial'],
                 range: ['Area:inherit'],
-                sameMainTypeResource: true
+                sameMainTypeResource: true,
+                editable: false
             });
 
             this.defaultRelations.push({
