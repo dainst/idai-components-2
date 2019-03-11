@@ -51,7 +51,8 @@ export class AppConfigurator {
         Feature: {
             fields: {
                 period: {
-                    inputType: 'dropdownRange'
+                    inputType: 'dropdownRange',
+                    group: 'time'
                 }
             }
         } as TypeDefinition,
