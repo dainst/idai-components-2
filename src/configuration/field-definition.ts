@@ -13,4 +13,5 @@ export interface FieldDefinition {
     mandatory?: boolean;            // defaults to false
     fulltextIndexed?: boolean;      // defaults to false
     constraintIndexed?: boolean;    // defaults to false
+    readonly group: string;
 }
