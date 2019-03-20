@@ -38,7 +38,54 @@ describe('ConfigLoader', () => {
     });
 
 
-    it('mix existing externally configured with internal inherits relation', async (done) => { // TODO check if it can be removed since external defintions of relations are now forbidden
+    it('mix in common fields', async done => {
+
+        Object.assign(configuration, {
+            A: { commons: ['processor'] },
+        });
+
+        configReader.read.and.returnValues(
+            Promise.resolve(configuration),
+            Promise.resolve({}),
+            Promise.resolve({}),
+            Promise.resolve({}),
+            Promise.resolve({
+                types: {
+                    A: { label: 'A_', fields: { processor: {label: 'Bearbeiter/Bearbeiterin', description: "abc"}} },
+                }, relations: {}
+            }),
+            Promise.resolve({}),
+            Promise.resolve({}),
+            Promise.resolve({}),
+            Promise.resolve({})
+        );
+
+        let pconf;
+        try {
+            pconf = await configLoader.go(
+                'yo',
+                { processor : { inputType: 'input', group: 'stem' }},
+                {},
+                [],
+                {},
+                [],
+                new PrePreprocessConfigurationValidator(),
+                new ConfigurationValidator(),
+                undefined,
+                'de'
+            );
+        } catch(err) {
+            fail(err);
+            done();
+        }
+
+        expect(pconf.getTypesList()[0]['fields'][0]['name']).toBe('processor');
+        done();
+    });
+
+
+
+    it('mix existing externally configured with internal inherits relation', async done => { // TODO check if it can be removed since external defintions of relations are now forbidden
 
         Object.assign(configuration, {
             'A': {},
@@ -56,6 +103,7 @@ describe('ConfigLoader', () => {
         try {
             pconf = await configLoader.go(
                 'yo',
+                {},
                 {},
                 [
                     {
@@ -94,7 +142,7 @@ describe('ConfigLoader', () => {
         let pconf;
         try {
             pconf = await configLoader.go(
-                'yo', {},
+                'yo', {}, {},
                 [{ name: 'abc', domain: ['A'], range: ['B'], sameMainTypeResource: false }], {}, [],
                 new PrePreprocessConfigurationValidator(),
                 new ConfigurationValidator(), undefined, 'de');
@@ -143,7 +191,7 @@ describe('ConfigLoader', () => {
         let pconf;
         try {
             pconf = await configLoader.go(
-                'yo', {}, [
+                'yo', {}, {},[
                          { name: 'r1', domain: ['A'], range: ['B']},
                          { name: 'r2', domain: ['A'], range: ['B']}
                     ], {}, [],
@@ -189,7 +237,7 @@ describe('ConfigLoader', () => {
 
         let pconf;
         try {
-            pconf = await configLoader.go('', {}, [
+            pconf = await configLoader.go('', {}, {},[
                 { name: 'r1', domain: ['A'], range: ['B']},
                 { name: 'r2', domain: ['A'], range: ['B']}
             ], {}, [],
@@ -244,7 +292,7 @@ describe('ConfigLoader', () => {
 
         let pconf;
         try {
-            pconf = await configLoader.go('', {}, [], {},
+            pconf = await configLoader.go('', {},{}, [], {},
                 [], new PrePreprocessConfigurationValidator(),
                 new ConfigurationValidator(), undefined, 'de'
             );
@@ -295,7 +343,7 @@ describe('ConfigLoader', () => {
 
         let pconf;
         try {
-            pconf = await configLoader.go('', {}, [],
+            pconf = await configLoader.go('', {},{}, [],
                 { extraField1: {} as FieldDefinition, extraField2: {} as FieldDefinition },
                 ['extraField1', 'extraField2'], new PrePreprocessConfigurationValidator(),
                 new ConfigurationValidator(), undefined, 'de'
@@ -341,7 +389,7 @@ describe('ConfigLoader', () => {
 
         let pconf;
         try {
-            pconf = await configLoader.go('', {}, [],
+            pconf = await configLoader.go('', {},{}, [],
                 { extraField1: {} as FieldDefinition, extraField2: {} as FieldDefinition },
                 ['extraField1', 'extraField2'], new PrePreprocessConfigurationValidator(),
                 new ConfigurationValidator(), undefined, 'de'
@@ -389,7 +437,7 @@ describe('ConfigLoader', () => {
 
         let pconf;
         try {
-            pconf = await configLoader.go('', {}, [], {},
+            pconf = await configLoader.go('', {},{}, [], {},
                 [], new PrePreprocessConfigurationValidator(),
                 new ConfigurationValidator(), undefined, 'de'
             );
@@ -431,7 +479,7 @@ describe('ConfigLoader', () => {
 
         let pconf;
         try {
-            pconf = await configLoader.go('', {}, [], {},
+            pconf = await configLoader.go('', {},{}, [], {},
                 [], new PrePreprocessConfigurationValidator(),
                 new ConfigurationValidator(), undefined, 'de'
             );
@@ -481,7 +529,7 @@ describe('ConfigLoader', () => {
 
         let pconf;
         try {
-            pconf = await configLoader.go('', {}, [], {},
+            pconf = await configLoader.go('', {},{}, [], {},
                 [], new PrePreprocessConfigurationValidator(),
                 new ConfigurationValidator(), undefined, 'de'
             );

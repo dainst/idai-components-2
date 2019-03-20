@@ -3,6 +3,7 @@
   "Object": {
     "parent": "Operation",
     "fields": {
+      "commons": [],
       "minimalist_default": {},
       "single_input": {
         "inputType": "input"

@@ -46,6 +46,7 @@ export class ConfigLoader {
 
     public async go(
                 configDirPath: string,
+                commonFields: any,
                 extraTypes: {[typeName: string]: TypeDefinition },
                 relations: Array<RelationDefinition>,
                 extraFields: {[fieldName: string]: FieldDefinition },
@@ -62,7 +63,8 @@ export class ConfigLoader {
         const prePreprocessValidationErrors = prePreprocessConfigurationValidator.go(appConfiguration);
         if (prePreprocessValidationErrors.length > 0) throw prePreprocessValidationErrors;
 
-        appConfiguration = await this.preprocess(configDirPath, appConfiguration, extraTypes, relations,
+        appConfiguration = await this.preprocess(
+            configDirPath, appConfiguration, commonFields, extraTypes, relations,
             extraFields, extraFieldsOrder, customConfigurationName, locale);
 
         const postPreprocessValidationErrors = postPreprocessConfigurationValidator.go(appConfiguration);
@@ -85,6 +87,7 @@ export class ConfigLoader {
 
 
     private async preprocess(configDirPath: string, appConfiguration: any,
+                             commonFields: any,
                              extraTypes: {[typeName: string]: TypeDefinition } ,
                              relations: Array<RelationDefinition>,
                              extraFields: {[fieldName: string]: FieldDefinition },
@@ -107,6 +110,9 @@ export class ConfigLoader {
 
         // to be done before applyCustomFields so that extra types can get additional fields too
         Preprocessing.addExtraTypes(appConfiguration, extraTypes);
+
+        Preprocessing.replaceCommonFields(appConfiguration, commonFields);
+
 
         const customConfigPath = configDirPath
             + '/Fields-'

@@ -11,6 +11,25 @@ import {on, subtract, isNot, empty} from 'tsfun';
  */
 export module Preprocessing {
 
+
+    // TODO refactor
+    export function replaceCommonFields(configuration: UnorderedConfigurationDefinition, commonFields: any) {
+
+        if (!configuration.types) return;
+
+        for (let confTypeName of Object.keys(configuration.types)) {
+            if ((configuration.types[confTypeName] as any)['commons']) {
+                for (let commonFieldName of ((configuration.types[confTypeName] as any)['commons'])) {
+                    if (!(configuration.types[confTypeName] as any)['fields']) (configuration.types[confTypeName] as any)['fields'] = [];
+                    (configuration.types[confTypeName] as any)['fields'][commonFieldName] = commonFields[commonFieldName];
+                }
+
+                delete (configuration.types[confTypeName] as any)['commons'];
+            }
+        }
+    }
+
+
     export function addCustomFields(configuration: UnorderedConfigurationDefinition, typeName: string,
                                     fields: any) {
 
@@ -34,15 +53,18 @@ export module Preprocessing {
                 for (let confTypeName of Object.keys(configuration.types)) {
                     if (confTypeName !== langConfTypeName) continue;
 
+
                     const confType = configuration.types[confTypeName];
                     const langConfType = language.types[langConfTypeName];
 
                     if (langConfType.label) confType.label = langConfType.label;
 
                     if (langConfType.fields) {
+
                         for (let langConfFieldName of Object.keys(langConfType.fields)) {
                             for (let confFieldName of Object.keys(confType.fields)) {
                                 if (confFieldName !== langConfFieldName) continue;
+
 
                                 const confField = confType.fields[confFieldName];
                                 const langConfField = langConfType.fields[langConfFieldName];

@@ -57,6 +57,7 @@ let pconf: any = undefined;
             useFactory: (configLoader: ConfigLoader) => () => {
                 return configLoader.go(
                     'demo/config',
+                    { "processor": { "inputType": "input" }},
                     { 'Image': { 'fields': { 'dimensions': {} } } as TypeDefinition },
                     [
                         {

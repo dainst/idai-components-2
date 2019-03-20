@@ -15,6 +15,58 @@ import {FieldDefinition} from '../configuration/field-definition';
  */
 export class AppConfigurator {
 
+    private commonFields = {
+        period: {
+            inputType: 'dropdownRange',
+            group: 'time'
+        },
+        dating: {
+            inputType: 'dating',
+            group: 'time'
+        },
+        diary: {
+            inputType: 'input',
+            group: 'stem'
+        },
+        dimensionLength: {
+            inputType: 'dimension',
+            group: 'dimension',
+            positionValues: [
+                "Maximale Ausdehnung",
+                "Minimale Ausdehnung"]
+        },
+        dimensionWidth: {
+            inputType: 'dimension',
+            group: 'dimension',
+            positionValues: [
+                "Maximale Ausdehnung",
+                "Minimale Ausdehnung"]
+        },
+        dimensionHeight: {
+            inputType: 'dimension',
+            group: 'dimension',
+            positionValues: [
+                "Maximale Ausdehnung",
+                "Minimale Ausdehnung"]
+        },
+        beginningDate: {
+            inputType: 'date',
+            group: 'stem'
+        },
+        endDate: {
+            inputType: 'date',
+            group: 'stem'
+        },
+        processor: {
+            inputType: 'input',
+            group: 'stem'
+        },
+        description: {
+            inputType: 'text',
+            group: 'stem'
+        }
+    };
+
     private defaultTypes = {
         Place: {
             fields: {
@@ -517,6 +569,7 @@ export class AppConfigurator {
 
         return this.configLoader.go(
             configDirPath,
+            this.commonFields,
             this.defaultTypes,
             this.defaultRelations,
             this.defaultFields,
