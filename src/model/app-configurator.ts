@@ -28,6 +28,10 @@ export class AppConfigurator {
             inputType: 'input',
             group: 'stem'
         },
+        area: {
+            inputType: 'unsignedFloat',
+            group: 'dimension'
+        },
         dimensionLength: {
             inputType: 'dimension',
             group: 'dimension',
@@ -161,7 +165,8 @@ export class AppConfigurator {
     private defaultFields = {
         shortDescription: {
             label: this.i18n({ id: 'configuration.defaultFields.shortDescription', value: 'Kurzbeschreibung' }),
-            visible: false
+            visible: false,
+            group: 'stem'
         } as FieldDefinition,
         identifier: {
             description: this.i18n({
@@ -170,7 +175,8 @@ export class AppConfigurator {
             }),
             label: this.i18n({ id: 'configuration.defaultFields.identifier', value: 'Bezeichner' }),
             visible: false,
-            mandatory: true
+            mandatory: true,
+            group: 'stem'
         } as FieldDefinition,
         geometry: {
             visible: false,
