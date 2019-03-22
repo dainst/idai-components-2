@@ -45,7 +45,6 @@ export module Preprocessing {
     }
 
 
-    // TODO refactor
     export function applyLanguage(configuration: UnorderedConfigurationDefinition, language: any) {
 
         if (configuration.types) {
