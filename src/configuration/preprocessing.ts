@@ -45,39 +45,54 @@ export module Preprocessing {
     }
 
 
+    // TODO refactor
     export function applyLanguage(configuration: UnorderedConfigurationDefinition, language: any) {
 
-        if (language.types) {
+        if (configuration.types) {
+            for (let confTypeName of Object.keys(configuration.types)) {
+                const confType = configuration.types[confTypeName];
+                for (let confFieldName of Object.keys(confType.fields)) {
 
-            for (let langConfTypeName of Object.keys(language.types)) {
-                for (let confTypeName of Object.keys(configuration.types)) {
-                    if (confTypeName !== langConfTypeName) continue;
+                    let descriptionFoundInTypes = false;
+                    let labelFoundInTypes = false;
 
+                    const confField = confType.fields[confFieldName];
 
-                    const confType = configuration.types[confTypeName];
-                    const langConfType = language.types[langConfTypeName];
+                    if (language.types) {
+                        const langConfType = language.types[confTypeName];
+                        if (langConfType) {
+                            if (langConfType.label) confType.label = langConfType.label;
 
-                    if (langConfType.label) confType.label = langConfType.label;
-
-                    if (langConfType.fields) {
-
-                        for (let langConfFieldName of Object.keys(langConfType.fields)) {
-                            for (let confFieldName of Object.keys(confType.fields)) {
-                                if (confFieldName !== langConfFieldName) continue;
-
-
-                                const confField = confType.fields[confFieldName];
-                                const langConfField = langConfType.fields[langConfFieldName];
-
-                                if (langConfField.label) confField.label = langConfField.label;
-                                if (langConfField.description) confField.description = langConfField.description;
+                            if (langConfType.fields) {
+                                const langConfField = langConfType.fields[confFieldName];
+                                if (langConfField) {
+                                    if (langConfField.label) {
+                                        labelFoundInTypes = true;
+                                        confField.label = langConfField.label;
+                                    }
+                                    if (langConfField.description) {
+                                        descriptionFoundInTypes = true;
+                                        confField.description = langConfField.description;
+                                    }
+                                }
                             }
                         }
                     }
 
+                    if (!labelFoundInTypes && language.commons) {
+                        if (language.commons[confFieldName] && language.commons[confFieldName].label) {
+                            confField.label = language.commons[confFieldName].label;
+                        }
+                    }
+                    if (!descriptionFoundInTypes && language.commons) {
+                        if (language.commons[confFieldName] && language.commons[confFieldName].description) {
+                            confField.description = language.commons[confFieldName].description;
+                        }
+                    }
                 }
             }
         }
+
 
         if (language.relations) {
 

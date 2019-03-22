@@ -38,6 +38,7 @@ describe('ConfigLoader', () => {
     });
 
 
+    // TODO move to preprocessing spec
     it('mix in common fields', async done => {
 
         Object.assign(configuration, {
@@ -83,6 +84,56 @@ describe('ConfigLoader', () => {
         done();
     });
 
+
+    // TODO move to preprocessing spec
+    it('translate common fields', async done => {
+
+        Object.assign(configuration, {
+            A: { commons: ['processor'] },
+        });
+
+        configReader.read.and.returnValues(
+            Promise.resolve(configuration),
+            Promise.resolve({}),
+            Promise.resolve({}),
+            Promise.resolve({}),
+            Promise.resolve({
+                commons: {
+                    processor: {label: 'Bearbeiter/Bearbeiterin', description: "abc"}
+                },
+                types: {},
+                relations: {}
+            }),
+            Promise.resolve({}),
+            Promise.resolve({}),
+            Promise.resolve({}),
+            Promise.resolve({})
+        );
+
+        let pconf;
+        try {
+            pconf = await configLoader.go(
+                'yo',
+                { processor : { inputType: 'input', group: 'stem' }},
+                {},
+                [],
+                {},
+                [],
+                new PrePreprocessConfigurationValidator(),
+                new ConfigurationValidator(),
+                undefined,
+                'de'
+            );
+        } catch(err) {
+            console.log("err",err)
+            fail(err);
+            done();
+        }
+
+        expect(pconf.getTypesList()[0]['fields'][0]['label']).toBe('Bearbeiter/Bearbeiterin');
+        expect(pconf.getTypesList()[0]['fields'][0]['description']).toBe('abc');
+        done();
+    });
 
 
     it('mix existing externally configured with internal inherits relation', async done => { // TODO check if it can be removed since external defintions of relations are now forbidden
