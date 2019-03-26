@@ -30,7 +30,9 @@ export class IdaiType {
 
         this.parentType = parent;
 
-        for (let field of this.fields) (field as any)['group'] = 'child';
+        for (let field of this.fields) {
+            if (!field['group']) (field as any)['group'] = 'child';
+        }
         // TODO This should probably better be done in ConfigLoader.
         this.fields = this.getCombinedFields(parent.fields, this.fields);
     }
