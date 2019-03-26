@@ -280,12 +280,6 @@ export class AppConfigurator {
     };
 
 
-    private defaultFieldsOrder = [ // TODO remove
-        'identifier',
-        'shortDescription'
-    ];
-
-
     private defaultRelations: any[] = [
         {
             name: 'depicts',
@@ -674,7 +668,6 @@ export class AppConfigurator {
             this.defaultTypes,
             this.defaultRelations,
             this.defaultFields,
-            this.defaultFieldsOrder,
             new PrePreprocessConfigurationValidator(),
             new ConfigurationValidator(),
             customConfigurationName,

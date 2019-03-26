@@ -69,7 +69,6 @@ describe('ConfigLoader', () => {
                 {},
                 [],
                 {},
-                [],
                 new PrePreprocessConfigurationValidator(),
                 new ConfigurationValidator(),
                 undefined,
@@ -118,7 +117,6 @@ describe('ConfigLoader', () => {
                 {},
                 [],
                 {},
-                [],
                 new PrePreprocessConfigurationValidator(),
                 new ConfigurationValidator(),
                 undefined,
@@ -167,7 +165,6 @@ describe('ConfigLoader', () => {
                         range: ['B:inherit']
                     }],
                 {},
-                [],
                 new PrePreprocessConfigurationValidator(),
                 new ConfigurationValidator(),
                 undefined,
@@ -194,7 +191,7 @@ describe('ConfigLoader', () => {
         try {
             pconf = await configLoader.go(
                 'yo', {}, {},
-                [{ name: 'abc', domain: ['A'], range: ['B'], sameMainTypeResource: false }], {}, [],
+                [{ name: 'abc', domain: ['A'], range: ['B'], sameMainTypeResource: false }], {},
                 new PrePreprocessConfigurationValidator(),
                 new ConfigurationValidator(), undefined, 'de');
         } catch(err) {
@@ -245,7 +242,7 @@ describe('ConfigLoader', () => {
                 'yo', {}, {},[
                          { name: 'r1', domain: ['A'], range: ['B']},
                          { name: 'r2', domain: ['A'], range: ['B']}
-                    ], {}, [],
+                    ], {},
                 new PrePreprocessConfigurationValidator(),
                 new ConfigurationValidator(), undefined, 'de');
         } catch(err) {
@@ -291,7 +288,7 @@ describe('ConfigLoader', () => {
             pconf = await configLoader.go('', {}, {},[
                 { name: 'r1', domain: ['A'], range: ['B']},
                 { name: 'r2', domain: ['A'], range: ['B']}
-            ], {}, [],
+            ], {},
                 new PrePreprocessConfigurationValidator(), new ConfigurationValidator(),
                 undefined, 'de'
             );
@@ -344,7 +341,7 @@ describe('ConfigLoader', () => {
         let pconf;
         try {
             pconf = await configLoader.go('', {},{}, [], {},
-                [], new PrePreprocessConfigurationValidator(),
+                new PrePreprocessConfigurationValidator(),
                 new ConfigurationValidator(), undefined, 'de'
             );
 
@@ -358,101 +355,6 @@ describe('ConfigLoader', () => {
             expect(pconf.getTypesList()[2].name).toEqual('C');
             expect(pconf.getTypesList()[2].fields[0].name).toEqual('fieldC1');
             expect(pconf.getTypesList()[2].fields[1].name).toEqual('fieldC2');
-
-            done();
-        } catch(err) {
-            fail(err);
-            done();
-        }
-    });
-
-
-    it('apply extra fields order', async done => {
-
-        Object.assign(configuration, {
-            A: {fields: {fieldA2: {}, fieldA1: {}}},
-            B: {fields: {fieldB2: {}, fieldB1: {}}}
-        });
-
-        configReader.read.and.returnValues(
-            Promise.resolve(configuration),
-            Promise.resolve({}),
-            Promise.resolve({}),
-            Promise.resolve({}),
-            Promise.resolve({}),
-            Promise.resolve({}),
-            Promise.resolve({}),
-            Promise.resolve({}),
-            Promise.resolve({
-                types: ['A', 'B'],
-                fields: {
-                    'A': ['fieldA1', 'fieldA2'],
-                    'B': ['fieldB1', 'fieldB2']
-                }
-            })
-        );
-
-        let pconf;
-        try {
-            pconf = await configLoader.go('', {},{}, [],
-                { extraField1: {} as FieldDefinition, extraField2: {} as FieldDefinition },
-                ['extraField1', 'extraField2'], new PrePreprocessConfigurationValidator(),
-                new ConfigurationValidator(), undefined, 'de'
-            );
-
-            expect(pconf.getTypesList()[0].name).toEqual('A');
-            expect(pconf.getTypesList()[0].fields[0].name).toEqual('extraField1');
-            expect(pconf.getTypesList()[0].fields[1].name).toEqual('extraField2');
-            expect(pconf.getTypesList()[0].fields[2].name).toEqual('fieldA1');
-            expect(pconf.getTypesList()[0].fields[3].name).toEqual('fieldA2');
-            expect(pconf.getTypesList()[1].name).toEqual('B');
-            expect(pconf.getTypesList()[1].fields[0].name).toEqual('extraField1');
-            expect(pconf.getTypesList()[1].fields[1].name).toEqual('extraField2');
-            expect(pconf.getTypesList()[1].fields[2].name).toEqual('fieldB1');
-            expect(pconf.getTypesList()[1].fields[3].name).toEqual('fieldB2');
-
-            done();
-        } catch(err) {
-            fail(err);
-            done();
-        }
-    });
-
-
-    it('apply extra fields order to an empty order configuration', async done => {
-
-        Object.assign(configuration, {
-            A: { fields: { fieldA2: {}, fieldA1: {} } },
-            B: { fields: { fieldB2: {}, fieldB1: {} } }
-        });
-
-        configReader.read.and.returnValues(
-            Promise.resolve(configuration),
-            Promise.resolve({}),
-            Promise.resolve({}),
-            Promise.resolve({}),
-            Promise.resolve({}),
-            Promise.resolve({}),
-            Promise.resolve({}),
-            Promise.resolve({}),
-            Promise.resolve({})
-        );
-
-        let pconf;
-        try {
-            pconf = await configLoader.go('', {},{}, [],
-                { extraField1: {} as FieldDefinition, extraField2: {} as FieldDefinition },
-                ['extraField1', 'extraField2'], new PrePreprocessConfigurationValidator(),
-                new ConfigurationValidator(), undefined, 'de'
-            );
-
-            const typeA = pconf.getTypesList().find(type => type.name === 'A');
-            const typeB = pconf.getTypesList().find(type => type.name === 'B');
-
-            expect(typeA.fields[0].name).toEqual('extraField1');
-            expect(typeA.fields[1].name).toEqual('extraField2');
-            expect(typeB.fields[0].name).toEqual('extraField1');
-            expect(typeB.fields[1].name).toEqual('extraField2');
 
             done();
         } catch(err) {
@@ -489,7 +391,7 @@ describe('ConfigLoader', () => {
         let pconf;
         try {
             pconf = await configLoader.go('', {},{}, [], {},
-                [], new PrePreprocessConfigurationValidator(),
+                new PrePreprocessConfigurationValidator(),
                 new ConfigurationValidator(), undefined, 'de'
             );
 
@@ -531,7 +433,7 @@ describe('ConfigLoader', () => {
         let pconf;
         try {
             pconf = await configLoader.go('', {},{}, [], {},
-                [], new PrePreprocessConfigurationValidator(),
+                new PrePreprocessConfigurationValidator(),
                 new ConfigurationValidator(), undefined, 'de'
             );
 
@@ -581,7 +483,7 @@ describe('ConfigLoader', () => {
         let pconf;
         try {
             pconf = await configLoader.go('', {},{}, [], {},
-                [], new PrePreprocessConfigurationValidator(),
+                new PrePreprocessConfigurationValidator(),
                 new ConfigurationValidator(), undefined, 'de'
             );
 

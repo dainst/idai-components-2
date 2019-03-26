@@ -102,7 +102,6 @@ let pconf: any = undefined;
                         'identifier': {} as FieldDefinition,
                         'shortDescription': {} as FieldDefinition
                     },
-                    ['identifier', 'shortDescription'],
                     new PrePreprocessConfigurationValidator(),
                     new ConfigurationValidator(),
                     undefined,

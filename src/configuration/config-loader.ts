@@ -50,7 +50,6 @@ export class ConfigLoader {
                 extraTypes: {[typeName: string]: TypeDefinition },
                 relations: Array<RelationDefinition>,
                 extraFields: {[fieldName: string]: FieldDefinition },
-                extraFieldsOrder: string[],
                 prePreprocessConfigurationValidator: PrePreprocessConfigurationValidator,
                 postPreprocessConfigurationValidator: ConfigurationValidator,
                 customConfigurationName: string|undefined,
@@ -65,7 +64,7 @@ export class ConfigLoader {
 
         appConfiguration = await this.preprocess(
             configDirPath, appConfiguration, commonFields, extraTypes, relations,
-            extraFields, extraFieldsOrder, customConfigurationName, locale);
+            extraFields, customConfigurationName, locale);
 
         const postPreprocessValidationErrors = postPreprocessConfigurationValidator.go(appConfiguration);
         if (postPreprocessValidationErrors.length > 0) throw postPreprocessValidationErrors;
@@ -91,7 +90,6 @@ export class ConfigLoader {
                              extraTypes: {[typeName: string]: TypeDefinition } ,
                              relations: Array<RelationDefinition>,
                              extraFields: {[fieldName: string]: FieldDefinition },
-                             extraFieldsOrder: string[],
                              customConfigurationName: string|undefined,
                              locale: string): Promise<ConfigurationDefinition> {
 
@@ -141,7 +139,7 @@ export class ConfigLoader {
         await this.applySearchConfiguration(appConfiguration, searchConfigurationPath);
         await this.applyPeriodConfiguration(appConfiguration, periodConfigurationPath);
 
-        return this.getOrderedConfiguration(appConfiguration, orderConfigurationPath, extraFieldsOrder);
+        return this.getOrderedConfiguration(appConfiguration, orderConfigurationPath);
     }
 
 
@@ -218,14 +216,13 @@ export class ConfigLoader {
 
 
     private async getOrderedConfiguration(appConfiguration: UnorderedConfigurationDefinition,
-                                          orderConfigurationPath: string,
-                                          extraFieldsOrder: string[]): Promise<ConfigurationDefinition> {
+                                          orderConfigurationPath: string): Promise<ConfigurationDefinition> {
 
         let orderedConfiguration: ConfigurationDefinition;
 
         try {
             const orderConfiguration = await this.configReader.read(orderConfigurationPath);
-            ConfigLoader.addExtraFieldsOrder(appConfiguration, orderConfiguration, extraFieldsOrder);
+            ConfigLoader.addExtraFieldsOrder(appConfiguration, orderConfiguration);
 
             orderedConfiguration = {
                 identifier: appConfiguration.identifier,
@@ -241,15 +238,15 @@ export class ConfigLoader {
     }
 
 
-    private static addExtraFieldsOrder(appConfiguration: UnorderedConfigurationDefinition,
-                                       orderConfiguration: any, extraFieldsOrder: string[]) {
+    private static addExtraFieldsOrder(appConfiguration: UnorderedConfigurationDefinition, // TODO remove
+                                       orderConfiguration: any) {
 
         if (!orderConfiguration.fields) orderConfiguration.fields = {};
 
         Object.keys(appConfiguration.types).forEach(typeName => {
             if (!orderConfiguration.fields[typeName]) orderConfiguration.fields[typeName] = [];
             orderConfiguration.fields[typeName]
-                = extraFieldsOrder.concat(orderConfiguration.fields[typeName]);
+                = [].concat(orderConfiguration.fields[typeName]);
         });
     }
 
