@@ -266,7 +266,7 @@ export class AppConfigurator {
     };
 
 
-    private defaultFieldsOrder = [
+    private defaultFieldsOrder = [ // TODO remove
         'identifier',
         'shortDescription'
     ];
