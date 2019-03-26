@@ -41,7 +41,7 @@ export class PrePreprocessConfigurationValidator {
 
     private static checkForExtraneousFieldsInTypes(appConfiguration: any): Array<Array<string>> {
 
-        const allowedFields = ['inputType', 'name', 'valuelist', 'positionValues', 'unitSuffix', 'group'];
+        const allowedFields = ['inputType', 'name', 'valuelist', 'positionValues', 'unitSuffix'];
 
         let errs: string[][] = [];
         for (let typeName of Object.keys(appConfiguration.types)) {

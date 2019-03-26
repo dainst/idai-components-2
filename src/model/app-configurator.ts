@@ -104,6 +104,14 @@ export class AppConfigurator {
             inputType: 'text',
             group: 'stem'
         },
+        date: {
+            inputType: "date",
+            group: "stem"
+        },
+        spatialLocation: {
+            inputType: "input",
+            group: 'position'
+        },
         provenance: {
             inputType: "dropdown",
             valuelist: [
