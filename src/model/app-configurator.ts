@@ -53,6 +53,41 @@ export class AppConfigurator {
                 "Maximale Ausdehnung",
                 "Minimale Ausdehnung"]
         },
+        dimensionDiameter: {
+            inputType: "dimension",
+            group: 'dimension',
+            positionValues: [
+                "Maximale Ausdehnung",
+                "Minimale Ausdehnung"]
+        },
+        dimensionPerimeter: {
+            inputType: "dimension",
+            group: 'dimension',
+            "positionValues": [
+                "Maximale Ausdehnung",
+                "Minimale Ausdehnung"]
+        },
+        dimensionThickness: {
+            inputType: "dimension",
+            group: 'dimension',
+            positionValues: [
+                "Maximale Ausdehnung",
+                "Minimale Ausdehnung"]
+        },
+        dimensionVerticalExtent: {
+            inputType: "dimension",
+            group: 'dimension',
+            positionValues: [
+                "Oberkante",
+                "Unterkante"]
+        },
+        dimensionOther: {
+            inputType: "dimension",
+            group: 'dimension',
+            positionValues: [
+                "Maximale Ausdehnung",
+                "Minimale Ausdehnung"]
+        },
         beginningDate: {
             inputType: 'date',
             group: 'stem'
@@ -68,7 +103,53 @@ export class AppConfigurator {
         description: {
             inputType: 'text',
             group: 'stem'
-        }
+        },
+        provenance: {
+            inputType: "dropdown",
+            valuelist: [
+                "Anatolien",
+                "Antiochia (Antakya)",
+                "Athen",
+                "Attisch",
+                "Britannien",
+                "Chios",
+                "Deutschland",
+                "Ephesos",
+                "Etruskisch",
+                "Gallien",
+                "Ionien",
+                "Irland",
+                "Italien",
+                "Kampanisch",
+                "Karthagisch",
+                "Kleinasien",
+                "Knidos",
+                "Korinth",
+                "Kos",
+                "Lesbos",
+                "Levante",
+                "Lokal",
+                "Lokal/Regional",
+                "Milet",
+                "Mäandertal",
+                "Nordafrika",
+                "Nordafrikanisch",
+                "Palästina",
+                "Pannonien",
+                "Peloponnes",
+                "Regional",
+                "Rhodos",
+                "Samos",
+                "Sizilien",
+                "Skandinavien",
+                "Slawisch",
+                "Spanien",
+                "Syrien",
+                "Südtunesisch",
+                "Südägäis",
+                "Ägypten"
+            ]
+        },
     };
 
     private defaultTypes = {
