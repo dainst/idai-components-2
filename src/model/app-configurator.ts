@@ -63,7 +63,7 @@ export class AppConfigurator {
         dimensionPerimeter: {
             inputType: "dimension",
             group: 'dimension',
-            "positionValues": [
+            positionValues: [
                 "Maximale Ausdehnung",
                 "Minimale Ausdehnung"]
         },
@@ -150,6 +150,20 @@ export class AppConfigurator {
                 "Ägypten"
             ]
         },
+        orientation: {
+            inputType: "dropdown",
+            group: "position",
+            valuelist: [
+                "N-S",
+                "NNO - SSW",
+                "NNW-SSO",
+                "NO-SW",
+                "NW-SO",
+                "W-O",
+                "WNW-OSO",
+                "WSW-ONO"
+            ]
+        }
     };
 
     private defaultTypes = {
