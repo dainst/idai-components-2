@@ -9,7 +9,6 @@ import {Messages} from '../../src/messages/messages';
 import {MemoryDatastore} from './memory-datastore';
 import {MD} from '../../src/messages/md';
 import {M} from './m';
-import {DocumentViewDemoComponent} from './document-view-demo.component';
 import {MessagesDemoComponent} from './messages-demo.component';
 import {MapDemoComponent} from './map-demo.component';
 import {AppComponent} from './app.component';
@@ -40,7 +39,6 @@ let pconf: any = undefined;
     ],
     declarations: [
         AppComponent,
-        DocumentViewDemoComponent,
         MessagesDemoComponent,
         MapDemoComponent
     ],
