@@ -7,7 +7,6 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {Datastore} from '../datastore/datastore';
 import {ReadDatastore} from '../datastore/read-datastore';
 import {ConfigLoader} from '../configuration/config-loader';
-import {FieldsViewComponent} from './docview/fields-view.component';
 import {DocumentTeaserComponent} from './document-teaser.component';
 import {IdaiWidgetsModule} from '../widgets/idai-widgets.module';
 
@@ -21,7 +20,6 @@ import {IdaiWidgetsModule} from '../widgets/idai-widgets.module';
         NgbModule.forRoot()
     ],
     declarations: [
-        FieldsViewComponent,
         DocumentTeaserComponent,
     ],
     providers: [
@@ -32,7 +30,6 @@ import {IdaiWidgetsModule} from '../widgets/idai-widgets.module';
         I18n
     ],
     exports: [
-        FieldsViewComponent,
         DocumentTeaserComponent
     ]
 })
