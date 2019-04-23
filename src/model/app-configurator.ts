@@ -15,6 +15,165 @@ import {FieldDefinition} from '../configuration/field-definition';
  */
 export class AppConfigurator {
 
+    private commonFields = {
+        period: {
+            inputType: 'dropdownRange',
+            group: 'time'
+        },
+        dating: {
+            inputType: 'dating',
+            group: 'time'
+        },
+        diary: {
+            inputType: 'input',
+            group: 'stem'
+        },
+        area: {
+            inputType: 'unsignedFloat',
+            group: 'dimension'
+        },
+        dimensionLength: {
+            inputType: 'dimension',
+            group: 'dimension',
+            positionValues: [
+                "Maximale Ausdehnung",
+                "Minimale Ausdehnung"]
+        },
+        dimensionWidth: {
+            inputType: 'dimension',
+            group: 'dimension',
+            positionValues: [
+                "Maximale Ausdehnung",
+                "Minimale Ausdehnung"]
+        },
+        dimensionHeight: {
+            inputType: 'dimension',
+            group: 'dimension',
+            positionValues: [
+                "Maximale Ausdehnung",
+                "Minimale Ausdehnung"]
+        },
+        dimensionDiameter: {
+            inputType: "dimension",
+            group: 'dimension',
+            positionValues: [
+                "Maximale Ausdehnung",
+                "Minimale Ausdehnung"]
+        },
+        dimensionPerimeter: {
+            inputType: "dimension",
+            group: 'dimension',
+            positionValues: [
+                "Maximale Ausdehnung",
+                "Minimale Ausdehnung"]
+        },
+        dimensionThickness: {
+            inputType: "dimension",
+            group: 'dimension',
+            positionValues: [
+                "Maximale Ausdehnung",
+                "Minimale Ausdehnung"]
+        },
+        dimensionVerticalExtent: {
+            inputType: "dimension",
+            group: 'dimension',
+            positionValues: [
+                "Oberkante",
+                "Unterkante"]
+        },
+        dimensionOther: {
+            inputType: "dimension",
+            group: 'dimension',
+            positionValues: [
+                "Maximale Ausdehnung",
+                "Minimale Ausdehnung"]
+        },
+        beginningDate: {
+            inputType: 'date',
+            group: 'stem'
+        },
+        endDate: {
+            inputType: 'date',
+            group: 'stem'
+        },
+        processor: {
+            inputType: 'input',
+            group: 'stem'
+        },
+        description: {
+            inputType: 'text',
+            group: 'stem'
+        },
+        date: {
+            inputType: "date",
+            group: "stem"
+        },
+        spatialLocation: {
+            inputType: "input",
+            group: 'position'
+        },
+        provenance: {
+            inputType: "dropdown",
+            valuelist: [
+                "Anatolien",
+                "Antiochia (Antakya)",
+                "Athen",
+                "Attisch",
+                "Britannien",
+                "Chios",
+                "Deutschland",
+                "Ephesos",
+                "Etruskisch",
+                "Gallien",
+                "Ionien",
+                "Irland",
+                "Italien",
+                "Kampanisch",
+                "Karthagisch",
+                "Kleinasien",
+                "Knidos",
+                "Korinth",
+                "Kos",
+                "Lesbos",
+                "Levante",
+                "Lokal",
+                "Lokal/Regional",
+                "Milet",
+                "Mäandertal",
+                "Nordafrika",
+                "Nordafrikanisch",
+                "Palästina",
+                "Pannonien",
+                "Peloponnes",
+                "Regional",
+                "Rhodos",
+                "Samos",
+                "Sizilien",
+                "Skandinavien",
+                "Slawisch",
+                "Spanien",
+                "Syrien",
+                "Südtunesisch",
+                "Südägäis",
+                "Ägypten"
+            ]
+        },
+        orientation: {
+            inputType: "dropdown",
+            group: "position",
+            valuelist: [
+                "N-S",
+                "NNO - SSW",
+                "NNW-SSO",
+                "NO-SW",
+                "NW-SO",
+                "W-O",
+                "WNW-OSO",
+                "WSW-ONO"
+            ]
+        }
+    };
+
     private defaultTypes = {
         Place: {
             fields: {
@@ -109,7 +268,8 @@ export class AppConfigurator {
     private defaultFields = {
         shortDescription: {
             label: this.i18n({ id: 'configuration.defaultFields.shortDescription', value: 'Kurzbeschreibung' }),
-            visible: false
+            visible: false,
+            group: 'stem'
         } as FieldDefinition,
         identifier: {
             description: this.i18n({
@@ -118,19 +278,14 @@ export class AppConfigurator {
             }),
             label: this.i18n({ id: 'configuration.defaultFields.identifier', value: 'Bezeichner' }),
             visible: false,
-            mandatory: true
+            mandatory: true,
+            group: 'stem'
         } as FieldDefinition,
         geometry: {
             visible: false,
             editable: false
         } as FieldDefinition
     };
-
-
-    private defaultFieldsOrder = [
-        'identifier',
-        'shortDescription'
-    ];
 
 
     private defaultRelations: any[] = [
@@ -517,10 +672,10 @@ export class AppConfigurator {
 
         return this.configLoader.go(
             configDirPath,
+            this.commonFields,
             this.defaultTypes,
             this.defaultRelations,
             this.defaultFields,
-            this.defaultFieldsOrder,
             new PrePreprocessConfigurationValidator(),
             new ConfigurationValidator(),
             customConfigurationName,

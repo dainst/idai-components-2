@@ -8,7 +8,6 @@ import {Datastore} from '../datastore/datastore';
 import {ReadDatastore} from '../datastore/read-datastore';
 import {ConfigLoader} from '../configuration/config-loader';
 import {FieldsViewComponent} from './docview/fields-view.component';
-import {RelationsViewComponent} from './docview/relations-view.component';
 import {DocumentTeaserComponent} from './document-teaser.component';
 import {IdaiWidgetsModule} from '../widgets/idai-widgets.module';
 
@@ -23,7 +22,6 @@ import {IdaiWidgetsModule} from '../widgets/idai-widgets.module';
     ],
     declarations: [
         FieldsViewComponent,
-        RelationsViewComponent,
         DocumentTeaserComponent,
     ],
     providers: [
@@ -35,7 +33,6 @@ import {IdaiWidgetsModule} from '../widgets/idai-widgets.module';
     ],
     exports: [
         FieldsViewComponent,
-        RelationsViewComponent,
         DocumentTeaserComponent
     ]
 })

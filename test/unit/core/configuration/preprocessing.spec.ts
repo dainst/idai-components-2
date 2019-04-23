@@ -9,7 +9,7 @@ import {FieldDefinition} from '../../../../src/configuration/field-definition';
  * @author Thomas Kleinke
  */
 
-describe('ConfigurationPreprocessor', () => {
+describe('Preprocessing', () => {
 
     let configuration: UnorderedConfigurationDefinition;
     let t1: TypeDefinition;
