@@ -1,12 +1,12 @@
-@import "bootstrap";
-@import "materialdesignicons";
+@import 'bootstrap';
+@import 'materialdesignicons';
 
-@import "variables";
-@import "buttons";
-@import "../messages/messages";
-@import "../documents/documents";
-@import "../widgets/type-icon";
-@import "../map/map";
+@import 'variables';
+@import 'buttons';
+@import '../messages/messages';
+@import '../documents/documents';
+@import '../widgets/type-icon';
+@import '../map/map';
 
 html {
   position: relative;
