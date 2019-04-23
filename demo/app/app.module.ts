@@ -55,42 +55,42 @@ let pconf: any = undefined;
             useFactory: (configLoader: ConfigLoader) => () => {
                 return configLoader.go(
                     'demo/config',
-                    { "processor": { "inputType": "input" }},
+                    { 'processor': { 'inputType': 'input' }},
                     { 'Image': { 'fields': { 'dimensions': {} } } as TypeDefinition },
                     [
                         {
-                            "domain": [
-                                "Section"
+                            'domain': [
+                                'Section'
                             ],
-                            "inverse": "NO-INVERSE",
-                            "name": "isRecordedIn",
-                            "range": [
-                                "Object"
+                            'inverse': 'NO-INVERSE',
+                            'name': 'isRecordedIn',
+                            'range': [
+                                'Object'
                             ]
                         },
                         {
-                            "name": "Belongs to",
-                            "inverse": "Includes",
-                            "domain": ["Object", "Object_enhanced", "Section"],
-                            "range": ["Object", "Object_enhanced", "Section"]
+                            'name': 'Belongs to',
+                            'inverse': 'Includes',
+                            'domain': ['Object', 'Object_enhanced', 'Section'],
+                            'range': ['Object', 'Object_enhanced', 'Section']
                         },
                         {
-                            "name": "Includes",
-                            "inverse": "Belongs to",
-                            "domain": ["Object", "Object_enhanced", "Section"],
-                            "range": ["Object", "Object_enhanced", "Section"]
+                            'name': 'Includes',
+                            'inverse': 'Belongs to',
+                            'domain': ['Object', 'Object_enhanced', 'Section'],
+                            'range': ['Object', 'Object_enhanced', 'Section']
                         },
                         {
-                            "name": "Found in",
-                            "inverse": "Find spot of",
-                            "domain": ["Object", "Object_enhanced"],
-                            "range": ["Section"]
+                            'name': 'Found in',
+                            'inverse': 'Find spot of',
+                            'domain': ['Object', 'Object_enhanced'],
+                            'range': ['Section']
                         },
                         {
-                            "name": "Find spot of",
-                            "inverse": "Found in",
-                            "domain": ["Section"],
-                            "range": ["Object", "Object_enhanced"]
+                            'name': 'Find spot of',
+                            'inverse': 'Found in',
+                            'domain': ['Section'],
+                            'range': ['Object', 'Object_enhanced']
                         },
                         { name: 'depicts', domain: ['Image:inherit'], inverse: 'isDepictedBy', visible: false,
                             editable: false},
