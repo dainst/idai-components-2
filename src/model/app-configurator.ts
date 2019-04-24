@@ -36,57 +36,57 @@ export class AppConfigurator {
             inputType: 'dimension',
             group: 'dimension',
             positionValues: [
-                "Maximale Ausdehnung",
-                "Minimale Ausdehnung"]
+                'Maximale Ausdehnung',
+                'Minimale Ausdehnung']
         },
         dimensionWidth: {
             inputType: 'dimension',
             group: 'dimension',
             positionValues: [
-                "Maximale Ausdehnung",
-                "Minimale Ausdehnung"]
+                'Maximale Ausdehnung',
+                'Minimale Ausdehnung']
         },
         dimensionHeight: {
             inputType: 'dimension',
             group: 'dimension',
             positionValues: [
-                "Maximale Ausdehnung",
-                "Minimale Ausdehnung"]
+                'Maximale Ausdehnung',
+                'Minimale Ausdehnung']
         },
         dimensionDiameter: {
-            inputType: "dimension",
+            inputType: 'dimension',
             group: 'dimension',
             positionValues: [
-                "Maximale Ausdehnung",
-                "Minimale Ausdehnung"]
+                'Maximale Ausdehnung',
+                'Minimale Ausdehnung']
         },
         dimensionPerimeter: {
-            inputType: "dimension",
+            inputType: 'dimension',
             group: 'dimension',
             positionValues: [
-                "Maximale Ausdehnung",
-                "Minimale Ausdehnung"]
+                'Maximale Ausdehnung',
+                'Minimale Ausdehnung']
         },
         dimensionThickness: {
-            inputType: "dimension",
+            inputType: 'dimension',
             group: 'dimension',
             positionValues: [
-                "Maximale Ausdehnung",
-                "Minimale Ausdehnung"]
+                'Maximale Ausdehnung',
+                'Minimale Ausdehnung']
         },
         dimensionVerticalExtent: {
-            inputType: "dimension",
+            inputType: 'dimension',
             group: 'dimension',
             positionValues: [
-                "Oberkante",
-                "Unterkante"]
+                'Oberkante',
+                'Unterkante']
         },
         dimensionOther: {
-            inputType: "dimension",
+            inputType: 'dimension',
             group: 'dimension',
             positionValues: [
-                "Maximale Ausdehnung",
-                "Minimale Ausdehnung"]
+                'Maximale Ausdehnung',
+                'Minimale Ausdehnung']
         },
         beginningDate: {
             inputType: 'date',
@@ -104,71 +104,71 @@ export class AppConfigurator {
             inputType: 'text'
         },
         date: {
-            inputType: "date",
-            group: "stem"
+            inputType: 'date',
+            group: 'stem'
         },
         spatialLocation: {
-            inputType: "input",
+            inputType: 'input',
             group: 'position'
         },
         provenance: {
-            inputType: "dropdown",
+            inputType: 'dropdown',
             valuelist: [
-                "Anatolien",
-                "Antiochia (Antakya)",
-                "Athen",
-                "Attisch",
-                "Britannien",
-                "Chios",
-                "Deutschland",
-                "Ephesos",
-                "Etruskisch",
-                "Gallien",
-                "Ionien",
-                "Irland",
-                "Italien",
-                "Kampanisch",
-                "Karthagisch",
-                "Kleinasien",
-                "Knidos",
-                "Korinth",
-                "Kos",
-                "Lesbos",
-                "Levante",
-                "Lokal",
-                "Lokal/Regional",
-                "Milet",
-                "Mäandertal",
-                "Nordafrika",
-                "Nordafrikanisch",
-                "Palästina",
-                "Pannonien",
-                "Peloponnes",
-                "Regional",
-                "Rhodos",
-                "Samos",
-                "Sizilien",
-                "Skandinavien",
-                "Slawisch",
-                "Spanien",
-                "Syrien",
-                "Südtunesisch",
-                "Südägäis",
-                "Ägypten"
+                'Anatolien',
+                'Antiochia (Antakya)',
+                'Athen',
+                'Attisch',
+                'Britannien',
+                'Chios',
+                'Deutschland',
+                'Ephesos',
+                'Etruskisch',
+                'Gallien',
+                'Ionien',
+                'Irland',
+                'Italien',
+                'Kampanisch',
+                'Karthagisch',
+                'Kleinasien',
+                'Knidos',
+                'Korinth',
+                'Kos',
+                'Lesbos',
+                'Levante',
+                'Lokal',
+                'Lokal/Regional',
+                'Milet',
+                'Mäandertal',
+                'Nordafrika',
+                'Nordafrikanisch',
+                'Palästina',
+                'Pannonien',
+                'Peloponnes',
+                'Regional',
+                'Rhodos',
+                'Samos',
+                'Sizilien',
+                'Skandinavien',
+                'Slawisch',
+                'Spanien',
+                'Syrien',
+                'Südtunesisch',
+                'Südägäis',
+                'Ägypten'
             ]
         },
         orientation: {
-            inputType: "dropdown",
-            group: "position",
+            inputType: 'dropdown',
+            group: 'position',
             valuelist: [
-                "N-S",
-                "NNO - SSW",
-                "NNW-SSO",
-                "NO-SW",
-                "NW-SO",
-                "W-O",
-                "WNW-OSO",
-                "WSW-ONO"
+                'N-S',
+                'NNO - SSW',
+                'NNW-SSO',
+                'NO-SW',
+                'NW-SO',
+                'W-O',
+                'WNW-OSO',
+                'WSW-ONO'
             ]
         }
     };
