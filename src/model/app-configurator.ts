@@ -101,8 +101,7 @@ export class AppConfigurator {
             group: 'stem'
         },
         description: {
-            inputType: 'text',
-            group: 'stem'
+            inputType: 'text'
         },
         date: {
             inputType: "date",
