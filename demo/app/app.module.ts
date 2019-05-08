@@ -12,7 +12,6 @@ import {M} from './m';
 import {MessagesDemoComponent} from './messages-demo.component';
 import {MapDemoComponent} from './map-demo.component';
 import {AppComponent} from './app.component';
-import {IdaiDocumentsModule} from '../../src/documents/idai-documents.module';
 import {IdaiMessagesModule} from '../../src/messages/idai-messages.module';
 import {IdaiWidgetsModule} from '../../src/widgets/idai-widgets.module';
 import {ProjectConfiguration} from '../../src/configuration/project-configuration';
@@ -31,7 +30,6 @@ let pconf: any = undefined;
         BrowserModule,
         FormsModule,
         HttpClientModule,
-        IdaiDocumentsModule,
         IdaiMessagesModule,
         IdaiWidgetsModule,
         IdaiFieldMapModule,
