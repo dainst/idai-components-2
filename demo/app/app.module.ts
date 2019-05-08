@@ -3,6 +3,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import {HashLocationStrategy, LocationStrategy} from '@angular/common';
+import {I18n} from '@ngx-translate/i18n-polyfill';
 import {routing} from './app.routing';
 import {Datastore} from '../../src/datastore/datastore';
 import {Messages} from '../../src/messages/messages';
@@ -129,7 +130,8 @@ let pconf: any = undefined;
                 return pconf;
             },
             deps: []
-        }
+        },
+        I18n
     ],
     bootstrap: [ AppComponent ]
 })
