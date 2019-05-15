@@ -11,6 +11,7 @@ import {PrePreprocessConfigurationValidator} from './pre-preprocess-configuratio
 import {UnorderedConfigurationDefinition} from './unordered-configuration-definition';
 import {ConfigurationDefinition} from './configuration-definition';
 
+
 @Injectable()
 /**
  * Lets clients subscribe for the app
@@ -113,12 +114,7 @@ export class ConfigLoader {
 
 
         const customConfigPath = configDirPath
-            + '/Fields-'
-            + (customConfigurationName
-                ? customConfigurationName
-                : 'Custom')
-            + '.json';
-
+            + '/Fields-' + (customConfigurationName ? customConfigurationName : 'Custom') + '.json';
         await this.applyCustomFieldsConfiguration(appConfiguration, customConfigPath);
 
         await this.applyHiddenConfs(appConfiguration, hiddenConfigurationPath, customHiddenConfigurationPath);
@@ -148,10 +144,8 @@ export class ConfigLoader {
 
         try {
             const customConfiguration = await this.configReader.read(customFieldsConfigurationPath);
-            Object.keys(customConfiguration).forEach(typeName => {
-                Preprocessing.addCustomFields(appConfiguration, typeName,
-                    customConfiguration[typeName].fields);
-            });
+            Preprocessing.applyCustom(appConfiguration, customConfiguration);
+
         } catch (msgWithParams) {
             throw [[msgWithParams]];
         }

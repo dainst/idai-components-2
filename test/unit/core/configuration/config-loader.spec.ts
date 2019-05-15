@@ -1,9 +1,7 @@
 import {ConfigurationDefinition} from '../../../../src/configuration/configuration-definition';
 import {ConfigLoader} from '../../../../src/configuration/config-loader';
-import {PrePreprocessConfigurationValidator}
-    from '../../../../src/configuration/pre-preprocess-configuration-validator';
+import {PrePreprocessConfigurationValidator} from '../../../../src/configuration/pre-preprocess-configuration-validator';
 import {ConfigurationValidator} from '../../../../src/configuration/configuration-validator';
-import {FieldDefinition} from '../../../../src/configuration/field-definition';
 
 /**
  * @author Daniel de Oliveira
@@ -40,7 +38,6 @@ describe('ConfigLoader', () => {
 
     beforeEach(() => {
 
-        // Object.assign(configuration, {});
         configuration = {} as ConfigurationDefinition;
 
         configReader = jasmine.createSpyObj('confRead', ['read']);
@@ -257,10 +254,7 @@ describe('ConfigLoader', () => {
 
         let pconf;
         try {
-            pconf = await configLoader.go('', {}, {},[
-                { name: 'r1', domain: ['A'], range: ['B']},
-                { name: 'r2', domain: ['A'], range: ['B']}
-            ], {},
+            pconf = await configLoader.go('', {}, {},[], {},
                 new PrePreprocessConfigurationValidator(), new ConfigurationValidator(),
                 undefined, 'de'
             );
@@ -272,9 +266,39 @@ describe('ConfigLoader', () => {
             expect(pconf.getTypesList()[1].fields.find(field => field.name == 'fieldB2')
                 .inputType).toEqual('boolean');
 
-            done();
         } catch(err) {
             fail(err);
+        } finally {
+            done();
+        }
+    });
+
+
+    it('preprocess - apply custom fields configuration - add subtypes', async done => {
+
+        Object.assign(configuration, {
+            A: { fields: { fieldA1: { inputType: 'unsignedInt' } } }
+        });
+
+        const customFieldsConfiguration = {
+            B: { parent: 'A', fields: { fieldC1: { inputType: 'boolean'}}}
+        };
+
+        applyConfig(customFieldsConfiguration);
+
+        let pconf;
+        try {
+            pconf = await configLoader.go('', {}, {},[], {},
+                new PrePreprocessConfigurationValidator(), new ConfigurationValidator(),
+                undefined, 'de'
+            );
+
+            expect(pconf.getTypesList()[1].fields.find(field => field.name == 'fieldC1')
+                .inputType).toEqual('boolean');
+
+        } catch(err) {
+            fail(err);
+        } finally {
             done();
         }
     });
