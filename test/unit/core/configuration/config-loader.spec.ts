@@ -385,6 +385,34 @@ describe('ConfigLoader', () => {
     });
 
 
+    it('preprocess - apply custom fields configuration - add subtypes - parent must not come from custom config', async done => {
+
+        Object.assign(configuration, {
+            A: { fields: { fieldA1: { inputType: 'unsignedInt' } } }
+        });
+
+        const customFieldsConfiguration = {
+            B: { parent: 'A', fields: { fieldA1: { inputType: 'unsignedInt' } } },
+            C: { parent: 'B', fields: { fieldC1: { inputType: 'boolean'}}}
+        };
+
+        applyConfig(customFieldsConfiguration);
+
+        try {
+            await configLoader.go('', {}, {},[], {},
+                new PrePreprocessConfigurationValidator(), new ConfigurationValidator(),
+                undefined, 'de'
+            );
+            fail();
+
+        } catch(err) {
+            expect(err[0][0]).toBe(ConfigurationErrors.INVALID_CONFIG_PARENT_NOT_DEFINED);
+        } finally {
+            done();
+        }
+    });
+
+
     it('apply order configuration', async done => {
 
         Object.assign(configuration, {

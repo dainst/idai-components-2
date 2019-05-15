@@ -33,19 +33,8 @@ export module Preprocessing {
     export function applyCustom(appConfiguration: UnorderedConfigurationDefinition, customConfiguration: any) {
 
         // Validate first, before copying the types defined only in customConfiguration into the appConfiguration,
-        // in order to make sure that only parents from the original appConfiguration can be referenced // TODO test
-        Object.keys(customConfiguration).forEach(typeName => {
-            if (!appConfiguration.types[typeName]) {
-                if (!customConfiguration[typeName].parent) throw ConfigurationErrors.INVALID_CONFIG_NO_PARENT_ASSIGNED;
-
-                const found = Object.keys(appConfiguration.types).find(is(customConfiguration[typeName].parent));
-                if (!found) throw ConfigurationErrors.INVALID_CONFIG_PARENT_NOT_DEFINED;
-
-                if (appConfiguration.types[customConfiguration[typeName].parent].parent) {
-                    throw ConfigurationErrors.INVALID_CONFIG_PARENT_NOT_TOP_LEVEL;
-                }
-            }
-        });
+        // in order to make sure that only parents from the original appConfiguration can be referenced
+        validateCustom(appConfiguration, customConfiguration);
 
         Object.keys(customConfiguration).forEach(typeName => {
             if (appConfiguration.types[typeName]) {
@@ -349,6 +338,23 @@ export module Preprocessing {
             const field: any = { name: fieldName };
             Object.assign(field, fields[fieldName]);
             configuration.types[typeName].fields[fieldName] = field;
+        });
+    }
+
+
+    function validateCustom(appConfiguration: UnorderedConfigurationDefinition, customConfiguration: any) {
+
+        Object.keys(customConfiguration).forEach(typeName => {
+            if (!appConfiguration.types[typeName]) {
+                if (!customConfiguration[typeName].parent) throw ConfigurationErrors.INVALID_CONFIG_NO_PARENT_ASSIGNED;
+
+                const found = Object.keys(appConfiguration.types).find(is(customConfiguration[typeName].parent));
+                if (!found) throw ConfigurationErrors.INVALID_CONFIG_PARENT_NOT_DEFINED;
+
+                if (appConfiguration.types[customConfiguration[typeName].parent].parent) {
+                    throw ConfigurationErrors.INVALID_CONFIG_PARENT_NOT_TOP_LEVEL;
+                }
+            }
         });
     }
 }
