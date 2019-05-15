@@ -50,7 +50,6 @@ describe('ConfigLoader', () => {
     });
 
 
-    // TODO move to preprocessing spec
     it('mix in common fields', async done => {
 
         Object.assign(configuration, {
@@ -86,7 +85,6 @@ describe('ConfigLoader', () => {
     });
 
 
-    // TODO move to preprocessing spec
     it('translate common fields', async done => {
 
         Object.assign(configuration, {
