@@ -3,6 +3,7 @@ import {TypeDefinition} from './type-definition';
 import {RelationDefinition} from './relation-definition';
 import {UnorderedConfigurationDefinition} from './unordered-configuration-definition';
 import {on, subtract, isNot, empty, is} from 'tsfun';
+import {ConfigurationErrors} from './configuration-errors';
 
 
 /**
@@ -35,15 +36,13 @@ export module Preprocessing {
         // in order to make sure that only parents from the original appConfiguration can be referenced // TODO test
         Object.keys(customConfiguration).forEach(typeName => {
             if (!appConfiguration.types[typeName]) {
-                if (!customConfiguration[typeName].parent) throw "NO_PARENT"; // TODO throw proper message, write test
+                if (!customConfiguration[typeName].parent) throw ConfigurationErrors.INVALID_CONFIG_NO_PARENT_ASSIGNED;
 
                 const found = Object.keys(appConfiguration.types).find(is(customConfiguration[typeName].parent));
-                if (!found) {
-                    throw "NOT_FOUND"; // TODO throw proper message, write test
-                }
+                if (!found) throw ConfigurationErrors.INVALID_CONFIG_PARENT_NOT_DEFINED;
 
                 if (appConfiguration.types[customConfiguration[typeName].parent].parent) {
-                    throw "PARENT_IS_NOT_TOP_LEVEL_TYPE"; // TODO throw proper message, write test
+                    throw ConfigurationErrors.INVALID_CONFIG_PARENT_NOT_TOP_LEVEL;
                 }
             }
         });

@@ -2,6 +2,7 @@ import {ConfigurationDefinition} from '../../../../src/configuration/configurati
 import {ConfigLoader} from '../../../../src/configuration/config-loader';
 import {PrePreprocessConfigurationValidator} from '../../../../src/configuration/pre-preprocess-configuration-validator';
 import {ConfigurationValidator} from '../../../../src/configuration/configuration-validator';
+import {ConfigurationErrors} from '../../../../src/configuration/configuration-errors';
 
 /**
  * @author Daniel de Oliveira
@@ -298,6 +299,86 @@ describe('ConfigLoader', () => {
 
         } catch(err) {
             fail(err);
+        } finally {
+            done();
+        }
+    });
+
+
+    it('preprocess - apply custom fields configuration - add subtypes - no parent assigned', async done => {
+
+        Object.assign(configuration, {
+            A: { fields: { fieldA1: { inputType: 'unsignedInt' } } }
+        });
+
+        const customFieldsConfiguration = {
+            B: { fields: { fieldC1: { inputType: 'boolean'}}}
+        };
+
+        applyConfig(customFieldsConfiguration);
+
+        try {
+            await configLoader.go('', {}, {},[], {},
+                new PrePreprocessConfigurationValidator(), new ConfigurationValidator(),
+                undefined, 'de'
+            );
+
+            fail();
+        } catch(err) {
+            expect(err[0][0]).toBe(ConfigurationErrors.INVALID_CONFIG_NO_PARENT_ASSIGNED);
+        } finally {
+            done();
+        }
+    });
+
+
+    it('preprocess - apply custom fields configuration - add subtypes - parent not defined', async done => {
+
+        Object.assign(configuration, {});
+
+        const customFieldsConfiguration = {
+            B: { parent: 'A', fields: { fieldC1: { inputType: 'boolean'}}}
+        };
+
+        applyConfig(customFieldsConfiguration);
+
+        try {
+            await configLoader.go('', {}, {},[], {},
+                new PrePreprocessConfigurationValidator(), new ConfigurationValidator(),
+                undefined, 'de'
+            );
+
+            fail();
+        } catch(err) {
+            expect(err[0][0]).toBe(ConfigurationErrors.INVALID_CONFIG_PARENT_NOT_DEFINED);
+        } finally {
+            done();
+        }
+    });
+
+
+    it('preprocess - apply custom fields configuration - add subtypes - parent no top level type', async done => {
+
+        Object.assign(configuration, {
+            A: { fields: { fieldA1: { inputType: 'unsignedInt' } } },
+            B: { parent: 'A', fields: { fieldA1: { inputType: 'unsignedInt' } } }
+        });
+
+        const customFieldsConfiguration = {
+            C: { parent: 'B', fields: { fieldC1: { inputType: 'boolean'}}}
+        };
+
+        applyConfig(customFieldsConfiguration);
+
+        try {
+            await configLoader.go('', {}, {},[], {},
+                new PrePreprocessConfigurationValidator(), new ConfigurationValidator(),
+                undefined, 'de'
+            );
+
+            fail();
+        } catch(err) {
+            expect(err[0][0]).toBe(ConfigurationErrors.INVALID_CONFIG_PARENT_NOT_TOP_LEVEL);
         } finally {
             done();
         }
