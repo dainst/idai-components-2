@@ -278,11 +278,11 @@ describe('ConfigLoader', () => {
     it('preprocess - apply custom fields configuration - add subtypes', async done => {
 
         Object.assign(configuration, {
-            A: { fields: { fieldA1: { inputType: 'unsignedInt' } } }
+            Find: { fields: { fieldA1: { inputType: 'unsignedInt' } } }
         });
 
         const customFieldsConfiguration = {
-            B: { parent: 'A', fields: { fieldC1: { inputType: 'boolean'}}}
+            B: { parent: 'Find', fields: { fieldC1: { inputType: 'boolean'}}}
         };
 
         applyConfig(customFieldsConfiguration);
@@ -308,7 +308,7 @@ describe('ConfigLoader', () => {
     it('preprocess - apply custom fields configuration - add subtypes - no parent assigned', async done => {
 
         Object.assign(configuration, {
-            A: { fields: { fieldA1: { inputType: 'unsignedInt' } } }
+            Find: { fields: { fieldA1: { inputType: 'unsignedInt' } } }
         });
 
         const customFieldsConfiguration = {
@@ -337,7 +337,7 @@ describe('ConfigLoader', () => {
         Object.assign(configuration, {});
 
         const customFieldsConfiguration = {
-            B: { parent: 'A', fields: { fieldC1: { inputType: 'boolean'}}}
+            B: { parent: 'Find', fields: { fieldC1: { inputType: 'boolean'}}}
         };
 
         applyConfig(customFieldsConfiguration);
@@ -360,12 +360,12 @@ describe('ConfigLoader', () => {
     it('preprocess - apply custom fields configuration - add subtypes - parent no top level type', async done => {
 
         Object.assign(configuration, {
-            A: { fields: { fieldA1: { inputType: 'unsignedInt' } } },
-            B: { parent: 'A', fields: { fieldA1: { inputType: 'unsignedInt' } } }
+            SuperFind: { fields: { fieldA1: { inputType: 'unsignedInt' } } },
+            Find: { parent: 'SuperFind', fields: { fieldA1: { inputType: 'unsignedInt' } } }
         });
 
         const customFieldsConfiguration = {
-            C: { parent: 'B', fields: { fieldC1: { inputType: 'boolean'}}}
+            C: { parent: 'Find', fields: { fieldC1: { inputType: 'boolean'}}}
         };
 
         applyConfig(customFieldsConfiguration);
@@ -388,12 +388,12 @@ describe('ConfigLoader', () => {
     it('preprocess - apply custom fields configuration - add subtypes - parent must not come from custom config', async done => {
 
         Object.assign(configuration, {
-            A: { fields: { fieldA1: { inputType: 'unsignedInt' } } }
+            TopFind: { fields: { fieldA1: { inputType: 'unsignedInt' } } }
         });
 
         const customFieldsConfiguration = {
-            B: { parent: 'A', fields: { fieldA1: { inputType: 'unsignedInt' } } },
-            C: { parent: 'B', fields: { fieldC1: { inputType: 'boolean'}}}
+            Find: { parent: 'SuperFind', fields: { fieldA1: { inputType: 'unsignedInt' } } },
+            C: { parent: 'Find', fields: { fieldC1: { inputType: 'boolean'}}}
         };
 
         applyConfig(customFieldsConfiguration);
@@ -407,6 +407,33 @@ describe('ConfigLoader', () => {
 
         } catch(err) {
             expect(err[0][0]).toBe(ConfigurationErrors.INVALID_CONFIG_PARENT_NOT_DEFINED);
+        } finally {
+            done();
+        }
+    });
+
+
+    it('preprocess - apply custom fields configuration - add subtypes - only extendableTypes allowed', async done => {
+
+        Object.assign(configuration, {
+            NonExtendable: { fields: { fieldA1: { inputType: 'unsignedInt' } } }
+        });
+
+        const customFieldsConfiguration = {
+            Extension: { parent: 'NonExtendable', fields: { fieldC1: { inputType: 'boolean'}}}
+        };
+
+        applyConfig(customFieldsConfiguration);
+
+        try {
+            await configLoader.go('', {}, {},[], {},
+                new PrePreprocessConfigurationValidator(), new ConfigurationValidator(),
+                undefined, 'de'
+            );
+            fail();
+
+        } catch(err) {
+            expect(err[0][0]).toBe(ConfigurationErrors.NOT_AND_EXTENDABLE_TYPE);
         } finally {
             done();
         }

@@ -12,6 +12,9 @@ import {UnorderedConfigurationDefinition} from './unordered-configuration-defini
 import {ConfigurationDefinition} from './configuration-definition';
 
 
+const extendableTypes = ['Find'];
+
+
 @Injectable()
 /**
  * Lets clients subscribe for the app
@@ -144,7 +147,7 @@ export class ConfigLoader {
 
         try {
             const customConfiguration = await this.configReader.read(customFieldsConfigurationPath);
-            Preprocessing.applyCustom(appConfiguration, customConfiguration);
+            Preprocessing.applyCustom(appConfiguration, customConfiguration, extendableTypes);
 
         } catch (msgWithParams) {
             throw [[msgWithParams]];

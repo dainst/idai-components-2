@@ -30,11 +30,13 @@ export module Preprocessing {
     }
 
 
-    export function applyCustom(appConfiguration: UnorderedConfigurationDefinition, customConfiguration: any) {
+    export function applyCustom(appConfiguration: UnorderedConfigurationDefinition,
+                                customConfiguration: any,
+                                extendableTypes: string[]) {
 
         // Validate first, before copying the types defined only in customConfiguration into the appConfiguration,
         // in order to make sure that only parents from the original appConfiguration can be referenced
-        validateCustom(appConfiguration, customConfiguration);
+        validateCustom(appConfiguration, customConfiguration, extendableTypes);
 
         Object.keys(customConfiguration).forEach(typeName => {
             if (appConfiguration.types[typeName]) {
@@ -342,7 +344,9 @@ export module Preprocessing {
     }
 
 
-    function validateCustom(appConfiguration: UnorderedConfigurationDefinition, customConfiguration: any) {
+    function validateCustom(appConfiguration: UnorderedConfigurationDefinition,
+                            customConfiguration: any,
+                            extendableTypes: string[]) {
 
         Object.keys(customConfiguration).forEach(typeName => {
             if (!appConfiguration.types[typeName]) {
@@ -350,6 +354,10 @@ export module Preprocessing {
 
                 const found = Object.keys(appConfiguration.types).find(is(customConfiguration[typeName].parent));
                 if (!found) throw ConfigurationErrors.INVALID_CONFIG_PARENT_NOT_DEFINED;
+
+                if (!extendableTypes.includes(customConfiguration[typeName].parent)) {
+                    throw ConfigurationErrors.NOT_AND_EXTENDABLE_TYPE;
+                }
 
                 if (appConfiguration.types[customConfiguration[typeName].parent].parent) {
                     throw ConfigurationErrors.INVALID_CONFIG_PARENT_NOT_TOP_LEVEL;
