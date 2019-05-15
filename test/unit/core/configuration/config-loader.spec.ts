@@ -16,23 +16,35 @@ describe('ConfigLoader', () => {
     let configReader;
 
 
+    function applyConfig(
+        customFieldsConfiguration = {},
+        languageConfiguration = {},
+        customLanguageConfiguration = {},
+        hiddenConfiguration = {},
+        hiddenCustomConfiguration = {},
+        orderConfiguration = {}) {
+
+        configReader.read.and.returnValues(
+            Promise.resolve(configuration),
+            Promise.resolve(customFieldsConfiguration),
+            Promise.resolve(hiddenConfiguration),
+            Promise.resolve(hiddenCustomConfiguration),
+            Promise.resolve(languageConfiguration),
+            Promise.resolve(customLanguageConfiguration),
+            Promise.resolve({}),
+            Promise.resolve({}),
+            Promise.resolve(orderConfiguration)
+        );
+    }
+
+
     beforeEach(() => {
 
         // Object.assign(configuration, {});
         configuration = {} as ConfigurationDefinition;
 
         configReader = jasmine.createSpyObj('confRead', ['read']);
-        configReader.read.and.returnValues(
-            Promise.resolve(configuration),
-            Promise.resolve({}),
-            Promise.resolve({}),
-            Promise.resolve({}),
-            Promise.resolve({}),
-            Promise.resolve({}),
-            Promise.resolve({}),
-            Promise.resolve({}),
-            Promise.resolve({})
-        );
+        applyConfig();
 
         configLoader = new ConfigLoader(configReader, () => '');
     });
@@ -45,21 +57,11 @@ describe('ConfigLoader', () => {
             A: { commons: ['processor'] },
         });
 
-        configReader.read.and.returnValues(
-            Promise.resolve(configuration),
-            Promise.resolve({}),
-            Promise.resolve({}),
-            Promise.resolve({}),
-            Promise.resolve({
-                types: {
-                    A: { label: 'A_', fields: { processor: {label: 'Bearbeiter/Bearbeiterin', description: "abc"}} },
-                }, relations: {}
-            }),
-            Promise.resolve({}),
-            Promise.resolve({}),
-            Promise.resolve({}),
-            Promise.resolve({})
-        );
+        applyConfig(undefined, {
+            types: {
+                A: { label: 'A_', fields: { processor: {label: 'Bearbeiter/Bearbeiterin', description: "abc"}} },
+            }, relations: {}
+        });
 
         let pconf;
         try {
@@ -91,23 +93,13 @@ describe('ConfigLoader', () => {
             A: { commons: ['processor'] },
         });
 
-        configReader.read.and.returnValues(
-            Promise.resolve(configuration),
-            Promise.resolve({}),
-            Promise.resolve({}),
-            Promise.resolve({}),
-            Promise.resolve({
-                commons: {
-                    processor: {label: 'Bearbeiter/Bearbeiterin', description: "abc"}
-                },
-                types: {},
-                relations: {}
-            }),
-            Promise.resolve({}),
-            Promise.resolve({}),
-            Promise.resolve({}),
-            Promise.resolve({})
-        );
+        applyConfig(undefined, {
+            commons: {
+                processor: {label: 'Bearbeiter/Bearbeiterin', description: "abc"}
+            },
+            types: {},
+            relations: {}
+        });
 
         let pconf;
         try {
@@ -123,7 +115,7 @@ describe('ConfigLoader', () => {
                 'de'
             );
         } catch(err) {
-            console.log("err",err)
+            console.log("err",err);
             fail(err);
             done();
         }
@@ -212,29 +204,19 @@ describe('ConfigLoader', () => {
             C: {}
         });
 
-        configReader.read.and.returnValues(
-            Promise.resolve(configuration),
-            Promise.resolve({}),
-            Promise.resolve({}),
-            Promise.resolve({}),
-            Promise.resolve({
-                    types: {
-                        A: { label: 'A_' },
-                        B: { label: 'B_' }
-                    },
-                    relations: {
-                        r1: { label: 'r1_' }
-                    }
-            }),
-            Promise.resolve({
-                types: {
-                    B: { label: 'B__' }
-                }
-            }),
-            Promise.resolve({}),
-            Promise.resolve({}),
-            Promise.resolve({})
-        );
+        applyConfig({}, {
+            types: {
+                A: { label: 'A_' },
+                B: { label: 'B_' }
+            },
+            relations: {
+                r1: { label: 'r1_' }
+            }
+        }, {
+            types: {
+                B: { label: 'B__' }
+            }
+        });
 
         let pconf;
         try {
@@ -268,20 +250,12 @@ describe('ConfigLoader', () => {
             B: { fields: { fieldB1: { inputType: 'input' } } }
         });
 
-        configReader.read.and.returnValues(
-            Promise.resolve(configuration),
-            Promise.resolve({
-                A: { fields: { fieldA1: { inputType: 'unsignedFloat' } } },
-                B: { fields: { fieldB2: { inputType: 'boolean' } } }
-            }),
-            Promise.resolve({}),
-            Promise.resolve({}),
-            Promise.resolve({}),
-            Promise.resolve({}),
-            Promise.resolve({}),
-            Promise.resolve({}),
-            Promise.resolve({})
-        );
+        const customFieldsConfiguration = {
+            A: { fields: { fieldA1: { inputType: 'unsignedFloat' } } },
+            B: { fields: { fieldB2: { inputType: 'boolean' } } }
+        };
+
+        applyConfig(customFieldsConfiguration);
 
         let pconf;
         try {
@@ -316,27 +290,18 @@ describe('ConfigLoader', () => {
             A: { fields: { fieldA2: {}, fieldA1: {} } }
         });
 
-        configReader.read.and.returnValues(
-            Promise.resolve(configuration),
-            Promise.resolve({}),
-            Promise.resolve({}),
-            Promise.resolve({}),
-            Promise.resolve({}),
-            Promise.resolve({}),
-            Promise.resolve({}),
-            Promise.resolve({}),
-            Promise.resolve({
-                types: ['A', 'B', 'C'],
-                fields: {
-                    'A': ['fieldA1', 'fieldA2'],
-                    'B': ['fieldB1', 'fieldB2', 'fieldB3'],
-                    'C': ['fieldC1', 'fieldC2'],
+        applyConfig({}, {}, {},
+            {}, {}, {
+            types: ['A', 'B', 'C'],
+            fields: {
+                'A': ['fieldA1', 'fieldA2'],
+                'B': ['fieldB1', 'fieldB2', 'fieldB3'],
+                'C': ['fieldC1', 'fieldC2'],
 
-                    // Ignore fields defined in Order.json but not in configuration silently
-                    'D': ['fieldD1', 'fieldD2']
-                }
-            })
-        );
+                // Ignore fields defined in Order.json but not in configuration silently
+                'D': ['fieldD1', 'fieldD2']
+            }
+        });
 
         let pconf;
         try {
@@ -371,22 +336,13 @@ describe('ConfigLoader', () => {
             A: { fields: { fieldA2: {}, fieldA1: {} } }
         });
 
-        configReader.read.and.returnValues(
-            Promise.resolve(configuration),
-            Promise.resolve({}),
-            Promise.resolve({}),
-            Promise.resolve({}),
-            Promise.resolve({}),
-            Promise.resolve({}),
-            Promise.resolve({}),
-            Promise.resolve({}),
-            Promise.resolve({
-                types: ['A', 'A'],
-                fields: {
-                    'A': ['fieldA1', 'fieldA2', 'fieldA1']
-                }
-            })
-        );
+        applyConfig({}, {}, {}, {}, {}, {
+            types: ['A', 'A'],
+            fields: {
+                'A': ['fieldA1', 'fieldA2', 'fieldA1']
+            }
+        });
+
 
         let pconf;
         try {
@@ -414,21 +370,13 @@ describe('ConfigLoader', () => {
             A: { fields: { fieldA1: {}, fieldA2: {}, fieldA3: {}  } }
         });
 
-        configReader.read.and.returnValues(
-            Promise.resolve(configuration),
-            Promise.resolve({}),
-            Promise.resolve({
+        applyConfig({}, {}, {},
+        {
                 'A': ['fieldA1']
-            }),
-            Promise.resolve({
+            },
+            {
                 'A': ['fieldA2']
-            }),
-            Promise.resolve({}),
-            Promise.resolve({}),
-            Promise.resolve({}),
-            Promise.resolve({}),
-            Promise.resolve({})
-        );
+            });
 
         let pconf;
         try {
@@ -461,24 +409,15 @@ describe('ConfigLoader', () => {
             A: { fields: { fieldA1: {}, fieldA3: {}, fieldA2: {} } }
         });
 
-        configReader.read.and.returnValues(
-            Promise.resolve(configuration),
-            Promise.resolve({}),
-            Promise.resolve({
-                'A': ['fieldA1']
-            }),
-            Promise.resolve({}),
-            Promise.resolve({}),
-            Promise.resolve({}),
-            Promise.resolve({}),
-            Promise.resolve({}),
-            Promise.resolve({
-                types: ['A'],
-                fields: {
-                    'A': ['fieldA1', 'fieldA2', 'fieldA3']
-                }
-            })
-        );
+        applyConfig({}, {}, {}, {
+            'A': ['fieldA1']
+        }, {}, {
+            types: ['A'],
+            fields: {
+                'A': ['fieldA1', 'fieldA2', 'fieldA3']
+            }
+        });
+
 
         let pconf;
         try {
