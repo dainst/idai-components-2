@@ -9,4 +9,5 @@ export class DatastoreErrors {
     public static DOCUMENT_NO_RESOURCE_ID: string = 'idai-components-2/datastore/documentnoresourceid';
     public static DOCUMENT_NOT_FOUND: string = 'idai-components-2/datastore/documentnotfound';
     public static SAVE_CONFLICT: string = 'idai-components-2/datastore/saveconflict';
+    public static REMOVE_REVISIONS_ERROR: string = 'idai-components-2/datastore/removerevisionserror';
 }
