@@ -117,6 +117,7 @@ export class AppConfigurator {
                 'Anatolien',
                 'Antiochia (Antakya)',
                 'Athen',
+                'Ägypten',
                 'Attisch',
                 'Britannien',
                 'Chios',
