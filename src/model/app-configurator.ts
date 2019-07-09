@@ -212,6 +212,10 @@ export class AppConfigurator {
                 period: {
                     inputType: 'dropdownRange',
                     group: 'time'
+                },
+                dating: {
+                    inputType: 'dating',
+                    group: 'time'
                 }
             }
         } as TypeDefinition,

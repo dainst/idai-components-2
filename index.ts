@@ -40,6 +40,7 @@ export {FieldGeometry} from './src/model/field-geometry';
 export {FeatureDocument} from './src/model/feature-document';
 export {FeatureResource} from './src/model/feature-resource';
 export {FeatureRelations} from './src/model/feature-relations';
+export {Dating} from './src/model/dating';
 
 export {ImageDocument} from './src/model/image-document';
 export {ImageResource} from './src/model/image-resource';
