@@ -13,6 +13,5 @@ export interface Dimension {
     inputUnit: 'mm'|'cm'|'m';
     isImprecise: boolean;
     isRange: boolean;
-    label?: string; // Deprecated,
-    unitSuffix?: string; // Not used
+    label?: string; // Deprecated
 }

@@ -60,7 +60,6 @@
       },
       "dimension": {
         "inputType": "dimension",
-        "unitSuffix": "ü.NN.",
         "positionValues": [
           "am Bruch",
           "oben",
