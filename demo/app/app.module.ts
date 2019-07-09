@@ -3,17 +3,16 @@ import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import {HashLocationStrategy, LocationStrategy} from '@angular/common';
+import {I18n} from '@ngx-translate/i18n-polyfill';
 import {routing} from './app.routing';
 import {Datastore} from '../../src/datastore/datastore';
 import {Messages} from '../../src/messages/messages';
 import {MemoryDatastore} from './memory-datastore';
 import {MD} from '../../src/messages/md';
 import {M} from './m';
-import {DocumentViewDemoComponent} from './document-view-demo.component';
 import {MessagesDemoComponent} from './messages-demo.component';
 import {MapDemoComponent} from './map-demo.component';
 import {AppComponent} from './app.component';
-import {IdaiDocumentsModule} from '../../src/documents/idai-documents.module';
 import {IdaiMessagesModule} from '../../src/messages/idai-messages.module';
 import {IdaiWidgetsModule} from '../../src/widgets/idai-widgets.module';
 import {ProjectConfiguration} from '../../src/configuration/project-configuration';
@@ -32,7 +31,6 @@ let pconf: any = undefined;
         BrowserModule,
         FormsModule,
         HttpClientModule,
-        IdaiDocumentsModule,
         IdaiMessagesModule,
         IdaiWidgetsModule,
         IdaiFieldMapModule,
@@ -40,7 +38,6 @@ let pconf: any = undefined;
     ],
     declarations: [
         AppComponent,
-        DocumentViewDemoComponent,
         MessagesDemoComponent,
         MapDemoComponent
     ],
@@ -57,42 +54,42 @@ let pconf: any = undefined;
             useFactory: (configLoader: ConfigLoader) => () => {
                 return configLoader.go(
                     'demo/config',
-                    { "processor": { "inputType": "input" }},
+                    { 'processor': { 'inputType': 'input' }},
                     { 'Image': { 'fields': { 'dimensions': {} } } as TypeDefinition },
                     [
                         {
-                            "domain": [
-                                "Section"
+                            'domain': [
+                                'Section'
                             ],
-                            "inverse": "NO-INVERSE",
-                            "name": "isRecordedIn",
-                            "range": [
-                                "Object"
+                            'inverse': 'NO-INVERSE',
+                            'name': 'isRecordedIn',
+                            'range': [
+                                'Object'
                             ]
                         },
                         {
-                            "name": "Belongs to",
-                            "inverse": "Includes",
-                            "domain": ["Object", "Object_enhanced", "Section"],
-                            "range": ["Object", "Object_enhanced", "Section"]
+                            'name': 'Belongs to',
+                            'inverse': 'Includes',
+                            'domain': ['Object', 'Object_enhanced', 'Section'],
+                            'range': ['Object', 'Object_enhanced', 'Section']
                         },
                         {
-                            "name": "Includes",
-                            "inverse": "Belongs to",
-                            "domain": ["Object", "Object_enhanced", "Section"],
-                            "range": ["Object", "Object_enhanced", "Section"]
+                            'name': 'Includes',
+                            'inverse': 'Belongs to',
+                            'domain': ['Object', 'Object_enhanced', 'Section'],
+                            'range': ['Object', 'Object_enhanced', 'Section']
                         },
                         {
-                            "name": "Found in",
-                            "inverse": "Find spot of",
-                            "domain": ["Object", "Object_enhanced"],
-                            "range": ["Section"]
+                            'name': 'Found in',
+                            'inverse': 'Find spot of',
+                            'domain': ['Object', 'Object_enhanced'],
+                            'range': ['Section']
                         },
                         {
-                            "name": "Find spot of",
-                            "inverse": "Found in",
-                            "domain": ["Section"],
-                            "range": ["Object", "Object_enhanced"]
+                            'name': 'Find spot of',
+                            'inverse': 'Found in',
+                            'domain': ['Section'],
+                            'range': ['Object', 'Object_enhanced']
                         },
                         { name: 'depicts', domain: ['Image:inherit'], inverse: 'isDepictedBy', visible: false,
                             editable: false},
@@ -133,7 +130,8 @@ let pconf: any = undefined;
                 return pconf;
             },
             deps: []
-        }
+        },
+        I18n
     ],
     bootstrap: [ AppComponent ]
 })

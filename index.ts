@@ -14,8 +14,6 @@ export {Datastore} from './src/datastore/datastore';
 export {ReadDatastore, FindResult} from './src/datastore/read-datastore';
 export {DatastoreErrors} from './src/datastore/datastore-errors';
 
-export {IdaiDocumentsModule} from './src/documents/idai-documents.module';
-
 export {ConfigLoader} from './src/configuration/config-loader';
 export {ConfigReader} from './src/configuration/config-reader';
 export {FieldDefinition} from './src/configuration/field-definition';

@@ -2,7 +2,8 @@ import {FieldDefinition} from './field-definition';
 import {TypeDefinition} from './type-definition';
 import {RelationDefinition} from './relation-definition';
 import {UnorderedConfigurationDefinition} from './unordered-configuration-definition';
-import {on, subtract, isNot, empty} from 'tsfun';
+import {on, subtract, isNot, empty, is} from 'tsfun';
+import {ConfigurationErrors} from './configuration-errors';
 
 
 /**
@@ -12,7 +13,6 @@ import {on, subtract, isNot, empty} from 'tsfun';
 export module Preprocessing {
 
 
-    // TODO refactor
     export function replaceCommonFields(configuration: UnorderedConfigurationDefinition, commonFields: any) {
 
         if (!configuration.types) return;
@@ -30,17 +30,21 @@ export module Preprocessing {
     }
 
 
-    export function addCustomFields(configuration: UnorderedConfigurationDefinition, typeName: string,
-                                    fields: any) {
+    export function applyCustom(appConfiguration: UnorderedConfigurationDefinition,
+                                customConfiguration: any,
+                                extendableTypes: string[]) {
 
-        const type: TypeDefinition|undefined = configuration.types[typeName];
+        // Validate first, before copying the types defined only in customConfiguration into the appConfiguration,
+        // in order to make sure that only parents from the original appConfiguration can be referenced
+        validateCustom(appConfiguration, customConfiguration, extendableTypes);
 
-        if (!type) return;
-
-        Object.keys(fields).forEach(fieldName => {
-            const field: any = { name: fieldName };
-            Object.assign(field, fields[fieldName]);
-            type.fields[fieldName] = field;
+        Object.keys(customConfiguration).forEach(typeName => {
+            if (appConfiguration.types[typeName]) {
+                addCustomFields(appConfiguration, typeName,
+                    customConfiguration[typeName].fields);
+            } else {
+                appConfiguration.types[typeName] = customConfiguration[typeName];
+            }
         });
     }
 
@@ -325,5 +329,40 @@ export module Preprocessing {
                 typeDefinition.fields[extraFieldName] = Object.assign({}, extraFields[extraFieldName]);
             }
         }
+    }
+
+
+    function addCustomFields(configuration: UnorderedConfigurationDefinition,
+                             typeName: string,
+                             fields: any) {
+
+        Object.keys(fields).forEach(fieldName => {
+            const field: any = { name: fieldName };
+            Object.assign(field, fields[fieldName]);
+            configuration.types[typeName].fields[fieldName] = field;
+        });
+    }
+
+
+    function validateCustom(appConfiguration: UnorderedConfigurationDefinition,
+                            customConfiguration: any,
+                            extendableTypes: string[]) {
+
+        Object.keys(customConfiguration).forEach(typeName => {
+            if (!appConfiguration.types[typeName]) {
+                if (!customConfiguration[typeName].parent) throw ConfigurationErrors.INVALID_CONFIG_NO_PARENT_ASSIGNED;
+
+                const found = Object.keys(appConfiguration.types).find(is(customConfiguration[typeName].parent));
+                if (!found) throw ConfigurationErrors.INVALID_CONFIG_PARENT_NOT_DEFINED;
+
+                if (!extendableTypes.includes(customConfiguration[typeName].parent)) {
+                    throw ConfigurationErrors.NOT_AND_EXTENDABLE_TYPE;
+                }
+
+                if (appConfiguration.types[customConfiguration[typeName].parent].parent) {
+                    throw ConfigurationErrors.INVALID_CONFIG_PARENT_NOT_TOP_LEVEL;
+                }
+            }
+        });
     }
 }
