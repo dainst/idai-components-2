@@ -356,7 +356,7 @@ export module Preprocessing {
                 if (!found) throw ConfigurationErrors.INVALID_CONFIG_PARENT_NOT_DEFINED;
 
                 if (!extendableTypes.includes(customConfiguration[typeName].parent)) {
-                    throw ConfigurationErrors.NOT_AND_EXTENDABLE_TYPE;
+                    throw ConfigurationErrors.NOT_AN_EXTENDABLE_TYPE;
                 }
 
                 if (appConfiguration.types[customConfiguration[typeName].parent].parent) {

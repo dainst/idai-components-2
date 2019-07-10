@@ -433,7 +433,7 @@ describe('ConfigLoader', () => {
             fail();
 
         } catch(err) {
-            expect(err[0][0]).toBe(ConfigurationErrors.NOT_AND_EXTENDABLE_TYPE);
+            expect(err[0][0]).toBe(ConfigurationErrors.NOT_AN_EXTENDABLE_TYPE);
         } finally {
             done();
         }
