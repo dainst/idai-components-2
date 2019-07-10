@@ -14,7 +14,7 @@ import {ConfigurationDefinition} from './configuration-definition';
 // This is domain model related. We should make sure that extending types is safe, insofar as
 // relations do not vary between subtypes of the same supertype. Also Operation and Place should
 // not be extendable.
-const extendableTypes = ['Find'];
+const extendableTypes: string[] = ['Find', 'Feature'];
 
 
 @Injectable()
