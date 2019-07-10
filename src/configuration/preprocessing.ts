@@ -54,8 +54,12 @@ export module Preprocessing {
         if (configuration.types) {
             for (let confTypeName of Object.keys(configuration.types)) {
                 const confType = configuration.types[confTypeName];
-                for (let confFieldName of Object.keys(confType.fields)) {
 
+                if (language.types && language.types[confTypeName] && language.types[confTypeName].label) {
+                    confType.label = language.types[confTypeName].label;
+                }
+
+                for (let confFieldName of Object.keys(confType.fields)) {
                     let descriptionFoundInTypes = false;
                     let labelFoundInTypes = false;
 
@@ -63,20 +67,16 @@ export module Preprocessing {
 
                     if (language.types) {
                         const langConfType = language.types[confTypeName];
-                        if (langConfType) {
-                            if (langConfType.label) confType.label = langConfType.label;
-
-                            if (langConfType.fields) {
-                                const langConfField = langConfType.fields[confFieldName];
-                                if (langConfField) {
-                                    if (langConfField.label) {
-                                        labelFoundInTypes = true;
-                                        confField.label = langConfField.label;
-                                    }
-                                    if (langConfField.description) {
-                                        descriptionFoundInTypes = true;
-                                        confField.description = langConfField.description;
-                                    }
+                        if (langConfType && langConfType.fields) {
+                            const langConfField = langConfType.fields[confFieldName];
+                            if (langConfField) {
+                                if (langConfField.label) {
+                                    labelFoundInTypes = true;
+                                    confField.label = langConfField.label;
+                                }
+                                if (langConfField.description) {
+                                    descriptionFoundInTypes = true;
+                                    confField.description = langConfField.description;
                                 }
                             }
                         }
@@ -96,9 +96,7 @@ export module Preprocessing {
             }
         }
 
-
         if (language.relations) {
-
             for (let langConfRelationKey of Object.keys(language.relations)) {
                 for (let confRelation of configuration.relations as any) {
                     if (confRelation.name !== langConfRelationKey) continue;
