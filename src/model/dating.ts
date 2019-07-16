@@ -24,5 +24,8 @@ export interface DatingElement {
 
     // Input values as typed in by the user
     inputYear: number;
-    inputType: 'bce'|'ce'|'bp';
+    inputType: DatingType;
 }
+
+
+export type DatingType = 'bce'|'ce'|'bp';

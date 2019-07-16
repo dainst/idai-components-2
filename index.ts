@@ -38,7 +38,7 @@ export {FieldGeometry} from './src/model/field-geometry';
 export {FeatureDocument} from './src/model/feature-document';
 export {FeatureResource} from './src/model/feature-resource';
 export {FeatureRelations} from './src/model/feature-relations';
-export {Dating, DatingElement} from './src/model/dating';
+export {Dating, DatingElement, DatingType} from './src/model/dating';
 export {Dimension} from './src/model/dimension';
 
 export {ImageDocument} from './src/model/image-document';
