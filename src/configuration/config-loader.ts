@@ -11,10 +11,7 @@ import {PrePreprocessConfigurationValidator} from './pre-preprocess-configuratio
 import {UnorderedConfigurationDefinition} from './unordered-configuration-definition';
 import {ConfigurationDefinition} from './configuration-definition';
 
-// This is domain model related. We should make sure that extending types is safe, insofar as
-// relations do not vary between subtypes of the same supertype. Also Operation and Place should
-// not be extendable.
-const extendableTypes: string[] = ['Find', 'Feature'];
+const nonExtendableTypes: string[] = ['Operation', 'Place'];
 
 
 @Injectable()
@@ -50,16 +47,13 @@ export class ConfigLoader {
                 private i18n: I18n) {}
 
 
-    public async go(
-                configDirPath: string,
-                commonFields: any,
-                extraTypes: {[typeName: string]: TypeDefinition },
-                relations: Array<RelationDefinition>,
-                extraFields: {[fieldName: string]: FieldDefinition },
-                prePreprocessConfigurationValidator: PrePreprocessConfigurationValidator,
-                postPreprocessConfigurationValidator: ConfigurationValidator,
-                customConfigurationName: string|undefined,
-                locale: string): Promise<ProjectConfiguration> {
+    public async go(configDirPath: string, commonFields: any,
+                    extraTypes: {[typeName: string]: TypeDefinition }, relations: Array<RelationDefinition>,
+                    extraFields: {[fieldName: string]: FieldDefinition },
+                    prePreprocessConfigurationValidator: PrePreprocessConfigurationValidator,
+                    postPreprocessConfigurationValidator: ConfigurationValidator,
+                    customConfigurationName: string|undefined,
+                    locale: string): Promise<ProjectConfiguration> {
 
         if (customConfigurationName) console.log('Load custom configuration', customConfigurationName);
 
@@ -91,9 +85,8 @@ export class ConfigLoader {
     }
 
 
-    private async preprocess(configDirPath: string, appConfiguration: any,
-                             commonFields: any,
-                             extraTypes: {[typeName: string]: TypeDefinition } ,
+    private async preprocess(configDirPath: string, appConfiguration: any, commonFields: any,
+                             extraTypes: {[typeName: string]: TypeDefinition },
                              relations: Array<RelationDefinition>,
                              extraFields: {[fieldName: string]: FieldDefinition },
                              customConfigurationName: string|undefined,
@@ -149,7 +142,7 @@ export class ConfigLoader {
 
         try {
             const customConfiguration = await this.configReader.read(customFieldsConfigurationPath);
-            Preprocessing.applyCustom(appConfiguration, customConfiguration, extendableTypes);
+            Preprocessing.applyCustom(appConfiguration, customConfiguration, nonExtendableTypes);
 
         } catch (msgWithParams) {
             throw [[msgWithParams]];
@@ -187,8 +180,7 @@ export class ConfigLoader {
     }
 
 
-    private async applyPeriodConfiguration(
-        appConfiguration: any, periodConfigurationPath: string) {
+    private async applyPeriodConfiguration(appConfiguration: any, periodConfigurationPath: string) {
 
         try {
             const datingConfiguration = await this.configReader.read(periodConfigurationPath);

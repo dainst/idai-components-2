@@ -413,14 +413,14 @@ describe('ConfigLoader', () => {
     });
 
 
-    it('preprocess - apply custom fields configuration - add subtypes - only extendableTypes allowed', async done => {
+    it('preprocess - apply custom fields configuration - add subtypes - non extendable types not allowed', async done => {
 
         Object.assign(configuration, {
-            NonExtendable: { fields: { fieldA1: { inputType: 'unsignedInt' } } }
+            Place: { fields: { fieldA1: { inputType: 'unsignedInt' } } }
         });
 
         const customFieldsConfiguration = {
-            Extension: { parent: 'NonExtendable', fields: { fieldC1: { inputType: 'boolean'}}}
+            Extension: { parent: 'Place', fields: { fieldC1: { inputType: 'boolean'}}}
         };
 
         applyConfig(customFieldsConfiguration);
