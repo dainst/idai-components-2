@@ -325,6 +325,14 @@ export class AppConfigurator {
             sameMainTypeResource: true
         },
         {
+            name: 'isEquivalentTo',
+            inverse: 'isEquivalentTo',
+            label: this.i18n({ id: 'configuration.relations.isEquivalentTo', value: 'Gleich mit' }),
+            domain: ['Feature:inherit'],
+            range: ['Feature:inherit'],
+            sameMainTypeResource: true
+        },
+        {
             name: 'isContemporaryWith',
             inverse: 'isContemporaryWith',
             label: this.i18n({ id: 'configuration.relations.isContemporaryWith', value: 'Zeitgleich mit' }),
