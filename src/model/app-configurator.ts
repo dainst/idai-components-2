@@ -327,7 +327,7 @@ export class AppConfigurator {
         {
             name: 'isEquivalentTo',
             inverse: 'isEquivalentTo',
-            label: this.i18n({ id: 'configuration.relations.isEquivalentTo', value: 'Gleich mit' }),
+            label: this.i18n({ id: 'configuration.relations.isEquivalentTo', value: 'Gleich wie' }),
             domain: ['Feature:inherit'],
             range: ['Feature:inherit'],
             sameMainTypeResource: true
