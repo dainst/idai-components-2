@@ -2,7 +2,7 @@ import {FieldDefinition} from './field-definition';
 import {TypeDefinition} from './type-definition';
 import {RelationDefinition} from './relation-definition';
 import {UnorderedConfigurationDefinition} from './unordered-configuration-definition';
-import {on, subtract, isNot, empty, is} from 'tsfun';
+import {on, subtract, isNot, empty, is, clone} from 'tsfun';
 import {ConfigurationErrors} from './configuration-errors';
 
 
@@ -20,8 +20,11 @@ export module Preprocessing {
         for (let confTypeName of Object.keys(configuration.types)) {
             if ((configuration.types[confTypeName] as any)['commons']) {
                 for (let commonFieldName of ((configuration.types[confTypeName] as any)['commons'])) {
-                    if (!(configuration.types[confTypeName] as any)['fields']) (configuration.types[confTypeName] as any)['fields'] = [];
-                    (configuration.types[confTypeName] as any)['fields'][commonFieldName] = commonFields[commonFieldName];
+                    if (!(configuration.types[confTypeName] as any)['fields']) {
+                        (configuration.types[confTypeName] as any)['fields'] = [];
+                    }
+                    (configuration.types[confTypeName] as any)['fields'][commonFieldName]
+                        = clone(commonFields[commonFieldName]);
                 }
 
                 delete (configuration.types[confTypeName] as any)['commons'];
