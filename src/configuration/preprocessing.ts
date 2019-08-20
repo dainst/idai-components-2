@@ -43,8 +43,7 @@ export module Preprocessing {
 
         Object.keys(customConfiguration).forEach(typeName => {
             if (appConfiguration.types[typeName]) {
-                addCustomFields(appConfiguration, typeName,
-                    customConfiguration[typeName].fields);
+                addCustomFields(appConfiguration, typeName, customConfiguration[typeName].fields);
             } else {
                 appConfiguration.types[typeName] = customConfiguration[typeName];
             }
@@ -336,6 +335,8 @@ export module Preprocessing {
     function addCustomFields(configuration: UnorderedConfigurationDefinition,
                              typeName: string,
                              fields: any) {
+
+        if (!fields) return;
 
         Object.keys(fields).forEach(fieldName => {
             const field: any = { name: fieldName };
