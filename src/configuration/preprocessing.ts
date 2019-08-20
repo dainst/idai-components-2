@@ -44,6 +44,7 @@ export module Preprocessing {
         Object.keys(customConfiguration).forEach(typeName => {
             if (appConfiguration.types[typeName]) {
                 addCustomFields(appConfiguration, typeName, customConfiguration[typeName].fields);
+                addCustomCommons(appConfiguration, typeName, (customConfiguration[typeName] as any)['commons'])
             } else {
                 appConfiguration.types[typeName] = customConfiguration[typeName];
             }
@@ -343,6 +344,20 @@ export module Preprocessing {
             Object.assign(field, fields[fieldName]);
             configuration.types[typeName].fields[fieldName] = field;
         });
+    }
+
+
+    function addCustomCommons(configuration: UnorderedConfigurationDefinition, typeName: string,
+                              commons: string[]|undefined) {
+
+        if (!commons) return;
+
+        if (!(configuration.types[typeName] as any)['commons']) {
+            (configuration.types[typeName] as any)['commons'] = commons;
+        } else {
+            (configuration.types[typeName] as any)['commons']
+                = (configuration.types[typeName] as any)['commons'].concat(commons);
+        }
     }
 
 
