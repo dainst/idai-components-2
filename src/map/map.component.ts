@@ -252,8 +252,7 @@ export class MapComponent implements OnChanges {
         marker.bindTooltip(MapComponent.getShortDescription(document.resource), {
             offset: L.point(0, -40),
             direction: 'top',
-            className: 'marker'
-        });
+            opacity: 1.0});
 
         const mapComponent = this;
         marker.on('click', function() {
