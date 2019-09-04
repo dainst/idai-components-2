@@ -2,7 +2,7 @@ import {FieldDefinition} from './field-definition';
 import {TypeDefinition} from './type-definition';
 import {RelationDefinition} from './relation-definition';
 import {UnorderedConfigurationDefinition} from './unordered-configuration-definition';
-import {on, subtract, isNot, empty, is} from 'tsfun';
+import {on, subtract, isNot, empty, is, clone} from 'tsfun';
 import {ConfigurationErrors} from './configuration-errors';
 
 
@@ -20,8 +20,11 @@ export module Preprocessing {
         for (let confTypeName of Object.keys(configuration.types)) {
             if ((configuration.types[confTypeName] as any)['commons']) {
                 for (let commonFieldName of ((configuration.types[confTypeName] as any)['commons'])) {
-                    if (!(configuration.types[confTypeName] as any)['fields']) (configuration.types[confTypeName] as any)['fields'] = [];
-                    (configuration.types[confTypeName] as any)['fields'][commonFieldName] = commonFields[commonFieldName];
+                    if (!(configuration.types[confTypeName] as any)['fields']) {
+                        (configuration.types[confTypeName] as any)['fields'] = [];
+                    }
+                    (configuration.types[confTypeName] as any)['fields'][commonFieldName]
+                        = clone(commonFields[commonFieldName]);
                 }
 
                 delete (configuration.types[confTypeName] as any)['commons'];
@@ -40,8 +43,8 @@ export module Preprocessing {
 
         Object.keys(customConfiguration).forEach(typeName => {
             if (appConfiguration.types[typeName]) {
-                addCustomFields(appConfiguration, typeName,
-                    customConfiguration[typeName].fields);
+                addCustomFields(appConfiguration, typeName, customConfiguration[typeName].fields);
+                addCustomCommons(appConfiguration, typeName, (customConfiguration[typeName] as any)['commons'])
             } else {
                 appConfiguration.types[typeName] = customConfiguration[typeName];
             }
@@ -334,11 +337,27 @@ export module Preprocessing {
                              typeName: string,
                              fields: any) {
 
+        if (!fields) return;
+
         Object.keys(fields).forEach(fieldName => {
             const field: any = { name: fieldName };
             Object.assign(field, fields[fieldName]);
             configuration.types[typeName].fields[fieldName] = field;
         });
+    }
+
+
+    function addCustomCommons(configuration: UnorderedConfigurationDefinition, typeName: string,
+                              commons: string[]|undefined) {
+
+        if (!commons) return;
+
+        if (!(configuration.types[typeName] as any)['commons']) {
+            (configuration.types[typeName] as any)['commons'] = commons;
+        } else {
+            (configuration.types[typeName] as any)['commons']
+                = (configuration.types[typeName] as any)['commons'].concat(commons);
+        }
     }
 
 

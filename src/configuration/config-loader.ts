@@ -108,12 +108,11 @@ export class ConfigLoader {
         // to be done before applyCustomFields so that extra types can get additional fields too
         Preprocessing.addExtraTypes(appConfiguration, extraTypes);
 
-        Preprocessing.replaceCommonFields(appConfiguration, commonFields);
-
-
         const customConfigPath = configDirPath
             + '/Fields-' + (customConfigurationName ? customConfigurationName : 'Custom') + '.json';
         await this.applyCustomFieldsConfiguration(appConfiguration, customConfigPath);
+
+        Preprocessing.replaceCommonFields(appConfiguration, commonFields);
 
         await this.applyHiddenConfs(appConfiguration, hiddenConfigurationPath, customHiddenConfigurationPath);
 
