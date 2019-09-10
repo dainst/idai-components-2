@@ -2,7 +2,7 @@ import {FieldDefinition} from './field-definition';
 import {TypeDefinition} from './type-definition';
 import {RelationDefinition} from './relation-definition';
 import {UnorderedConfigurationDefinition} from './unordered-configuration-definition';
-import {on, subtract, isNot, empty, is, clone} from 'tsfun';
+import {on, subtract, isNot, empty, is, clone, lookup, flow, forEach, map, isDefined, filter, to} from 'tsfun';
 import {ConfigurationErrors} from './configuration-errors';
 
 
@@ -21,10 +21,12 @@ export module Preprocessing {
             if ((configuration.types[confTypeName] as any)['commons']) {
                 for (let commonFieldName of ((configuration.types[confTypeName] as any)['commons'])) {
                     if (!(configuration.types[confTypeName] as any)['fields']) {
-                        (configuration.types[confTypeName] as any)['fields'] = [];
+                        (configuration.types[confTypeName] as any)['fields'] = {};
                     }
                     (configuration.types[confTypeName] as any)['fields'][commonFieldName]
                         = clone(commonFields[commonFieldName]);
+
+                    //console.log(commonFields[commonFieldName])
                 }
 
                 delete (configuration.types[confTypeName] as any)['commons'];
@@ -127,17 +129,21 @@ export module Preprocessing {
     }
 
 
-    export function applyPeriodConfiguration(configuration: UnorderedConfigurationDefinition,
-                                             periodConfiguration: any) {
+    export function applyValuelistsConfiguration(types: { [typeName: string]: TypeDefinition },
+                                                 periodConfiguration: {[id: string]: string[]}) {
 
-        Object.keys(configuration.types).forEach(typeName => {
-            const type: TypeDefinition = configuration.types[typeName];
-            if (!type) return;
+        flow(types,
+            Object.keys,
+            map(lookup(types)), // TODO these three lines seem to be one thing
+            filter(isDefined),
+            forEach((type: TypeDefinition) => {
 
-            Object.keys(type.fields)
-                .filter(field => field === 'period')
-                .forEach(field => type.fields[field].valuelist = periodConfiguration.valuelist);
-        });
+                flow(type.fields,
+                    Object.keys,
+                    map(lookup(type.fields)), // TODO again, the same pattern
+                    filter(on('valuelistId', isDefined)),
+                    forEach((fd: FieldDefinition) => (fd as any)['valuelist'] = periodConfiguration[(fd as any)['valuelistId']]));
+            }));
     }
 
 

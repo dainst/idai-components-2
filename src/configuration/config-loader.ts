@@ -98,8 +98,7 @@ export class ConfigLoader {
         const languageConfigurationPath = configDirPath + '/Language.' + locale + '.json';
         const orderConfigurationPath = configDirPath + '/Order.json';
         const searchConfigurationPath = configDirPath + '/Search.json';
-        const periodConfigurationPath = configDirPath + '/Periods'
-            + (customConfigurationName ? '-' + customConfigurationName : '') + '.json';
+        const valuelistsConfigurationPath = configDirPath + '/Valuelists.json';
 
         Preprocessing.prepareSameMainTypeResource(appConfiguration);
         // TODO rename and test / also: it is idai field specific
@@ -130,7 +129,7 @@ export class ConfigLoader {
         );
 
         await this.applySearchConfiguration(appConfiguration, searchConfigurationPath);
-        await this.applyPeriodConfiguration(appConfiguration, periodConfigurationPath);
+        await this.applyValuelistsConfiguration(appConfiguration.types, valuelistsConfigurationPath);
 
         return this.getOrderedConfiguration(appConfiguration, orderConfigurationPath);
     }
@@ -179,11 +178,11 @@ export class ConfigLoader {
     }
 
 
-    private async applyPeriodConfiguration(appConfiguration: any, periodConfigurationPath: string) {
+    private async applyValuelistsConfiguration(appConfiguration: any, valuelistsConfigurationPath: string) {
 
         try {
-            const datingConfiguration = await this.configReader.read(periodConfigurationPath);
-            Preprocessing.applyPeriodConfiguration(appConfiguration, datingConfiguration);
+            const valuelistsConfiguration = await this.configReader.read(valuelistsConfigurationPath);
+            Preprocessing.applyValuelistsConfiguration(appConfiguration, valuelistsConfiguration);
         }  catch (msgWithParams) {
             throw [[msgWithParams]];
         }
