@@ -2,7 +2,7 @@ import {FieldDefinition} from './field-definition';
 import {TypeDefinition} from './type-definition';
 import {RelationDefinition} from './relation-definition';
 import {UnorderedConfigurationDefinition} from './unordered-configuration-definition';
-import {on, subtract, isNot, empty, is, clone, lookup, flow, forEach, map, isDefined, filter, to} from 'tsfun';
+import {on, subtract, isNot, empty, is, clone, lookup, flow, forEach, map, isDefined, filter, to, compose} from 'tsfun';
 import {ConfigurationErrors} from './configuration-errors';
 
 
@@ -132,18 +132,16 @@ export module Preprocessing {
     export function applyValuelistsConfiguration(types: { [typeName: string]: TypeDefinition },
                                                  periodConfiguration: {[id: string]: string[]}) {
 
-        flow(types,
-            Object.keys,
-            map(lookup(types)), // TODO these three lines seem to be one thing
-            filter(isDefined),
-            forEach((type: TypeDefinition) => {
+        const processFields = compose(
+            Object.values,
+            filter(on('valuelistId', isDefined)),
+            forEach((fd: FieldDefinition) => (fd as any)['valuelist'] = periodConfiguration[(fd as any)['valuelistId']]));
 
-                flow(type.fields,
-                    Object.keys,
-                    map(lookup(type.fields)), // TODO again, the same pattern
-                    filter(on('valuelistId', isDefined)),
-                    forEach((fd: FieldDefinition) => (fd as any)['valuelist'] = periodConfiguration[(fd as any)['valuelistId']]));
-            }));
+        flow(types,
+            Object.values,
+            filter(isDefined),
+            map(to('fields')),
+            forEach(processFields));
     }
 
 
