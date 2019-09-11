@@ -343,17 +343,21 @@ export module Preprocessing {
 
         if (!fields) return;
 
-        // TODO hack; there are some fields we want to 'merge' in general
-        const group: string|undefined = configuration.types[typeName].fields['group'];
 
         Object.keys(fields).forEach(fieldName => {
             const field: any = { name: fieldName };
             Object.assign(field, fields[fieldName]);
 
-            configuration.types[typeName].fields[fieldName] = field;
-        });
+            const group: string|undefined = configuration.types[typeName].fields[fieldName]
+                ? configuration.types[typeName].fields[fieldName]['group']
+                : undefined;
 
-        if (group) configuration.types[typeName].fields['group'] = group;
+            configuration.types[typeName].fields[fieldName] = field;
+
+            // TODO hack; there are some fields we want to 'merge' in general
+            if (group) configuration.types[typeName].fields[fieldName]['group'] = group;
+
+        });
     }
 
 
