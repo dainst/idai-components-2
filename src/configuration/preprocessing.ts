@@ -297,8 +297,6 @@ export module Preprocessing {
             if (!alreadyPresentInTarget) {
                 target[sourceFieldName] = source[sourceFieldName];
             } else {
-                console.log("already present in config", sourceFieldName)
-                console.log("already present in config", source[sourceFieldName])
                 // TODO hack
                 if (source[sourceFieldName]['group']) {
                     target[sourceFieldName]['group'] = source[sourceFieldName]['group'];
