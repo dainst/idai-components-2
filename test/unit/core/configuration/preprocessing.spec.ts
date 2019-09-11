@@ -453,6 +453,23 @@ describe('Preprocessing', () => {
         expect(configuration.types['A'].fields['a1'].valuelist).toEqual(['one', 'two', 'three']);
         //console.log(JSON.stringify(configuration));
     });
+
+
+    it('applyCustom - merge group field into overwritten field', () => {
+
+        configuration.types['T1'].fields['bField'] = { group: 'time'};
+
+        const extraTypes = {
+            T1: {
+                fields: {
+                    bField: {}
+                }
+            } as TypeDefinition
+        };
+
+        Preprocessing.applyCustom(configuration, extraTypes, []);
+        expect(configuration.types['T1'].fields['bField']['group']).toEqual('time');
+    });
 });
 
 

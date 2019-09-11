@@ -44,6 +44,7 @@ export module Preprocessing {
         validateCustom(appConfiguration, customConfiguration, nonExtendableTypes);
 
         Object.keys(customConfiguration).forEach(typeName => {
+
             if (appConfiguration.types[typeName]) {
                 addCustomFields(appConfiguration, typeName, customConfiguration[typeName].fields);
                 addCustomCommons(appConfiguration, typeName, (customConfiguration[typeName] as any)['commons'])
@@ -343,7 +344,6 @@ export module Preprocessing {
 
         if (!fields) return;
 
-
         Object.keys(fields).forEach(fieldName => {
             const field: any = { name: fieldName };
             Object.assign(field, fields[fieldName]);
@@ -352,11 +352,15 @@ export module Preprocessing {
                 ? configuration.types[typeName].fields[fieldName]['group']
                 : undefined;
 
+            if (fieldName === 'period') {
+                console.log("fieldName", fieldName)
+                console.log("gruo", group)
+            }
+
             configuration.types[typeName].fields[fieldName] = field;
 
             // TODO hack; there are some fields we want to 'merge' in general
             if (group) configuration.types[typeName].fields[fieldName]['group'] = group;
-
         });
     }
 
