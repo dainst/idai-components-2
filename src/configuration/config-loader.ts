@@ -8,7 +8,6 @@ import {TypeDefinition} from './type-definition';
 import {RelationDefinition} from './relation-definition';
 import {FieldDefinition} from './field-definition';
 import {PrePreprocessConfigurationValidator} from './pre-preprocess-configuration-validator';
-import {UnorderedConfigurationDefinition} from './unordered-configuration-definition';
 import {ConfigurationDefinition} from './configuration-definition';
 
 const nonExtendableTypes: string[] = ['Operation', 'Place'];
@@ -99,228 +98,51 @@ export class ConfigLoader {
         const orderConfigurationPath = configDirPath + '/Order.json';
         const searchConfigurationPath = configDirPath + '/Search.json';
         const valuelistsConfigurationPath = configDirPath + '/Valuelists.json';
-
-        Preprocessing.prepareSameMainTypeResource(appConfiguration);
-        // TODO rename and test / also: it is idai field specific
-        // Preprocessing.setIsRecordedInVisibilities(appConfiguration); See #8992
-
-        // to be done before applyCustomFields so that extra types can get additional fields too
-        Preprocessing.addExtraTypes(appConfiguration, extraTypes);
-
         const customConfigPath = configDirPath
             + '/Fields-' + (customConfigurationName ? customConfigurationName : 'Custom') + '.json';
-        await this.applyCustomFieldsConfiguration(appConfiguration, customConfigPath);
 
-        Preprocessing.replaceCommonFields(appConfiguration, commonFields);
+        let customConfiguration;
+        let hiddenConfiguration: any;
+        let customHiddenConfiguration: any;
+        let languageConfiguration: any;
+        let customLanguageConfiguration: any;
+        let searchConfiguration: any;
+        let valuelistsConfiguration: any;
+        let orderConfiguration: any;
 
-        await this.applyHiddenConfs(appConfiguration, hiddenConfigurationPath, customHiddenConfigurationPath);
-
-        appConfiguration.relations = [];
-        Preprocessing.addExtraFields(appConfiguration, extraFields);
-        Preprocessing.addExtraRelations(appConfiguration, relations);
-        Preprocessing.addExtraFields(appConfiguration, this.defaultFields);
-
-        await this.applyLanguageConfs(appConfiguration, languageConfigurationPath,
-            configDirPath + '/Language-'
+        try {
+            customConfiguration = await this.configReader.read(customConfigPath);
+            hiddenConfiguration = await this.configReader.read(hiddenConfigurationPath);
+            customHiddenConfiguration = await this.configReader.read(customHiddenConfigurationPath);
+            languageConfiguration = await this.configReader.read(languageConfigurationPath);
+            customLanguageConfiguration = await this.configReader.read(configDirPath + '/Language-'
                 + (customConfigurationName
                     ? customConfigurationName
                     : 'Custom')
-                    + '.' + locale + '.json'
-        );
+                + '.' + locale + '.json');
+            searchConfiguration = await this.configReader.read(searchConfigurationPath);
+            valuelistsConfiguration = await this.configReader.read(valuelistsConfigurationPath);
+            orderConfiguration = await this.configReader.read(orderConfigurationPath);
 
-        await this.applySearchConfiguration(appConfiguration, searchConfigurationPath);
-        await this.applyValuelistsConfiguration(appConfiguration.types, valuelistsConfigurationPath);
-
-        return this.getOrderedConfiguration(appConfiguration, orderConfigurationPath);
-    }
-
-
-    private async applyCustomFieldsConfiguration(appConfiguration: any,
-                                                 customFieldsConfigurationPath: string) {
-
-        try {
-            const customConfiguration = await this.configReader.read(customFieldsConfigurationPath);
-            Preprocessing.applyCustom(appConfiguration, customConfiguration, nonExtendableTypes);
-
-        } catch (msgWithParams) {
-            throw [[msgWithParams]];
-        }
-    }
-
-
-    private async applyLanguageConfs(appConfiguration: any, languageConfigurationPath: string,
-                                     customLanguageConfigurationPath: string) {
-
-        try {
-            const languageConfiguration = await this.configReader.read(languageConfigurationPath);
-            Preprocessing.applyLanguage(appConfiguration, languageConfiguration); // TODO test it
-        } catch (msgWithParams) {
-            throw [[msgWithParams]];
-        }
-
-        try {
-            const customLanguageConfiguration = await this.configReader.read(customLanguageConfigurationPath);
-            Preprocessing.applyLanguage(appConfiguration, customLanguageConfiguration); // TODO test it
-        } catch (msgWithParams) {
-            throw [[msgWithParams]];
-        }
-    }
-
-
-    private async applySearchConfiguration(appConfiguration: any, searchConfigurationPath: string) {
-
-        try {
-            const searchConfiguration = await this.configReader.read(searchConfigurationPath);
-            Preprocessing.applySearchConfiguration(appConfiguration, searchConfiguration);
-        }  catch (msgWithParams) {
-            throw [[msgWithParams]];
-        }
-    }
-
-
-    private async applyValuelistsConfiguration(appConfiguration: any, valuelistsConfigurationPath: string) {
-
-        try {
-            const valuelistsConfiguration = await this.configReader.read(valuelistsConfigurationPath);
-            Preprocessing.applyValuelistsConfiguration(appConfiguration, valuelistsConfiguration);
-        }  catch (msgWithParams) {
-            throw [[msgWithParams]];
-        }
-    }
-
-
-    private async applyHiddenConfs(appConfiguration: any, hiddenConfigurationPath: string,
-                                   customHiddenConfigurationPath: string) {
-
-        try {
-            const hiddenConfiguration = await this.configReader.read(hiddenConfigurationPath);
-            ConfigLoader.hideFields(appConfiguration, hiddenConfiguration);
-        } catch (_) {}
-
-        try {
-            const customHiddenConfiguration = await this.configReader.read(customHiddenConfigurationPath);
-            ConfigLoader.hideFields(appConfiguration, customHiddenConfiguration);
-        } catch (_) {}
-    }
-
-
-    private async getOrderedConfiguration(appConfiguration: UnorderedConfigurationDefinition,
-                                          orderConfigurationPath: string): Promise<ConfigurationDefinition> {
-
-        let orderedConfiguration: ConfigurationDefinition;
-
-        try {
-            const orderConfiguration = await this.configReader.read(orderConfigurationPath);
-            ConfigLoader.addExtraFieldsOrder(appConfiguration, orderConfiguration);
-
-            orderedConfiguration = {
-                identifier: appConfiguration.identifier,
-                relations: appConfiguration.relations,
-                types: ConfigLoader.getOrderedTypes(appConfiguration, orderConfiguration)
-            };
+            return Preprocessing.preprocessComplete(
+                appConfiguration,
+                customConfiguration,
+                hiddenConfiguration,
+                customHiddenConfiguration,
+                languageConfiguration,
+                customLanguageConfiguration,
+                searchConfiguration,
+                valuelistsConfiguration,
+                orderConfiguration,
+                extraTypes,
+                nonExtendableTypes,
+                commonFields,
+                extraFields,
+                relations,
+                this.defaultFields);
 
         } catch (msgWithParams) {
             throw [[msgWithParams]];
         }
-
-        return orderedConfiguration;
-    }
-
-
-    private static addExtraFieldsOrder(appConfiguration: UnorderedConfigurationDefinition, // TODO remove
-                                       orderConfiguration: any) {
-
-        if (!orderConfiguration.fields) orderConfiguration.fields = {};
-
-        Object.keys(appConfiguration.types).forEach(typeName => {
-            if (!orderConfiguration.fields[typeName]) orderConfiguration.fields[typeName] = [];
-            orderConfiguration.fields[typeName]
-                = [].concat(orderConfiguration.fields[typeName]);
-        });
-    }
-
-
-    private static getOrderedTypes(appConfiguration: UnorderedConfigurationDefinition,
-                                   orderConfiguration: any): Array<TypeDefinition> {
-
-        const types: Array<TypeDefinition> = [];
-
-        if (orderConfiguration.types) {
-            orderConfiguration.types.forEach((typeName: string) => {
-                const type: TypeDefinition | undefined = appConfiguration.types[typeName];
-                if (type) this.addToOrderedTypes(type, typeName, types, orderConfiguration);
-            });
-        }
-
-        Object.keys(appConfiguration.types).forEach(typeName => {
-            if (!types.find(type => type.type === typeName)) {
-                this.addToOrderedTypes(appConfiguration.types[typeName], typeName, types, orderConfiguration);
-            }
-        });
-
-        return types;
-    }
-
-
-    private static addToOrderedTypes(type: TypeDefinition, typeName: string, types: Array<TypeDefinition>,
-                                     orderConfiguration: any) {
-
-        if (types.includes(type)) return;
-
-        type.type = typeName;
-        type.fields = this.getOrderedFields(type, orderConfiguration);
-        types.push(type);
-    }
-
-
-    private static getOrderedFields(type: TypeDefinition, orderConfiguration: any): Array<FieldDefinition> {
-
-        const fields: Array<FieldDefinition> = [];
-
-        if (!type.fields) return fields;
-
-        if (orderConfiguration.fields[type.type]) {
-            orderConfiguration.fields[type.type].forEach((fieldName: string) => {
-                const field: FieldDefinition | undefined = type.fields[fieldName];
-                if (field) this.addToOrderedFields(field, fieldName, fields);
-            });
-        }
-
-        Object.keys(type.fields).forEach(fieldName => {
-            if (!fields.find(field => field.name === fieldName)) {
-                this.addToOrderedFields(type.fields[fieldName], fieldName, fields);
-            }
-        });
-
-        return fields;
-    }
-
-
-    private static addToOrderedFields(field: FieldDefinition, fieldName: string,
-                                      fields: Array<FieldDefinition>) {
-
-        if (fields.includes(field)) return;
-
-        field.name = fieldName;
-        fields.push(field);
-    }
-
-
-    private static hideFields(appConfiguration: any, hiddenConfiguration: any) {
-
-        if (!appConfiguration.types) return;
-
-        Object.keys(hiddenConfiguration).forEach(typeName => {
-            const type: TypeDefinition|undefined = appConfiguration.types[typeName];
-            if (!type || !type.fields) return;
-
-            hiddenConfiguration[typeName].forEach((fieldName: string) => {
-                const field: FieldDefinition|undefined = type.fields[fieldName];
-                if (field) {
-                    field.visible = false;
-                    field.editable = false;
-                }
-            });
-        });
     }
 }

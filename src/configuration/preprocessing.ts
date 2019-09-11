@@ -2,8 +2,9 @@ import {FieldDefinition} from './field-definition';
 import {TypeDefinition} from './type-definition';
 import {RelationDefinition} from './relation-definition';
 import {UnorderedConfigurationDefinition} from './unordered-configuration-definition';
-import {on, subtract, isNot, empty, is, clone, lookup, flow, forEach, map, isDefined, filter, to, compose} from 'tsfun';
+import {clone, compose, empty, filter, flow, forEach, is, isDefined, isNot, map, on, subtract, to} from 'tsfun';
 import {ConfigurationErrors} from './configuration-errors';
+import {ConfigurationDefinition} from './configuration-definition';
 
 
 /**
@@ -11,6 +12,58 @@ import {ConfigurationErrors} from './configuration-errors';
  * @author Thomas Kleinke
  */
 export module Preprocessing {
+
+
+    export function preprocessComplete(appConfiguration: any,
+                                       customConfiguration: any,
+                                       hiddenConfiguration: any,
+                                       customHiddenConfiguration: any,
+                                       languageConfiguration: any,
+                                       customLanguageConfiguration: any,
+                                       searchConfiguration: any,
+                                       valuelistsConfiguration: any,
+                                       orderConfiguration: any,
+                                       extraTypes: any,
+                                       nonExtendableTypes: any,
+                                       commonFields: any,
+                                       extraFields: any,
+                                       relations: any,
+                                       defaultFields: any) {
+
+        Preprocessing.prepareSameMainTypeResource(appConfiguration);
+        // TODO rename and test / also: it is idai field specific
+        // Preprocessing.setIsRecordedInVisibilities(appConfiguration); See #8992
+
+        // to be done before applyCustomFields so that extra types can get additional fields too
+        Preprocessing.addExtraTypes(appConfiguration, extraTypes);
+
+        Preprocessing.applyCustom(appConfiguration, customConfiguration, nonExtendableTypes);
+        Preprocessing.replaceCommonFields(appConfiguration, commonFields);
+
+        hideFields(appConfiguration, hiddenConfiguration);
+        hideFields(appConfiguration, customHiddenConfiguration);
+
+        appConfiguration.relations = [];
+        Preprocessing.addExtraFields(appConfiguration, extraFields);
+        Preprocessing.addExtraRelations(appConfiguration, relations);
+        Preprocessing.addExtraFields(appConfiguration, defaultFields);
+
+        Preprocessing.applyLanguage(appConfiguration, languageConfiguration); // TODO test it
+        Preprocessing.applyLanguage(appConfiguration, customLanguageConfiguration); // TODO test it
+
+        Preprocessing.applySearchConfiguration(appConfiguration, searchConfiguration);
+
+        Preprocessing.applyValuelistsConfiguration(appConfiguration.types, valuelistsConfiguration);
+        addExtraFieldsOrder(appConfiguration, orderConfiguration);
+
+        return {
+            identifier: appConfiguration.identifier,
+            relations: appConfiguration.relations,
+            types: getOrderedTypes(appConfiguration, orderConfiguration)
+        } as ConfigurationDefinition;
+    }
+
+
 
 
     export function replaceCommonFields(configuration: UnorderedConfigurationDefinition, commonFields: any) {
@@ -131,12 +184,12 @@ export module Preprocessing {
 
 
     export function applyValuelistsConfiguration(types: { [typeName: string]: TypeDefinition },
-                                                 periodConfiguration: {[id: string]: string[]}) {
+                                                 valuelistsConfiguration: {[id: string]: {values: string[]}}) {
 
         const processFields = compose(
             Object.values,
             filter(on('valuelistId', isDefined)),
-            forEach((fd: FieldDefinition) => (fd as any)['valuelist'] = periodConfiguration[(fd as any)['valuelistId']]));
+            forEach((fd: FieldDefinition) => (fd as any)['valuelist'] = valuelistsConfiguration[(fd as any)['valuelistId']].values));
 
         flow(types,
             Object.values,
@@ -405,6 +458,104 @@ export module Preprocessing {
                     throw ConfigurationErrors.INVALID_CONFIG_PARENT_NOT_TOP_LEVEL;
                 }
             }
+        });
+    }
+
+
+    function addExtraFieldsOrder(appConfiguration: UnorderedConfigurationDefinition, // TODO remove
+            orderConfiguration: any) {
+
+        if (!orderConfiguration.fields) orderConfiguration.fields = {};
+
+        Object.keys(appConfiguration.types).forEach(typeName => {
+            if (!orderConfiguration.fields[typeName]) orderConfiguration.fields[typeName] = [];
+            orderConfiguration.fields[typeName]
+                = [].concat(orderConfiguration.fields[typeName]);
+        });
+    }
+
+
+    function getOrderedTypes(appConfiguration: UnorderedConfigurationDefinition,
+            orderConfiguration: any): Array<TypeDefinition> {
+
+            const types: Array<TypeDefinition> = [];
+
+        if (orderConfiguration.types) {
+            orderConfiguration.types.forEach((typeName: string) => {
+                const type: TypeDefinition | undefined = appConfiguration.types[typeName];
+                if (type) addToOrderedTypes(type, typeName, types, orderConfiguration);
+            });
+        }
+
+        Object.keys(appConfiguration.types).forEach(typeName => {
+            if (!types.find(type => type.type === typeName)) {
+                addToOrderedTypes(appConfiguration.types[typeName], typeName, types, orderConfiguration);
+            }
+        });
+
+        return types;
+    }
+
+
+    function addToOrderedTypes(type: TypeDefinition, typeName: string, types: Array<TypeDefinition>,
+        orderConfiguration: any) {
+
+        if (types.includes(type)) return;
+
+        type.type = typeName;
+        type.fields = getOrderedFields(type, orderConfiguration);
+        types.push(type);
+    }
+
+
+    function getOrderedFields(type: TypeDefinition, orderConfiguration: any): Array<FieldDefinition> {
+
+            const fields: Array<FieldDefinition> = [];
+
+        if (!type.fields) return fields;
+
+        if (orderConfiguration.fields[type.type]) {
+            orderConfiguration.fields[type.type].forEach((fieldName: string) => {
+                const field: FieldDefinition | undefined = type.fields[fieldName];
+                if (field) addToOrderedFields(field, fieldName, fields);
+            });
+        }
+
+        Object.keys(type.fields).forEach(fieldName => {
+            if (!fields.find(field => field.name === fieldName)) {
+                addToOrderedFields(type.fields[fieldName], fieldName, fields);
+            }
+        });
+
+        return fields;
+    }
+
+
+    function addToOrderedFields(field: FieldDefinition, fieldName: string,
+        fields: Array<FieldDefinition>) {
+
+        if (fields.includes(field)) return;
+
+        field.name = fieldName;
+        fields.push(field);
+    }
+
+
+    function hideFields(appConfiguration: any, hiddenConfiguration: any) {
+
+        if (!appConfiguration.types) return;
+
+        Object.keys(hiddenConfiguration).forEach(typeName => {
+            const type: TypeDefinition|undefined = appConfiguration.types[typeName];
+            if (!type || !type.fields) return;
+
+            hiddenConfiguration[typeName].forEach((fieldName: string) => {
+                const field: FieldDefinition|undefined = type.fields[fieldName];
+                if (field) {
+                    field.visible = false;
+                    field.editable = false;
+                }
+            });
         });
     }
 }

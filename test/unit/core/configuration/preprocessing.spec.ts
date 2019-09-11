@@ -445,7 +445,7 @@ describe('Preprocessing', () => {
         };
 
         const valuelistsConfiguration = {
-            '123': ['one', 'two', 'three']
+            '123': { values: ['one', 'two', 'three'] }
         };
 
         // TODO delete valuelistId afterwards

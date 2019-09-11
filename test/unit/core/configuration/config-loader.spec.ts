@@ -56,7 +56,7 @@ describe('ConfigLoader', () => {
 
         applyConfig(undefined, {
             types: {
-                A: { label: 'A_', fields: { processor: {label: 'Bearbeiter/Bearbeiterin', description: "abc"}} },
+                A: { label: 'A_', fields: { processor: { label: 'Bearbeiter/Bearbeiterin', description: "abc" }} },
             }, relations: {}
         });
 
