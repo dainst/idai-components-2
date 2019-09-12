@@ -83,7 +83,7 @@ describe('Preprocessing', () => {
             } as TypeDefinition
         };
 
-        Preprocessing.addExtraTypes(configuration, extraTypes);
+        Preprocessing.addExtraTypes(extraTypes, configuration);
         expect(configuration.types['T2'].fields['bField']).toBeDefined();
     });
 
@@ -98,7 +98,7 @@ describe('Preprocessing', () => {
             } as TypeDefinition
         };
 
-        Preprocessing.addExtraTypes(configuration, extraTypes);
+        Preprocessing.addExtraTypes(extraTypes, configuration);
         Preprocessing.addExtraFields(configuration, { 'identifier': {} as FieldDefinition });
 
         expect(configuration.types['T2'].fields['identifier']).toBeDefined();
@@ -117,7 +117,7 @@ describe('Preprocessing', () => {
             } as TypeDefinition
         };
 
-        Preprocessing.addExtraTypes(configuration, extraTypes);
+        Preprocessing.addExtraTypes(extraTypes, configuration);
 
         expect(configuration.types['T1'].abstract).toBeTruthy();
         expect(configuration.types['T1'].color).toEqual('white');
@@ -136,7 +136,7 @@ describe('Preprocessing', () => {
             } as TypeDefinition
         };
 
-        Preprocessing.addExtraTypes(configuration, extraTypes);
+        Preprocessing.addExtraTypes(extraTypes, configuration);
         Preprocessing.addExtraFields(configuration, { 'identifier': {} as FieldDefinition });
 
         expect(configuration.types['T1'].fields['aField']).toBeDefined();
@@ -162,7 +162,7 @@ describe('Preprocessing', () => {
             relations: []
         };
 
-        Preprocessing.addExtraTypes(configuration, {});
+        Preprocessing.addExtraTypes({}, configuration);
         Preprocessing.addExtraFields(configuration, { 'identifier': {} as FieldDefinition });
 
         expect(configuration.types['T1'].fields['aField']).toBeDefined();
@@ -204,7 +204,7 @@ describe('Preprocessing', () => {
 
         configuration = { identifier: 'test', types: { T1: t1 }, relations: [r1]};
 
-        Preprocessing.addExtraTypes(configuration, {});
+        Preprocessing.addExtraTypes({}, configuration);
         Preprocessing.addExtraFields(configuration, {});
         Preprocessing.addExtraRelations(configuration, [r2]);
 

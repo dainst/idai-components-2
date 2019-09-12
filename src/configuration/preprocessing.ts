@@ -30,7 +30,7 @@ export module Preprocessing {
                                 commonFields: any) {
 
         // to be done before applyCustomFields so that extra types can get additional fields too
-        addExtraTypes(appConfiguration, coreTypes);
+        addExtraTypes(coreTypes, appConfiguration);
 
         applyCustom(appConfiguration, customConfiguration, nonExtendableTypes);
         replaceCommonFields(appConfiguration, commonFields);
@@ -367,8 +367,8 @@ export module Preprocessing {
     }
 
 
-    export function addExtraTypes(configuration: UnorderedConfigurationDefinition,
-                                  extraTypes: {[typeName: string]: TypeDefinition }) {
+    export function addExtraTypes(extraTypes: {[typeName: string]: TypeDefinition },
+                                  configuration: UnorderedConfigurationDefinition) {
 
         for (let extraTypeName of Object.keys(extraTypes)) {
             const extraType = extraTypes[extraTypeName];
