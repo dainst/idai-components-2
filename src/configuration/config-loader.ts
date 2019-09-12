@@ -85,7 +85,7 @@ export class ConfigLoader {
 
 
     private async preprocess(configDirPath: string, appConfiguration: any, commonFields: any,
-                             extraTypes: {[typeName: string]: TypeDefinition },
+                             coreTypes: {[typeName: string]: TypeDefinition },
                              relations: Array<RelationDefinition>,
                              extraFields: {[fieldName: string]: FieldDefinition },
                              customConfigurationName: string|undefined,
@@ -128,12 +128,16 @@ export class ConfigLoader {
         }
 
         try {
+
+            // unused: Preprocessing.prepareSameMainTypeResource(appConfiguration);
+            // unused: Preprocessing.setIsRecordedInVisibilities(appConfiguration); See #8992
+
             Preprocessing.preprocess1(
+                coreTypes,
                 appConfiguration,
                 customConfiguration,
                 hiddenConfiguration,
                 customHiddenConfiguration,
-                extraTypes,
                 nonExtendableTypes,
                 commonFields,
                 extraFields,

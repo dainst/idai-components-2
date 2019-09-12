@@ -14,23 +14,19 @@ import {ConfigurationDefinition} from './configuration-definition';
 export module Preprocessing {
 
 
-    export function preprocess1(appConfiguration: any,
+    export function preprocess1(coreTypes: any,
+                                appConfiguration: any,
                                 customConfiguration: any,
                                 hiddenConfiguration: any,
                                 customHiddenConfiguration: any,
-                                extraTypes: any,
                                 nonExtendableTypes: any,
                                 commonFields: any,
                                 extraFields: any,
                                 relations: any,
                                 defaultFields: any) {
 
-        prepareSameMainTypeResource(appConfiguration);
-        // TODO rename and test / also: it is idai field specific
-        // Preprocessing.setIsRecordedInVisibilities(appConfiguration); See #8992
-
         // to be done before applyCustomFields so that extra types can get additional fields too
-        addExtraTypes(appConfiguration, extraTypes);
+        addExtraTypes(appConfiguration, coreTypes);
 
         applyCustom(appConfiguration, customConfiguration, nonExtendableTypes);
         replaceCommonFields(appConfiguration, commonFields);
