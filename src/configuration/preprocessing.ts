@@ -14,46 +14,50 @@ import {ConfigurationDefinition} from './configuration-definition';
 export module Preprocessing {
 
 
-    export function preprocessComplete(appConfiguration: any,
-                                       customConfiguration: any,
-                                       hiddenConfiguration: any,
-                                       customHiddenConfiguration: any,
-                                       languageConfiguration: any,
-                                       customLanguageConfiguration: any,
-                                       searchConfiguration: any,
-                                       valuelistsConfiguration: any,
-                                       orderConfiguration: any,
-                                       extraTypes: any,
-                                       nonExtendableTypes: any,
-                                       commonFields: any,
-                                       extraFields: any,
-                                       relations: any,
-                                       defaultFields: any) {
+    export function preprocess1(appConfiguration: any,
+                                customConfiguration: any,
+                                hiddenConfiguration: any,
+                                customHiddenConfiguration: any,
+                                extraTypes: any,
+                                nonExtendableTypes: any,
+                                commonFields: any,
+                                extraFields: any,
+                                relations: any,
+                                defaultFields: any) {
 
-        Preprocessing.prepareSameMainTypeResource(appConfiguration);
+        prepareSameMainTypeResource(appConfiguration);
         // TODO rename and test / also: it is idai field specific
         // Preprocessing.setIsRecordedInVisibilities(appConfiguration); See #8992
 
         // to be done before applyCustomFields so that extra types can get additional fields too
-        Preprocessing.addExtraTypes(appConfiguration, extraTypes);
+        addExtraTypes(appConfiguration, extraTypes);
 
-        Preprocessing.applyCustom(appConfiguration, customConfiguration, nonExtendableTypes);
-        Preprocessing.replaceCommonFields(appConfiguration, commonFields);
+        applyCustom(appConfiguration, customConfiguration, nonExtendableTypes);
+        replaceCommonFields(appConfiguration, commonFields);
 
         hideFields(appConfiguration, hiddenConfiguration);
         hideFields(appConfiguration, customHiddenConfiguration);
 
         appConfiguration.relations = [];
-        Preprocessing.addExtraFields(appConfiguration, extraFields);
-        Preprocessing.addExtraRelations(appConfiguration, relations);
-        Preprocessing.addExtraFields(appConfiguration, defaultFields);
+        addExtraFields(appConfiguration, extraFields);
+        addExtraRelations(appConfiguration, relations);
+        addExtraFields(appConfiguration, defaultFields);
+    }
 
-        Preprocessing.applyLanguage(appConfiguration, languageConfiguration); // TODO test it
-        Preprocessing.applyLanguage(appConfiguration, customLanguageConfiguration); // TODO test it
 
-        Preprocessing.applySearchConfiguration(appConfiguration, searchConfiguration);
+    export function preprocess2(appConfiguration: any,
+                                languageConfiguration: any,
+                                customLanguageConfiguration: any,
+                                searchConfiguration: any,
+                                valuelistsConfiguration: any,
+                                orderConfiguration: any) {
 
-        Preprocessing.applyValuelistsConfiguration(appConfiguration.types, valuelistsConfiguration);
+        applyLanguage(appConfiguration, languageConfiguration); // TODO test it
+        applyLanguage(appConfiguration, customLanguageConfiguration); // TODO test it
+
+        applySearchConfiguration(appConfiguration, searchConfiguration);
+
+        applyValuelistsConfiguration(appConfiguration.types, valuelistsConfiguration);
         addExtraFieldsOrder(appConfiguration, orderConfiguration);
 
         return {
@@ -62,7 +66,6 @@ export module Preprocessing {
             types: getOrderedTypes(appConfiguration, orderConfiguration)
         } as ConfigurationDefinition;
     }
-
 
 
 

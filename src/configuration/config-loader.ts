@@ -123,23 +123,30 @@ export class ConfigLoader {
             searchConfiguration = await this.configReader.read(searchConfigurationPath);
             valuelistsConfiguration = await this.configReader.read(valuelistsConfigurationPath);
             orderConfiguration = await this.configReader.read(orderConfigurationPath);
+        } catch (msgWithParams) {
+            throw [[msgWithParams]];
+        }
 
-            return Preprocessing.preprocessComplete(
+        try {
+            Preprocessing.preprocess1(
                 appConfiguration,
                 customConfiguration,
                 hiddenConfiguration,
                 customHiddenConfiguration,
-                languageConfiguration,
-                customLanguageConfiguration,
-                searchConfiguration,
-                valuelistsConfiguration,
-                orderConfiguration,
                 extraTypes,
                 nonExtendableTypes,
                 commonFields,
                 extraFields,
                 relations,
                 this.defaultFields);
+
+            return Preprocessing.preprocess2(
+                appConfiguration,
+                languageConfiguration,
+                customLanguageConfiguration,
+                searchConfiguration,
+                valuelistsConfiguration,
+                orderConfiguration);
 
         } catch (msgWithParams) {
             throw [[msgWithParams]];
