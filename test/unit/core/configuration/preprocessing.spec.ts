@@ -64,6 +64,32 @@ describe('Preprocessing', () => {
     */
 
 
+
+    it('preprocessing1 - merge fields into core', () => {
+
+        const coreTypes = {
+            A: {
+                fields: {
+                    field1: {inputType: "text"}
+                }
+            }
+        } as any;
+
+        const fieldsJson = { types: { // TODO get rid of this level
+            A: {
+                fields: {
+                    field2: {inputType: "text"}
+                }}
+        }} as any;
+
+        const result = Preprocessing.preprocess1(coreTypes, fieldsJson, {}, [], []);
+
+        expect(result.types['A'].fields["field1"].inputType).toBe("text");
+        expect(result.types['A'].fields["field2"].inputType).toBe("text");
+    });
+
+
+
     it('should add extra fields', () => {
 
         Preprocessing.addExtraFields(configuration, { 'identifier': {} as FieldDefinition });
@@ -121,16 +147,16 @@ describe('Preprocessing', () => {
 
         Preprocessing.addExtraTypes(coreTypes, configuration);
 
-        expect(configuration.types['T1'].abstract).toBeTruthy();
-        expect(configuration.types['T1'].color).toEqual('white');
-        expect(configuration.types['T1'].fields['aField']).toBeDefined();
-        expect(configuration.types['T1'].fields['bField']).toBeDefined();
+        expect(coreTypes['T1'].abstract).toBeTruthy();
+        expect(coreTypes['T1'].color).toEqual('white');
+        expect(coreTypes['T1'].fields['aField']).toBeDefined();
+        expect(coreTypes['T1'].fields['bField']).toBeDefined();
     });
 
 
     it('merge fields of extra type with existing type and add extra field', () => {
 
-        const extraTypes = {
+        const coreTypes = {
             T1: {
                 fields: {
                     bField: {}
@@ -138,12 +164,14 @@ describe('Preprocessing', () => {
             } as TypeDefinition
         };
 
-        Preprocessing.addExtraTypes(extraTypes, configuration);
-        Preprocessing.addExtraFields(configuration, { 'identifier': {} as FieldDefinition });
+        Preprocessing.addExtraTypes(coreTypes, configuration);
 
-        expect(configuration.types['T1'].fields['aField']).toBeDefined();
-        expect(configuration.types['T1'].fields['bField']).toBeDefined();
-        expect(configuration.types['T1'].fields['identifier']).toBeDefined();
+        const appConfiguration = { types: coreTypes };
+        Preprocessing.addExtraFields(appConfiguration as any, { 'identifier': {} as FieldDefinition });
+
+        expect(appConfiguration.types['T1'].fields['aField']).toBeDefined();
+        expect(appConfiguration.types['T1'].fields['bField']).toBeDefined();
+        expect(appConfiguration.types['T1'].fields['identifier']).toBeDefined();
     });
 
 

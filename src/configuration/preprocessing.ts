@@ -32,6 +32,7 @@ export module Preprocessing {
         // to be done before applyCustomFields so that extra types can get additional fields too
         addExtraTypes(coreTypes, fieldsJson);
         const appConfiguration = { types: coreTypes } as UnorderedConfigurationDefinition;
+
         applyCustom(appConfiguration, customConfiguration, nonExtendableTypes);
         replaceCommonFields(appConfiguration, commonFields);
         return appConfiguration;
@@ -370,10 +371,10 @@ export module Preprocessing {
 
 
     export function addExtraTypes(coreTypes: {[typeName: string]: TypeDefinition },
-                                  configuration: UnorderedConfigurationDefinition) {
+                                  fieldsJson: UnorderedConfigurationDefinition) {
 
-        for (let confTypeName of Object.keys(configuration.types)) {
-            const confType = configuration.types[confTypeName];
+        for (let confTypeName of Object.keys(fieldsJson.types)) {
+            const confType = fieldsJson.types[confTypeName];
             let typeAlreadyPresent = false;
 
             for (let coreTypeName of Object.keys(coreTypes)) {
@@ -381,8 +382,9 @@ export module Preprocessing {
 
                 if (coreTypeName === confTypeName) {
                     typeAlreadyPresent = true;
-                    merge(confType, coreType);
-                    merge(confType.fields, coreType.fields);
+
+                    merge(coreType, confType);
+                    merge(coreType.fields, confType.fields);
                 }
             }
 
