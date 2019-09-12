@@ -15,6 +15,7 @@ export module Preprocessing {
 
 
     /**
+     * TODO rename to mergeFields or mergeStep and get rid of types level
      * Merges the core, Fields.json and custom fields config
      *
      * @param coreTypes
