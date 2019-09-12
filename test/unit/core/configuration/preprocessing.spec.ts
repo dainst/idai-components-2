@@ -536,7 +536,7 @@ describe('Preprocessing', () => {
             } as TypeDefinition
         };
 
-        Preprocessing.applyCustom(configuration, extraTypes, []);
+        Preprocessing.applyCustom(configuration, extraTypes);
         expect(configuration.types['T1'].fields['bField']['group']).toEqual('time');
     });
 });

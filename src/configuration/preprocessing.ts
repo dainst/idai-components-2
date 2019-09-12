@@ -34,6 +34,7 @@ export module Preprocessing {
                                 nonExtendableTypes: any,
                                 commonFields: any) {
 
+
         const inter = intersection([Object.keys(coreTypes), Object.keys(firstLevelTypes)]);
         if (inter.length > 0) throw [ConfigurationErrors.DUPLICATE_TYPE_DEFINITION, inter[0]];
 
@@ -41,7 +42,11 @@ export module Preprocessing {
         addExtraTypes(coreTypes, firstLevelTypes);
         const appConfiguration = { types: coreTypes } as UnorderedConfigurationDefinition;
 
-        applyCustom(appConfiguration, secondLevelTypes, nonExtendableTypes);
+        // Validate first, before copying the types defined only in customConfiguration into the appConfiguration,
+        // in order to make sure that only parents from the original appConfiguration can be referenced
+        validateCustom(appConfiguration, secondLevelTypes, nonExtendableTypes);
+        applyCustom(appConfiguration, secondLevelTypes);
+
         replaceCommonFields(appConfiguration, commonFields);
         return appConfiguration;
     }
@@ -108,12 +113,7 @@ export module Preprocessing {
 
 
     export function applyCustom(appConfiguration: UnorderedConfigurationDefinition,
-                                customConfiguration: any,
-                                nonExtendableTypes: string[]) {
-
-        // Validate first, before copying the types defined only in customConfiguration into the appConfiguration,
-        // in order to make sure that only parents from the original appConfiguration can be referenced
-        validateCustom(appConfiguration, customConfiguration, nonExtendableTypes);
+                                customConfiguration: any) {
 
         Object.keys(customConfiguration).forEach(typeName => {
 
