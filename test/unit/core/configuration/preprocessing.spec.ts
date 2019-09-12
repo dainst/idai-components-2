@@ -75,7 +75,7 @@ describe('Preprocessing', () => {
 
     it('should add extra type', () => {
 
-        const extraTypes = {
+        const coreTypes = {
             T2: {
                 fields: {
                     bField: {}
@@ -83,14 +83,14 @@ describe('Preprocessing', () => {
             } as TypeDefinition
         };
 
-        Preprocessing.addExtraTypes(extraTypes, configuration);
-        expect(configuration.types['T2'].fields['bField']).toBeDefined();
+        Preprocessing.addExtraTypes(coreTypes, configuration);
+        expect(coreTypes['T2'].fields['bField']).toBeDefined();
     });
 
 
     it('should add an extra field to an extra type', () => {
 
-        const extraTypes = {
+        let coreTypes = {
             T2: {
                 fields: {
                     bField: {}
@@ -98,17 +98,19 @@ describe('Preprocessing', () => {
             } as TypeDefinition
         };
 
-        Preprocessing.addExtraTypes(extraTypes, configuration);
-        Preprocessing.addExtraFields(configuration, { 'identifier': {} as FieldDefinition });
+        Preprocessing.addExtraTypes(coreTypes, configuration);
+        coreTypes = { types: coreTypes } as any;
 
-        expect(configuration.types['T2'].fields['identifier']).toBeDefined();
-        expect(configuration.types['T2'].fields['bField']).toBeDefined();
+        Preprocessing.addExtraFields(coreTypes as any, { identifier: {} as FieldDefinition });
+
+        expect((coreTypes as any).types['T2'].fields['identifier']).toBeDefined();
+        expect((coreTypes as any).types['T2'].fields['bField']).toBeDefined();
     });
 
 
     it('merge fields of extra type with existing type', () => {
 
-        const extraTypes = {
+        const coreTypes = {
             T1: {
                 abstract: true,
                 fields: {
@@ -117,7 +119,7 @@ describe('Preprocessing', () => {
             } as TypeDefinition
         };
 
-        Preprocessing.addExtraTypes(extraTypes, configuration);
+        Preprocessing.addExtraTypes(coreTypes, configuration);
 
         expect(configuration.types['T1'].abstract).toBeTruthy();
         expect(configuration.types['T1'].color).toEqual('white');

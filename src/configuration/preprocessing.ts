@@ -18,22 +18,23 @@ export module Preprocessing {
      * Merges the core, Fields.json and custom fields config
      *
      * @param coreTypes
-     * @param appConfiguration
+     * @param fieldsJson
      * @param customConfiguration
      * @param nonExtendableTypes
      * @param commonFields
      */
     export function preprocess1(coreTypes: any,
-                                appConfiguration: any,
+                                fieldsJson: any,
                                 customConfiguration: any,
                                 nonExtendableTypes: any,
                                 commonFields: any) {
 
         // to be done before applyCustomFields so that extra types can get additional fields too
-        addExtraTypes(coreTypes, appConfiguration);
-
+        addExtraTypes(coreTypes, fieldsJson);
+        const appConfiguration = { types: coreTypes } as UnorderedConfigurationDefinition;
         applyCustom(appConfiguration, customConfiguration, nonExtendableTypes);
         replaceCommonFields(appConfiguration, commonFields);
+        return appConfiguration;
     }
 
 
@@ -56,6 +57,7 @@ export module Preprocessing {
         addExtraFields(appConfiguration, extraFields);
         addExtraRelations(appConfiguration, relations);
         addExtraFields(appConfiguration, defaultFields);
+
 
         applyLanguage(appConfiguration, languageConfiguration); // TODO test it
         applyLanguage(appConfiguration, customLanguageConfiguration); // TODO test it
@@ -367,24 +369,24 @@ export module Preprocessing {
     }
 
 
-    export function addExtraTypes(extraTypes: {[typeName: string]: TypeDefinition },
+    export function addExtraTypes(coreTypes: {[typeName: string]: TypeDefinition },
                                   configuration: UnorderedConfigurationDefinition) {
 
-        for (let extraTypeName of Object.keys(extraTypes)) {
-            const extraType = extraTypes[extraTypeName];
+        for (let confTypeName of Object.keys(configuration.types)) {
+            const confType = configuration.types[confTypeName];
             let typeAlreadyPresent = false;
 
-            for (let typeName of Object.keys(configuration.types)) {
-                const typeDefinition = configuration.types[typeName];
+            for (let coreTypeName of Object.keys(coreTypes)) {
+                const coreType = coreTypes[coreTypeName];
 
-                if (typeName === extraTypeName) {
+                if (coreTypeName === confTypeName) {
                     typeAlreadyPresent = true;
-                    merge(typeDefinition, extraType);
-                    merge(typeDefinition.fields, extraType.fields);
+                    merge(confType, coreType);
+                    merge(confType.fields, coreType.fields);
                 }
             }
 
-            if (!typeAlreadyPresent) configuration.types[extraTypeName] = extraType;
+            if (!typeAlreadyPresent) coreTypes[confTypeName] = confType;
         }
     }
 
