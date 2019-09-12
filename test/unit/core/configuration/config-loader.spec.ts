@@ -247,8 +247,8 @@ describe('ConfigLoader', () => {
         });
 
         const customFieldsConfiguration = {
-            'A-1': { 'derives': 'A', fields: { fieldA1: { inputType: 'unsignedFloat' } } },
-            'B-1': { 'derives': 'B', fields: { fieldB2: { inputType: 'boolean' } } }
+            'A:1': { 'derives': 'A', fields: { fieldA1: { inputType: 'unsignedFloat' } } },
+            'B:1': { 'derives': 'B', fields: { fieldB2: { inputType: 'boolean' } } }
         };
 
         applyConfig(customFieldsConfiguration);
@@ -325,7 +325,7 @@ describe('ConfigLoader', () => {
 
             fail();
         } catch(err) {
-            expect(err).toEqual([ConfigurationErrors.INVALID_CONFIG_NO_PARENT_ASSIGNED, 'B']);
+            expect(err).toEqual([[ConfigurationErrors.INVALID_CONFIG_NO_PARENT_ASSIGNED, 'B']]);
         } finally {
             done();
         }
@@ -350,7 +350,7 @@ describe('ConfigLoader', () => {
 
             fail();
         } catch(err) {
-            expect(err).toEqual([ConfigurationErrors.INVALID_CONFIG_PARENT_NOT_DEFINED]);
+            expect(err).toEqual([[ConfigurationErrors.INVALID_CONFIG_PARENT_NOT_DEFINED]]);
         } finally {
             done();
         }
@@ -378,7 +378,7 @@ describe('ConfigLoader', () => {
 
             fail();
         } catch(err) {
-            expect(err).toEqual([ConfigurationErrors.INVALID_CONFIG_PARENT_NOT_TOP_LEVEL]);
+            expect(err).toEqual([[ConfigurationErrors.INVALID_CONFIG_PARENT_NOT_TOP_LEVEL]]);
         } finally {
             done();
         }
@@ -406,7 +406,7 @@ describe('ConfigLoader', () => {
             fail();
 
         } catch(err) {
-            expect(err).toEqual([ConfigurationErrors.INVALID_CONFIG_PARENT_NOT_DEFINED]);
+            expect(err).toEqual([[ConfigurationErrors.INVALID_CONFIG_PARENT_NOT_DEFINED]]);
         } finally {
             done();
         }
@@ -433,7 +433,7 @@ describe('ConfigLoader', () => {
             fail();
 
         } catch(err) {
-            expect(err).toEqual([ConfigurationErrors.NOT_AN_EXTENDABLE_TYPE]);
+            expect(err).toEqual([[ConfigurationErrors.NOT_AN_EXTENDABLE_TYPE]]);
         } finally {
             done();
         }

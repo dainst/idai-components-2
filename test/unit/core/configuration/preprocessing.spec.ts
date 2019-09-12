@@ -77,7 +77,7 @@ describe('Preprocessing', () => {
         } as any;
 
         const fieldsJson = {
-            'A-1': {
+            'A:1': {
                 derives: 'A',
                 fields: {
                     field1: { inputType: 'text' },
@@ -104,7 +104,7 @@ describe('Preprocessing', () => {
         } as any;
 
         const fieldsJson = {
-            'A-1': {
+            'A:1': {
                 derives: 'A',
                 fields: {
                     field1: { inputType: 'text' },

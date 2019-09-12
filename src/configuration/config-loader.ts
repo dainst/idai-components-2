@@ -133,12 +133,17 @@ export class ConfigLoader {
         // unused: Preprocessing.prepareSameMainTypeResource(appConfiguration);
         // unused: Preprocessing.setIsRecordedInVisibilities(appConfiguration); See #8992
 
-        const appConfiguration = Preprocessing.preprocess1(
-            coreTypes,
-            firstLevelTypes,
-            secondLevelTypes,
-            nonExtendableTypes,
-            commonFields);
+        let appConfiguration: any;
+        try {
+            appConfiguration = Preprocessing.preprocess1(
+                coreTypes,
+                firstLevelTypes,
+                secondLevelTypes,
+                nonExtendableTypes,
+                commonFields);
+        } catch (msgWithParams) {
+            throw [msgWithParams];
+        }
 
         try {
             return Preprocessing.preprocess2(

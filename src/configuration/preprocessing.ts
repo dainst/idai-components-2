@@ -57,7 +57,7 @@ export module Preprocessing {
     function renameTypesInCustom(types: TypeDefinitions) {
 
         for (let [k, v] of (zip(Object.keys(types))(Object.values(types)))) {
-            const lastIndex = k.lastIndexOf('-');
+            const lastIndex = k.indexOf(':');
             if (lastIndex < 1) continue;
             const pureName = k.substr(0, lastIndex);
             (types as any)[pureName] = v;
