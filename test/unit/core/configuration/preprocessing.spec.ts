@@ -70,7 +70,7 @@ describe('Preprocessing', () => {
         const coreTypes = {
             A: {
                 fields: {
-                    field1: {inputType: "text"}
+                    field1: { group: 'stem' }
                 }
             }
         } as any;
@@ -78,14 +78,16 @@ describe('Preprocessing', () => {
         const fieldsJson = { types: { // TODO get rid of this level
             A: {
                 fields: {
-                    field2: {inputType: "text"}
+                    field1: { inputType: 'text' },
+                    field2: { inputType: 'text' }
                 }}
         }} as any;
 
         const result = Preprocessing.preprocess1(coreTypes, fieldsJson, {}, [], []);
 
-        expect(result.types['A'].fields["field1"].inputType).toBe("text");
-        expect(result.types['A'].fields["field2"].inputType).toBe("text");
+        expect(result.types['A'].fields['field1'].inputType).toBe('text');
+        expect(result.types['A'].fields['field1'].group).toBe('stem');
+        expect(result.types['A'].fields['field2'].inputType).toBe('text');
     });
 
 

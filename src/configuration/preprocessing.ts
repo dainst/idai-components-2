@@ -361,9 +361,16 @@ export module Preprocessing {
             if (!alreadyPresentInTarget) {
                 target[sourceFieldName] = source[sourceFieldName];
             } else {
-                // TODO hack
-                if (source[sourceFieldName]['group']) {
-                    target[sourceFieldName]['group'] = source[sourceFieldName]['group'];
+
+                // TODO hack; later we want only valuelistId to be changable
+                if (source[sourceFieldName]['inputType']) {
+                    target[sourceFieldName]['inputType'] = source[sourceFieldName]['inputType'];
+                }
+                if (source[sourceFieldName]['valuelist']) {
+                    target[sourceFieldName]['valuelist'] = source[sourceFieldName]['valuelist'];
+                }
+                if (source[sourceFieldName]['valuelistId']) {
+                    target[sourceFieldName]['valuelistId'] = source[sourceFieldName]['valuelistId'];
                 }
             }
         }
