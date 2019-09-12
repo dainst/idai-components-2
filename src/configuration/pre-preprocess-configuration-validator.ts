@@ -1,5 +1,6 @@
-import {intersection, subtract, isNot, includedIn} from 'tsfun';
+import {intersection, subtract} from 'tsfun';
 import {RelationDefinition} from './relation-definition';
+import {TypeDefinitions} from './preprocessing';
 
 /**
  * Used to validate to configuration in the form it comes from the user, i.e.
@@ -18,34 +19,35 @@ export class PrePreprocessConfigurationValidator {
      * This is to reduce the necessity to have different configurations which have to be
      * tracked, when the only thing they differ in is the visitiliy/editability settings.
      */
-    public go(appConfiguration: any): Array<Array<string>> {
+    public go(typeDefinitions: TypeDefinitions): Array<Array<string>> {
 
-        if (!appConfiguration.types) return [];
+        if (!typeDefinitions.types) return [];
 
-        return PrePreprocessConfigurationValidator.checkForForbiddenTopLevelFields(appConfiguration)
-            .concat(PrePreprocessConfigurationValidator.checkForExtraneousFieldsInTypes(appConfiguration));
+        return PrePreprocessConfigurationValidator.checkForForbiddenTopLevelFields(typeDefinitions)
+            .concat(PrePreprocessConfigurationValidator.checkForExtraneousFieldsInTypes(typeDefinitions));
     }
 
 
     private static checkForForbiddenTopLevelFields(appConfiguration: any): Array<Array<string>> {
 
-        const allowedFields = ['identifier', 'types'];
-
-        const result = Object.keys(appConfiguration).find(isNot(includedIn(allowedFields)));
-
-        return result
-            ? [['relations cannot be defined via external configuration']]
-            : [];
+        // const allowedFields = ['identifier', 'types'];
+        //
+        // const result = Object.keys(appConfiguration).find(isNot(includedIn(allowedFields)));
+        //
+        // return result
+        //     ? [['relations cannot be defined via external configuration']]
+        //     : [];
+        return [];
     }
 
 
-    private static checkForExtraneousFieldsInTypes(appConfiguration: any): Array<Array<string>> {
+    private static checkForExtraneousFieldsInTypes(typeDefinitions: TypeDefinitions): Array<Array<string>> {
 
         const allowedFields = ['inputType', 'name', 'valuelist', 'valuelistId', 'positionValues'];
 
         let errs: string[][] = [];
-        for (let typeName of Object.keys(appConfiguration.types)) {
-            const type = appConfiguration.types[typeName];
+        for (let typeName of Object.keys(typeDefinitions)) {
+            const type = typeDefinitions[typeName];
 
             if (type.fields) {
                 for (let fieldName of Object.keys(type.fields)) {

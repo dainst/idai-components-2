@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {I18n} from '@ngx-translate/i18n-polyfill';
 import {ProjectConfiguration} from './project-configuration';
-import {Preprocessing} from './preprocessing';
+import {Preprocessing, TypeDefinitions} from './preprocessing';
 import {ConfigurationValidator} from './configuration-validator';
 import {ConfigReader} from './config-reader';
 import {TypeDefinition} from './type-definition';
@@ -56,13 +56,13 @@ export class ConfigLoader {
 
         if (customConfigurationName) console.log('Load custom configuration', customConfigurationName);
 
-        let appConfiguration: any = await this.readConfiguration(configDirPath);
+        const typeDefinitions: TypeDefinitions = await this.readConfiguration(configDirPath);
 
-        const prePreprocessValidationErrors = prePreprocessConfigurationValidator.go(appConfiguration);
+        const prePreprocessValidationErrors = prePreprocessConfigurationValidator.go(typeDefinitions);
         if (prePreprocessValidationErrors.length > 0) throw prePreprocessValidationErrors;
 
-        appConfiguration = await this.preprocess(
-            configDirPath, appConfiguration, commonFields, extraTypes, relations,
+        const appConfiguration = await this.preprocess(
+            configDirPath, typeDefinitions, commonFields, extraTypes, relations,
             extraFields, customConfigurationName, locale);
 
         const postPreprocessValidationErrors = postPreprocessConfigurationValidator.go(appConfiguration);
@@ -77,14 +77,16 @@ export class ConfigLoader {
         const appConfigurationPath = configDirPath + '/Fields.json';
 
         try {
-            return { types: await this.configReader.read(appConfigurationPath) };
+            return await this.configReader.read(appConfigurationPath);
         } catch (msgWithParams) {
             throw [[msgWithParams]];
         }
     }
 
 
-    private async preprocess(configDirPath: string, fieldsJson: any, commonFields: any,
+    private async preprocess(configDirPath: string,
+                             firstLevelTypes: TypeDefinitions,
+                             commonFields: any,
                              coreTypes: {[typeName: string]: TypeDefinition },
                              relations: Array<RelationDefinition>,
                              extraFields: {[fieldName: string]: FieldDefinition },
@@ -101,7 +103,7 @@ export class ConfigLoader {
         const customConfigPath = configDirPath
             + '/Fields-' + (customConfigurationName ? customConfigurationName : 'Custom') + '.json';
 
-        let customConfiguration;
+        let secondLevelTypes;
         let hiddenConfiguration: any;
         let customHiddenConfiguration: any;
         let languageConfiguration: any;
@@ -111,7 +113,7 @@ export class ConfigLoader {
         let orderConfiguration: any;
 
         try {
-            customConfiguration = await this.configReader.read(customConfigPath);
+            secondLevelTypes = await this.configReader.read(customConfigPath);
             hiddenConfiguration = await this.configReader.read(hiddenConfigurationPath);
             customHiddenConfiguration = await this.configReader.read(customHiddenConfigurationPath);
             languageConfiguration = await this.configReader.read(languageConfigurationPath);
@@ -134,8 +136,8 @@ export class ConfigLoader {
 
             const appConfiguration = Preprocessing.preprocess1(
                 coreTypes,
-                fieldsJson,
-                customConfiguration,
+                firstLevelTypes,
+                secondLevelTypes,
                 nonExtendableTypes,
                 commonFields);
 

@@ -2,10 +2,12 @@ import {FieldDefinition} from './field-definition';
 import {TypeDefinition} from './type-definition';
 import {RelationDefinition} from './relation-definition';
 import {UnorderedConfigurationDefinition} from './unordered-configuration-definition';
-import {clone, compose, empty, filter, flow, forEach, is, isDefined, isNot, map, on, subtract, to} from 'tsfun';
+import {clone, compose, empty, filter, flow, forEach, is, isDefined, isNot, map, on, subtract, to, intersection, lookup, zip} from 'tsfun';
 import {ConfigurationErrors} from './configuration-errors';
 import {ConfigurationDefinition} from './configuration-definition';
 
+
+export type TypeDefinitions = {[typeName: string]: TypeDefinition };
 
 /**
  * @author Daniel de Oliveira
@@ -19,22 +21,27 @@ export module Preprocessing {
      * Merges the core, Fields.json and custom fields config
      *
      * @param coreTypes
-     * @param fieldsJson
-     * @param customConfiguration
+     * @param firstLevelTypes
+     * @param secondLevelTypes
      * @param nonExtendableTypes
      * @param commonFields
+     *
+     * @throws [DUPLICATE_TYPE_DEFINITION, typeName]
      */
     export function preprocess1(coreTypes: any,
-                                fieldsJson: any,
-                                customConfiguration: any,
+                                firstLevelTypes: TypeDefinitions,
+                                secondLevelTypes: TypeDefinitions,
                                 nonExtendableTypes: any,
                                 commonFields: any) {
 
+        const inter = intersection([Object.keys(coreTypes), Object.keys(firstLevelTypes)]);
+        if (inter.length > 0) throw [ConfigurationErrors.DUPLICATE_TYPE_DEFINITION, inter[0]];
+
         // to be done before applyCustomFields so that extra types can get additional fields too
-        addExtraTypes(coreTypes, fieldsJson);
+        addExtraTypes(coreTypes, firstLevelTypes);
         const appConfiguration = { types: coreTypes } as UnorderedConfigurationDefinition;
 
-        applyCustom(appConfiguration, customConfiguration, nonExtendableTypes);
+        applyCustom(appConfiguration, secondLevelTypes, nonExtendableTypes);
         replaceCommonFields(appConfiguration, commonFields);
         return appConfiguration;
     }
@@ -378,26 +385,19 @@ export module Preprocessing {
     }
 
 
-    export function addExtraTypes(coreTypes: {[typeName: string]: TypeDefinition },
-                                  fieldsJson: UnorderedConfigurationDefinition) {
+    export function addExtraTypes(coreTypes: TypeDefinitions,
+                                  firstLevelTypes: TypeDefinitions) {
 
-        for (let confTypeName of Object.keys(fieldsJson.types)) {
-            const confType = fieldsJson.types[confTypeName];
-            let typeAlreadyPresent = false;
+        const pairs = zip(Object.keys(firstLevelTypes))(Object.values(firstLevelTypes));
 
-            for (let coreTypeName of Object.keys(coreTypes)) {
-                const coreType = coreTypes[coreTypeName];
-
-                if (coreTypeName === confTypeName) {
-                    typeAlreadyPresent = true;
-
-                    merge(coreType, confType);
-                    merge(coreType.fields, confType.fields);
-                }
+        forEach(([typeName, type]: any) => {
+            if (type.derives) {
+                merge(coreTypes[type.derives], type);
+                merge(coreTypes[type.derives].fields, type.fields);
+            } else {
+                coreTypes[typeName] = type;
             }
-
-            if (!typeAlreadyPresent) coreTypes[confTypeName] = confType;
-        }
+        })(pairs);
     }
 
 

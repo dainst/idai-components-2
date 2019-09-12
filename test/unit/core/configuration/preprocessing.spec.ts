@@ -3,6 +3,7 @@ import {TypeDefinition} from '../../../../src/configuration/type-definition'
 import {RelationDefinition} from '../../../../src/configuration/relation-definition'
 import {UnorderedConfigurationDefinition} from '../../../../src/configuration/unordered-configuration-definition';
 import {FieldDefinition} from '../../../../src/configuration/field-definition';
+import {ConfigurationErrors} from '../../../../src/configuration/configuration-errors';
 
 /**
  * @author Daniel de Oliveira
@@ -75,19 +76,39 @@ describe('Preprocessing', () => {
             }
         } as any;
 
-        const fieldsJson = { types: { // TODO get rid of this level
-            A: {
+        const fieldsJson = {
+            'A-1': {
+                derives: 'A',
                 fields: {
                     field1: { inputType: 'text' },
                     field2: { inputType: 'text' }
                 }}
-        }} as any;
+        } as any;
 
         const result = Preprocessing.preprocess1(coreTypes, fieldsJson, {}, [], []);
 
         expect(result.types['A'].fields['field1'].inputType).toBe('text');
         expect(result.types['A'].fields['field1'].group).toBe('stem');
         expect(result.types['A'].fields['field2'].inputType).toBe('text');
+    });
+
+
+    it('preprocessing1 - merge fields into core', () => {
+
+        const coreTypes = {
+            A: {}
+        } as any;
+
+        const fieldsJson = {
+            A: {}
+        } as any;
+
+        try {
+            Preprocessing.preprocess1(coreTypes, fieldsJson, {}, [], []);
+            fail();
+        } catch (expected) {
+            expect(expected).toEqual([ConfigurationErrors.DUPLICATE_TYPE_DEFINITION, 'A']);
+        }
     });
 
 
@@ -111,7 +132,7 @@ describe('Preprocessing', () => {
             } as TypeDefinition
         };
 
-        Preprocessing.addExtraTypes(coreTypes, configuration);
+        Preprocessing.addExtraTypes(coreTypes, configuration.types);
         expect(coreTypes['T2'].fields['bField']).toBeDefined();
     });
 
@@ -126,7 +147,7 @@ describe('Preprocessing', () => {
             } as TypeDefinition
         };
 
-        Preprocessing.addExtraTypes(coreTypes, configuration);
+        Preprocessing.addExtraTypes(coreTypes, configuration.types);
         coreTypes = { types: coreTypes } as any;
 
         Preprocessing.addExtraFields(coreTypes as any, { identifier: {} as FieldDefinition });
@@ -147,6 +168,14 @@ describe('Preprocessing', () => {
             } as TypeDefinition
         };
 
+        const configuration = {
+            'T1-1': {
+                derives: 'T1',
+                color: 'white',
+                fields: {aField: {}}
+            }
+        } as any;
+
         Preprocessing.addExtraTypes(coreTypes, configuration);
 
         expect(coreTypes['T1'].abstract).toBeTruthy();
@@ -165,6 +194,14 @@ describe('Preprocessing', () => {
                 }
             } as TypeDefinition
         };
+
+        const configuration = {
+            'T1-1': {
+                derives: 'T1',
+                color: 'white',
+                fields: {aField: {}}
+            }
+        } as any;
 
         Preprocessing.addExtraTypes(coreTypes, configuration);
 
@@ -194,7 +231,7 @@ describe('Preprocessing', () => {
             relations: []
         };
 
-        Preprocessing.addExtraTypes({}, configuration);
+        Preprocessing.addExtraTypes({}, configuration.types);
         Preprocessing.addExtraFields(configuration, { 'identifier': {} as FieldDefinition });
 
         expect(configuration.types['T1'].fields['aField']).toBeDefined();
@@ -236,7 +273,7 @@ describe('Preprocessing', () => {
 
         configuration = { identifier: 'test', types: { T1: t1 }, relations: [r1]};
 
-        Preprocessing.addExtraTypes({}, configuration);
+        Preprocessing.addExtraTypes({}, configuration.types);
         Preprocessing.addExtraFields(configuration, {});
         Preprocessing.addExtraRelations(configuration, [r2]);
 
