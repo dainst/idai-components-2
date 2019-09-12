@@ -120,7 +120,7 @@ describe('Preprocessing', () => {
     });
 
 
-    it('preprocessing1 - merge fields into core', () => {
+    it('preprocessing1 - fail merging fields into core', () => {
 
         const coreTypes = {
             A: {}

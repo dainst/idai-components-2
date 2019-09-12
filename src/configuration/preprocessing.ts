@@ -2,7 +2,7 @@ import {FieldDefinition} from './field-definition';
 import {TypeDefinition} from './type-definition';
 import {RelationDefinition} from './relation-definition';
 import {UnorderedConfigurationDefinition} from './unordered-configuration-definition';
-import {clone, compose, empty, filter, flow, forEach, is, isDefined, isNot, map, on, subtract, to, intersection, lookup, zip} from 'tsfun';
+import {clone, compose, empty, filter, flow, forEach, is, isDefined, isNot, map, on, subtract, to, duplicates, lookup, zip, flatten} from 'tsfun';
 import {ConfigurationErrors} from './configuration-errors';
 import {ConfigurationDefinition} from './configuration-definition';
 
@@ -35,7 +35,7 @@ export module Preprocessing {
                                 commonFields: any) {
 
 
-        const inter = intersection([Object.keys(coreTypes), Object.keys(firstLevelTypes)]);
+        const inter = duplicates(flatten([Object.keys(coreTypes), Object.keys(firstLevelTypes), Object.keys(secondLevelTypes)]));
         if (inter.length > 0) throw [ConfigurationErrors.DUPLICATE_TYPE_DEFINITION, inter[0]];
 
         // to be done before applyCustomFields so that extra types can get additional fields too

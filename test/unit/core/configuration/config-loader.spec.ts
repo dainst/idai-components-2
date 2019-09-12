@@ -247,8 +247,8 @@ describe('ConfigLoader', () => {
         });
 
         const customFieldsConfiguration = {
-            A: { fields: { fieldA1: { inputType: 'unsignedFloat' } } },
-            B: { fields: { fieldB2: { inputType: 'boolean' } } }
+            'A-1': { 'derives': 'A', fields: { fieldA1: { inputType: 'unsignedFloat' } } },
+            'B-1': { 'derives': 'B', fields: { fieldB2: { inputType: 'boolean' } } }
         };
 
         applyConfig(customFieldsConfiguration);
