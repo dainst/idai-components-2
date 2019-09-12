@@ -136,13 +136,8 @@ export class ConfigLoader {
                 coreTypes,
                 appConfiguration,
                 customConfiguration,
-                hiddenConfiguration,
-                customHiddenConfiguration,
                 nonExtendableTypes,
-                commonFields,
-                extraFields,
-                relations,
-                this.defaultFields);
+                commonFields);
 
             return Preprocessing.preprocess2(
                 appConfiguration,
@@ -150,7 +145,12 @@ export class ConfigLoader {
                 customLanguageConfiguration,
                 searchConfiguration,
                 valuelistsConfiguration,
-                orderConfiguration);
+                orderConfiguration,
+                hiddenConfiguration,
+                customHiddenConfiguration,
+                extraFields,
+                relations,
+                this.defaultFields);
 
         } catch (msgWithParams) {
             throw [[msgWithParams]];

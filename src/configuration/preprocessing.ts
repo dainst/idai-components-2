@@ -14,30 +14,26 @@ import {ConfigurationDefinition} from './configuration-definition';
 export module Preprocessing {
 
 
+    /**
+     * Merges the core, Fields.json and custom fields config
+     *
+     * @param coreTypes
+     * @param appConfiguration
+     * @param customConfiguration
+     * @param nonExtendableTypes
+     * @param commonFields
+     */
     export function preprocess1(coreTypes: any,
                                 appConfiguration: any,
                                 customConfiguration: any,
-                                hiddenConfiguration: any,
-                                customHiddenConfiguration: any,
                                 nonExtendableTypes: any,
-                                commonFields: any,
-                                extraFields: any,
-                                relations: any,
-                                defaultFields: any) {
+                                commonFields: any) {
 
         // to be done before applyCustomFields so that extra types can get additional fields too
         addExtraTypes(appConfiguration, coreTypes);
 
         applyCustom(appConfiguration, customConfiguration, nonExtendableTypes);
         replaceCommonFields(appConfiguration, commonFields);
-
-        hideFields(appConfiguration, hiddenConfiguration);
-        hideFields(appConfiguration, customHiddenConfiguration);
-
-        appConfiguration.relations = [];
-        addExtraFields(appConfiguration, extraFields);
-        addExtraRelations(appConfiguration, relations);
-        addExtraFields(appConfiguration, defaultFields);
     }
 
 
@@ -46,7 +42,20 @@ export module Preprocessing {
                                 customLanguageConfiguration: any,
                                 searchConfiguration: any,
                                 valuelistsConfiguration: any,
-                                orderConfiguration: any) {
+                                orderConfiguration: any,
+                                hiddenConfiguration: any,
+                                customHiddenConfiguration: any,
+                                extraFields: any,
+                                relations: any,
+                                defaultFields: any) {
+
+        hideFields(appConfiguration, hiddenConfiguration);
+        hideFields(appConfiguration, customHiddenConfiguration);
+
+        appConfiguration.relations = [];
+        addExtraFields(appConfiguration, extraFields);
+        addExtraRelations(appConfiguration, relations);
+        addExtraFields(appConfiguration, defaultFields);
 
         applyLanguage(appConfiguration, languageConfiguration); // TODO test it
         applyLanguage(appConfiguration, customLanguageConfiguration); // TODO test it
