@@ -44,11 +44,24 @@ export module Preprocessing {
 
         // Validate first, before copying the types defined only in customConfiguration into the appConfiguration,
         // in order to make sure that only parents from the original appConfiguration can be referenced
+        renameTypesInCustom(secondLevelTypes);
         validateCustom(appConfiguration, secondLevelTypes, nonExtendableTypes);
         applyCustom(appConfiguration, secondLevelTypes);
 
         replaceCommonFields(appConfiguration, commonFields);
         return appConfiguration;
+    }
+
+
+    function renameTypesInCustom(types: TypeDefinitions) {
+
+        for (let [k, v] of (zip(Object.keys(types))(Object.values(types)))) {
+            const lastIndex = k.lastIndexOf('-');
+            if (lastIndex < 1) continue;
+            const pureName = k.substr(0, lastIndex);
+            (types as any)[pureName] = v;
+            delete types[k];
+        }
     }
 
 
