@@ -129,18 +129,18 @@ export class ConfigLoader {
             throw [[msgWithParams]];
         }
 
+
+        // unused: Preprocessing.prepareSameMainTypeResource(appConfiguration);
+        // unused: Preprocessing.setIsRecordedInVisibilities(appConfiguration); See #8992
+
+        const appConfiguration = Preprocessing.preprocess1(
+            coreTypes,
+            firstLevelTypes,
+            secondLevelTypes,
+            nonExtendableTypes,
+            commonFields);
+
         try {
-
-            // unused: Preprocessing.prepareSameMainTypeResource(appConfiguration);
-            // unused: Preprocessing.setIsRecordedInVisibilities(appConfiguration); See #8992
-
-            const appConfiguration = Preprocessing.preprocess1(
-                coreTypes,
-                firstLevelTypes,
-                secondLevelTypes,
-                nonExtendableTypes,
-                commonFields);
-
             return Preprocessing.preprocess2(
                 appConfiguration,
                 languageConfiguration,

@@ -325,7 +325,7 @@ describe('ConfigLoader', () => {
 
             fail();
         } catch(err) {
-            expect(err[0][0]).toBe(ConfigurationErrors.INVALID_CONFIG_NO_PARENT_ASSIGNED);
+            expect(err).toEqual([ConfigurationErrors.INVALID_CONFIG_NO_PARENT_ASSIGNED, 'B']);
         } finally {
             done();
         }
@@ -350,7 +350,7 @@ describe('ConfigLoader', () => {
 
             fail();
         } catch(err) {
-            expect(err[0][0]).toBe(ConfigurationErrors.INVALID_CONFIG_PARENT_NOT_DEFINED);
+            expect(err).toEqual([ConfigurationErrors.INVALID_CONFIG_PARENT_NOT_DEFINED]);
         } finally {
             done();
         }
@@ -378,7 +378,7 @@ describe('ConfigLoader', () => {
 
             fail();
         } catch(err) {
-            expect(err[0][0]).toBe(ConfigurationErrors.INVALID_CONFIG_PARENT_NOT_TOP_LEVEL);
+            expect(err).toEqual([ConfigurationErrors.INVALID_CONFIG_PARENT_NOT_TOP_LEVEL]);
         } finally {
             done();
         }
@@ -406,7 +406,7 @@ describe('ConfigLoader', () => {
             fail();
 
         } catch(err) {
-            expect(err[0][0]).toBe(ConfigurationErrors.INVALID_CONFIG_PARENT_NOT_DEFINED);
+            expect(err).toEqual([ConfigurationErrors.INVALID_CONFIG_PARENT_NOT_DEFINED]);
         } finally {
             done();
         }
@@ -433,7 +433,7 @@ describe('ConfigLoader', () => {
             fail();
 
         } catch(err) {
-            expect(err[0][0]).toBe(ConfigurationErrors.NOT_AN_EXTENDABLE_TYPE);
+            expect(err).toEqual([ConfigurationErrors.NOT_AN_EXTENDABLE_TYPE]);
         } finally {
             done();
         }

@@ -27,6 +27,7 @@ export module Preprocessing {
      * @param commonFields
      *
      * @throws [DUPLICATE_TYPE_DEFINITION, typeName]
+     * @throws [INVALID_CONFIG_NO_PARENT_ASSIGNED, typeName]
      */
     export function preprocess1(coreTypes: any,
                                 firstLevelTypes: TypeDefinitions,
@@ -478,17 +479,17 @@ export module Preprocessing {
 
         Object.keys(customConfiguration).forEach(typeName => {
             if (!appConfiguration.types[typeName]) {
-                if (!customConfiguration[typeName].parent) throw ConfigurationErrors.INVALID_CONFIG_NO_PARENT_ASSIGNED;
+                if (!customConfiguration[typeName].parent) throw [ConfigurationErrors.INVALID_CONFIG_NO_PARENT_ASSIGNED, typeName];
 
                 const found = Object.keys(appConfiguration.types).find(is(customConfiguration[typeName].parent));
-                if (!found) throw ConfigurationErrors.INVALID_CONFIG_PARENT_NOT_DEFINED;
+                if (!found) throw [ConfigurationErrors.INVALID_CONFIG_PARENT_NOT_DEFINED];
 
                 if (nonExtendableTypes.includes(customConfiguration[typeName].parent)) {
-                    throw ConfigurationErrors.NOT_AN_EXTENDABLE_TYPE;
+                    throw [ConfigurationErrors.NOT_AN_EXTENDABLE_TYPE];
                 }
 
                 if (appConfiguration.types[customConfiguration[typeName].parent].parent) {
-                    throw ConfigurationErrors.INVALID_CONFIG_PARENT_NOT_TOP_LEVEL;
+                    throw [ConfigurationErrors.INVALID_CONFIG_PARENT_NOT_TOP_LEVEL];
                 }
             }
         });
