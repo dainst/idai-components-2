@@ -39,30 +39,38 @@ export module Preprocessing {
         const inter = duplicates(flatten([Object.keys(coreTypes), Object.keys(firstLevelTypes), Object.keys(secondLevelTypes)]));
         if (inter.length > 0) throw [ConfigurationErrors.DUPLICATE_TYPE_DEFINITION, inter[0]];
 
+        validateCustom(coreTypes, firstLevelTypes, nonExtendableTypes);
+
         // to be done before applyCustomFields so that extra types can get additional fields too
         addExtraTypes(coreTypes, firstLevelTypes);
-        const appConfiguration = { types: coreTypes } as UnorderedConfigurationDefinition;
+        validateCustom(coreTypes, secondLevelTypes, nonExtendableTypes);
 
         // Validate first, before copying the types defined only in customConfiguration into the appConfiguration,
         // in order to make sure that only parents from the original appConfiguration can be referenced
+        renameTypesInCustom(coreTypes);
         renameTypesInCustom(secondLevelTypes);
-        validateCustom(appConfiguration, secondLevelTypes, nonExtendableTypes);
-        applyCustom(appConfiguration, secondLevelTypes);
 
-        replaceCommonFields(appConfiguration, commonFields);
-        return appConfiguration;
+        applyCustom(coreTypes, secondLevelTypes);
+
+        replaceCommonFields(coreTypes, commonFields);
+        return { types: coreTypes };
     }
 
 
     function renameTypesInCustom(types: TypeDefinitions) {
 
         for (let [k, v] of (zip(Object.keys(types))(Object.values(types)))) {
-            const lastIndex = k.indexOf(':');
-            if (lastIndex < 1) continue;
-            const pureName = k.substr(0, lastIndex);
-            (types as any)[pureName] = v;
+            const pureName_ = pureName(k);
+            if (pureName_ === k) continue;
+            (types as any)[pureName_] = v;
             delete types[k];
         }
+    }
+
+
+    function pureName(s: string) {
+
+        return  s.includes(':') ? s.substr(0, s.indexOf(':')) : s;
     }
 
 
@@ -86,7 +94,6 @@ export module Preprocessing {
         addExtraRelations(appConfiguration, relations);
         addExtraFields(appConfiguration, defaultFields);
 
-
         applyLanguage(appConfiguration, languageConfiguration); // TODO test it
         applyLanguage(appConfiguration, customLanguageConfiguration); // TODO test it
 
@@ -103,39 +110,40 @@ export module Preprocessing {
     }
 
 
+    export function replaceCommonFields(configuration: TypeDefinitions, commonFields: any) {
 
-    export function replaceCommonFields(configuration: UnorderedConfigurationDefinition, commonFields: any) {
+        if (!configuration) return;
 
-        if (!configuration.types) return;
-
-        for (let confTypeName of Object.keys(configuration.types)) {
-            if ((configuration.types[confTypeName] as any)['commons']) {
-                for (let commonFieldName of ((configuration.types[confTypeName] as any)['commons'])) {
-                    if (!(configuration.types[confTypeName] as any)['fields']) {
-                        (configuration.types[confTypeName] as any)['fields'] = {};
+        for (let confTypeName of Object.keys(configuration)) {
+            if ((configuration[confTypeName] as any)['commons']) {
+                for (let commonFieldName of ((configuration[confTypeName] as any)['commons'])) {
+                    if (!(configuration[confTypeName] as any)['fields']) {
+                        (configuration[confTypeName] as any)['fields'] = {};
                     }
-                    (configuration.types[confTypeName] as any)['fields'][commonFieldName]
+                    (configuration[confTypeName] as any)['fields'][commonFieldName]
                         = clone(commonFields[commonFieldName]);
 
                     //console.log(commonFields[commonFieldName])
                 }
 
-                delete (configuration.types[confTypeName] as any)['commons'];
+                delete (configuration[confTypeName] as any)['commons'];
             }
         }
     }
 
 
-    export function applyCustom(appConfiguration: UnorderedConfigurationDefinition,
+    export function applyCustom(appConfiguration: TypeDefinitions,
                                 customConfiguration: any) {
 
-        Object.keys(customConfiguration).forEach(typeName => {
+        Object.keys(customConfiguration).forEach(typeName_ => {
 
-            if (appConfiguration.types[typeName]) {
+            const typeName = pureName(typeName_);
+
+            if (appConfiguration[typeName]) {
                 addCustomFields(appConfiguration, typeName, customConfiguration[typeName].fields);
                 addCustomCommons(appConfiguration, typeName, (customConfiguration[typeName] as any)['commons'])
             } else {
-                appConfiguration.types[typeName] = customConfiguration[typeName];
+                appConfiguration[typeName] = customConfiguration[typeName];
             }
         });
     }
@@ -432,7 +440,7 @@ export module Preprocessing {
     }
 
 
-    function addCustomFields(configuration: UnorderedConfigurationDefinition,
+    function addCustomFields(configuration: TypeDefinitions,
                              typeName: string,
                              fields: any) {
 
@@ -442,8 +450,8 @@ export module Preprocessing {
             const field: any = { name: fieldName };
             Object.assign(field, fields[fieldName]);
 
-            const group: string|undefined = configuration.types[typeName].fields[fieldName]
-                ? configuration.types[typeName].fields[fieldName]['group']
+            const group: string|undefined = configuration[typeName].fields[fieldName]
+                ? configuration[typeName].fields[fieldName]['group']
                 : undefined;
 
             if (fieldName === 'period') {
@@ -451,44 +459,51 @@ export module Preprocessing {
                 console.log("gruo", group)
             }
 
-            configuration.types[typeName].fields[fieldName] = field;
+            configuration[typeName].fields[fieldName] = field;
 
             // TODO hack; there are some fields we want to 'merge' in general
-            if (group) configuration.types[typeName].fields[fieldName]['group'] = group;
+            if (group) configuration[typeName].fields[fieldName]['group'] = group;
         });
     }
 
 
-    function addCustomCommons(configuration: UnorderedConfigurationDefinition, typeName: string,
+    function addCustomCommons(configuration: TypeDefinitions, typeName: string,
                               commons: string[]|undefined) {
 
         if (!commons) return;
 
-        if (!(configuration.types[typeName] as any)['commons']) {
-            (configuration.types[typeName] as any)['commons'] = commons;
+        if (!(configuration[typeName] as any)['commons']) {
+            (configuration[typeName] as any)['commons'] = commons;
         } else {
-            (configuration.types[typeName] as any)['commons']
-                = (configuration.types[typeName] as any)['commons'].concat(commons);
+            (configuration[typeName] as any)['commons']
+                = (configuration[typeName] as any)['commons'].concat(commons);
         }
     }
 
 
-    function validateCustom(appConfiguration: UnorderedConfigurationDefinition,
+    function validateCustom(appConfiguration: TypeDefinitions,
                             customConfiguration: any,
                             nonExtendableTypes: string[]) {
 
         Object.keys(customConfiguration).forEach(typeName => {
-            if (!appConfiguration.types[typeName]) {
+
+            const pureTypeName = pureName(typeName);
+
+            if (!appConfiguration[pureTypeName]) {
+
                 if (!customConfiguration[typeName].parent) throw [ConfigurationErrors.INVALID_CONFIG_NO_PARENT_ASSIGNED, typeName];
 
-                const found = Object.keys(appConfiguration.types).find(is(customConfiguration[typeName].parent));
-                if (!found) throw [ConfigurationErrors.INVALID_CONFIG_PARENT_NOT_DEFINED];
+                const found = Object.keys(appConfiguration).find(is(customConfiguration[typeName].parent));
+                if (!found) {
+                    console.log("customConfi", JSON.stringify(Object.keys(appConfiguration)))
+                    throw [ConfigurationErrors.INVALID_CONFIG_PARENT_NOT_DEFINED, customConfiguration[typeName].parent];
+                }
 
                 if (nonExtendableTypes.includes(customConfiguration[typeName].parent)) {
                     throw [ConfigurationErrors.NOT_AN_EXTENDABLE_TYPE];
                 }
 
-                if (appConfiguration.types[customConfiguration[typeName].parent].parent) {
+                if (appConfiguration[customConfiguration[typeName].parent].parent) {
                     throw [ConfigurationErrors.INVALID_CONFIG_PARENT_NOT_TOP_LEVEL];
                 }
             }

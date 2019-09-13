@@ -46,8 +46,10 @@ export class ConfigLoader {
                 private i18n: I18n) {}
 
 
-    public async go(configDirPath: string, commonFields: any,
-                    extraTypes: {[typeName: string]: TypeDefinition }, relations: Array<RelationDefinition>,
+    public async go(configDirPath: string,
+                    commonFields: any,
+                    extraTypes: {[typeName: string]: TypeDefinition },
+                    relations: Array<RelationDefinition>,
                     extraFields: {[fieldName: string]: FieldDefinition },
                     prePreprocessConfigurationValidator: PrePreprocessConfigurationValidator,
                     postPreprocessConfigurationValidator: ConfigurationValidator,

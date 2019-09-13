@@ -10,7 +10,7 @@ import {ConfigurationErrors} from '../../../../src/configuration/configuration-e
  */
 describe('ConfigLoader', () => {
 
-    let configuration = {} as ConfigurationDefinition;
+    let firstLevelTypes = {} as ConfigurationDefinition;
     let configLoader: ConfigLoader;
     let configReader;
 
@@ -24,7 +24,7 @@ describe('ConfigLoader', () => {
         orderConfiguration = {}) {
 
         configReader.read.and.returnValues(
-            Promise.resolve(configuration),
+            Promise.resolve(firstLevelTypes),
             Promise.resolve(customFieldsConfiguration),
             Promise.resolve(hiddenConfiguration),
             Promise.resolve(hiddenCustomConfiguration),
@@ -39,7 +39,7 @@ describe('ConfigLoader', () => {
 
     beforeEach(() => {
 
-        configuration = {} as ConfigurationDefinition;
+        firstLevelTypes = {} as ConfigurationDefinition;
 
         configReader = jasmine.createSpyObj('confRead', ['read']);
         applyConfig();
@@ -50,13 +50,13 @@ describe('ConfigLoader', () => {
 
     it('mix in common fields', async done => {
 
-        Object.assign(configuration, {
-            A: { commons: ['processor'] },
+        Object.assign(firstLevelTypes, {
+            'B': { parent: 'A', commons: ['processor'] },
         });
 
         applyConfig(undefined, {
             types: {
-                A: { label: 'A_', fields: { processor: { label: 'Bearbeiter/Bearbeiterin', description: "abc" }} },
+                B: { label: 'B_', fields: { processor: { label: 'Bearbeiter/Bearbeiterin', description: "abc" }} },
             }, relations: {}
         });
 
@@ -65,7 +65,7 @@ describe('ConfigLoader', () => {
             pconf = await configLoader.go(
                 'yo',
                 { processor : { inputType: 'input', group: 'stem' }},
-                {},
+                { 'A': { type: 'A' } },
                 [],
                 {},
                 new PrePreprocessConfigurationValidator(),
@@ -78,20 +78,20 @@ describe('ConfigLoader', () => {
             done();
         }
 
-        expect(pconf.getTypesList()[0]['fields'][0]['name']).toBe('processor');
+        expect(pconf.getTypesList()[1]['fields'][2]['name']).toBe('processor');
         done();
     });
 
 
     it('translate common fields', async done => {
 
-        Object.assign(configuration, {
-            A: { commons: ['processor'] },
+        Object.assign(firstLevelTypes, {
+            'B': { parent: 'A', commons: ['processor'] },
         });
 
         applyConfig(undefined, {
             commons: {
-                processor: {label: 'Bearbeiter/Bearbeiterin', description: "abc"}
+                processor: { label: 'Bearbeiter/Bearbeiterin', description: "abc" }
             },
             types: {},
             relations: {}
@@ -102,7 +102,7 @@ describe('ConfigLoader', () => {
             pconf = await configLoader.go(
                 'yo',
                 { processor : { inputType: 'input', group: 'stem' }},
-                {},
+                { 'A': { type: 'A' }},
                 [],
                 {},
                 new PrePreprocessConfigurationValidator(),
@@ -115,20 +115,15 @@ describe('ConfigLoader', () => {
             fail(err);
             done();
         }
-
-        expect(pconf.getTypesList()[0]['fields'][0]['label']).toBe('Bearbeiter/Bearbeiterin');
-        expect(pconf.getTypesList()[0]['fields'][0]['description']).toBe('abc');
+        expect(pconf.getTypesList()[1]['fields'][2]['label']).toBe('Bearbeiter/Bearbeiterin');
+        expect(pconf.getTypesList()[1]['fields'][2]['description']).toBe('abc');
         done();
     });
 
 
     it('mix existing externally configured with internal inherits relation', async done => { // TODO check if it can be removed since external defintions of relations are now forbidden
 
-        Object.assign(configuration, {
-            'A': {},
-            'B': {},
-            'C': {},
-            'D': {},
+        Object.assign(firstLevelTypes, {
             'A1': { parent: 'A' },
             'A2': { parent: 'A' },
             'B1': { parent: 'B' },
@@ -141,7 +136,12 @@ describe('ConfigLoader', () => {
             pconf = await configLoader.go(
                 'yo',
                 {},
-                {},
+                {
+                    'A': { type: 'A'},
+                    'B': { type: 'B'},
+                    'C': { type: 'C'},
+                    'D': { type: 'D'}
+                },
                 [
                     {
                         name: 'connection',
@@ -171,14 +171,16 @@ describe('ConfigLoader', () => {
     });
 
 
-    it('preprocess - convert sameOperation to sameMainTypeResource', async (done) => {
+    it('preprocess - convert sameOperation to sameMainTypeResource', async done => {
 
-        Object.assign(configuration, { A: {}, B: {}});
+        Object.assign(firstLevelTypes, { A: { parent: 'T' }, B: { parent: 'T' }});
 
         let pconf;
         try {
             pconf = await configLoader.go(
-                'yo', {}, {},
+                'yo',
+                {},
+                { T: { type: 'T'}},
                 [{ name: 'abc', domain: ['A'], range: ['B'], sameMainTypeResource: false }], {},
                 new PrePreprocessConfigurationValidator(),
                 new ConfigurationValidator(), undefined, 'de');
@@ -192,12 +194,12 @@ describe('ConfigLoader', () => {
     });
 
 
-    it('preprocess - apply language confs', async (done) => {
+    it('preprocess - apply language confs', async done => {
 
-        Object.assign(configuration, {
-            A: {},
-            B: {},
-            C: {}
+        Object.assign(firstLevelTypes, {
+            A: { parent: 'Parent' },
+            B: { parent: 'Parent' },
+            C: { parent: 'Parent' }
         });
 
         applyConfig({}, {
@@ -217,7 +219,7 @@ describe('ConfigLoader', () => {
         let pconf;
         try {
             pconf = await configLoader.go(
-                'yo', {}, {},[
+                'yo', {}, { 'Parent': { type: 'Parent' }},[
                          { name: 'r1', domain: ['A'], range: ['B']},
                          { name: 'r2', domain: ['A'], range: ['B']}
                     ], {},
@@ -229,9 +231,9 @@ describe('ConfigLoader', () => {
         }
 
 
-        expect(pconf.getTypesList()[0].label).toEqual('A_');
-        expect(pconf.getTypesList()[1].label).toEqual('B__');
-        expect(pconf.getTypesList()[2].label).toEqual('C'); // took name as label
+        expect(pconf.getTypesList()[1].label).toEqual('A_');
+        expect(pconf.getTypesList()[2].label).toEqual('B__');
+        expect(pconf.getTypesList()[3].label).toEqual('C'); // took name as label
 
         expect(pconf.getRelationDefinitions('A')[1].label).toEqual('r1_');
         expect(pconf.getRelationDefinitions('A')[0].label).toBeUndefined();
@@ -241,30 +243,32 @@ describe('ConfigLoader', () => {
 
     it('preprocess - apply custom fields configuration', async done => {
 
-        Object.assign(configuration, {
-            A: { fields: { fieldA1: { inputType: 'unsignedInt' } } },
-            B: { fields: { fieldB1: { inputType: 'input' } } }
+        Object.assign(firstLevelTypes, {
+            'A:0': { parent: 'F', fields: { fieldA1: { inputType: 'unsignedInt' } } },
+            'B:0': { parent: 'G', fields: { fieldB1: { inputType: 'input' } } }
         });
 
         const customFieldsConfiguration = {
-            'A:1': { 'derives': 'A', fields: { fieldA1: { inputType: 'unsignedFloat' } } },
-            'B:1': { 'derives': 'B', fields: { fieldB2: { inputType: 'boolean' } } }
+            'A:1': { parent: 'F', derives: 'A:0', fields: { fieldA1: { inputType: 'unsignedFloat' } } },
+            'B:1': { parent: 'G', derives: 'B:0', fields: { fieldB2: { inputType: 'boolean' } } }
         };
 
         applyConfig(customFieldsConfiguration);
 
         let pconf;
         try {
-            pconf = await configLoader.go('', {}, {},[], {},
-                new PrePreprocessConfigurationValidator(), new ConfigurationValidator(),
+            pconf = await configLoader.go('', {},
+                { 'F': { type: 'F'}, 'G': { type: 'G' }},[], {},
+                new PrePreprocessConfigurationValidator(),
+                new ConfigurationValidator(),
                 undefined, 'de'
             );
 
-            expect(pconf.getTypesList()[0].fields.find(field => field.name == 'fieldA1')
+            expect(pconf.getTypesList()[2].fields.find(field => field.name == 'fieldA1')
                 .inputType).toEqual('unsignedFloat');
-            expect(pconf.getTypesList()[1].fields.find(field => field.name == 'fieldB1')
+            expect(pconf.getTypesList()[3].fields.find(field => field.name == 'fieldB1')
                 .inputType).toEqual('input');
-            expect(pconf.getTypesList()[1].fields.find(field => field.name == 'fieldB2')
+            expect(pconf.getTypesList()[3].fields.find(field => field.name == 'fieldB2')
                 .inputType).toEqual('boolean');
 
         } catch(err) {
@@ -277,19 +281,19 @@ describe('ConfigLoader', () => {
 
     it('preprocess - apply custom fields configuration - add subtypes', async done => {
 
-        Object.assign(configuration, {
-            Find: { fields: { fieldA1: { inputType: 'unsignedInt' } } }
+        Object.assign(firstLevelTypes, {
+            'Find:0': { fields: { fieldA1: { inputType: 'unsignedInt' } } }
         });
 
-        const customFieldsConfiguration = {
+        const secondLevelTypes = {
             B: { parent: 'Find', fields: { fieldC1: { inputType: 'boolean'}}}
         };
 
-        applyConfig(customFieldsConfiguration);
+        applyConfig(secondLevelTypes);
 
         let pconf;
         try {
-            pconf = await configLoader.go('', {}, {},[], {},
+            pconf = await configLoader.go('', {}, { 'Find': { type: 'Find' }},[], {},
                 new PrePreprocessConfigurationValidator(), new ConfigurationValidator(),
                 undefined, 'de'
             );
@@ -307,18 +311,18 @@ describe('ConfigLoader', () => {
 
     it('preprocess - apply custom fields configuration - add subtypes - no parent assigned', async done => {
 
-        Object.assign(configuration, {
-            Find: { fields: { fieldA1: { inputType: 'unsignedInt' } } }
+        Object.assign(firstLevelTypes, {
+            'Find:0': { fields: { fieldA1: { inputType: 'unsignedInt' } } }
         });
 
-        const customFieldsConfiguration = {
+        const secondLevelTypes = {
             B: { fields: { fieldC1: { inputType: 'boolean'}}}
         };
 
-        applyConfig(customFieldsConfiguration);
+        applyConfig(secondLevelTypes);
 
         try {
-            await configLoader.go('', {}, {},[], {},
+            await configLoader.go('', {}, { 'Find': { type: 'Find' }},[], {},
                 new PrePreprocessConfigurationValidator(), new ConfigurationValidator(),
                 undefined, 'de'
             );
@@ -334,7 +338,7 @@ describe('ConfigLoader', () => {
 
     it('preprocess - apply custom fields configuration - add subtypes - parent not defined', async done => {
 
-        Object.assign(configuration, {});
+        Object.assign(firstLevelTypes, {});
 
         const customFieldsConfiguration = {
             B: { parent: 'Find', fields: { fieldC1: { inputType: 'boolean'}}}
@@ -350,7 +354,7 @@ describe('ConfigLoader', () => {
 
             fail();
         } catch(err) {
-            expect(err).toEqual([[ConfigurationErrors.INVALID_CONFIG_PARENT_NOT_DEFINED]]);
+            expect(err).toEqual([[ConfigurationErrors.INVALID_CONFIG_PARENT_NOT_DEFINED, 'Find']]);
         } finally {
             done();
         }
@@ -359,19 +363,18 @@ describe('ConfigLoader', () => {
 
     it('preprocess - apply custom fields configuration - add subtypes - parent no top level type', async done => {
 
-        Object.assign(configuration, {
-            SuperFind: { fields: { fieldA1: { inputType: 'unsignedInt' } } },
-            Find: { parent: 'SuperFind', fields: { fieldA1: { inputType: 'unsignedInt' } } }
+        Object.assign(firstLevelTypes, {
+            'Find:0': { parent: 'SuperFind', fields: { fieldA1: { inputType: 'unsignedInt' } } }
         });
 
-        const customFieldsConfiguration = {
-            C: { parent: 'Find', fields: { fieldC1: { inputType: 'boolean'}}}
+        const secondLevelTypes = {
+            C: { parent: 'Find:0', fields: { fieldC1: { inputType: 'boolean'}}}
         };
 
-        applyConfig(customFieldsConfiguration);
+        applyConfig(secondLevelTypes);
 
         try {
-            await configLoader.go('', {}, {},[], {},
+            await configLoader.go('', {}, { SuperFind: { type: 'SuperFind', fields: { fieldA1: { inputType: 'unsignedInt' } } }},[], {},
                 new PrePreprocessConfigurationValidator(), new ConfigurationValidator(),
                 undefined, 'de'
             );
@@ -385,9 +388,9 @@ describe('ConfigLoader', () => {
     });
 
 
-    it('preprocess - apply custom fields configuration - add subtypes - parent must not come from custom config', async done => {
+    xit('preprocess - apply custom fields configuration - add subtypes - parent must not come from custom config', async done => {
 
-        Object.assign(configuration, {
+        Object.assign(firstLevelTypes, {
             TopFind: { fields: { fieldA1: { inputType: 'unsignedInt' } } }
         });
 
@@ -415,9 +418,7 @@ describe('ConfigLoader', () => {
 
     it('preprocess - apply custom fields configuration - add subtypes - non extendable types not allowed', async done => {
 
-        Object.assign(configuration, {
-            Place: { fields: { fieldA1: { inputType: 'unsignedInt' } } }
-        });
+        Object.assign(firstLevelTypes, {});
 
         const customFieldsConfiguration = {
             Extension: { parent: 'Place', fields: { fieldC1: { inputType: 'boolean'}}}
@@ -426,7 +427,7 @@ describe('ConfigLoader', () => {
         applyConfig(customFieldsConfiguration);
 
         try {
-            await configLoader.go('', {}, {},[], {},
+            await configLoader.go('', {}, { Place: { type: 'Place', fields: { fieldA1: { inputType: 'unsignedInt' }}}},[], {},
                 new PrePreprocessConfigurationValidator(), new ConfigurationValidator(),
                 undefined, 'de'
             );
@@ -442,10 +443,10 @@ describe('ConfigLoader', () => {
 
     it('apply order configuration', async done => {
 
-        Object.assign(configuration, {
-            B: { fields: { fieldB2: {}, fieldB3: {}, fieldB1: {} } },
-            C: { fields: { fieldC1: {}, fieldC2: {} } },
-            A: { fields: { fieldA2: {}, fieldA1: {} } }
+        Object.assign(firstLevelTypes, {
+            B: { parent: 'Parent', fields: { fieldB2: {}, fieldB3: {}, fieldB1: {} } },
+            C: { parent: 'Parent', fields: { fieldC1: {}, fieldC2: {} } },
+            A: { parent: 'Parent', fields: { fieldA2: {}, fieldA1: {} } }
         });
 
         applyConfig({}, {}, {},
@@ -463,21 +464,21 @@ describe('ConfigLoader', () => {
 
         let pconf;
         try {
-            pconf = await configLoader.go('', {},{}, [], {},
+            pconf = await configLoader.go('', {},{Parent: { type: 'Parent' }}, [], {},
                 new PrePreprocessConfigurationValidator(),
                 new ConfigurationValidator(), undefined, 'de'
             );
 
             expect(pconf.getTypesList()[0].name).toEqual('A');
-            expect(pconf.getTypesList()[0].fields[0].name).toEqual('fieldA1');
-            expect(pconf.getTypesList()[0].fields[1].name).toEqual('fieldA2');
+            expect(pconf.getTypesList()[0].fields[2].name).toEqual('fieldA1');
+            expect(pconf.getTypesList()[0].fields[3].name).toEqual('fieldA2');
             expect(pconf.getTypesList()[1].name).toEqual('B');
-            expect(pconf.getTypesList()[1].fields[0].name).toEqual('fieldB1');
-            expect(pconf.getTypesList()[1].fields[1].name).toEqual('fieldB2');
-            expect(pconf.getTypesList()[1].fields[2].name).toEqual('fieldB3');
+            expect(pconf.getTypesList()[1].fields[2].name).toEqual('fieldB1');
+            expect(pconf.getTypesList()[1].fields[3].name).toEqual('fieldB2');
+            expect(pconf.getTypesList()[1].fields[4].name).toEqual('fieldB3');
             expect(pconf.getTypesList()[2].name).toEqual('C');
-            expect(pconf.getTypesList()[2].fields[0].name).toEqual('fieldC1');
-            expect(pconf.getTypesList()[2].fields[1].name).toEqual('fieldC2');
+            expect(pconf.getTypesList()[2].fields[2].name).toEqual('fieldC1');
+            expect(pconf.getTypesList()[2].fields[3].name).toEqual('fieldC2');
 
             done();
         } catch(err) {
@@ -490,8 +491,8 @@ describe('ConfigLoader', () => {
     it('add types and fields only once even if they are mentioned multiple times in order configuration',
         async done => {
 
-        Object.assign(configuration, {
-            A: { fields: { fieldA2: {}, fieldA1: {} } }
+        Object.assign(firstLevelTypes, {
+            'A:0': { parent: 'Parent', fields: { fieldA2: {}, fieldA1: {} } }
         });
 
         applyConfig({}, {}, {}, {}, {}, {
@@ -501,18 +502,17 @@ describe('ConfigLoader', () => {
             }
         });
 
-
         let pconf;
         try {
-            pconf = await configLoader.go('', {},{}, [], {},
+            pconf = await configLoader.go('', {},{ Parent: { type: 'Parent' }}, [], {},
                 new PrePreprocessConfigurationValidator(),
                 new ConfigurationValidator(), undefined, 'de'
             );
 
-            expect(pconf.getTypesList().length).toBe(1);
+            expect(pconf.getTypesList().length).toBe(2);
             expect(pconf.getTypesList()[0].fields.length).toBe(4);  // fieldA1, fieldA2, id, type
-            expect(pconf.getTypesList()[0].fields[0].name).toEqual('fieldA1');
-            expect(pconf.getTypesList()[0].fields[1].name).toEqual('fieldA2');
+            expect(pconf.getTypesList()[0].fields[2].name).toEqual('fieldA1');
+            expect(pconf.getTypesList()[0].fields[3].name).toEqual('fieldA2');
 
             done();
         } catch(err) {
@@ -524,12 +524,12 @@ describe('ConfigLoader', () => {
 
     it('apply hidden configurations', async done => {
 
-        Object.assign(configuration, {
-            A: { fields: { fieldA1: {}, fieldA2: {}, fieldA3: {}  } }
+        Object.assign(firstLevelTypes, {
+            'A:0': { derives: 'A', fields: { fieldA1: {}, fieldA2: {}, fieldA3: {}  } }
         });
 
         applyConfig({}, {}, {},
-        {
+            {
                 'A': ['fieldA1']
             },
             {
@@ -538,7 +538,7 @@ describe('ConfigLoader', () => {
 
         let pconf;
         try {
-            pconf = await configLoader.go('', {},{}, [], {},
+            pconf = await configLoader.go('', {}, { A: { type: 'A', fields: {} }}, [], {},
                 new PrePreprocessConfigurationValidator(),
                 new ConfigurationValidator(), undefined, 'de'
             );
@@ -563,8 +563,8 @@ describe('ConfigLoader', () => {
 
     it('apply hidden and order configuration', async done => {
 
-        Object.assign(configuration, {
-            A: { fields: { fieldA1: {}, fieldA3: {}, fieldA2: {} } }
+        Object.assign(firstLevelTypes, {
+            'A:0': { derives: 'A', fields: { fieldA1: {}, fieldA3: {}, fieldA2: {} } }
         });
 
         applyConfig({}, {}, {}, {
@@ -579,7 +579,7 @@ describe('ConfigLoader', () => {
 
         let pconf;
         try {
-            pconf = await configLoader.go('', {},{}, [], {},
+            pconf = await configLoader.go('', {},{ A: { type: 'A', fields: {}}}, [], {},
                 new PrePreprocessConfigurationValidator(),
                 new ConfigurationValidator(), undefined, 'de'
             );
