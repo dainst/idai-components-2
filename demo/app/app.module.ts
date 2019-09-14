@@ -1,4 +1,10 @@
-import {APP_INITIALIZER, LOCALE_ID, NgModule, TRANSLATIONS, TRANSLATIONS_FORMAT} from '@angular/core';
+import {
+    APP_INITIALIZER,
+    LOCALE_ID,
+    NgModule,
+    TRANSLATIONS,
+    TRANSLATIONS_FORMAT
+} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
@@ -21,8 +27,8 @@ import {ConfigReader} from '../../src/configuration/config-reader';
 import {PrePreprocessConfigurationValidator} from '../../src/configuration/pre-preprocess-configuration-validator';
 import {ConfigurationValidator} from '../../src/configuration/configuration-validator';
 import {IdaiFieldMapModule} from '../../src/map/idai-field-map.module';
-import {TypeDefinition} from '../../src/configuration/type-definition';
 import {FieldDefinition} from '../../src/configuration/field-definition';
+import {BuiltinTypeDefinition} from "../../src/configuration/builtin-type-definition";
 
 let pconf: any = undefined;
 
@@ -55,7 +61,7 @@ let pconf: any = undefined;
                 return configLoader.go(
                     'demo/config',
                     { 'processor': { 'inputType': 'input' }},
-                    { 'Image': { 'fields': { 'dimensions': {} } } as TypeDefinition },
+                    { 'Image': { 'fields': { 'dimensions': {} } } as BuiltinTypeDefinition },
                     [
                         {
                             'domain': [

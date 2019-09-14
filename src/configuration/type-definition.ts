@@ -1,4 +1,6 @@
 /**
+ * TypeDefinition, as used in ProjectConfiguration
+ *
  * @author Daniel de Oliveira
  */
 export interface TypeDefinition {

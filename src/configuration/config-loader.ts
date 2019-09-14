@@ -1,14 +1,15 @@
 import {Injectable} from '@angular/core';
 import {I18n} from '@ngx-translate/i18n-polyfill';
 import {ProjectConfiguration} from './project-configuration';
-import {Preprocessing, TypeDefinitions} from './preprocessing';
+import {Preprocessing} from './preprocessing';
 import {ConfigurationValidator} from './configuration-validator';
 import {ConfigReader} from './config-reader';
-import {TypeDefinition} from './type-definition';
 import {RelationDefinition} from './relation-definition';
 import {FieldDefinition} from './field-definition';
 import {PrePreprocessConfigurationValidator} from './pre-preprocess-configuration-validator';
 import {ConfigurationDefinition} from './configuration-definition';
+import {BuiltinTypeDefinitions} from "./builtin-type-definition";
+import {RegistryTypeDefinitions} from "./registry-type-definition";
 
 const nonExtendableTypes: string[] = ['Operation', 'Place'];
 
@@ -48,7 +49,7 @@ export class ConfigLoader {
 
     public async go(configDirPath: string,
                     commonFields: any,
-                    extraTypes: {[typeName: string]: TypeDefinition },
+                    builtinTypes: BuiltinTypeDefinitions,
                     relations: Array<RelationDefinition>,
                     extraFields: {[fieldName: string]: FieldDefinition },
                     prePreprocessConfigurationValidator: PrePreprocessConfigurationValidator,
@@ -58,13 +59,13 @@ export class ConfigLoader {
 
         if (customConfigurationName) console.log('Load custom configuration', customConfigurationName);
 
-        const typeDefinitions: TypeDefinitions = await this.readConfiguration(configDirPath);
+        const registeredTypes: RegistryTypeDefinitions = await this.readConfiguration(configDirPath);
 
-        const prePreprocessValidationErrors = prePreprocessConfigurationValidator.go(typeDefinitions);
+        const prePreprocessValidationErrors = prePreprocessConfigurationValidator.go(registeredTypes);
         if (prePreprocessValidationErrors.length > 0) throw prePreprocessValidationErrors;
 
         const appConfiguration = await this.preprocess(
-            configDirPath, typeDefinitions, commonFields, extraTypes, relations,
+            configDirPath, registeredTypes, commonFields, builtinTypes, relations,
             extraFields, customConfigurationName, locale);
 
         const postPreprocessValidationErrors = postPreprocessConfigurationValidator.go(appConfiguration);
@@ -87,9 +88,9 @@ export class ConfigLoader {
 
 
     private async preprocess(configDirPath: string,
-                             firstLevelTypes: TypeDefinitions,
+                             registeredTypes1: RegistryTypeDefinitions,
                              commonFields: any,
-                             coreTypes: {[typeName: string]: TypeDefinition },
+                             builtinTypes: BuiltinTypeDefinitions,
                              relations: Array<RelationDefinition>,
                              extraFields: {[fieldName: string]: FieldDefinition },
                              customConfigurationName: string|undefined,
@@ -105,7 +106,7 @@ export class ConfigLoader {
         const customConfigPath = configDirPath
             + '/Fields-' + (customConfigurationName ? customConfigurationName : 'Custom') + '.json';
 
-        let secondLevelTypes;
+        let registeredTypes2;
         let hiddenConfiguration: any;
         let customHiddenConfiguration: any;
         let languageConfiguration: any;
@@ -115,7 +116,7 @@ export class ConfigLoader {
         let orderConfiguration: any;
 
         try {
-            secondLevelTypes = await this.configReader.read(customConfigPath);
+            registeredTypes2 = await this.configReader.read(customConfigPath);
             hiddenConfiguration = await this.configReader.read(hiddenConfigurationPath);
             customHiddenConfiguration = await this.configReader.read(customHiddenConfigurationPath);
             languageConfiguration = await this.configReader.read(languageConfigurationPath);
@@ -138,9 +139,9 @@ export class ConfigLoader {
         let typeDefs: any;
         try {
             typeDefs = Preprocessing.mergeTypes(
-                coreTypes,
-                firstLevelTypes,
-                secondLevelTypes,
+                builtinTypes,
+                registeredTypes1,
+                registeredTypes2,
                 nonExtendableTypes,
                 commonFields,
                 []);

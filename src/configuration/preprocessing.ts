@@ -6,9 +6,11 @@ import {clone, compose, empty, filter, flow, forEach, is, isDefined, isNot,
     map, on, subtract, to, duplicates, zip, flatten} from 'tsfun';
 import {ConfigurationErrors} from './configuration-errors';
 import {ConfigurationDefinition} from './configuration-definition';
+import {RegistryTypeDefinitions} from "./registry-type-definition";
+import {BuiltinTypeDefinitions} from "./builtin-type-definition";
 
 
-export type TypeDefinitions = {[typeName: string]: TypeDefinition };
+
 
 /**
  * @author Daniel de Oliveira
@@ -30,9 +32,9 @@ export module Preprocessing {
      * @throws [INVALID_CONFIG_NO_PARENT_ASSIGNED, typeName]
      * @throws [MISSING_REGISTRY_ID, typeName]
      */
-    export function mergeTypes(builtInTypes: TypeDefinitions,
-                               registeredTypes1: TypeDefinitions,
-                               registeredTypes2: TypeDefinitions,
+    export function mergeTypes(builtInTypes: BuiltinTypeDefinitions,
+                               registeredTypes1: RegistryTypeDefinitions,
+                               registeredTypes2: RegistryTypeDefinitions,
                                nonExtendableTypes: any,
                                commonFields: any,
                                selectedRegisteredTypes: string[]) {
@@ -53,7 +55,7 @@ export module Preprocessing {
     }
 
 
-    function renameTypesInCustom(builtInTypes: TypeDefinitions) {
+    function renameTypesInCustom(builtInTypes: BuiltinTypeDefinitions) {
 
         for (let [k, v] of (zip(Object.keys(builtInTypes))(Object.values(builtInTypes)))) {
             const pureName_ = pureName(k);
@@ -106,7 +108,7 @@ export module Preprocessing {
     }
 
 
-    export function replaceCommonFields(builtInTypes: TypeDefinitions, commonFields: any) {
+    export function replaceCommonFields(builtInTypes: BuiltinTypeDefinitions, commonFields: any) {
 
         if (!builtInTypes) return;
 
@@ -128,18 +130,18 @@ export module Preprocessing {
     }
 
 
-    export function applyCustom(appConfiguration: TypeDefinitions,
-                                customConfiguration: any) {
+    export function applyCustom(builtinType: BuiltinTypeDefinitions,
+                                registryType: RegistryTypeDefinitions) {
 
-        Object.keys(customConfiguration).forEach(typeName_ => {
+        Object.keys(registryType).forEach(typeName_ => {
 
             const typeName = pureName(typeName_);
 
-            if (appConfiguration[typeName]) {
-                addCustomFields(appConfiguration, typeName, customConfiguration[typeName].fields);
-                addCustomCommons(appConfiguration, typeName, (customConfiguration[typeName] as any)['commons'])
+            if (builtinType[typeName]) {
+                addCustomFields(builtinType, typeName, registryType[typeName].fields);
+                addCustomCommons(builtinType, typeName, (registryType[typeName] as any)['commons'])
             } else {
-                appConfiguration[typeName] = customConfiguration[typeName];
+                builtinType[typeName] = registryType[typeName];
             }
         });
     }
@@ -403,10 +405,10 @@ export module Preprocessing {
     }
 
 
-    export function addExtraTypes(builtInTypes: TypeDefinitions,
-                                  firstLevelTypes: TypeDefinitions) {
+    export function addExtraTypes(builtInTypes: BuiltinTypeDefinitions,
+                                  registryTypes1: RegistryTypeDefinitions) {
 
-        const pairs = zip(Object.keys(firstLevelTypes))(Object.values(firstLevelTypes));
+        const pairs = zip(Object.keys(registryTypes1))(Object.values(registryTypes1)); // TODO extract functions
 
         forEach(([typeName, type]: any) => {
             if (type.derives) {
@@ -436,7 +438,7 @@ export module Preprocessing {
     }
 
 
-    function addCustomFields(configuration: TypeDefinitions,
+    function addCustomFields(builtInTypes: BuiltinTypeDefinitions,
                              typeName: string,
                              fields: any) {
 
@@ -446,8 +448,8 @@ export module Preprocessing {
             const field: any = { name: fieldName };
             Object.assign(field, fields[fieldName]);
 
-            const group: string|undefined = configuration[typeName].fields[fieldName]
-                ? configuration[typeName].fields[fieldName]['group']
+            const group: string|undefined = builtInTypes[typeName].fields[fieldName]
+                ? builtInTypes[typeName].fields[fieldName]['group']
                 : undefined;
 
             if (fieldName === 'period') {
@@ -455,33 +457,33 @@ export module Preprocessing {
                 console.log("gruo", group)
             }
 
-            configuration[typeName].fields[fieldName] = field;
+            builtInTypes[typeName].fields[fieldName] = field;
 
             // TODO hack; there are some fields we want to 'merge' in general
-            if (group) configuration[typeName].fields[fieldName]['group'] = group;
+            if (group) builtInTypes[typeName].fields[fieldName]['group'] = group;
         });
     }
 
 
-    function addCustomCommons(configuration: TypeDefinitions, typeName: string,
+    function addCustomCommons(builtInTypes: BuiltinTypeDefinitions, typeName: string,
                               commons: string[]|undefined) {
 
         if (!commons) return;
 
-        if (!(configuration[typeName] as any)['commons']) {
-            (configuration[typeName] as any)['commons'] = commons;
+        if (!(builtInTypes[typeName] as any)['commons']) {
+            (builtInTypes[typeName] as any)['commons'] = commons;
         } else {
-            (configuration[typeName] as any)['commons']
-                = (configuration[typeName] as any)['commons'].concat(commons);
+            (builtInTypes[typeName] as any)['commons']
+                = (builtInTypes[typeName] as any)['commons'].concat(commons);
         }
     }
 
 
-    function validateRegisteredTypes(coreTypes: TypeDefinitions,
-                                     registeredTypes: TypeDefinitions,
+    function validateRegisteredTypes(builtinTypes: BuiltinTypeDefinitions,
+                                     registeredTypes: RegistryTypeDefinitions,
                                      nonExtendableTypes: string[]) {
 
-        const doesNotDeriveCoreType = (name: string) => !coreTypes[pureName(name)];
+        const doesNotDeriveCoreType = (name: string) => !builtinTypes[pureName(name)];
 
         flow(registeredTypes,
             Object.keys,
@@ -498,22 +500,22 @@ export module Preprocessing {
             }),
             forEach((parent: any) => {
 
-                const found = Object.keys(coreTypes).find(is(parent));
+                const found = Object.keys(builtinTypes).find(is(parent));
                 if (!found) throw [ConfigurationErrors.INVALID_CONFIG_PARENT_NOT_DEFINED, parent];
             }));
     }
 
 
-    function validateNotTopLevel(appConfiguration: TypeDefinitions,
+    function validateNotTopLevel(builtinTypeDefinitions: BuiltinTypeDefinitions,
                                  customConfiguration: any) {
 
         Object.keys(customConfiguration).forEach(typeName => {
 
             const pureTypeName = pureName(typeName);
 
-            if (!appConfiguration[pureTypeName]) {
+            if (!builtinTypeDefinitions[pureTypeName]) {
 
-                if (appConfiguration[customConfiguration[typeName].parent].parent) {
+                if ((builtinTypeDefinitions[customConfiguration[typeName].parent] as any).parent) {
                     throw [ConfigurationErrors.INVALID_CONFIG_PARENT_NOT_TOP_LEVEL];
                 }
             }
