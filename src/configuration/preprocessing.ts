@@ -495,12 +495,11 @@ export module Preprocessing {
 
                 const found = Object.keys(appConfiguration).find(is(customConfiguration[typeName].parent));
                 if (!found) {
-                    console.log("customConfi", JSON.stringify(Object.keys(appConfiguration)))
                     throw [ConfigurationErrors.INVALID_CONFIG_PARENT_NOT_DEFINED, customConfiguration[typeName].parent];
                 }
 
                 if (nonExtendableTypes.includes(customConfiguration[typeName].parent)) {
-                    throw [ConfigurationErrors.NOT_AN_EXTENDABLE_TYPE];
+                    throw [ConfigurationErrors.NOT_AN_EXTENDABLE_TYPE, customConfiguration[typeName].parent];
                 }
 
                 if (appConfiguration[customConfiguration[typeName].parent].parent) {

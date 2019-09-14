@@ -434,7 +434,7 @@ describe('ConfigLoader', () => {
             fail();
 
         } catch(err) {
-            expect(err).toEqual([[ConfigurationErrors.NOT_AN_EXTENDABLE_TYPE]]);
+            expect(err).toEqual([[ConfigurationErrors.NOT_AN_EXTENDABLE_TYPE, 'Place']]);
         } finally {
             done();
         }
