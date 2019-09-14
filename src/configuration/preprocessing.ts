@@ -15,9 +15,8 @@ export type TypeDefinitions = {[typeName: string]: TypeDefinition };
  */
 export module Preprocessing {
 
-
     /**
-     * TODO rename to mergeFields or mergeStep and get rid of types level
+     * TODO rename to mergeFields or mergeStep
      * Merges the core, Fields.json and custom fields config
      *
      * @param coreTypes
@@ -53,7 +52,7 @@ export module Preprocessing {
         applyCustom(coreTypes, secondLevelTypes);
 
         replaceCommonFields(coreTypes, commonFields);
-        return { types: coreTypes };
+        return coreTypes;
     }
 
 

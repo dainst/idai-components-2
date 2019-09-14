@@ -87,9 +87,9 @@ describe('Preprocessing', () => {
 
         const result = Preprocessing.preprocess1(coreTypes, fieldsJson, {}, [], []);
 
-        expect(result.types['A'].fields['field1'].inputType).toBe('text');
-        expect(result.types['A'].fields['field1'].group).toBe('stem');
-        expect(result.types['A'].fields['field2'].inputType).toBe('text');
+        expect(result['A'].fields['field1'].inputType).toBe('text');
+        expect(result['A'].fields['field1'].group).toBe('stem');
+        expect(result['A'].fields['field2'].inputType).toBe('text');
     });
 
 
@@ -114,9 +114,9 @@ describe('Preprocessing', () => {
 
         const result = Preprocessing.preprocess1(coreTypes, {}, fieldsJson, [], []);
 
-        expect(result.types['A'].fields['field1'].inputType).toBe('text');
-        expect(result.types['A'].fields['field1'].group).toBe('stem');
-        expect(result.types['A'].fields['field2'].inputType).toBe('text');
+        expect(result['A'].fields['field1'].inputType).toBe('text');
+        expect(result['A'].fields['field1'].group).toBe('stem');
+        expect(result['A'].fields['field2'].inputType).toBe('text');
     });
 
 
