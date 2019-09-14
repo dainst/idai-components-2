@@ -2,7 +2,7 @@ import {FieldDefinition} from './field-definition';
 import {TypeDefinition} from './type-definition';
 import {RelationDefinition} from './relation-definition';
 import {UnorderedConfigurationDefinition} from './unordered-configuration-definition';
-import {clone, compose, empty, filter, flow, forEach, is, isDefined, isNot, map, on, subtract, to, duplicates, lookup, zip, flatten} from 'tsfun';
+import {clone, compose, empty, filter, flow, forEach, is, isDefined, isNot, map, on, subtract, to, duplicates, zip, flatten} from 'tsfun';
 import {ConfigurationErrors} from './configuration-errors';
 import {ConfigurationDefinition} from './configuration-definition';
 
@@ -33,18 +33,12 @@ export module Preprocessing {
                                nonExtendableTypes: any,
                                commonFields: any) {
 
-
         const inter = duplicates(flatten([Object.keys(coreTypes), Object.keys(firstLevelTypes), Object.keys(secondLevelTypes)]));
         if (inter.length > 0) throw [ConfigurationErrors.DUPLICATE_TYPE_DEFINITION, inter[0]];
 
-        validateCustom(coreTypes, firstLevelTypes, nonExtendableTypes);
+        validateNonCoreTypes(coreTypes, {...firstLevelTypes,...secondLevelTypes}, nonExtendableTypes);
 
-        // to be done before applyCustomFields so that extra types can get additional fields too
         addExtraTypes(coreTypes, firstLevelTypes);
-        validateCustom(coreTypes, secondLevelTypes, nonExtendableTypes);
-
-        // Validate first, before copying the types defined only in customConfiguration into the appConfiguration,
-        // in order to make sure that only parents from the original appConfiguration can be referenced
         renameTypesInCustom(coreTypes);
         renameTypesInCustom(secondLevelTypes);
 
@@ -479,26 +473,39 @@ export module Preprocessing {
     }
 
 
-    function validateCustom(appConfiguration: TypeDefinitions,
-                            customConfiguration: any,
+    function validateNonCoreTypes(coreTypes: TypeDefinitions,
+                            nonCoreTypes: TypeDefinitions,
                             nonExtendableTypes: string[]) {
+
+        Object.keys(nonCoreTypes).forEach(typeName => {
+
+            const pureTypeName = pureName(typeName);
+
+            if (!coreTypes[pureTypeName]) {
+
+                if (!nonCoreTypes[typeName].parent) throw [ConfigurationErrors.INVALID_CONFIG_NO_PARENT_ASSIGNED, typeName];
+
+                const found = Object.keys(coreTypes).find(is(nonCoreTypes[typeName].parent));
+                if (!found) {
+                    throw [ConfigurationErrors.INVALID_CONFIG_PARENT_NOT_DEFINED, nonCoreTypes[typeName].parent];
+                }
+
+                if (nonExtendableTypes.includes(nonCoreTypes[typeName].parent as string)) {
+                    throw [ConfigurationErrors.NOT_AN_EXTENDABLE_TYPE, nonCoreTypes[typeName].parent];
+                }
+            }
+        });
+    }
+
+
+    function validateNotTopLevel(appConfiguration: TypeDefinitions,
+                                 customConfiguration: any) {
 
         Object.keys(customConfiguration).forEach(typeName => {
 
             const pureTypeName = pureName(typeName);
 
             if (!appConfiguration[pureTypeName]) {
-
-                if (!customConfiguration[typeName].parent) throw [ConfigurationErrors.INVALID_CONFIG_NO_PARENT_ASSIGNED, typeName];
-
-                const found = Object.keys(appConfiguration).find(is(customConfiguration[typeName].parent));
-                if (!found) {
-                    throw [ConfigurationErrors.INVALID_CONFIG_PARENT_NOT_DEFINED, customConfiguration[typeName].parent];
-                }
-
-                if (nonExtendableTypes.includes(customConfiguration[typeName].parent)) {
-                    throw [ConfigurationErrors.NOT_AN_EXTENDABLE_TYPE, customConfiguration[typeName].parent];
-                }
 
                 if (appConfiguration[customConfiguration[typeName].parent].parent) {
                     throw [ConfigurationErrors.INVALID_CONFIG_PARENT_NOT_TOP_LEVEL];
