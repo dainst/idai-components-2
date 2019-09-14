@@ -67,7 +67,7 @@ describe('ConfigLoader', () => {
             {},
             {},
             {},
-            { 'A': {} });
+            { 'A': {}, 'B:0': {} });
 
         let pconf;
         try {
@@ -153,7 +153,7 @@ describe('ConfigLoader', () => {
             {},
             {},
             {},
-            { 'A1:0': {}, 'A2': {}, 'B1:0': {}, 'B2:0': {}, 'A': {}, 'B': {} });
+            { 'A1:0': {}, 'A2:0': {}, 'B1:0': {}, 'B2:0': {}, 'A': {}, 'B': {}, 'C': {}, 'D': {} });
 
         let pconf;
 
@@ -200,6 +200,15 @@ describe('ConfigLoader', () => {
 
         Object.assign(registeredTypes1, { 'A:0': { parent: 'T' }, 'B:0': { parent: 'T' }});
 
+        applyConfig(
+            undefined,
+            {},
+            {},
+            {},
+            {},
+            {},
+            { 'A:0': {}, 'B:0': {}, 'T': {}});
+
         let pconf;
         try {
             pconf = await configLoader.go(
@@ -235,11 +244,15 @@ describe('ConfigLoader', () => {
             relations: {
                 r1: { label: 'r1_' }
             }
-        }, {
-            types: {
-                B: { label: 'B__' }
-            }
-        });
+            }, {
+                types: {
+                    B: { label: 'B__' }
+                }
+            },
+            {},
+            {},
+            {},
+            { 'A:0': {}, 'B:0': {}, 'C:0': {}, 'Parent': {} });
 
         let pconf;
         try {
@@ -278,7 +291,14 @@ describe('ConfigLoader', () => {
             'B:1': { parent: 'G', derives: 'B:0', fields: { fieldB2: { inputType: 'boolean' } } }
         };
 
-        applyConfig(customFieldsConfiguration);
+        applyConfig(
+            customFieldsConfiguration,
+            {},
+            {},
+            {},
+            {},
+            {},
+            {'A:1': {}, 'B:1': {}, 'F': {}, 'G': {} });
 
         let pconf;
         try {
@@ -314,7 +334,14 @@ describe('ConfigLoader', () => {
             'B:0': { parent: 'Find', fields: { fieldC1: { inputType: 'boolean'}}}
         };
 
-        applyConfig(secondLevelTypes);
+        applyConfig(
+            secondLevelTypes,
+            {},
+            {},
+            {},
+            {},
+            {},
+            { 'Find:0': {}, 'B:0': {} });
 
         let pconf;
         try {
@@ -344,7 +371,15 @@ describe('ConfigLoader', () => {
             'B:0': { fields: { fieldC1: { inputType: 'boolean'}}}
         };
 
-        applyConfig(secondLevelTypes);
+        applyConfig(
+            secondLevelTypes,
+            {},
+            {},
+            {},
+            {},
+            {},
+            { 'Find:0': {}, 'B:0': {} }
+        );
 
         try {
             await configLoader.go('', {}, { 'Find': { fields: {} }},[], {},
@@ -369,7 +404,15 @@ describe('ConfigLoader', () => {
             'B:0': { parent: 'Find', fields: { fieldC1: { inputType: 'boolean'}}}
         };
 
-        applyConfig(customFieldsConfiguration);
+        applyConfig(
+            customFieldsConfiguration,
+            {},
+            {},
+            {},
+            {},
+            {},
+            { 'B:0': {}, 'Find': {} }
+        );
 
         try {
             await configLoader.go('', {}, {},[], {},
@@ -476,16 +519,17 @@ describe('ConfigLoader', () => {
 
         applyConfig({}, {}, {},
             {}, {}, {
-            types: ['A', 'B', 'C'],
-            fields: {
-                'A': ['fieldA1', 'fieldA2'],
-                'B': ['fieldB1', 'fieldB2', 'fieldB3'],
-                'C': ['fieldC1', 'fieldC2'],
+                types: ['A', 'B', 'C'],
+                fields: {
+                    'A': ['fieldA1', 'fieldA2'],
+                    'B': ['fieldB1', 'fieldB2', 'fieldB3'],
+                    'C': ['fieldC1', 'fieldC2'],
 
-                // Ignore fields defined in Order.json but not in configuration silently
-                'D': ['fieldD1', 'fieldD2']
-            }
-        });
+                    // Ignore fields defined in Order.json but not in configuration silently
+                    'D': ['fieldD1', 'fieldD2']
+                }
+            },
+            { 'A:0': {}, 'B:0': {}, 'C:0': {}, 'Parent': {} });
 
         let pconf;
         try {
@@ -521,11 +565,12 @@ describe('ConfigLoader', () => {
         });
 
         applyConfig({}, {}, {}, {}, {}, {
-            types: ['A', 'A'],
-            fields: {
-                'A': ['fieldA1', 'fieldA2', 'fieldA1']
-            }
-        });
+                types: ['A', 'A'],
+                fields: {
+                    'A': ['fieldA1', 'fieldA2', 'fieldA1']
+                }
+            },
+            { 'A:0': {}, 'Parent': {} });
 
         let pconf;
         try {
@@ -559,7 +604,9 @@ describe('ConfigLoader', () => {
             },
             {
                 'A': ['fieldA2']
-            });
+            },
+            {},
+            { 'A:0': {} });
 
         let pconf;
         try {
@@ -593,13 +640,14 @@ describe('ConfigLoader', () => {
         });
 
         applyConfig({}, {}, {}, {
-            'A': ['fieldA1']
-        }, {}, {
-            types: ['A'],
-            fields: {
-                'A': ['fieldA1', 'fieldA2', 'fieldA3']
-            }
-        });
+                'A': ['fieldA1']
+            }, {}, {
+                types: ['A'],
+                fields: {
+                    'A': ['fieldA1', 'fieldA2', 'fieldA3']
+                }
+            },
+            { 'A:0':  {} });
 
 
         let pconf;
@@ -625,5 +673,4 @@ describe('ConfigLoader', () => {
             done();
         }
     });
-
 });

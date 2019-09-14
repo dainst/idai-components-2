@@ -141,7 +141,7 @@ describe('Preprocessing', () => {
                 }}
         } as any;
 
-        const result = Preprocessing.mergeTypes(builtInTypes, registeredTypes1, {}, [], [], []);
+        const result = Preprocessing.mergeTypes(builtInTypes, registeredTypes1, {}, [], [], ['A:1']);
 
         expect(result['A'].fields['field1'].inputType).toBe('text');
         expect(result['A'].fields['field1'].group).toBe('stem');
@@ -168,7 +168,7 @@ describe('Preprocessing', () => {
                 }}
         } as any;
 
-        const result = Preprocessing.mergeTypes(builtInTypes, {}, fieldsJson, [], [], []);
+        const result = Preprocessing.mergeTypes(builtInTypes, {}, fieldsJson, [], [], ['A:1']);
 
         expect(result['A'].fields['field1'].inputType).toBe('text');
         expect(result['A'].fields['field1'].group).toBe('stem');

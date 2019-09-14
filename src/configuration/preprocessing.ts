@@ -43,7 +43,8 @@ export module Preprocessing {
 
         assertMergePreconditionsMet(builtInTypes, registeredTypes1, registeredTypes2, nonExtendableTypes, selectedTypes);
 
-        // TODO erase all non selected typetrees
+        eraseAllNonSelectedTypetrees(builtInTypes, registeredTypes1, registeredTypes2, selectedTypes);
+        // now we need to build paths through typeTrees, which we can then merge the types along
 
         addExtraTypes(builtInTypes, registeredTypes1);
         renameTypesInCustom(builtInTypes);
@@ -69,6 +70,27 @@ export module Preprocessing {
 
         const selectionDuplicates = duplicates(selectedTypes.map(pureName));
         if (selectionDuplicates.length > 0) throw [ConfigurationErrors.DUPLICATION_IN_SELECTION, selectionDuplicates[0]];
+    }
+
+
+    // TODO refactor
+    function eraseAllNonSelectedTypetrees(builtInTypes: any,
+                                          registeredTypes1: any,
+                                          registeredTypes2: any,
+                                          selectedTypes: string[]) {
+
+        const pureSelectedTypes = selectedTypes.map(pureName);
+
+        const allTypes = {...builtInTypes, ...registeredTypes1, ...registeredTypes2};
+        Object.keys(allTypes).forEach(typeName => {
+
+            const pureTypeName = pureName(typeName);
+            if (!pureSelectedTypes.includes(pureTypeName)) {
+                delete builtInTypes[typeName];
+                delete registeredTypes1[typeName];
+                delete registeredTypes2[typeName];
+            }
+        });
     }
 
 
