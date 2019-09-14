@@ -72,6 +72,31 @@ describe('Preprocessing', () => {
     });
     */
 
+    it('mergeTypes - duplication in selection', () => {
+
+        const builtInTypes = {
+            B: {
+                fields: {
+                    field1: {group: 'stem'}
+                }
+            }
+        } as any;
+
+        const registeredTypes1 = {
+            'B:0': {
+                derives: 'B',
+                fields: {}
+            }
+        } as any;
+
+        try {
+            Preprocessing.mergeTypes(builtInTypes, registeredTypes1, {}, [], [], ['B', 'B:0']);
+        } catch (expected) {
+            expect(expected).toEqual([ConfigurationErrors.DUPLICATION_IN_SELECTION, 'B'])
+        }
+    });
+
+
     it('mergeTypes - missing registry id', () => {
 
         const builtInTypes = {

@@ -31,18 +31,23 @@ export module Preprocessing {
      * @throws [DUPLICATE_TYPE_DEFINITION, typeName]
      * @throws [INVALID_CONFIG_NO_PARENT_ASSIGNED, typeName]
      * @throws [MISSING_REGISTRY_ID, typeName]
+     * @throws [DUPLICATION_IN_SELECTION, pureTypeName]
      */
     export function mergeTypes(builtInTypes: BuiltinTypeDefinitions,
                                registeredTypes1: RegistryTypeDefinitions,
                                registeredTypes2: RegistryTypeDefinitions,
                                nonExtendableTypes: any,
                                commonFields: any,
-                               selectedRegisteredTypes: string[]) {
+                               selectedTypes: string[]) {
 
         const inter = duplicates(flatten([Object.keys(builtInTypes), Object.keys(registeredTypes1), Object.keys(registeredTypes2)]));
         if (inter.length > 0) throw [ConfigurationErrors.DUPLICATE_TYPE_DEFINITION, inter[0]];
 
         validateRegisteredTypes(builtInTypes, {...registeredTypes1,...registeredTypes2}, nonExtendableTypes);
+
+        // TODO make sure for each selectedType, only one from a typetree is selected
+        const selectionDuplicates = duplicates(selectedTypes.map(pureName));
+        if (selectionDuplicates.length > 0) throw [ConfigurationErrors.DUPLICATION_IN_SELECTION, selectionDuplicates[0]];
 
         addExtraTypes(builtInTypes, registeredTypes1);
         renameTypesInCustom(builtInTypes);

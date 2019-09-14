@@ -21,5 +21,5 @@ export class ConfigurationErrors {
     // Preprocessing
     public static DUPLICATE_TYPE_DEFINITION = 'configuration/error/duplicatetypedefinition';
     public static MISSING_REGISTRY_ID = 'configuration/error/missing_registry_id';
-
+    public static DUPLICATION_IN_SELECTION = 'configuration/error/duplicationinselection';
 }
