@@ -38,7 +38,7 @@ export module Preprocessing {
                                registeredTypes1: RegistryTypeDefinitions,
                                registeredTypes2: RegistryTypeDefinitions,
                                nonExtendableTypes: any,
-                               commonFields: any,
+                               commonFields: any, // TODO merge common fields incrementally
                                selectedTypes: string[]) {
 
         assertMergePreconditionsMet(builtInTypes, registeredTypes1, registeredTypes2, nonExtendableTypes, selectedTypes);
