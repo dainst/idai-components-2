@@ -137,7 +137,7 @@ export class ConfigLoader {
 
         let typeDefs: any;
         try {
-            typeDefs = Preprocessing.preprocess1(
+            typeDefs = Preprocessing.mergeTypes(
                 coreTypes,
                 firstLevelTypes,
                 secondLevelTypes,

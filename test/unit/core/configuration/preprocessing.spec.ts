@@ -85,7 +85,7 @@ describe('Preprocessing', () => {
                 }}
         } as any;
 
-        const result = Preprocessing.preprocess1(coreTypes, fieldsJson, {}, [], []);
+        const result = Preprocessing.mergeTypes(coreTypes, fieldsJson, {}, [], []);
 
         expect(result['A'].fields['field1'].inputType).toBe('text');
         expect(result['A'].fields['field1'].group).toBe('stem');
@@ -112,7 +112,7 @@ describe('Preprocessing', () => {
                 }}
         } as any;
 
-        const result = Preprocessing.preprocess1(coreTypes, {}, fieldsJson, [], []);
+        const result = Preprocessing.mergeTypes(coreTypes, {}, fieldsJson, [], []);
 
         expect(result['A'].fields['field1'].inputType).toBe('text');
         expect(result['A'].fields['field1'].group).toBe('stem');
@@ -131,7 +131,7 @@ describe('Preprocessing', () => {
         } as any;
 
         try {
-            Preprocessing.preprocess1(coreTypes, fieldsJson, {}, [], []);
+            Preprocessing.mergeTypes(coreTypes, fieldsJson, {}, [], []);
             fail();
         } catch (expected) {
             expect(expected).toEqual([ConfigurationErrors.DUPLICATE_TYPE_DEFINITION, 'A']);

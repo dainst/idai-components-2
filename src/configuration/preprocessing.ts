@@ -16,7 +16,6 @@ export type TypeDefinitions = {[typeName: string]: TypeDefinition };
 export module Preprocessing {
 
     /**
-     * TODO rename to mergeFields or mergeStep
      * Merges the core, Fields.json and custom fields config
      *
      * @param coreTypes
@@ -28,11 +27,11 @@ export module Preprocessing {
      * @throws [DUPLICATE_TYPE_DEFINITION, typeName]
      * @throws [INVALID_CONFIG_NO_PARENT_ASSIGNED, typeName]
      */
-    export function preprocess1(coreTypes: any,
-                                firstLevelTypes: TypeDefinitions,
-                                secondLevelTypes: TypeDefinitions,
-                                nonExtendableTypes: any,
-                                commonFields: any) {
+    export function mergeTypes(coreTypes: TypeDefinitions,
+                               firstLevelTypes: TypeDefinitions,
+                               secondLevelTypes: TypeDefinitions,
+                               nonExtendableTypes: any,
+                               commonFields: any) {
 
 
         const inter = duplicates(flatten([Object.keys(coreTypes), Object.keys(firstLevelTypes), Object.keys(secondLevelTypes)]));
