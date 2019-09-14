@@ -26,6 +26,7 @@ export module Preprocessing {
      * @param registeredTypes2
      * @param nonExtendableTypes
      * @param commonFields
+     * @param selectedTypes
      *
      * ConfigurationErrors
      * @throws [DUPLICATE_TYPE_DEFINITION, typeName]
@@ -40,14 +41,7 @@ export module Preprocessing {
                                commonFields: any,
                                selectedTypes: string[]) {
 
-        const inter = duplicates(flatten([Object.keys(builtInTypes), Object.keys(registeredTypes1), Object.keys(registeredTypes2)]));
-        if (inter.length > 0) throw [ConfigurationErrors.DUPLICATE_TYPE_DEFINITION, inter[0]];
-
-        validateRegisteredTypes(builtInTypes, {...registeredTypes1,...registeredTypes2}, nonExtendableTypes);
-
-        // TODO make sure for each selectedType, only one from a typetree is selected
-        const selectionDuplicates = duplicates(selectedTypes.map(pureName));
-        if (selectionDuplicates.length > 0) throw [ConfigurationErrors.DUPLICATION_IN_SELECTION, selectionDuplicates[0]];
+        assertMergePreconditionsMet(builtInTypes, registeredTypes1, registeredTypes2, nonExtendableTypes, selectedTypes);
 
         addExtraTypes(builtInTypes, registeredTypes1);
         renameTypesInCustom(builtInTypes);
@@ -57,6 +51,22 @@ export module Preprocessing {
 
         replaceCommonFields(builtInTypes, commonFields);
         return builtInTypes;
+    }
+
+
+    function assertMergePreconditionsMet(builtInTypes: BuiltinTypeDefinitions,
+                                         registeredTypes1: RegistryTypeDefinitions,
+                                         registeredTypes2: RegistryTypeDefinitions,
+                                         nonExtendableTypes: any,
+                                         selectedTypes: string[]) {
+
+        const inter = duplicates(flatten([Object.keys(builtInTypes), Object.keys(registeredTypes1), Object.keys(registeredTypes2)]));
+        if (inter.length > 0) throw [ConfigurationErrors.DUPLICATE_TYPE_DEFINITION, inter[0]];
+
+        validateRegisteredTypes(builtInTypes, {...registeredTypes1,...registeredTypes2}, nonExtendableTypes);
+
+        const selectionDuplicates = duplicates(selectedTypes.map(pureName));
+        if (selectionDuplicates.length > 0) throw [ConfigurationErrors.DUPLICATION_IN_SELECTION, selectionDuplicates[0]];
     }
 
 
