@@ -105,6 +105,8 @@ export class ConfigLoader {
         const valuelistsConfigurationPath = configDirPath + '/Valuelists.json';
         const customConfigPath = configDirPath
             + '/Fields-' + (customConfigurationName ? customConfigurationName : 'Custom') + '.json';
+        const selectionConfigPath = configDirPath
+            + '/Selection-' + (customConfigurationName ? customConfigurationName : 'Default') + '.json';
 
         let registeredTypes2;
         let hiddenConfiguration: any;
@@ -114,6 +116,7 @@ export class ConfigLoader {
         let searchConfiguration: any;
         let valuelistsConfiguration: any;
         let orderConfiguration: any;
+        let selectionConfiguration: any;
 
         try {
             registeredTypes2 = await this.configReader.read(customConfigPath);
@@ -128,6 +131,7 @@ export class ConfigLoader {
             searchConfiguration = await this.configReader.read(searchConfigurationPath);
             valuelistsConfiguration = await this.configReader.read(valuelistsConfigurationPath);
             orderConfiguration = await this.configReader.read(orderConfigurationPath);
+            selectionConfiguration = await this.configReader.read(selectionConfigPath);
         } catch (msgWithParams) {
             throw [[msgWithParams]];
         }
@@ -144,7 +148,7 @@ export class ConfigLoader {
                 registeredTypes2,
                 nonExtendableTypes,
                 commonFields,
-                []);
+                Object.keys(selectionConfiguration));
         } catch (msgWithParams) {
             throw [msgWithParams];
         }

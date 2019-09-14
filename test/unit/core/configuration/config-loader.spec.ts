@@ -21,7 +21,8 @@ describe('ConfigLoader', () => {
         customLanguageConfiguration = {},
         hiddenConfiguration = {},
         hiddenCustomConfiguration = {},
-        orderConfiguration = {}) {
+        orderConfiguration = {},
+        selectionConfiguration = {}) {
 
         configReader.read.and.returnValues(
             Promise.resolve(registeredTypes1),
@@ -32,7 +33,8 @@ describe('ConfigLoader', () => {
             Promise.resolve(customLanguageConfiguration),
             Promise.resolve({}),
             Promise.resolve({}),
-            Promise.resolve(orderConfiguration)
+            Promise.resolve(orderConfiguration),
+            Promise.resolve(selectionConfiguration)
         );
     }
 
@@ -54,11 +56,18 @@ describe('ConfigLoader', () => {
             'B:0': { parent: 'A', commons: ['processor'] },
         });
 
-        applyConfig(undefined, {
-            types: {
-                B: { label: 'B_', fields: { processor: { label: 'Bearbeiter/Bearbeiterin', description: "abc" }} },
-            }, relations: {}
-        });
+        applyConfig(
+            undefined,
+            {
+                types: {
+                    B: { label: 'B_', fields: { processor: { label: 'Bearbeiter/Bearbeiterin', description: "abc" }} },
+                }, relations: {},
+            },
+            {},
+            {},
+            {},
+            {},
+            { 'A': {} });
 
         let pconf;
         try {
@@ -89,13 +98,20 @@ describe('ConfigLoader', () => {
             'B:0': { parent: 'A', commons: ['processor'] },
         });
 
-        applyConfig(undefined, {
-            commons: {
-                processor: { label: 'Bearbeiter/Bearbeiterin', description: "abc" }
+        applyConfig(
+            undefined,
+            {
+                commons: {
+                    processor: { label: 'Bearbeiter/Bearbeiterin', description: "abc" }
+                },
+                types: {},
+                relations: {}
             },
-            types: {},
-            relations: {}
-        });
+            {},
+            {},
+            {},
+            {},
+            { 'B:0': {}, 'A': {} });
 
         let pconf;
         try {
@@ -129,6 +145,15 @@ describe('ConfigLoader', () => {
             'B1:0': { parent: 'B' },
             'B2:0': { parent: 'B' }
         });
+
+        applyConfig(
+            undefined,
+            {},
+            {},
+            {},
+            {},
+            {},
+            { 'A1:0': {}, 'A2': {}, 'B1:0': {}, 'B2:0': {}, 'A': {}, 'B': {} });
 
         let pconf;
 
