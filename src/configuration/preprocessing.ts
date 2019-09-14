@@ -18,7 +18,7 @@ export module Preprocessing {
     /**
      * Merges the core, Fields.json and custom fields config
      *
-     * @param coreTypes
+     * @param builtInTypes
      * @param firstLevelTypes
      * @param secondLevelTypes
      * @param nonExtendableTypes
@@ -27,37 +27,37 @@ export module Preprocessing {
      * @throws [DUPLICATE_TYPE_DEFINITION, typeName]
      * @throws [INVALID_CONFIG_NO_PARENT_ASSIGNED, typeName]
      */
-    export function mergeTypes(coreTypes: TypeDefinitions,
+    export function mergeTypes(builtInTypes: TypeDefinitions,
                                firstLevelTypes: TypeDefinitions,
                                secondLevelTypes: TypeDefinitions,
                                nonExtendableTypes: any,
                                commonFields: any) {
 
-        const inter = duplicates(flatten([Object.keys(coreTypes), Object.keys(firstLevelTypes), Object.keys(secondLevelTypes)]));
+        const inter = duplicates(flatten([Object.keys(builtInTypes), Object.keys(firstLevelTypes), Object.keys(secondLevelTypes)]));
         if (inter.length > 0) throw [ConfigurationErrors.DUPLICATE_TYPE_DEFINITION, inter[0]];
 
-        // TODO assert that all nonCoreTypes have an id suffix
+        // TODO assert that all nonCoreTypes have an id suffix, test
 
-        validateNonCoreTypes(coreTypes, {...firstLevelTypes,...secondLevelTypes}, nonExtendableTypes);
+        validateNonCoreTypes(builtInTypes, {...firstLevelTypes,...secondLevelTypes}, nonExtendableTypes);
 
-        addExtraTypes(coreTypes, firstLevelTypes);
-        renameTypesInCustom(coreTypes);
+        addExtraTypes(builtInTypes, firstLevelTypes);
+        renameTypesInCustom(builtInTypes);
         renameTypesInCustom(secondLevelTypes);
 
-        applyCustom(coreTypes, secondLevelTypes);
+        applyCustom(builtInTypes, secondLevelTypes);
 
-        replaceCommonFields(coreTypes, commonFields);
-        return coreTypes;
+        replaceCommonFields(builtInTypes, commonFields);
+        return builtInTypes;
     }
 
 
-    function renameTypesInCustom(types: TypeDefinitions) {
+    function renameTypesInCustom(builtInTypes: TypeDefinitions) {
 
-        for (let [k, v] of (zip(Object.keys(types))(Object.values(types)))) {
+        for (let [k, v] of (zip(Object.keys(builtInTypes))(Object.values(builtInTypes)))) {
             const pureName_ = pureName(k);
             if (pureName_ === k) continue;
-            (types as any)[pureName_] = v;
-            delete types[k];
+            (builtInTypes as any)[pureName_] = v;
+            delete builtInTypes[k];
         }
     }
 
@@ -104,23 +104,23 @@ export module Preprocessing {
     }
 
 
-    export function replaceCommonFields(configuration: TypeDefinitions, commonFields: any) {
+    export function replaceCommonFields(builtInTypes: TypeDefinitions, commonFields: any) {
 
-        if (!configuration) return;
+        if (!builtInTypes) return;
 
-        for (let confTypeName of Object.keys(configuration)) {
-            if ((configuration[confTypeName] as any)['commons']) {
-                for (let commonFieldName of ((configuration[confTypeName] as any)['commons'])) {
-                    if (!(configuration[confTypeName] as any)['fields']) {
-                        (configuration[confTypeName] as any)['fields'] = {};
+        for (let confTypeName of Object.keys(builtInTypes)) {
+            if ((builtInTypes[confTypeName] as any)['commons']) {
+                for (let commonFieldName of ((builtInTypes[confTypeName] as any)['commons'])) {
+                    if (!(builtInTypes[confTypeName] as any)['fields']) {
+                        (builtInTypes[confTypeName] as any)['fields'] = {};
                     }
-                    (configuration[confTypeName] as any)['fields'][commonFieldName]
+                    (builtInTypes[confTypeName] as any)['fields'][commonFieldName]
                         = clone(commonFields[commonFieldName]);
 
                     //console.log(commonFields[commonFieldName])
                 }
 
-                delete (configuration[confTypeName] as any)['commons'];
+                delete (builtInTypes[confTypeName] as any)['commons'];
             }
         }
     }
@@ -401,17 +401,17 @@ export module Preprocessing {
     }
 
 
-    export function addExtraTypes(coreTypes: TypeDefinitions,
+    export function addExtraTypes(builtInTypes: TypeDefinitions,
                                   firstLevelTypes: TypeDefinitions) {
 
         const pairs = zip(Object.keys(firstLevelTypes))(Object.values(firstLevelTypes));
 
         forEach(([typeName, type]: any) => {
             if (type.derives) {
-                merge(coreTypes[type.derives], type);
-                merge(coreTypes[type.derives].fields, type.fields);
+                merge(builtInTypes[type.derives], type);
+                merge(builtInTypes[type.derives].fields, type.fields);
             } else {
-                coreTypes[typeName] = type;
+                builtInTypes[typeName] = type;
             }
         })(pairs);
     }

@@ -68,7 +68,7 @@ describe('Preprocessing', () => {
 
     it('preprocessing1 - merge fields into core', () => {
 
-        const coreTypes = {
+        const builtInTypes = {
             A: {
                 fields: {
                     field1: { group: 'stem' }
@@ -85,7 +85,7 @@ describe('Preprocessing', () => {
                 }}
         } as any;
 
-        const result = Preprocessing.mergeTypes(coreTypes, fieldsJson, {}, [], []);
+        const result = Preprocessing.mergeTypes(builtInTypes, fieldsJson, {}, [], []);
 
         expect(result['A'].fields['field1'].inputType).toBe('text');
         expect(result['A'].fields['field1'].group).toBe('stem');
@@ -95,7 +95,7 @@ describe('Preprocessing', () => {
 
     it('preprocessing1 - merge second level types into core', () => {
 
-        const coreTypes = {
+        const builtInTypes = {
             A: {
                 fields: {
                     field1: { group: 'stem' }
@@ -112,7 +112,7 @@ describe('Preprocessing', () => {
                 }}
         } as any;
 
-        const result = Preprocessing.mergeTypes(coreTypes, {}, fieldsJson, [], []);
+        const result = Preprocessing.mergeTypes(builtInTypes, {}, fieldsJson, [], []);
 
         expect(result['A'].fields['field1'].inputType).toBe('text');
         expect(result['A'].fields['field1'].group).toBe('stem');
@@ -122,7 +122,7 @@ describe('Preprocessing', () => {
 
     it('preprocessing1 - fail merging fields into core', () => {
 
-        const coreTypes = {
+        const builtInTypes = {
             A: {}
         } as any;
 
@@ -131,7 +131,7 @@ describe('Preprocessing', () => {
         } as any;
 
         try {
-            Preprocessing.mergeTypes(coreTypes, fieldsJson, {}, [], []);
+            Preprocessing.mergeTypes(builtInTypes, fieldsJson, {}, [], []);
             fail();
         } catch (expected) {
             expect(expected).toEqual([ConfigurationErrors.DUPLICATE_TYPE_DEFINITION, 'A']);
@@ -151,7 +151,7 @@ describe('Preprocessing', () => {
 
     it('should add extra type', () => {
 
-        const coreTypes = {
+        const builtInTypes = {
             T2: {
                 fields: {
                     bField: {}
@@ -159,8 +159,8 @@ describe('Preprocessing', () => {
             } as TypeDefinition
         };
 
-        Preprocessing.addExtraTypes(coreTypes, configuration.types);
-        expect(coreTypes['T2'].fields['bField']).toBeDefined();
+        Preprocessing.addExtraTypes(builtInTypes, configuration.types);
+        expect(builtInTypes['T2'].fields['bField']).toBeDefined();
     });
 
 
