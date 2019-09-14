@@ -36,6 +36,8 @@ export module Preprocessing {
         const inter = duplicates(flatten([Object.keys(coreTypes), Object.keys(firstLevelTypes), Object.keys(secondLevelTypes)]));
         if (inter.length > 0) throw [ConfigurationErrors.DUPLICATE_TYPE_DEFINITION, inter[0]];
 
+        // TODO assert that all nonCoreTypes have an id suffix
+
         validateNonCoreTypes(coreTypes, {...firstLevelTypes,...secondLevelTypes}, nonExtendableTypes);
 
         addExtraTypes(coreTypes, firstLevelTypes);
