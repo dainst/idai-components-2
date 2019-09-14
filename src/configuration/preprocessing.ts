@@ -43,6 +43,8 @@ export module Preprocessing {
 
         assertMergePreconditionsMet(builtInTypes, registeredTypes1, registeredTypes2, nonExtendableTypes, selectedTypes);
 
+        // TODO erase all non selected typetrees
+
         addExtraTypes(builtInTypes, registeredTypes1);
         renameTypesInCustom(builtInTypes);
         renameTypesInCustom(registeredTypes2);
