@@ -142,7 +142,8 @@ export class ConfigLoader {
                 firstLevelTypes,
                 secondLevelTypes,
                 nonExtendableTypes,
-                commonFields);
+                commonFields,
+                []);
         } catch (msgWithParams) {
             throw [msgWithParams];
         }

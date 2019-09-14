@@ -66,7 +66,34 @@ describe('Preprocessing', () => {
 
 
 
-    it('preprocessing1 - merge fields into core', () => {
+    it('preprocessing1 - merge registeredTypes1 with builtIns', () => {
+
+        const builtInTypes = {
+            A: {
+                fields: {
+                    field1: { group: 'stem' }
+                }
+            }
+        } as any;
+
+        const registeredTypes1 = {
+            'A:1': {
+                derives: 'A',
+                fields: {
+                    field1: { inputType: 'text' },
+                    field2: { inputType: 'text' }
+                }}
+        } as any;
+
+        const result = Preprocessing.mergeTypes(builtInTypes, registeredTypes1, {}, [], [], []);
+
+        expect(result['A'].fields['field1'].inputType).toBe('text');
+        expect(result['A'].fields['field1'].group).toBe('stem');
+        expect(result['A'].fields['field2'].inputType).toBe('text');
+    });
+
+
+    it('preprocessing1 - merge registeredTypes2 with builtIns', () => {
 
         const builtInTypes = {
             A: {
@@ -85,7 +112,7 @@ describe('Preprocessing', () => {
                 }}
         } as any;
 
-        const result = Preprocessing.mergeTypes(builtInTypes, fieldsJson, {}, [], []);
+        const result = Preprocessing.mergeTypes(builtInTypes, {}, fieldsJson, [], [], []);
 
         expect(result['A'].fields['field1'].inputType).toBe('text');
         expect(result['A'].fields['field1'].group).toBe('stem');
@@ -93,45 +120,18 @@ describe('Preprocessing', () => {
     });
 
 
-    it('preprocessing1 - merge second level types into core', () => {
-
-        const builtInTypes = {
-            A: {
-                fields: {
-                    field1: { group: 'stem' }
-                }
-            }
-        } as any;
-
-        const fieldsJson = {
-            'A:1': {
-                derives: 'A',
-                fields: {
-                    field1: { inputType: 'text' },
-                    field2: { inputType: 'text' }
-                }}
-        } as any;
-
-        const result = Preprocessing.mergeTypes(builtInTypes, {}, fieldsJson, [], []);
-
-        expect(result['A'].fields['field1'].inputType).toBe('text');
-        expect(result['A'].fields['field1'].group).toBe('stem');
-        expect(result['A'].fields['field2'].inputType).toBe('text');
-    });
-
-
-    it('preprocessing1 - fail merging fields into core', () => {
+    it('preprocessing1 - fail - should not override already defined type', () => {
 
         const builtInTypes = {
             A: {}
         } as any;
 
-        const fieldsJson = {
+        const registeredTypes1 = {
             A: {}
         } as any;
 
         try {
-            Preprocessing.mergeTypes(builtInTypes, fieldsJson, {}, [], []);
+            Preprocessing.mergeTypes(builtInTypes, registeredTypes1, {}, [], [], []);
             fail();
         } catch (expected) {
             expect(expected).toEqual([ConfigurationErrors.DUPLICATE_TYPE_DEFINITION, 'A']);

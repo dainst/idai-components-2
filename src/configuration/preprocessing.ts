@@ -31,16 +31,15 @@ export module Preprocessing {
                                registeredTypes1: TypeDefinitions,
                                registeredTypes2: TypeDefinitions,
                                nonExtendableTypes: any,
-                               commonFields: any) {
-
-        // TODO ensure that parent always refers to a top level type
+                               commonFields: any,
+                               selectedRegisteredTypes: string[]) {
 
         const inter = duplicates(flatten([Object.keys(builtInTypes), Object.keys(registeredTypes1), Object.keys(registeredTypes2)]));
         if (inter.length > 0) throw [ConfigurationErrors.DUPLICATE_TYPE_DEFINITION, inter[0]];
 
         // TODO assert that all registeredTypes have an id suffix, test
 
-        validateNonCoreTypes(builtInTypes, {...registeredTypes1,...registeredTypes2}, nonExtendableTypes);
+        validateRegisteredTypes(builtInTypes, {...registeredTypes1,...registeredTypes2}, nonExtendableTypes);
 
         addExtraTypes(builtInTypes, registeredTypes1);
         renameTypesInCustom(builtInTypes);
@@ -477,28 +476,28 @@ export module Preprocessing {
     }
 
 
-    function validateNonCoreTypes(coreTypes: TypeDefinitions,
-                            nonCoreTypes: TypeDefinitions,
-                            nonExtendableTypes: string[]) {
+    function validateRegisteredTypes(coreTypes: TypeDefinitions,
+                                     registeredTypes: TypeDefinitions,
+                                     nonExtendableTypes: string[]) {
 
-        Object.keys(nonCoreTypes).forEach(typeName => {
+        const doesNotDeriveCoreType = (name: string) => !coreTypes[pureName(name)];
 
-            const pureTypeName = pureName(typeName);
+        Object.keys(registeredTypes)
+            .filter(doesNotDeriveCoreType)
+            .map(registeredTypeName => {
 
-            if (!coreTypes[pureTypeName]) {
-
-                if (!nonCoreTypes[typeName].parent) throw [ConfigurationErrors.INVALID_CONFIG_NO_PARENT_ASSIGNED, typeName];
-
-                const found = Object.keys(coreTypes).find(is(nonCoreTypes[typeName].parent));
-                if (!found) {
-                    throw [ConfigurationErrors.INVALID_CONFIG_PARENT_NOT_DEFINED, nonCoreTypes[typeName].parent];
+                const parent = registeredTypes[registeredTypeName].parent;
+                if (!parent) throw [ConfigurationErrors.INVALID_CONFIG_NO_PARENT_ASSIGNED, registeredTypeName];
+                if (nonExtendableTypes.includes(parent as string)) {
+                    throw [ConfigurationErrors.NOT_AN_EXTENDABLE_TYPE, parent];
                 }
+                return parent;
+            })
+            .forEach(parent => {
 
-                if (nonExtendableTypes.includes(nonCoreTypes[typeName].parent as string)) {
-                    throw [ConfigurationErrors.NOT_AN_EXTENDABLE_TYPE, nonCoreTypes[typeName].parent];
-                }
-            }
-        });
+                const found = Object.keys(coreTypes).find(is(parent));
+                if (!found) throw [ConfigurationErrors.INVALID_CONFIG_PARENT_NOT_DEFINED, parent];
+            });
     }
 
 
