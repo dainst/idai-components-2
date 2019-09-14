@@ -19,8 +19,8 @@ export module Preprocessing {
      * Merges the core, Fields.json and custom fields config
      *
      * @param builtInTypes
-     * @param firstLevelTypes
-     * @param secondLevelTypes
+     * @param registeredTypes1
+     * @param registeredTypes2
      * @param nonExtendableTypes
      * @param commonFields
      *
@@ -28,25 +28,25 @@ export module Preprocessing {
      * @throws [INVALID_CONFIG_NO_PARENT_ASSIGNED, typeName]
      */
     export function mergeTypes(builtInTypes: TypeDefinitions,
-                               firstLevelTypes: TypeDefinitions,
-                               secondLevelTypes: TypeDefinitions,
+                               registeredTypes1: TypeDefinitions,
+                               registeredTypes2: TypeDefinitions,
                                nonExtendableTypes: any,
                                commonFields: any) {
 
         // TODO ensure that parent always refers to a top level type
 
-        const inter = duplicates(flatten([Object.keys(builtInTypes), Object.keys(firstLevelTypes), Object.keys(secondLevelTypes)]));
+        const inter = duplicates(flatten([Object.keys(builtInTypes), Object.keys(registeredTypes1), Object.keys(registeredTypes2)]));
         if (inter.length > 0) throw [ConfigurationErrors.DUPLICATE_TYPE_DEFINITION, inter[0]];
 
-        // TODO assert that all nonCoreTypes have an id suffix, test
+        // TODO assert that all registeredTypes have an id suffix, test
 
-        validateNonCoreTypes(builtInTypes, {...firstLevelTypes,...secondLevelTypes}, nonExtendableTypes);
+        validateNonCoreTypes(builtInTypes, {...registeredTypes1,...registeredTypes2}, nonExtendableTypes);
 
-        addExtraTypes(builtInTypes, firstLevelTypes);
+        addExtraTypes(builtInTypes, registeredTypes1);
         renameTypesInCustom(builtInTypes);
-        renameTypesInCustom(secondLevelTypes);
+        renameTypesInCustom(registeredTypes2);
 
-        applyCustom(builtInTypes, secondLevelTypes);
+        applyCustom(builtInTypes, registeredTypes2);
 
         replaceCommonFields(builtInTypes, commonFields);
         return builtInTypes;
