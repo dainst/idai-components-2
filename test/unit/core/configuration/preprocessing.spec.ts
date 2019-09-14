@@ -64,9 +64,32 @@ describe('Preprocessing', () => {
     });
     */
 
+    it('mergeTypes - missing registry id', () => {
+
+        const builtInTypes = {
+            A: {
+                fields: {
+                    field1: {group: 'stem'}
+                }
+            }
+        } as any;
+
+        const registeredTypes1 = {
+            'B': {
+                parent: 'A',
+                fields: {}
+            }
+        } as any;
+
+        try {
+            Preprocessing.mergeTypes(builtInTypes, registeredTypes1, {}, [], [], []);
+        } catch (expected) {
+            expect(expected).toEqual([ConfigurationErrors.MISSING_REGISTRY_ID, 'B'])
+        }
+    });
 
 
-    it('preprocessing1 - merge registeredTypes1 with builtIns', () => {
+    it('mergeTypes - merge registeredTypes1 with builtIns', () => {
 
         const builtInTypes = {
             A: {

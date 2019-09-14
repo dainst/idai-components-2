@@ -10,7 +10,7 @@ import {ConfigurationErrors} from '../../../../src/configuration/configuration-e
  */
 describe('ConfigLoader', () => {
 
-    let firstLevelTypes = {} as ConfigurationDefinition;
+    let registeredTypes1 = {} as ConfigurationDefinition;
     let configLoader: ConfigLoader;
     let configReader;
 
@@ -24,7 +24,7 @@ describe('ConfigLoader', () => {
         orderConfiguration = {}) {
 
         configReader.read.and.returnValues(
-            Promise.resolve(firstLevelTypes),
+            Promise.resolve(registeredTypes1),
             Promise.resolve(customFieldsConfiguration),
             Promise.resolve(hiddenConfiguration),
             Promise.resolve(hiddenCustomConfiguration),
@@ -39,7 +39,7 @@ describe('ConfigLoader', () => {
 
     beforeEach(() => {
 
-        firstLevelTypes = {} as ConfigurationDefinition;
+        registeredTypes1 = {} as ConfigurationDefinition;
 
         configReader = jasmine.createSpyObj('confRead', ['read']);
         applyConfig();
@@ -50,8 +50,8 @@ describe('ConfigLoader', () => {
 
     it('mix in common fields', async done => {
 
-        Object.assign(firstLevelTypes, {
-            'B': { parent: 'A', commons: ['processor'] },
+        Object.assign(registeredTypes1, {
+            'B:0': { parent: 'A', commons: ['processor'] },
         });
 
         applyConfig(undefined, {
@@ -85,8 +85,8 @@ describe('ConfigLoader', () => {
 
     it('translate common fields', async done => {
 
-        Object.assign(firstLevelTypes, {
-            'B': { parent: 'A', commons: ['processor'] },
+        Object.assign(registeredTypes1, {
+            'B:0': { parent: 'A', commons: ['processor'] },
         });
 
         applyConfig(undefined, {
@@ -123,11 +123,11 @@ describe('ConfigLoader', () => {
 
     it('mix existing externally configured with internal inherits relation', async done => { // TODO check if it can be removed since external defintions of relations are now forbidden
 
-        Object.assign(firstLevelTypes, {
-            'A1': { parent: 'A' },
-            'A2': { parent: 'A' },
-            'B1': { parent: 'B' },
-            'B2': { parent: 'B' }
+        Object.assign(registeredTypes1, {
+            'A1:0': { parent: 'A' },
+            'A2:0': { parent: 'A' },
+            'B1:0': { parent: 'B' },
+            'B2:0': { parent: 'B' }
         });
 
         let pconf;
@@ -173,7 +173,7 @@ describe('ConfigLoader', () => {
 
     it('preprocess - convert sameOperation to sameMainTypeResource', async done => {
 
-        Object.assign(firstLevelTypes, { A: { parent: 'T' }, B: { parent: 'T' }});
+        Object.assign(registeredTypes1, { 'A:0': { parent: 'T' }, 'B:0': { parent: 'T' }});
 
         let pconf;
         try {
@@ -196,10 +196,10 @@ describe('ConfigLoader', () => {
 
     it('preprocess - apply language confs', async done => {
 
-        Object.assign(firstLevelTypes, {
-            A: { parent: 'Parent' },
-            B: { parent: 'Parent' },
-            C: { parent: 'Parent' }
+        Object.assign(registeredTypes1, {
+            'A:0': { parent: 'Parent' },
+            'B:0': { parent: 'Parent' },
+            'C:0': { parent: 'Parent' }
         });
 
         applyConfig({}, {
@@ -243,7 +243,7 @@ describe('ConfigLoader', () => {
 
     it('preprocess - apply custom fields configuration', async done => {
 
-        Object.assign(firstLevelTypes, {
+        Object.assign(registeredTypes1, {
             'A:0': { parent: 'F', fields: { fieldA1: { inputType: 'unsignedInt' } } },
             'B:0': { parent: 'G', fields: { fieldB1: { inputType: 'input' } } }
         });
@@ -281,12 +281,12 @@ describe('ConfigLoader', () => {
 
     it('preprocess - apply custom fields configuration - add subtypes', async done => {
 
-        Object.assign(firstLevelTypes, {
+        Object.assign(registeredTypes1, {
             'Find:0': { fields: { fieldA1: { inputType: 'unsignedInt' } } }
         });
 
         const secondLevelTypes = {
-            B: { parent: 'Find', fields: { fieldC1: { inputType: 'boolean'}}}
+            'B:0': { parent: 'Find', fields: { fieldC1: { inputType: 'boolean'}}}
         };
 
         applyConfig(secondLevelTypes);
@@ -311,12 +311,12 @@ describe('ConfigLoader', () => {
 
     it('preprocess - apply custom fields configuration - add subtypes - no parent assigned', async done => {
 
-        Object.assign(firstLevelTypes, {
+        Object.assign(registeredTypes1, {
             'Find:0': { fields: { fieldA1: { inputType: 'unsignedInt' } } }
         });
 
         const secondLevelTypes = {
-            B: { fields: { fieldC1: { inputType: 'boolean'}}}
+            'B:0': { fields: { fieldC1: { inputType: 'boolean'}}}
         };
 
         applyConfig(secondLevelTypes);
@@ -329,7 +329,7 @@ describe('ConfigLoader', () => {
 
             fail();
         } catch(err) {
-            expect(err).toEqual([[ConfigurationErrors.INVALID_CONFIG_NO_PARENT_ASSIGNED, 'B']]);
+            expect(err).toEqual([[ConfigurationErrors.INVALID_CONFIG_NO_PARENT_ASSIGNED, 'B:0']]);
         } finally {
             done();
         }
@@ -338,10 +338,10 @@ describe('ConfigLoader', () => {
 
     it('preprocess - apply custom fields configuration - add subtypes - parent not defined', async done => {
 
-        Object.assign(firstLevelTypes, {});
+        Object.assign(registeredTypes1, {});
 
         const customFieldsConfiguration = {
-            B: { parent: 'Find', fields: { fieldC1: { inputType: 'boolean'}}}
+            'B:0': { parent: 'Find', fields: { fieldC1: { inputType: 'boolean'}}}
         };
 
         applyConfig(customFieldsConfiguration);
@@ -363,7 +363,7 @@ describe('ConfigLoader', () => {
 
     xit('preprocess - apply custom fields configuration - add subtypes - parent no top level type', async done => {
 
-        Object.assign(firstLevelTypes, {
+        Object.assign(registeredTypes1, {
             'Find:0': { parent: 'SuperFind', fields: { fieldA1: { inputType: 'unsignedInt' } } }
         });
 
@@ -390,7 +390,7 @@ describe('ConfigLoader', () => {
 
     xit('preprocess - apply custom fields configuration - add subtypes - parent must not come from custom config', async done => {
 
-        Object.assign(firstLevelTypes, {
+        Object.assign(registeredTypes1, {
             TopFind: { fields: { fieldA1: { inputType: 'unsignedInt' } } }
         });
 
@@ -418,10 +418,10 @@ describe('ConfigLoader', () => {
 
     it('preprocess - apply custom fields configuration - add subtypes - non extendable types not allowed', async done => {
 
-        Object.assign(firstLevelTypes, {});
+        Object.assign(registeredTypes1, {});
 
         const customFieldsConfiguration = {
-            Extension: { parent: 'Place', fields: { fieldC1: { inputType: 'boolean'}}}
+            'Extension:0': { parent: 'Place', fields: { fieldC1: { inputType: 'boolean'}}}
         };
 
         applyConfig(customFieldsConfiguration);
@@ -443,10 +443,10 @@ describe('ConfigLoader', () => {
 
     it('apply order configuration', async done => {
 
-        Object.assign(firstLevelTypes, {
-            B: { parent: 'Parent', fields: { fieldB2: {}, fieldB3: {}, fieldB1: {} } },
-            C: { parent: 'Parent', fields: { fieldC1: {}, fieldC2: {} } },
-            A: { parent: 'Parent', fields: { fieldA2: {}, fieldA1: {} } }
+        Object.assign(registeredTypes1, {
+            'B:0': { parent: 'Parent', fields: { fieldB2: {}, fieldB3: {}, fieldB1: {} } },
+            'C:0': { parent: 'Parent', fields: { fieldC1: {}, fieldC2: {} } },
+            'A:0': { parent: 'Parent', fields: { fieldA2: {}, fieldA1: {} } }
         });
 
         applyConfig({}, {}, {},
@@ -491,7 +491,7 @@ describe('ConfigLoader', () => {
     it('add types and fields only once even if they are mentioned multiple times in order configuration',
         async done => {
 
-        Object.assign(firstLevelTypes, {
+        Object.assign(registeredTypes1, {
             'A:0': { parent: 'Parent', fields: { fieldA2: {}, fieldA1: {} } }
         });
 
@@ -524,7 +524,7 @@ describe('ConfigLoader', () => {
 
     it('apply hidden configurations', async done => {
 
-        Object.assign(firstLevelTypes, {
+        Object.assign(registeredTypes1, {
             'A:0': { derives: 'A', fields: { fieldA1: {}, fieldA2: {}, fieldA3: {}  } }
         });
 
@@ -563,7 +563,7 @@ describe('ConfigLoader', () => {
 
     it('apply hidden and order configuration', async done => {
 
-        Object.assign(firstLevelTypes, {
+        Object.assign(registeredTypes1, {
             'A:0': { derives: 'A', fields: { fieldA1: {}, fieldA3: {}, fieldA2: {} } }
         });
 

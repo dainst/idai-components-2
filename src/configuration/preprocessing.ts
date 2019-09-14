@@ -2,7 +2,8 @@ import {FieldDefinition} from './field-definition';
 import {TypeDefinition} from './type-definition';
 import {RelationDefinition} from './relation-definition';
 import {UnorderedConfigurationDefinition} from './unordered-configuration-definition';
-import {clone, compose, empty, filter, flow, forEach, is, isDefined, isNot, map, on, subtract, to, duplicates, zip, flatten} from 'tsfun';
+import {clone, compose, empty, filter, flow, forEach, is, isDefined, isNot,
+    map, on, subtract, to, duplicates, zip, flatten} from 'tsfun';
 import {ConfigurationErrors} from './configuration-errors';
 import {ConfigurationDefinition} from './configuration-definition';
 
@@ -24,8 +25,10 @@ export module Preprocessing {
      * @param nonExtendableTypes
      * @param commonFields
      *
+     * ConfigurationErrors
      * @throws [DUPLICATE_TYPE_DEFINITION, typeName]
      * @throws [INVALID_CONFIG_NO_PARENT_ASSIGNED, typeName]
+     * @throws [MISSING_REGISTRY_ID, typeName]
      */
     export function mergeTypes(builtInTypes: TypeDefinitions,
                                registeredTypes1: TypeDefinitions,
@@ -36,8 +39,6 @@ export module Preprocessing {
 
         const inter = duplicates(flatten([Object.keys(builtInTypes), Object.keys(registeredTypes1), Object.keys(registeredTypes2)]));
         if (inter.length > 0) throw [ConfigurationErrors.DUPLICATE_TYPE_DEFINITION, inter[0]];
-
-        // TODO assert that all registeredTypes have an id suffix, test
 
         validateRegisteredTypes(builtInTypes, {...registeredTypes1,...registeredTypes2}, nonExtendableTypes);
 
@@ -482,9 +483,11 @@ export module Preprocessing {
 
         const doesNotDeriveCoreType = (name: string) => !coreTypes[pureName(name)];
 
-        Object.keys(registeredTypes)
-            .filter(doesNotDeriveCoreType)
-            .map(registeredTypeName => {
+        flow(registeredTypes,
+            Object.keys,
+            forEach((name: string) => { if (!name.includes(':')) throw [ConfigurationErrors.MISSING_REGISTRY_ID, name]}),
+            filter(doesNotDeriveCoreType),
+            map((registeredTypeName: string) => {
 
                 const parent = registeredTypes[registeredTypeName].parent;
                 if (!parent) throw [ConfigurationErrors.INVALID_CONFIG_NO_PARENT_ASSIGNED, registeredTypeName];
@@ -492,12 +495,12 @@ export module Preprocessing {
                     throw [ConfigurationErrors.NOT_AN_EXTENDABLE_TYPE, parent];
                 }
                 return parent;
-            })
-            .forEach(parent => {
+            }),
+            forEach((parent: any) => {
 
                 const found = Object.keys(coreTypes).find(is(parent));
                 if (!found) throw [ConfigurationErrors.INVALID_CONFIG_PARENT_NOT_DEFINED, parent];
-            });
+            }));
     }
 
 
