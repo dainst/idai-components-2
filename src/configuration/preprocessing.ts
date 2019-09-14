@@ -33,6 +33,8 @@ export module Preprocessing {
                                nonExtendableTypes: any,
                                commonFields: any) {
 
+        // TODO ensure that parent always refers to a top level type
+
         const inter = duplicates(flatten([Object.keys(builtInTypes), Object.keys(firstLevelTypes), Object.keys(secondLevelTypes)]));
         if (inter.length > 0) throw [ConfigurationErrors.DUPLICATE_TYPE_DEFINITION, inter[0]];
 
