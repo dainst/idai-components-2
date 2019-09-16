@@ -6,9 +6,9 @@ import {FieldDefinition} from '../../../../src/configuration/field-definition';
 import {ConfigurationErrors} from '../../../../src/configuration/configuration-errors';
 import {BuiltinTypeDefinition} from "../../../../src/configuration/builtin-type-definition";
 import {
-    RegistryTypeDefinition,
+    RegisteredTypeDefinition,
     RegistryTypeDefinitions
-} from "../../../../src/configuration/registry-type-definition";
+} from "../../../../src/configuration/registered-type-definition";
 
 /**
  * @author Daniel de Oliveira
@@ -18,7 +18,7 @@ import {
 describe('Preprocessing', () => {
 
     let configuration;
-    let t1: RegistryTypeDefinition;
+    let t1: RegisteredTypeDefinition;
 
     beforeEach(() => {
 
@@ -30,7 +30,7 @@ describe('Preprocessing', () => {
             fields: {
                 'aField': {}
             }
-        } as RegistryTypeDefinition;
+        } as RegisteredTypeDefinition;
 
         configuration = {
             identifier: 'test',

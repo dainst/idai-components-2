@@ -1,11 +1,9 @@
-import {TypeDefinition} from "./type-definition";
-
 /**
  * TypeDefinition, as used in TypeRegistry
  *
  * @author Daniel de Oliveira
  */
-export interface RegistryTypeDefinition {
+export interface RegisteredTypeDefinition {
 
     color?: string,
     parent: string,
@@ -15,4 +13,4 @@ export interface RegistryTypeDefinition {
     fields: any;
 }
 
-export type RegistryTypeDefinitions = {[typeName: string]: RegistryTypeDefinition };
+export type RegisteredTypeDefinitions = {[typeName: string]: RegisteredTypeDefinition };

@@ -3,13 +3,17 @@ import {TypeDefinition} from './type-definition';
 import {RelationDefinition} from './relation-definition';
 import {UnorderedConfigurationDefinition} from './unordered-configuration-definition';
 import {clone, compose, empty, filter, flow, forEach, is, isDefined, isNot,
-    map, on, subtract, to, duplicates, zip, flatten} from 'tsfun';
+    map, on, subtract, to, duplicates, zip, flatten, keysAndValues} from 'tsfun';
 import {ConfigurationErrors} from './configuration-errors';
 import {ConfigurationDefinition} from './configuration-definition';
-import {RegistryTypeDefinitions} from "./registry-type-definition";
+import {RegistryTypeDefinitions} from "./registered-type-definition";
 import {BuiltinTypeDefinitions} from "./builtin-type-definition";
 
 
+export function pureName(s: string) {
+
+    return  s.includes(':') ? s.substr(0, s.indexOf(':')) : s;
+}
 
 
 /**
@@ -96,18 +100,12 @@ export module Preprocessing {
 
     function renameTypesInCustom(builtInTypes: BuiltinTypeDefinitions) {
 
-        for (let [k, v] of (zip(Object.keys(builtInTypes))(Object.values(builtInTypes)))) {
+        for (let [k, v] of keysAndValues(builtInTypes)) {
             const pureName_ = pureName(k);
             if (pureName_ === k) continue;
             (builtInTypes as any)[pureName_] = v;
             delete builtInTypes[k];
         }
-    }
-
-
-    function pureName(s: string) {
-
-        return  s.includes(':') ? s.substr(0, s.indexOf(':')) : s;
     }
 
 

@@ -1,6 +1,6 @@
 import {intersection, subtract} from 'tsfun';
 import {RelationDefinition} from './relation-definition';
-import {RegistryTypeDefinitions} from "./registry-type-definition";
+import {RegistryTypeDefinitions} from "./registered-type-definition";
 
 /**
  * Used to validate to configuration in the form it comes from the user, i.e.

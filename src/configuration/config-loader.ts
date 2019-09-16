@@ -9,7 +9,7 @@ import {FieldDefinition} from './field-definition';
 import {PrePreprocessConfigurationValidator} from './pre-preprocess-configuration-validator';
 import {ConfigurationDefinition} from './configuration-definition';
 import {BuiltinTypeDefinitions} from "./builtin-type-definition";
-import {RegistryTypeDefinitions} from "./registry-type-definition";
+import {RegistryTypeDefinitions} from "./registered-type-definition";
 
 const nonExtendableTypes: string[] = ['Operation', 'Place'];
 
