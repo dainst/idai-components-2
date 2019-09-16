@@ -1,5 +1,4 @@
 import {PrePreprocessConfigurationValidator} from '../../../../src/configuration/pre-preprocess-configuration-validator';
-import {TypeDefinitions} from '../../../../src/configuration/preprocessing';
 
 /**
  * @author Daniel de Oliveira

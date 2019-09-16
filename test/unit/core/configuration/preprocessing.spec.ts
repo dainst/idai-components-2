@@ -4,6 +4,11 @@ import {RelationDefinition} from '../../../../src/configuration/relation-definit
 import {UnorderedConfigurationDefinition} from '../../../../src/configuration/unordered-configuration-definition';
 import {FieldDefinition} from '../../../../src/configuration/field-definition';
 import {ConfigurationErrors} from '../../../../src/configuration/configuration-errors';
+import {BuiltinTypeDefinition} from "../../../../src/configuration/builtin-type-definition";
+import {
+    RegistryTypeDefinition,
+    RegistryTypeDefinitions
+} from "../../../../src/configuration/registry-type-definition";
 
 /**
  * @author Daniel de Oliveira
@@ -12,23 +17,26 @@ import {ConfigurationErrors} from '../../../../src/configuration/configuration-e
 
 describe('Preprocessing', () => {
 
-    let configuration: UnorderedConfigurationDefinition;
-    let t1: TypeDefinition;
+    let configuration;
+    let t1: RegistryTypeDefinition;
 
     beforeEach(() => {
 
         t1 = {
+            parent: 'x',
+            description: { 'de': '' },
+            createdBy: '',
             color: 'white',
             fields: {
                 'aField': {}
             }
-        } as TypeDefinition;
+        } as RegistryTypeDefinition;
 
         configuration = {
             identifier: 'test',
             types: {
                 'T1': t1
-            }
+            } as RegistryTypeDefinitions
         } as any;
     });
 
@@ -63,6 +71,31 @@ describe('Preprocessing', () => {
         expect(configuration.types[0].fields.length).toBe(0);
     });
     */
+
+    it('mergeTypes - duplication in selection', () => {
+
+        const builtInTypes = {
+            B: {
+                fields: {
+                    field1: {group: 'stem'}
+                }
+            }
+        } as any;
+
+        const registeredTypes1 = {
+            'B:0': {
+                derives: 'B',
+                fields: {}
+            }
+        } as any;
+
+        try {
+            Preprocessing.mergeTypes(builtInTypes, registeredTypes1, {}, [], [], ['B', 'B:0']);
+        } catch (expected) {
+            expect(expected).toEqual([ConfigurationErrors.DUPLICATION_IN_SELECTION, 'B'])
+        }
+    });
+
 
     it('mergeTypes - missing registry id', () => {
 
@@ -108,7 +141,7 @@ describe('Preprocessing', () => {
                 }}
         } as any;
 
-        const result = Preprocessing.mergeTypes(builtInTypes, registeredTypes1, {}, [], [], []);
+        const result = Preprocessing.mergeTypes(builtInTypes, registeredTypes1, {}, [], [], ['A:1']);
 
         expect(result['A'].fields['field1'].inputType).toBe('text');
         expect(result['A'].fields['field1'].group).toBe('stem');
@@ -135,7 +168,7 @@ describe('Preprocessing', () => {
                 }}
         } as any;
 
-        const result = Preprocessing.mergeTypes(builtInTypes, {}, fieldsJson, [], [], []);
+        const result = Preprocessing.mergeTypes(builtInTypes, {}, fieldsJson, [], [], ['A:1']);
 
         expect(result['A'].fields['field1'].inputType).toBe('text');
         expect(result['A'].fields['field1'].group).toBe('stem');
@@ -165,7 +198,10 @@ describe('Preprocessing', () => {
 
     it('should add extra fields', () => {
 
-        Preprocessing.addExtraFields(configuration, { 'identifier': {} as FieldDefinition });
+        // TODO review test quickfix
+        delete configuration.types['T1'].parent;
+
+        Preprocessing.addExtraFields(configuration, { identifier: {} as FieldDefinition });
 
         expect(configuration.types['T1'].fields['identifier']).toBeDefined();
         expect(configuration.types['T1'].fields['aField']).toBeDefined();
@@ -179,7 +215,7 @@ describe('Preprocessing', () => {
                 fields: {
                     bField: {}
                 }
-            } as TypeDefinition
+            } as BuiltinTypeDefinition
         };
 
         Preprocessing.addExtraTypes(builtInTypes, configuration.types);
@@ -189,33 +225,33 @@ describe('Preprocessing', () => {
 
     it('should add an extra field to an extra type', () => {
 
-        let coreTypes = {
+        let builtinTypes = {
             T2: {
                 fields: {
                     bField: {}
                 }
-            } as TypeDefinition
+            } as BuiltinTypeDefinition
         };
 
-        Preprocessing.addExtraTypes(coreTypes, configuration.types);
-        coreTypes = { types: coreTypes } as any;
+        Preprocessing.addExtraTypes(builtinTypes, configuration.types);
+        builtinTypes = { types: builtinTypes } as any;
 
-        Preprocessing.addExtraFields(coreTypes as any, { identifier: {} as FieldDefinition });
+        Preprocessing.addExtraFields(builtinTypes as any, { identifier: {} as FieldDefinition });
 
-        expect((coreTypes as any).types['T2'].fields['identifier']).toBeDefined();
-        expect((coreTypes as any).types['T2'].fields['bField']).toBeDefined();
+        expect((builtinTypes as any).types['T2'].fields['identifier']).toBeDefined();
+        expect((builtinTypes as any).types['T2'].fields['bField']).toBeDefined();
     });
 
 
     it('merge fields of extra type with existing type', () => {
 
-        const coreTypes = {
+        const builtinTypes = {
             T1: {
                 abstract: true,
                 fields: {
                     bField: {}
                 }
-            } as TypeDefinition
+            } as BuiltinTypeDefinition
         };
 
         const configuration = {
@@ -226,23 +262,23 @@ describe('Preprocessing', () => {
             }
         } as any;
 
-        Preprocessing.addExtraTypes(coreTypes, configuration);
+        Preprocessing.addExtraTypes(builtinTypes, configuration);
 
-        expect(coreTypes['T1'].abstract).toBeTruthy();
-        expect(coreTypes['T1'].color).toEqual('white');
-        expect(coreTypes['T1'].fields['aField']).toBeDefined();
-        expect(coreTypes['T1'].fields['bField']).toBeDefined();
+        expect((builtinTypes['T1'] as any).abstract).toBeTruthy();
+        expect((builtinTypes['T1'] as any).color).toEqual('white');
+        expect((builtinTypes['T1'] as any).fields['aField']).toBeDefined();
+        expect((builtinTypes['T1'] as any).fields['bField']).toBeDefined();
     });
 
 
     it('merge fields of extra type with existing type and add extra field', () => {
 
-        const coreTypes = {
+        const builtinTypes = {
             T1: {
                 fields: {
                     bField: {}
                 }
-            } as TypeDefinition
+            } as BuiltinTypeDefinition
         };
 
         const configuration = {
@@ -253,9 +289,9 @@ describe('Preprocessing', () => {
             }
         } as any;
 
-        Preprocessing.addExtraTypes(coreTypes, configuration);
+        Preprocessing.addExtraTypes(builtinTypes, configuration);
 
-        const appConfiguration = { types: coreTypes };
+        const appConfiguration = { types: builtinTypes };
         Preprocessing.addExtraFields(appConfiguration as any, { 'identifier': {} as FieldDefinition });
 
         expect(appConfiguration.types['T1'].fields['aField']).toBeDefined();
@@ -578,15 +614,15 @@ describe('Preprocessing', () => {
 
         configuration.types['T1'].fields['bField'] = { group: 'time'};
 
-        const extraTypes = {
+        const builtinTypes = {
             T1: {
                 fields: {
                     bField: {}
                 }
-            } as TypeDefinition
+            } as BuiltinTypeDefinition
         };
 
-        Preprocessing.applyCustom(configuration.types, extraTypes);
+        Preprocessing.applyCustom(configuration.types, builtinTypes as any);
         expect(configuration.types['T1'].fields['bField']['group']).toEqual('time');
     });
 });

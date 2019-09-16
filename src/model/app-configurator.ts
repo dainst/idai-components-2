@@ -6,6 +6,7 @@ import {ProjectConfiguration} from '../configuration/project-configuration';
 import {PrePreprocessConfigurationValidator} from '../configuration/pre-preprocess-configuration-validator';
 import {TypeDefinition} from '../configuration/type-definition';
 import {FieldDefinition} from '../configuration/field-definition';
+import {BuiltinTypeDefinition} from "../configuration/builtin-type-definition";
 
 
 @Injectable()
@@ -181,32 +182,32 @@ export class AppConfigurator {
                     inputType: 'unsignedInt'
                 }
             }
-        } as TypeDefinition,
+        } as BuiltinTypeDefinition,
         Operation: {
             fields: {},
             abstract: true
-        } as TypeDefinition,
+        } as BuiltinTypeDefinition,
         Building: {
             fields: {},
             parent: 'Operation'
-        } as TypeDefinition,
+        } as BuiltinTypeDefinition,
         Survey: {
             fields: {},
             parent: 'Operation'
-        } as TypeDefinition,
+        } as BuiltinTypeDefinition,
         Trench: {
             fields: {},
             parent: 'Operation'
-        } as TypeDefinition,
+        } as BuiltinTypeDefinition,
         Room: {
             fields: {}
-        } as TypeDefinition,
+        } as BuiltinTypeDefinition,
         BuildingPart: {
             fields: {}
-        } as TypeDefinition,
+        } as BuiltinTypeDefinition,
         Area: {
             fields: {}
-        } as TypeDefinition,
+        } as BuiltinTypeDefinition,
         Feature: {
             fields: {
                 period: {
@@ -218,13 +219,13 @@ export class AppConfigurator {
                     group: 'time'
                 }
             }
-        } as TypeDefinition,
+        } as BuiltinTypeDefinition,
         Find: {
             fields: {}
-        } as TypeDefinition,
+        } as BuiltinTypeDefinition,
         Inscription: {
             fields: {}
-        } as TypeDefinition,
+        } as BuiltinTypeDefinition,
         Image: {
             fields: {
                 height: {
@@ -249,7 +250,7 @@ export class AppConfigurator {
                     editable: false
                 }
             }
-        } as TypeDefinition,
+        } as BuiltinTypeDefinition,
         Project: {
             label: this.i18n({ id: 'configuration.project', value: 'Projekt' }),
             fields: {
@@ -266,7 +267,7 @@ export class AppConfigurator {
                     ]
                 }
             }
-        } as TypeDefinition
+        } as BuiltinTypeDefinition
     };
 
     private defaultFields = {

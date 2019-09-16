@@ -21,7 +21,8 @@ describe('ConfigLoader', () => {
         customLanguageConfiguration = {},
         hiddenConfiguration = {},
         hiddenCustomConfiguration = {},
-        orderConfiguration = {}) {
+        orderConfiguration = {},
+        selectionConfiguration = {}) {
 
         configReader.read.and.returnValues(
             Promise.resolve(registeredTypes1),
@@ -32,7 +33,8 @@ describe('ConfigLoader', () => {
             Promise.resolve(customLanguageConfiguration),
             Promise.resolve({}),
             Promise.resolve({}),
-            Promise.resolve(orderConfiguration)
+            Promise.resolve(orderConfiguration),
+            Promise.resolve(selectionConfiguration)
         );
     }
 
@@ -54,18 +56,25 @@ describe('ConfigLoader', () => {
             'B:0': { parent: 'A', commons: ['processor'] },
         });
 
-        applyConfig(undefined, {
-            types: {
-                B: { label: 'B_', fields: { processor: { label: 'Bearbeiter/Bearbeiterin', description: "abc" }} },
-            }, relations: {}
-        });
+        applyConfig(
+            undefined,
+            {
+                types: {
+                    B: { label: 'B_', fields: { processor: { label: 'Bearbeiter/Bearbeiterin', description: "abc" }} },
+                }, relations: {},
+            },
+            {},
+            {},
+            {},
+            {},
+            { 'A': {}, 'B:0': {} });
 
         let pconf;
         try {
             pconf = await configLoader.go(
                 'yo',
                 { processor : { inputType: 'input', group: 'stem' }},
-                { 'A': { type: 'A' } },
+                { 'A': { fields: {}} },
                 [],
                 {},
                 new PrePreprocessConfigurationValidator(),
@@ -89,20 +98,27 @@ describe('ConfigLoader', () => {
             'B:0': { parent: 'A', commons: ['processor'] },
         });
 
-        applyConfig(undefined, {
-            commons: {
-                processor: { label: 'Bearbeiter/Bearbeiterin', description: "abc" }
+        applyConfig(
+            undefined,
+            {
+                commons: {
+                    processor: { label: 'Bearbeiter/Bearbeiterin', description: "abc" }
+                },
+                types: {},
+                relations: {}
             },
-            types: {},
-            relations: {}
-        });
+            {},
+            {},
+            {},
+            {},
+            { 'B:0': {}, 'A': {} });
 
         let pconf;
         try {
             pconf = await configLoader.go(
                 'yo',
                 { processor : { inputType: 'input', group: 'stem' }},
-                { 'A': { type: 'A' }},
+                { 'A': { fields: {} }},
                 [],
                 {},
                 new PrePreprocessConfigurationValidator(),
@@ -130,6 +146,15 @@ describe('ConfigLoader', () => {
             'B2:0': { parent: 'B' }
         });
 
+        applyConfig(
+            undefined,
+            {},
+            {},
+            {},
+            {},
+            {},
+            { 'A1:0': {}, 'A2:0': {}, 'B1:0': {}, 'B2:0': {}, 'A': {}, 'B': {}, 'C': {}, 'D': {} });
+
         let pconf;
 
         try {
@@ -137,10 +162,10 @@ describe('ConfigLoader', () => {
                 'yo',
                 {},
                 {
-                    'A': { type: 'A'},
-                    'B': { type: 'B'},
-                    'C': { type: 'C'},
-                    'D': { type: 'D'}
+                    'A': { fields: {}},
+                    'B': { fields: {}},
+                    'C': { fields: {}},
+                    'D': { fields: {}}
                 },
                 [
                     {
@@ -175,12 +200,21 @@ describe('ConfigLoader', () => {
 
         Object.assign(registeredTypes1, { 'A:0': { parent: 'T' }, 'B:0': { parent: 'T' }});
 
+        applyConfig(
+            undefined,
+            {},
+            {},
+            {},
+            {},
+            {},
+            { 'A:0': {}, 'B:0': {}, 'T': {}});
+
         let pconf;
         try {
             pconf = await configLoader.go(
                 'yo',
                 {},
-                { T: { type: 'T'}},
+                { T: { fields: {} }},
                 [{ name: 'abc', domain: ['A'], range: ['B'], sameMainTypeResource: false }], {},
                 new PrePreprocessConfigurationValidator(),
                 new ConfigurationValidator(), undefined, 'de');
@@ -210,16 +244,20 @@ describe('ConfigLoader', () => {
             relations: {
                 r1: { label: 'r1_' }
             }
-        }, {
-            types: {
-                B: { label: 'B__' }
-            }
-        });
+            }, {
+                types: {
+                    B: { label: 'B__' }
+                }
+            },
+            {},
+            {},
+            {},
+            { 'A:0': {}, 'B:0': {}, 'C:0': {}, 'Parent': {} });
 
         let pconf;
         try {
             pconf = await configLoader.go(
-                'yo', {}, { 'Parent': { type: 'Parent' }},[
+                'yo', {}, { 'Parent': { fields: {} }},[
                          { name: 'r1', domain: ['A'], range: ['B']},
                          { name: 'r2', domain: ['A'], range: ['B']}
                     ], {},
@@ -253,12 +291,19 @@ describe('ConfigLoader', () => {
             'B:1': { parent: 'G', extends: 'B:0', fields: { fieldB2: { inputType: 'boolean' } } }
         };
 
-        applyConfig(customFieldsConfiguration);
+        applyConfig(
+            customFieldsConfiguration,
+            {},
+            {},
+            {},
+            {},
+            {},
+            {'A:1': {}, 'B:1': {}, 'F': {}, 'G': {} });
 
         let pconf;
         try {
             pconf = await configLoader.go('', {},
-                { 'F': { type: 'F'}, 'G': { type: 'G' }},[], {},
+                { 'F': { fields: {} }, 'G': { fields: {} }},[], {},
                 new PrePreprocessConfigurationValidator(),
                 new ConfigurationValidator(),
                 undefined, 'de'
@@ -289,11 +334,18 @@ describe('ConfigLoader', () => {
             'B:0': { parent: 'Find', fields: { fieldC1: { inputType: 'boolean'}}}
         };
 
-        applyConfig(secondLevelTypes);
+        applyConfig(
+            secondLevelTypes,
+            {},
+            {},
+            {},
+            {},
+            {},
+            { 'Find:0': {}, 'B:0': {} });
 
         let pconf;
         try {
-            pconf = await configLoader.go('', {}, { 'Find': { type: 'Find' }},[], {},
+            pconf = await configLoader.go('', {}, { 'Find': { fields: {} }},[], {},
                 new PrePreprocessConfigurationValidator(), new ConfigurationValidator(),
                 undefined, 'de'
             );
@@ -319,10 +371,18 @@ describe('ConfigLoader', () => {
             'B:0': { fields: { fieldC1: { inputType: 'boolean'}}}
         };
 
-        applyConfig(secondLevelTypes);
+        applyConfig(
+            secondLevelTypes,
+            {},
+            {},
+            {},
+            {},
+            {},
+            { 'Find:0': {}, 'B:0': {} }
+        );
 
         try {
-            await configLoader.go('', {}, { 'Find': { type: 'Find' }},[], {},
+            await configLoader.go('', {}, { 'Find': { fields: {} }},[], {},
                 new PrePreprocessConfigurationValidator(), new ConfigurationValidator(),
                 undefined, 'de'
             );
@@ -344,7 +404,15 @@ describe('ConfigLoader', () => {
             'B:0': { parent: 'Find', fields: { fieldC1: { inputType: 'boolean'}}}
         };
 
-        applyConfig(customFieldsConfiguration);
+        applyConfig(
+            customFieldsConfiguration,
+            {},
+            {},
+            {},
+            {},
+            {},
+            { 'B:0': {}, 'Find': {} }
+        );
 
         try {
             await configLoader.go('', {}, {},[], {},
@@ -374,7 +442,7 @@ describe('ConfigLoader', () => {
         applyConfig(secondLevelTypes);
 
         try {
-            await configLoader.go('', {}, { SuperFind: { type: 'SuperFind', fields: { fieldA1: { inputType: 'unsignedInt' } } }},[], {},
+            await configLoader.go('', {}, { SuperFind: { fields: { fieldA1: { inputType: 'unsignedInt' } } }},[], {},
                 new PrePreprocessConfigurationValidator(), new ConfigurationValidator(),
                 undefined, 'de'
             );
@@ -427,7 +495,7 @@ describe('ConfigLoader', () => {
         applyConfig(customFieldsConfiguration);
 
         try {
-            await configLoader.go('', {}, { Place: { type: 'Place', fields: { fieldA1: { inputType: 'unsignedInt' }}}},[], {},
+            await configLoader.go('', {}, { Place: { fields: { fieldA1: { inputType: 'unsignedInt' }}}},[], {},
                 new PrePreprocessConfigurationValidator(), new ConfigurationValidator(),
                 undefined, 'de'
             );
@@ -451,20 +519,21 @@ describe('ConfigLoader', () => {
 
         applyConfig({}, {}, {},
             {}, {}, {
-            types: ['A', 'B', 'C'],
-            fields: {
-                'A': ['fieldA1', 'fieldA2'],
-                'B': ['fieldB1', 'fieldB2', 'fieldB3'],
-                'C': ['fieldC1', 'fieldC2'],
+                types: ['A', 'B', 'C'],
+                fields: {
+                    'A': ['fieldA1', 'fieldA2'],
+                    'B': ['fieldB1', 'fieldB2', 'fieldB3'],
+                    'C': ['fieldC1', 'fieldC2'],
 
-                // Ignore fields defined in Order.json but not in configuration silently
-                'D': ['fieldD1', 'fieldD2']
-            }
-        });
+                    // Ignore fields defined in Order.json but not in configuration silently
+                    'D': ['fieldD1', 'fieldD2']
+                }
+            },
+            { 'A:0': {}, 'B:0': {}, 'C:0': {}, 'Parent': {} });
 
         let pconf;
         try {
-            pconf = await configLoader.go('', {},{Parent: { type: 'Parent' }}, [], {},
+            pconf = await configLoader.go('', {},{ Parent: { fields: {} }}, [], {},
                 new PrePreprocessConfigurationValidator(),
                 new ConfigurationValidator(), undefined, 'de'
             );
@@ -496,15 +565,16 @@ describe('ConfigLoader', () => {
         });
 
         applyConfig({}, {}, {}, {}, {}, {
-            types: ['A', 'A'],
-            fields: {
-                'A': ['fieldA1', 'fieldA2', 'fieldA1']
-            }
-        });
+                types: ['A', 'A'],
+                fields: {
+                    'A': ['fieldA1', 'fieldA2', 'fieldA1']
+                }
+            },
+            { 'A:0': {}, 'Parent': {} });
 
         let pconf;
         try {
-            pconf = await configLoader.go('', {},{ Parent: { type: 'Parent' }}, [], {},
+            pconf = await configLoader.go('', {},{ Parent: { fields: {} }}, [], {},
                 new PrePreprocessConfigurationValidator(),
                 new ConfigurationValidator(), undefined, 'de'
             );
@@ -534,11 +604,13 @@ describe('ConfigLoader', () => {
             },
             {
                 'A': ['fieldA2']
-            });
+            },
+            {},
+            { 'A:0': {} });
 
         let pconf;
         try {
-            pconf = await configLoader.go('', {}, { A: { type: 'A', fields: {} }}, [], {},
+            pconf = await configLoader.go('', {}, { A: { fields: {} }}, [], {},
                 new PrePreprocessConfigurationValidator(),
                 new ConfigurationValidator(), undefined, 'de'
             );
@@ -568,18 +640,19 @@ describe('ConfigLoader', () => {
         });
 
         applyConfig({}, {}, {}, {
-            'A': ['fieldA1']
-        }, {}, {
-            types: ['A'],
-            fields: {
-                'A': ['fieldA1', 'fieldA2', 'fieldA3']
-            }
-        });
+                'A': ['fieldA1']
+            }, {}, {
+                types: ['A'],
+                fields: {
+                    'A': ['fieldA1', 'fieldA2', 'fieldA3']
+                }
+            },
+            { 'A:0':  {} });
 
 
         let pconf;
         try {
-            pconf = await configLoader.go('', {},{ A: { type: 'A', fields: {}}}, [], {},
+            pconf = await configLoader.go('', {},{ A: { fields: {}}}, [], {},
                 new PrePreprocessConfigurationValidator(),
                 new ConfigurationValidator(), undefined, 'de'
             );
@@ -600,5 +673,4 @@ describe('ConfigLoader', () => {
             done();
         }
     });
-
 });
