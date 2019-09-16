@@ -43,11 +43,11 @@ export module Preprocessing {
                                registeredTypes2: RegisteredTypeDefinitions,
                                nonExtendableTypes: any,
                                commonFields: any, // TODO merge common fields incrementally
-                               selectedTypes: string[]) {
+                               selectedTypes: any) {
 
-        assertMergePreconditionsMet(builtInTypes, registeredTypes1, registeredTypes2, nonExtendableTypes, selectedTypes);
+        assertMergePreconditionsMet(builtInTypes, registeredTypes1, registeredTypes2, nonExtendableTypes, Object.keys(selectedTypes));
 
-        eraseAllNonSelectedTypetrees(builtInTypes, registeredTypes1, registeredTypes2, selectedTypes);
+        eraseAllNonSelectedTypetrees(builtInTypes, registeredTypes1, registeredTypes2, Object.keys(selectedTypes));
         // now we need to build paths through typeTrees, which we can then merge the types along
 
         addExtraTypes(builtInTypes, registeredTypes1);
@@ -57,6 +57,21 @@ export module Preprocessing {
         applyCustom(builtInTypes, registeredTypes2);
 
         replaceCommonFields(builtInTypes, commonFields);
+
+        // TODO it should not be called builtInTypes any longer, at this stage
+        keysAndValues(builtInTypes).forEach(([builtInTypeName, builtInType]) => {
+
+            keysAndValues(selectedTypes).forEach(([selectedTypeName, selectedType]) => {
+                if (pureName(selectedTypeName) === pureName(builtInTypeName)) {
+
+                    if ((builtInType as any)['fields']) Object.keys((builtInType as any)['fields']).forEach(fn => {
+                        if ((selectedType as any)['hidden'] && (selectedType as any)['hidden'].includes(fn)) delete (builtInType as any)['fields'][fn]
+                    })
+                }
+            })
+        });
+
+
         return builtInTypes;
     }
 

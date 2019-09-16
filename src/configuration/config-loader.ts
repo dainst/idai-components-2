@@ -148,7 +148,7 @@ export class ConfigLoader {
                 registeredTypes2,
                 nonExtendableTypes,
                 commonFields,
-                Object.keys(selectionConfiguration));
+                selectionConfiguration);
         } catch (msgWithParams) {
             throw [msgWithParams];
         }
