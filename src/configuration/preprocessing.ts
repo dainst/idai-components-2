@@ -409,9 +409,9 @@ export module Preprocessing {
         const pairs = zip(Object.keys(firstLevelTypes))(Object.values(firstLevelTypes));
 
         forEach(([typeName, type]: any) => {
-            if (type.derives) {
-                merge(builtInTypes[type.derives], type);
-                merge(builtInTypes[type.derives].fields, type.fields);
+            if (type.extends) {
+                merge(builtInTypes[type.extends], type);
+                merge(builtInTypes[type.extends].fields, type.fields);
             } else {
                 builtInTypes[typeName] = type;
             }

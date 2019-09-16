@@ -249,8 +249,8 @@ describe('ConfigLoader', () => {
         });
 
         const customFieldsConfiguration = {
-            'A:1': { parent: 'F', derives: 'A:0', fields: { fieldA1: { inputType: 'unsignedFloat' } } },
-            'B:1': { parent: 'G', derives: 'B:0', fields: { fieldB2: { inputType: 'boolean' } } }
+            'A:1': { parent: 'F', extends: 'A:0', fields: { fieldA1: { inputType: 'unsignedFloat' } } },
+            'B:1': { parent: 'G', extends: 'B:0', fields: { fieldB2: { inputType: 'boolean' } } }
         };
 
         applyConfig(customFieldsConfiguration);
@@ -525,7 +525,7 @@ describe('ConfigLoader', () => {
     it('apply hidden configurations', async done => {
 
         Object.assign(registeredTypes1, {
-            'A:0': { derives: 'A', fields: { fieldA1: {}, fieldA2: {}, fieldA3: {}  } }
+            'A:0': { extends: 'A', fields: { fieldA1: {}, fieldA2: {}, fieldA3: {}  } }
         });
 
         applyConfig({}, {}, {},
@@ -564,7 +564,7 @@ describe('ConfigLoader', () => {
     it('apply hidden and order configuration', async done => {
 
         Object.assign(registeredTypes1, {
-            'A:0': { derives: 'A', fields: { fieldA1: {}, fieldA3: {}, fieldA2: {} } }
+            'A:0': { extends: 'A', fields: { fieldA1: {}, fieldA3: {}, fieldA2: {} } }
         });
 
         applyConfig({}, {}, {}, {

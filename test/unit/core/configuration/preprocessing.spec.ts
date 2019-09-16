@@ -101,7 +101,7 @@ describe('Preprocessing', () => {
 
         const registeredTypes1 = {
             'A:1': {
-                derives: 'A',
+                extends: 'A',
                 fields: {
                     field1: { inputType: 'text' },
                     field2: { inputType: 'text' }
@@ -128,7 +128,7 @@ describe('Preprocessing', () => {
 
         const fieldsJson = {
             'A:1': {
-                derives: 'A',
+                extends: 'A',
                 fields: {
                     field1: { inputType: 'text' },
                     field2: { inputType: 'text' }
@@ -220,7 +220,7 @@ describe('Preprocessing', () => {
 
         const configuration = {
             'T1-1': {
-                derives: 'T1',
+                extends: 'T1',
                 color: 'white',
                 fields: {aField: {}}
             }
@@ -247,7 +247,7 @@ describe('Preprocessing', () => {
 
         const configuration = {
             'T1-1': {
-                derives: 'T1',
+                extends: 'T1',
                 color: 'white',
                 fields: {aField: {}}
             }
