@@ -50,16 +50,22 @@ export module Preprocessing {
         eraseAllNonSelectedTypetrees(builtInTypes, registeredTypes1, registeredTypes2, Object.keys(selectedTypes));
         // now we need to build paths through typeTrees, which we can then merge the types along
 
-        addExtraTypes(builtInTypes, registeredTypes1);
-        renameTypesInCustom(builtInTypes);
+        const mergedTypes: any = builtInTypes as any;
+
+        addExtraTypes(mergedTypes, registeredTypes1);
+        renameTypesInCustom(mergedTypes);
         renameTypesInCustom(registeredTypes2);
+        applyCustom(mergedTypes, registeredTypes2);
 
-        applyCustom(builtInTypes, registeredTypes2);
+        replaceCommonFields(mergedTypes, commonFields);
+        deleteHiddenFields(mergedTypes, selectedTypes);
+        return mergedTypes;
+    }
 
-        replaceCommonFields(builtInTypes, commonFields);
 
-        // TODO it should not be called builtInTypes any longer, at this stage
-        keysAndValues(builtInTypes).forEach(([builtInTypeName, builtInType]) => {
+    function deleteHiddenFields(mergedTypes: any, selectedTypes: any) {
+
+        keysAndValues(mergedTypes).forEach(([builtInTypeName, builtInType]) => {
 
             keysAndValues(selectedTypes).forEach(([selectedTypeName, selectedType]) => {
                 if (pureName(selectedTypeName) === pureName(builtInTypeName)) {
@@ -70,9 +76,6 @@ export module Preprocessing {
                 }
             })
         });
-
-
-        return builtInTypes;
     }
 
 
