@@ -130,14 +130,9 @@ export module Preprocessing {
                                 searchConfiguration: any,
                                 valuelistsConfiguration: any,
                                 orderConfiguration: any,
-                                hiddenConfiguration: any,
-                                customHiddenConfiguration: any,
                                 extraFields: any,
                                 relations: any,
                                 defaultFields: any) {
-
-        hideFields(appConfiguration, hiddenConfiguration);
-        hideFields(appConfiguration, customHiddenConfiguration);
 
         appConfiguration.relations = [];
         addExtraFields(appConfiguration, extraFields);

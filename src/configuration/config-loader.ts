@@ -96,7 +96,6 @@ export class ConfigLoader {
                              customConfigurationName: string|undefined,
                              locale: string): Promise<ConfigurationDefinition> {
 
-        const hiddenConfigurationPath = configDirPath + '/Hidden.json';
         const customHiddenConfigurationPath = configDirPath + '/Hidden-'
             + (customConfigurationName ? customConfigurationName : 'Custom') + '.json';
         const languageConfigurationPath = configDirPath + '/Language.' + locale + '.json';
@@ -120,8 +119,6 @@ export class ConfigLoader {
 
         try {
             registeredTypes2 = await this.configReader.read(customConfigPath);
-            hiddenConfiguration = await this.configReader.read(hiddenConfigurationPath);
-            customHiddenConfiguration = await this.configReader.read(customHiddenConfigurationPath);
             languageConfiguration = await this.configReader.read(languageConfigurationPath);
             customLanguageConfiguration = await this.configReader.read(configDirPath + '/Language-'
                 + (customConfigurationName
@@ -161,8 +158,6 @@ export class ConfigLoader {
                 searchConfiguration,
                 valuelistsConfiguration,
                 orderConfiguration,
-                hiddenConfiguration,
-                customHiddenConfiguration,
                 extraFields,
                 relations,
                 this.defaultFields);
