@@ -9,7 +9,7 @@ export interface RegistryTypeDefinition {
 
     color?: string,
     parent: string,
-    derives?: string;
+    extends?: string;
     description: {[language: string]: string},
     createdBy: string
     fields: any;

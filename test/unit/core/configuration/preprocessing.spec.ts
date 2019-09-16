@@ -84,7 +84,7 @@ describe('Preprocessing', () => {
 
         const registeredTypes1 = {
             'B:0': {
-                derives: 'B',
+                extends: 'B',
                 fields: {}
             }
         } as any;
