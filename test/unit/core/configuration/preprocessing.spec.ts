@@ -7,7 +7,7 @@ import {ConfigurationErrors} from '../../../../src/configuration/configuration-e
 import {BuiltinTypeDefinition} from "../../../../src/configuration/builtin-type-definition";
 import {
     RegisteredTypeDefinition,
-    RegistryTypeDefinitions
+    RegisteredTypeDefinitions,
 } from "../../../../src/configuration/registered-type-definition";
 
 /**
@@ -36,7 +36,7 @@ describe('Preprocessing', () => {
             identifier: 'test',
             types: {
                 'T1': t1
-            } as RegistryTypeDefinitions
+            } as RegisteredTypeDefinitions
         } as any;
     });
 

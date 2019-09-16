@@ -9,7 +9,7 @@ import {FieldDefinition} from './field-definition';
 import {PrePreprocessConfigurationValidator} from './pre-preprocess-configuration-validator';
 import {ConfigurationDefinition} from './configuration-definition';
 import {BuiltinTypeDefinitions} from "./builtin-type-definition";
-import {RegistryTypeDefinitions} from "./registered-type-definition";
+import {RegisteredTypeDefinitions} from "./registered-type-definition";
 
 const nonExtendableTypes: string[] = ['Operation', 'Place'];
 
@@ -59,7 +59,7 @@ export class ConfigLoader {
 
         if (customConfigurationName) console.log('Load custom configuration', customConfigurationName);
 
-        const registeredTypes: RegistryTypeDefinitions = await this.readConfiguration(configDirPath);
+        const registeredTypes: RegisteredTypeDefinitions = await this.readConfiguration(configDirPath);
 
         const prePreprocessValidationErrors = prePreprocessConfigurationValidator.go(registeredTypes);
         if (prePreprocessValidationErrors.length > 0) throw prePreprocessValidationErrors;
@@ -88,7 +88,7 @@ export class ConfigLoader {
 
 
     private async preprocess(configDirPath: string,
-                             registeredTypes1: RegistryTypeDefinitions,
+                             registeredTypes1: RegisteredTypeDefinitions,
                              commonFields: any,
                              builtinTypes: BuiltinTypeDefinitions,
                              relations: Array<RelationDefinition>,

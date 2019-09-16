@@ -6,7 +6,7 @@ import {clone, compose, empty, filter, flow, forEach, is, isDefined, isNot,
     map, on, subtract, to, duplicates, zip, flatten, keysAndValues} from 'tsfun';
 import {ConfigurationErrors} from './configuration-errors';
 import {ConfigurationDefinition} from './configuration-definition';
-import {RegistryTypeDefinitions} from "./registered-type-definition";
+import {RegisteredTypeDefinitions} from "./registered-type-definition";
 import {BuiltinTypeDefinitions} from "./builtin-type-definition";
 
 
@@ -39,8 +39,8 @@ export module Preprocessing {
      * @throws [DUPLICATION_IN_SELECTION, pureTypeName]
      */
     export function mergeTypes(builtInTypes: BuiltinTypeDefinitions,
-                               registeredTypes1: RegistryTypeDefinitions,
-                               registeredTypes2: RegistryTypeDefinitions,
+                               registeredTypes1: RegisteredTypeDefinitions,
+                               registeredTypes2: RegisteredTypeDefinitions,
                                nonExtendableTypes: any,
                                commonFields: any, // TODO merge common fields incrementally
                                selectedTypes: string[]) {
@@ -62,8 +62,8 @@ export module Preprocessing {
 
 
     function assertMergePreconditionsMet(builtInTypes: BuiltinTypeDefinitions,
-                                         registeredTypes1: RegistryTypeDefinitions,
-                                         registeredTypes2: RegistryTypeDefinitions,
+                                         registeredTypes1: RegisteredTypeDefinitions,
+                                         registeredTypes2: RegisteredTypeDefinitions,
                                          nonExtendableTypes: any,
                                          selectedTypes: string[]) {
 
@@ -168,7 +168,7 @@ export module Preprocessing {
 
 
     export function applyCustom(builtinType: BuiltinTypeDefinitions,
-                                registryType: RegistryTypeDefinitions) {
+                                registryType: RegisteredTypeDefinitions) {
 
         Object.keys(registryType).forEach(typeName_ => {
 
@@ -443,7 +443,7 @@ export module Preprocessing {
 
 
     export function addExtraTypes(builtInTypes: BuiltinTypeDefinitions,
-                                  registryTypes1: RegistryTypeDefinitions) {
+                                  registryTypes1: RegisteredTypeDefinitions) {
 
         const pairs = zip(Object.keys(registryTypes1))(Object.values(registryTypes1)); // TODO extract functions
 
@@ -517,7 +517,7 @@ export module Preprocessing {
 
 
     function validateRegisteredTypes(builtinTypes: BuiltinTypeDefinitions,
-                                     registeredTypes: RegistryTypeDefinitions,
+                                     registeredTypes: RegisteredTypeDefinitions,
                                      nonExtendableTypes: string[]) {
 
         const doesNotDeriveCoreType = (name: string) => !builtinTypes[pureName(name)];
