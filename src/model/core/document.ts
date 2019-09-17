@@ -1,5 +1,6 @@
 import {Resource} from './resource';
-import {subtractObj, copyObj, to} from 'tsfun';
+import {to} from 'tsfun';
+import {subtractObj} from 'tsfun-extra';
 import {NewDocument} from './new-document';
 import {Action} from './action';
 
@@ -44,7 +45,7 @@ export module Document {
 
         return (document: D): D => {
 
-            const result = copyObj(document);
+            const result = {...document}; // TODO review
             result.resource = subtractObj(fields)(document.resource) as Resource;
             return result as D;
         };
@@ -55,7 +56,7 @@ export module Document {
 
         return (document: D): D => {
 
-            const result = copyObj(document);
+            const result = {...document}; // TODO review
             result.resource.relations = subtractObj(relations)(result.resource.relations);
             return result as D;
         };
