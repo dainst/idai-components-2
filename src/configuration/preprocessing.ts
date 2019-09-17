@@ -45,6 +45,7 @@ export module Preprocessing {
                                commonFields: any, // TODO merge common fields incrementally
                                selectedTypes: any) {
 
+        // TODO validate the types and valuelists structurally (assertIsValid)
         assertMergePreconditionsMet(builtInTypes, registeredTypes1, registeredTypes2, nonExtendableTypes, Object.keys(selectedTypes));
 
         eraseAllNonSelectedTypetrees(builtInTypes, registeredTypes1, registeredTypes2, Object.keys(selectedTypes));
