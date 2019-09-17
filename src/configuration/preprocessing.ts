@@ -65,6 +65,11 @@ export module Preprocessing {
 
     function deleteHiddenFields(mergedTypes: any, selectedTypes: any) {
 
+        // TODO review, if we need, instead of deleting fields, set visible = false,
+        // in order to make validation on import work properly
+        // Also: if we delete the field, it would be as if it was a 'subtraction', where
+        // we explicitely wanted only additions
+
         keysAndValues(mergedTypes).forEach(([builtInTypeName, builtInType]) => {
 
             keysAndValues(selectedTypes).forEach(([selectedTypeName, selectedType]) => {
