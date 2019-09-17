@@ -638,11 +638,11 @@ describe('Preprocessing', () => {
         };
 
         const valuelistsConfiguration = {
-            '123': { values: ['one', 'two', 'three'] }
+            '123': { values: { 'one': {}, 'two': {}, 'three': {} }}
         };
 
         // TODO delete valuelistId afterwards
-        Preprocessing.applyValuelistsConfiguration(configuration.types, valuelistsConfiguration);
+        Preprocessing.applyValuelistsConfiguration(configuration.types, valuelistsConfiguration as any);
         expect(configuration.types['A'].fields['a1'].valuelist).toEqual(['one', 'two', 'three']);
         //console.log(JSON.stringify(configuration));
     });

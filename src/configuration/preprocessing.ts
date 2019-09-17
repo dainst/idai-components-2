@@ -278,7 +278,10 @@ export module Preprocessing {
         const processFields = compose(
             Object.values,
             filter(on('valuelistId', isDefined)),
-            forEach((fd: FieldDefinition) => (fd as any)['valuelist'] = valuelistsConfiguration[(fd as any)['valuelistId']].values));
+            forEach((fd: FieldDefinition) => (fd as any)['valuelist']
+                = Object.keys(valuelistsConfiguration[
+                    (fd as any)['valuelistId']
+                ].values)));
 
         flow(types,
             Object.values,
