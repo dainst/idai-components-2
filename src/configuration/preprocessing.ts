@@ -461,7 +461,7 @@ export module Preprocessing {
     export function addExtraTypes(builtInTypes: BuiltinTypeDefinitions,
                                   registryTypes1: RegisteredTypeDefinitions) {
 
-        const pairs = zip(Object.keys(registryTypes1))(Object.values(registryTypes1)); // TODO extract functions
+        const pairs = keysAndValues(registryTypes1);
 
         forEach(([typeName, type]: any) => {
             if (type.extends) {
@@ -504,11 +504,6 @@ export module Preprocessing {
             const group: string|undefined = builtInTypes[typeName].fields[fieldName]
                 ? builtInTypes[typeName].fields[fieldName]['group']
                 : undefined;
-
-            if (fieldName === 'period') {
-                console.log("fieldName", fieldName)
-                console.log("gruo", group)
-            }
 
             builtInTypes[typeName].fields[fieldName] = field;
 
@@ -652,24 +647,5 @@ export module Preprocessing {
 
         field.name = fieldName;
         fields.push(field);
-    }
-
-
-    function hideFields(appConfiguration: any, hiddenConfiguration: any) {
-
-        if (!appConfiguration.types) return;
-
-        Object.keys(hiddenConfiguration).forEach(typeName => {
-            const type: TypeDefinition|undefined = appConfiguration.types[typeName];
-            if (!type || !type.fields) return;
-
-            hiddenConfiguration[typeName].forEach((fieldName: string) => {
-                const field: FieldDefinition|undefined = type.fields[fieldName];
-                if (field) {
-                    field.visible = false;
-                    field.editable = false;
-                }
-            });
-        });
     }
 }
