@@ -5,9 +5,11 @@
  */
 export interface ValuelistDefinition {
 
-    extends?: string;
-    createdBy?: string;
     description: { [language: string]: string }
+    extends?: string; // TODO review
+    createdBy: string;
+    creationDate: string;
+    constraints?: any; // TODO to be defined
     values: { [key: string]: ValueDefinition }
 }
 
@@ -29,7 +31,7 @@ export module ValuelistDefinition {
 
 export interface ValueDefinition {
 
-    translation?: { [language: string]: string },
+    translation?: { [label: string]: string },
     references?: { [referenceKey: string]: string },
 }
 
