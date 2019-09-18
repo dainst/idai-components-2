@@ -8,8 +8,12 @@ import {assertFieldsAreValid} from "./util";
 export interface RegisteredTypeDefinition {
 
     color?: string,
-    parent: string,
+
+    // one of these is necessary
+    parent?: string,
     extends?: string;
+
+
     description: {[language: string]: string},
     createdBy: string,
     creationDate: string;

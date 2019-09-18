@@ -230,50 +230,50 @@ describe('Preprocessing', () => {
 
     it('mergeTypes - missing registry id', () => {
 
-        const builtInTypes = {
+        const builtInTypes: BuiltinTypeDefinitions = {
             A: {
                 fields: {
                     field1: {group: 'stem'}
                 }
             }
-        } as any;
+        };
 
-        const registeredTypes1 = {
+        const registeredTypes: RegisteredTypeDefinitions = {
             'B': {
                 parent: 'A',
                 fields: {},
                 creationDate: '', createdBy: '', description: {}
             }
-        } as any;
+        };
 
         try {
-            Preprocessing.mergeTypes(builtInTypes, registeredTypes1, {}, [], [], []);
+            Preprocessing.mergeTypes(builtInTypes, registeredTypes, {}, [], [], []);
         } catch (expected) {
             expect(expected).toEqual([ConfigurationErrors.MISSING_REGISTRY_ID, 'B'])
         }
     });
 
 
-    it('mergeTypes - merge registeredTypes1 with builtIns', () => {
+    it('mergeTypes - merge registeredTypes with builtIns', () => {
 
-        const builtInTypes = {
+        const builtInTypes: BuiltinTypeDefinitions = {
             A: {
                 fields: {
                     field1: { group: 'stem' }
                 }
             }
-        } as any;
+        };
 
-        const registeredTypes1 = {
+        const registeredTypes: RegisteredTypeDefinitions = {
             'A:1': {
                 extends: 'A',
                 fields: {
                     field1: { inputType: 'text' },
                     field2: { inputType: 'text' }
-                }, creationDate: '', createdBy: '', description: {} }
-        } as any;
+                }, creationDate: "", createdBy: "", description: {} }
+        };
 
-        const result = Preprocessing.mergeTypes(builtInTypes, registeredTypes1, {}, [], [], {'A:1': {hidden: []}});
+        const result = Preprocessing.mergeTypes(builtInTypes, registeredTypes, {}, [], [], {'A:1': {hidden: []}});
 
         expect(result['A'].fields['field1'].inputType).toBe('text');
         expect(result['A'].fields['field1'].group).toBe('stem');
@@ -281,27 +281,26 @@ describe('Preprocessing', () => {
     });
 
 
-    it('preprocessing1 - merge registeredTypes2 with builtIns', () => {
+    it('mergeTypes - merge custom types with built-in types', () => {
 
-        const builtInTypes = {
+        const builtInTypes: BuiltinTypeDefinitions = {
             A: {
                 fields: {
                     field1: { group: 'stem' }
                 }
             }
-        } as any;
+        };
 
-        const fieldsJson = {
+        const customTypes: CustomTypeDefinitions = {
             'A:1': {
                 extends: 'A',
                 fields: {
                     field1: { inputType: 'text' },
                     field2: { inputType: 'text' }
-                },
-                creationDate: '', createdBy: '', description: {} }
-        } as any;
+                }}
+        };
 
-        const result = Preprocessing.mergeTypes(builtInTypes, {}, fieldsJson, [], [], {'A:1': {hidden: []}});
+        const result = Preprocessing.mergeTypes(builtInTypes, {}, customTypes, [], [], {'A:1': {hidden: []}});
 
         expect(result['A'].fields['field1'].inputType).toBe('text');
         expect(result['A'].fields['field1'].group).toBe('stem');
