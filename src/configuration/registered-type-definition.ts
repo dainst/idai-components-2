@@ -22,6 +22,7 @@ export interface RegisteredFieldDefinition {
 
     valuelistId?: string;
     inputType?: string;
+    positionValues?: string; // TODO review
 }
 
 
@@ -41,7 +42,7 @@ export module RegisteredTypeDefinition {
             type.fields,
             Object.values,
             map(Object.keys),
-            map(remove(includedIn(['valuelistId', 'inputType']))),
+            map(remove(includedIn(['valuelistId', 'inputType', 'positionValues']))),
             forEach(
                 cond(isNot(empty),
                     (keys: string) => { throw ['type field with extra keys', keys]},
