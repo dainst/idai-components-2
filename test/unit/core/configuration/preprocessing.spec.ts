@@ -120,7 +120,7 @@ describe('Preprocessing', () => {
     });
 
 
-    it('mergeTypes - hide types', () => {
+    it('mergeTypes - hide fields', () => {
 
         const builtInTypes = {
             A: {
@@ -153,8 +153,8 @@ describe('Preprocessing', () => {
 
             });
 
-        expect(result['A']['fields']['field1']).not.toBeDefined();
-        expect(result['A']['fields']['field2']).toBeDefined();
+        expect(result['A']['fields']['field1'].visible).toBe(false);
+        expect(result['A']['fields']['field2'].visible).not.toBeDefined();
     });
 
 

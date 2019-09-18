@@ -60,7 +60,7 @@ export module Preprocessing {
         applyCustom(mergedTypes, registeredTypes2);
 
         replaceCommonFields(mergedTypes, commonFields);
-        deleteHiddenFields(mergedTypes, selectedTypes);
+        hideFields(mergedTypes, selectedTypes);
         return mergedTypes;
     }
 
@@ -71,12 +71,7 @@ export module Preprocessing {
     }
 
 
-    function deleteHiddenFields(mergedTypes: any, selectedTypes: any) {
-
-        // TODO review, if we need, instead of deleting fields, set visible = false,
-        // in order to make validation on import work properly
-        // Also: if we delete the field, it would be as if it was a 'subtraction', where
-        // we explicitely wanted only additions
+    function hideFields(mergedTypes: any, selectedTypes: any) {
 
         keysAndValues(mergedTypes).forEach(([builtInTypeName, builtInType]) => {
 
@@ -84,7 +79,9 @@ export module Preprocessing {
                 if (pureName(selectedTypeName) === pureName(builtInTypeName)) {
 
                     if ((builtInType as any)['fields']) Object.keys((builtInType as any)['fields']).forEach(fn => {
-                        if ((selectedType as any)['hidden'] && (selectedType as any)['hidden'].includes(fn)) delete (builtInType as any)['fields'][fn]
+                        if ((selectedType as any)['hidden'] && (selectedType as any)['hidden'].includes(fn)) {
+                            (builtInType as any)['fields'][fn].visible = false;
+                        }
                     })
                 }
             })
