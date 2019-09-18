@@ -1,4 +1,4 @@
-import {remove, includedIn, flow, map, forEach, cond, identity, isNot, empty} from 'tsfun';
+import {assertFieldsAreValid} from "./util";
 
 /**
  * TypeDefinition, as used in TypeRegistry
@@ -23,17 +23,11 @@ export interface RegisteredFieldDefinition {
 
     valuelistId?: string;
     inputType?: string;
-    positionValues?: string; // TODO review
+    positionValues?: string;
 }
 
 
 export type RegisteredFieldDefinitions = { [fieldName: string]: RegisteredFieldDefinition };
-
-
-export function len<A>(as: Array<A>) {
-
-    return as.length;
-}
 
 
 export module RegisteredTypeDefinition {
@@ -44,21 +38,10 @@ export module RegisteredTypeDefinition {
         if (type.creationDate === undefined) throw ['type has no creationDate', JSON.stringify(type)];
         if (type.createdBy === undefined) throw ['type has no createdBy', JSON.stringify(type)];
 
+        if (type.extends && type.parent) throw ['extends and parent cannot be set at the same time'];
+        if (!type.extends && !type.parent) throw ['either extends or parent must be set'];
+
         if (!type.fields) throw ['type has not fields', type];
         assertFieldsAreValid(type.fields);
-    }
-
-
-    function assertFieldsAreValid(fields: RegisteredFieldDefinitions) {
-
-        flow(
-            fields,
-            Object.values,
-            map(Object.keys),
-            map(remove(includedIn(['valuelistId', 'inputType', 'positionValues']))),
-            forEach(
-                cond(isNot(empty),
-                    (keys: string) => { throw ['type field with extra keys', keys]},
-                    identity))); // TODO replace with nop
     }
 }

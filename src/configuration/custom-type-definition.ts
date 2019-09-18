@@ -1,4 +1,5 @@
 import {cond, empty, flow, forEach, identity, includedIn, isNot, map, remove} from "tsfun";
+import {assertFieldsAreValid} from "./util";
 
 /**
  * TypeDefinition, as provided by users.
@@ -39,22 +40,10 @@ export module CustomTypeDefinition {
 
     export function assertIsValid(type:CustomTypeDefinition) {
         // TODO test that it only has valid fields
+        if (type.extends && type.parent) throw ['extends and parent cannot be set at the same time'];
+        if (!type.extends && !type.parent) throw ['either extends or parent must be set'];
 
         if (!type.fields) throw ['type has not fields', type];
         assertFieldsAreValid(type.fields);
-    }
-
-
-    function assertFieldsAreValid(fields: CustomFieldDefinitions) { // TODO remove duplication
-
-        flow(
-            fields,
-            Object.values,
-            map(Object.keys),
-            map(remove(includedIn(['valuelistId', 'inputType', 'positionValues']))),
-            forEach(
-                cond(isNot(empty),
-                    (keys: string) => { throw ['type field with extra keys', keys]},
-                    identity))); // TODO replace with nop
     }
 }

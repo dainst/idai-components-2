@@ -3,7 +3,7 @@ import {TypeDefinition} from './type-definition';
 import {RelationDefinition} from './relation-definition';
 import {UnorderedConfigurationDefinition} from './unordered-configuration-definition';
 import {clone, compose, empty, filter, flow, forEach, is, isDefined, isNot,
-    map, on, subtract, to, duplicates, flatten, keysAndValues} from 'tsfun';
+    map, on, subtract, to, duplicates, flatten, keysAndValues, lookup} from 'tsfun';
 import {ConfigurationErrors} from './configuration-errors';
 import {ConfigurationDefinition} from './configuration-definition';
 import {RegisteredTypeDefinition, RegisteredTypeDefinitions} from './registered-type-definition';
@@ -27,7 +27,7 @@ export module Preprocessing {
      * Merges the core, Fields.json and custom fields config
      *
      * @param builtInTypes
-     * @param registeredTypes1
+     * @param registeredTypes
      * @param customTypes
      * @param nonExtendableTypes
      * @param commonFields
@@ -40,22 +40,20 @@ export module Preprocessing {
      * @throws [DUPLICATION_IN_SELECTION, pureTypeName]
      */
     export function mergeTypes(builtInTypes: BuiltinTypeDefinitions,
-                               registeredTypes1: RegisteredTypeDefinitions,
+                               registeredTypes: RegisteredTypeDefinitions,
                                customTypes: CustomTypeDefinitions,
                                nonExtendableTypes: any,
                                commonFields: any, // TODO merge common fields incrementally
                                selectedTypes: any) {
 
-        // TODO validate the types and valuelists structurally (assertIsValid)
-        assertTypesAndValuelistsStructurallyValid(registeredTypes1, customTypes);
-        assertMergePreconditionsMet(builtInTypes, registeredTypes1, customTypes, nonExtendableTypes, Object.keys(selectedTypes));
+        assertTypesAndValuelistsStructurallyValid(registeredTypes, customTypes);
+        assertMergePreconditionsMet(builtInTypes, registeredTypes, customTypes, nonExtendableTypes, Object.keys(selectedTypes));
 
-        eraseAllNonSelectedTypetrees(builtInTypes, registeredTypes1, customTypes, Object.keys(selectedTypes));
-        // now we need to build paths through typeTrees, which we can then merge the types along
+        eraseAllNonSelectedTypetrees(builtInTypes, registeredTypes, customTypes, Object.keys(selectedTypes));
 
-        const mergedTypes: any = builtInTypes as any;
+        const mergedTypes: any = {...builtInTypes} as any;
 
-        addExtraTypes(mergedTypes, registeredTypes1);
+        mergeBuiltinAndRegisteredTypes(mergedTypes, registeredTypes);
         renameTypesInCustom(mergedTypes);
         renameTypesInCustom(customTypes);
         applyCustom(mergedTypes, customTypes);
@@ -101,7 +99,8 @@ export module Preprocessing {
         const inter = duplicates(flatten([Object.keys(builtInTypes), Object.keys(registeredTypes), Object.keys(customTypes)]));
         if (inter.length > 0) throw [ConfigurationErrors.DUPLICATE_TYPE_DEFINITION, inter[0]];
 
-        validateRegisteredTypes(builtInTypes, {...registeredTypes, ...customTypes}, nonExtendableTypes);
+        // at this point we know that we have either a parent or an extend in registeredTypes
+        validateParentsOnTypes(builtInTypes, {...registeredTypes, ...customTypes}, nonExtendableTypes);
 
         const selectionDuplicates = duplicates(selectedTypes.map(pureName));
         if (selectionDuplicates.length > 0) throw [ConfigurationErrors.DUPLICATION_IN_SELECTION, selectionDuplicates[0]];
@@ -471,10 +470,10 @@ export module Preprocessing {
     }
 
 
-    export function addExtraTypes(builtInTypes: BuiltinTypeDefinitions,
-                                  registryTypes1: RegisteredTypeDefinitions) {
+    export function mergeBuiltinAndRegisteredTypes(builtInTypes: BuiltinTypeDefinitions,
+                                                   registeredTypes: RegisteredTypeDefinitions) {
 
-        const pairs = keysAndValues(registryTypes1);
+        const pairs = keysAndValues(registeredTypes);
 
         forEach(([typeName, type]: any) => {
             if (type.extends) {
@@ -540,27 +539,24 @@ export module Preprocessing {
     }
 
 
-    function validateRegisteredTypes(builtinTypes: BuiltinTypeDefinitions,
-                                     registeredTypes: any, // TODO type correctly
-                                     nonExtendableTypes: string[]) {
 
-        const doesNotDeriveCoreType = (name: string) => !builtinTypes[pureName(name)];
+    function validateParentsOnTypes(builtinTypes: BuiltinTypeDefinitions,
+                                 types: any, // TODO type  properly
+                                 nonExtendableTypes: string[]) {
 
-        flow(registeredTypes,
+        flow(types,
             Object.keys,
             forEach((name: string) => { if (!name.includes(':')) throw [ConfigurationErrors.MISSING_REGISTRY_ID, name]}),
-            filter(doesNotDeriveCoreType),
-            map((registeredTypeName: string) => {
-
-                const parent = registeredTypes[registeredTypeName].parent;
-                if (!parent) throw [ConfigurationErrors.INVALID_CONFIG_NO_PARENT_ASSIGNED, registeredTypeName];
+            map(lookup(types)),
+            map(to('parent')),
+            filter(isDefined),
+            forEach((parent: string) => {
                 if (nonExtendableTypes.includes(parent as string)) {
                     throw [ConfigurationErrors.NOT_AN_EXTENDABLE_TYPE, parent];
                 }
                 return parent;
             }),
             forEach((parent: any) => {
-
                 const found = Object.keys(builtinTypes).find(is(parent));
                 if (!found) throw [ConfigurationErrors.INVALID_CONFIG_PARENT_NOT_DEFINED, parent];
             }));

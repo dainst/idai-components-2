@@ -4,11 +4,15 @@ import {RelationDefinition} from '../../../../src/configuration/relation-definit
 import {UnorderedConfigurationDefinition} from '../../../../src/configuration/unordered-configuration-definition';
 import {FieldDefinition} from '../../../../src/configuration/field-definition';
 import {ConfigurationErrors} from '../../../../src/configuration/configuration-errors';
-import {BuiltinTypeDefinition} from "../../../../src/configuration/builtin-type-definition";
+import {
+    BuiltinTypeDefinition,
+    BuiltinTypeDefinitions
+} from "../../../../src/configuration/builtin-type-definition";
 import {
     RegisteredTypeDefinition,
     RegisteredTypeDefinitions,
 } from "../../../../src/configuration/registered-type-definition";
+import {CustomTypeDefinitions} from "../../../../src/configuration/custom-type-definition";
 
 /**
  * @author Daniel de Oliveira
@@ -72,6 +76,47 @@ describe('Preprocessing', () => {
         expect(configuration.types[0].fields.length).toBe(0);
     });
     */
+
+
+    it('mergeTypes - validate extension - cannot set both parent and extends in custom conf', () => {
+
+        const builtInTypes: BuiltinTypeDefinitions = {};
+        const registeredTypes: RegisteredTypeDefinitions = {};
+        const customTypes: CustomTypeDefinitions = {
+            A: { extends: 'a', parent: 'b', fields: {} }
+        };
+
+        try {
+            Preprocessing.mergeTypes(
+                builtInTypes,
+                registeredTypes,
+                customTypes,
+                [], [], []);
+        } catch (expected) {
+            expect(expected[0]).toEqual('extends and parent cannot be set at the same time')
+        }
+    });
+
+
+    it('mergeTypes - validate extension - either custom or extends must be est', () => {
+
+        const builtInTypes: BuiltinTypeDefinitions = {};
+        const registeredTypes: RegisteredTypeDefinitions = {};
+        const customTypes: CustomTypeDefinitions = {
+            A: { fields: {} }
+        };
+
+        try {
+            Preprocessing.mergeTypes(
+                builtInTypes,
+                registeredTypes,
+                customTypes,
+                [], [], []);
+        } catch (expected) {
+            expect(expected[0]).toEqual('either extends or parent must be set')
+        }
+    });
+
 
     it('mergeTypes - validate type properties - missing description', () => {
 
@@ -270,12 +315,12 @@ describe('Preprocessing', () => {
             A: { fields: {} }
         } as any;
 
-        const registeredTypes1 = {
-            A: { fields: {}, creationDate: '', createdBy: '', description: {} }
+        const registeredTypes = {
+            A: { extends: 'A', fields: {}, creationDate: '', createdBy: '', description: {} }
         } as any;
 
         try {
-            Preprocessing.mergeTypes(builtInTypes, registeredTypes1, {}, [], [], []);
+            Preprocessing.mergeTypes(builtInTypes, registeredTypes, {}, [], [], []);
             fail();
         } catch (expected) {
             expect(expected).toEqual([ConfigurationErrors.DUPLICATE_TYPE_DEFINITION, 'A']);
@@ -306,7 +351,7 @@ describe('Preprocessing', () => {
             } as BuiltinTypeDefinition
         };
 
-        Preprocessing.addExtraTypes(builtInTypes, configuration.types);
+        Preprocessing.mergeBuiltinAndRegisteredTypes(builtInTypes, configuration.types);
         expect(builtInTypes['T2'].fields['bField']).toBeDefined();
     });
 
@@ -321,7 +366,7 @@ describe('Preprocessing', () => {
             } as BuiltinTypeDefinition
         };
 
-        Preprocessing.addExtraTypes(builtinTypes, configuration.types);
+        Preprocessing.mergeBuiltinAndRegisteredTypes(builtinTypes, configuration.types);
         builtinTypes = { types: builtinTypes } as any;
 
         Preprocessing.addExtraFields(builtinTypes as any, { identifier: {} as FieldDefinition });
@@ -350,7 +395,7 @@ describe('Preprocessing', () => {
             }
         } as any;
 
-        Preprocessing.addExtraTypes(builtinTypes, configuration);
+        Preprocessing.mergeBuiltinAndRegisteredTypes(builtinTypes, configuration);
 
         expect((builtinTypes['T1'] as any).abstract).toBeTruthy();
         expect((builtinTypes['T1'] as any).color).toEqual('white');
@@ -377,7 +422,7 @@ describe('Preprocessing', () => {
             }
         } as any;
 
-        Preprocessing.addExtraTypes(builtinTypes, configuration);
+        Preprocessing.mergeBuiltinAndRegisteredTypes(builtinTypes, configuration);
 
         const appConfiguration = { types: builtinTypes };
         Preprocessing.addExtraFields(appConfiguration as any, { 'identifier': {} as FieldDefinition });
@@ -405,7 +450,7 @@ describe('Preprocessing', () => {
             relations: []
         };
 
-        Preprocessing.addExtraTypes({}, configuration.types);
+        Preprocessing.mergeBuiltinAndRegisteredTypes({}, configuration.types);
         Preprocessing.addExtraFields(configuration, { 'identifier': {} as FieldDefinition });
 
         expect(configuration.types['T1'].fields['aField']).toBeDefined();
@@ -447,7 +492,7 @@ describe('Preprocessing', () => {
 
         configuration = { identifier: 'test', types: { T1: t1 }, relations: [r1]};
 
-        Preprocessing.addExtraTypes({}, configuration.types);
+        Preprocessing.mergeBuiltinAndRegisteredTypes({}, configuration.types);
         Preprocessing.addExtraFields(configuration, {});
         Preprocessing.addExtraRelations(configuration, [r2]);
 
