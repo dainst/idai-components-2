@@ -3,11 +3,12 @@ import {TypeDefinition} from './type-definition';
 import {RelationDefinition} from './relation-definition';
 import {UnorderedConfigurationDefinition} from './unordered-configuration-definition';
 import {clone, compose, empty, filter, flow, forEach, is, isDefined, isNot,
-    map, on, subtract, to, duplicates, zip, flatten, keysAndValues} from 'tsfun';
+    map, on, subtract, to, duplicates, flatten, keysAndValues} from 'tsfun';
 import {ConfigurationErrors} from './configuration-errors';
 import {ConfigurationDefinition} from './configuration-definition';
 import {RegisteredTypeDefinition, RegisteredTypeDefinitions} from './registered-type-definition';
 import {BuiltinTypeDefinitions} from "./builtin-type-definition";
+import {CustomTypeDefinition, CustomTypeDefinitions} from "./custom-type-definition";
 
 
 export function pureName(s: string) {
@@ -27,7 +28,7 @@ export module Preprocessing {
      *
      * @param builtInTypes
      * @param registeredTypes1
-     * @param registeredTypes2
+     * @param customTypes
      * @param nonExtendableTypes
      * @param commonFields
      * @param selectedTypes
@@ -40,24 +41,24 @@ export module Preprocessing {
      */
     export function mergeTypes(builtInTypes: BuiltinTypeDefinitions,
                                registeredTypes1: RegisteredTypeDefinitions,
-                               registeredTypes2: RegisteredTypeDefinitions,
+                               customTypes: CustomTypeDefinitions,
                                nonExtendableTypes: any,
                                commonFields: any, // TODO merge common fields incrementally
                                selectedTypes: any) {
 
         // TODO validate the types and valuelists structurally (assertIsValid)
-        assertTypesAndValuelistsStructurallyValid({...registeredTypes1, ...registeredTypes2});
-        assertMergePreconditionsMet(builtInTypes, registeredTypes1, registeredTypes2, nonExtendableTypes, Object.keys(selectedTypes));
+        assertTypesAndValuelistsStructurallyValid(registeredTypes1, customTypes);
+        assertMergePreconditionsMet(builtInTypes, registeredTypes1, customTypes, nonExtendableTypes, Object.keys(selectedTypes));
 
-        eraseAllNonSelectedTypetrees(builtInTypes, registeredTypes1, registeredTypes2, Object.keys(selectedTypes));
+        eraseAllNonSelectedTypetrees(builtInTypes, registeredTypes1, customTypes, Object.keys(selectedTypes));
         // now we need to build paths through typeTrees, which we can then merge the types along
 
         const mergedTypes: any = builtInTypes as any;
 
         addExtraTypes(mergedTypes, registeredTypes1);
         renameTypesInCustom(mergedTypes);
-        renameTypesInCustom(registeredTypes2);
-        applyCustom(mergedTypes, registeredTypes2);
+        renameTypesInCustom(customTypes);
+        applyCustom(mergedTypes, customTypes);
 
         replaceCommonFields(mergedTypes, commonFields);
         hideFields(mergedTypes, selectedTypes);
@@ -65,9 +66,11 @@ export module Preprocessing {
     }
 
 
-    function assertTypesAndValuelistsStructurallyValid(types: RegisteredTypeDefinitions) {
+    function assertTypesAndValuelistsStructurallyValid(
+        registeredTypes: RegisteredTypeDefinitions, customTypes: CustomTypeDefinitions) {
 
-        Object.values(types).forEach(RegisteredTypeDefinition.assertIsValid);
+        Object.values(registeredTypes).forEach(RegisteredTypeDefinition.assertIsValid);
+        Object.values(customTypes).forEach(CustomTypeDefinition.assertIsValid);
     }
 
 
@@ -90,15 +93,15 @@ export module Preprocessing {
 
 
     function assertMergePreconditionsMet(builtInTypes: BuiltinTypeDefinitions,
-                                         registeredTypes1: RegisteredTypeDefinitions,
-                                         registeredTypes2: RegisteredTypeDefinitions,
+                                         registeredTypes: RegisteredTypeDefinitions,
+                                         customTypes: CustomTypeDefinitions,
                                          nonExtendableTypes: any,
                                          selectedTypes: string[]) {
 
-        const inter = duplicates(flatten([Object.keys(builtInTypes), Object.keys(registeredTypes1), Object.keys(registeredTypes2)]));
+        const inter = duplicates(flatten([Object.keys(builtInTypes), Object.keys(registeredTypes), Object.keys(customTypes)]));
         if (inter.length > 0) throw [ConfigurationErrors.DUPLICATE_TYPE_DEFINITION, inter[0]];
 
-        validateRegisteredTypes(builtInTypes, {...registeredTypes1,...registeredTypes2}, nonExtendableTypes);
+        validateRegisteredTypes(builtInTypes, {...registeredTypes, ...customTypes}, nonExtendableTypes);
 
         const selectionDuplicates = duplicates(selectedTypes.map(pureName));
         if (selectionDuplicates.length > 0) throw [ConfigurationErrors.DUPLICATION_IN_SELECTION, selectionDuplicates[0]];
@@ -191,7 +194,7 @@ export module Preprocessing {
 
 
     export function applyCustom(builtinType: BuiltinTypeDefinitions,
-                                registryType: RegisteredTypeDefinitions) {
+                                registryType: CustomTypeDefinitions) {
 
         Object.keys(registryType).forEach(typeName_ => {
 
@@ -538,7 +541,7 @@ export module Preprocessing {
 
 
     function validateRegisteredTypes(builtinTypes: BuiltinTypeDefinitions,
-                                     registeredTypes: RegisteredTypeDefinitions,
+                                     registeredTypes: any, // TODO type correctly
                                      nonExtendableTypes: string[]) {
 
         const doesNotDeriveCoreType = (name: string) => !builtinTypes[pureName(name)];
