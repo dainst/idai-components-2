@@ -9,6 +9,7 @@ import {ConfigurationDefinition} from './configuration-definition';
 import {RegisteredTypeDefinition, RegisteredTypeDefinitions} from './registered-type-definition';
 import {BuiltinTypeDefinitions} from "./builtin-type-definition";
 import {CustomTypeDefinition, CustomTypeDefinitions} from "./custom-type-definition";
+import {jsonClone} from "tsfun/src/objectstruct";
 
 
 export function pureName(s: string) {
@@ -49,14 +50,16 @@ export module Preprocessing {
         assertTypesAndValuelistsStructurallyValid(registeredTypes, customTypes);
         assertMergePreconditionsMet(builtInTypes, registeredTypes, customTypes, nonExtendableTypes, Object.keys(selectedTypes));
 
-        eraseAllNonSelectedTypetrees(builtInTypes, registeredTypes, customTypes, Object.keys(selectedTypes));
 
         const mergedTypes: any = {...builtInTypes} as any;
 
-        mergeBuiltinAndRegisteredTypes(mergedTypes, registeredTypes);
+        mergeTheTypes(mergedTypes, registeredTypes);
+        mergeTheTypes(mergedTypes, customTypes as any);
+        eraseUnusedTypes(mergedTypes, Object.keys(selectedTypes));
+
         renameTypesInCustom(mergedTypes);
-        renameTypesInCustom(customTypes);
-        applyCustom(mergedTypes, customTypes);
+        // renameTypesInCustom(customTypes);
+        // applyCustom(mergedTypes, customTypes);
 
         replaceCommonFields(mergedTypes, commonFields);
         hideFields(mergedTypes, selectedTypes);
@@ -107,23 +110,11 @@ export module Preprocessing {
     }
 
 
-    // TODO refactor
-    function eraseAllNonSelectedTypetrees(builtInTypes: any,
-                                          registeredTypes1: any,
-                                          registeredTypes2: any,
-                                          selectedTypes: string[]) {
+    function eraseUnusedTypes(builtInTypes: any,
+                              selectedTypes: string[]) {
 
-        const pureSelectedTypes = selectedTypes.map(pureName);
-
-        const allTypes = {...builtInTypes, ...registeredTypes1, ...registeredTypes2};
-        Object.keys(allTypes).forEach(typeName => {
-
-            const pureTypeName = pureName(typeName);
-            if (!pureSelectedTypes.includes(pureTypeName)) {
-                delete builtInTypes[typeName];
-                delete registeredTypes1[typeName];
-                delete registeredTypes2[typeName];
-            }
+        Object.keys(builtInTypes).forEach(typeName => {
+            if (!selectedTypes.includes(typeName)) delete builtInTypes[typeName];
         });
     }
 
@@ -193,19 +184,19 @@ export module Preprocessing {
 
 
     export function applyCustom(builtinType: BuiltinTypeDefinitions,
-                                registryType: CustomTypeDefinitions) {
+                                customType: CustomTypeDefinitions) {
 
-        Object.keys(registryType).forEach(typeName_ => {
-
-            const typeName = pureName(typeName_);
-
-            if (builtinType[typeName]) {
-                addCustomFields(builtinType, typeName, registryType[typeName].fields);
-                addCustomCommons(builtinType, typeName, (registryType[typeName] as any)['commons'])
-            } else {
-                builtinType[typeName] = registryType[typeName];
-            }
-        });
+        // Object.keys(customType).forEach(customTypeName => {
+        //
+        //     const typeName = pureName(typeName_);
+            //
+            // if (builtinType[customTypeName]) {
+            //     addCustomFields(builtinType, typeName, customType[typeName].fields);
+            //     addCustomCommons(builtinType, typeName, (customType[typeName] as any)['commons'])
+            // } else {
+            //     builtinType[typeName] = customType[typeName];
+            // }
+        // });
     }
 
 
@@ -470,15 +461,20 @@ export module Preprocessing {
     }
 
 
-    export function mergeBuiltinAndRegisteredTypes(builtInTypes: BuiltinTypeDefinitions,
-                                                   registeredTypes: RegisteredTypeDefinitions) {
+    export function mergeTheTypes(builtInTypes: BuiltinTypeDefinitions,
+                                  registeredTypes: RegisteredTypeDefinitions) {
 
         const pairs = keysAndValues(registeredTypes);
 
         forEach(([typeName, type]: any) => {
             if (type.extends) {
-                merge(builtInTypes[type.extends], type);
-                merge(builtInTypes[type.extends].fields, type.fields);
+
+                const newMergedType: any = jsonClone(builtInTypes[type.extends]);
+
+                merge(newMergedType, type);
+                merge(newMergedType.fields, type.fields);
+
+                builtInTypes[typeName] = newMergedType;
             } else {
                 builtInTypes[typeName] = type;
             }

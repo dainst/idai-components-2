@@ -351,7 +351,7 @@ describe('Preprocessing', () => {
             } as BuiltinTypeDefinition
         };
 
-        Preprocessing.mergeBuiltinAndRegisteredTypes(builtInTypes, configuration.types);
+        Preprocessing.mergeTheTypes(builtInTypes, configuration.types);
         expect(builtInTypes['T2'].fields['bField']).toBeDefined();
     });
 
@@ -366,7 +366,7 @@ describe('Preprocessing', () => {
             } as BuiltinTypeDefinition
         };
 
-        Preprocessing.mergeBuiltinAndRegisteredTypes(builtinTypes, configuration.types);
+        Preprocessing.mergeTheTypes(builtinTypes, configuration.types);
         builtinTypes = { types: builtinTypes } as any;
 
         Preprocessing.addExtraFields(builtinTypes as any, { identifier: {} as FieldDefinition });
@@ -395,12 +395,12 @@ describe('Preprocessing', () => {
             }
         } as any;
 
-        Preprocessing.mergeBuiltinAndRegisteredTypes(builtinTypes, configuration);
+        Preprocessing.mergeTheTypes(builtinTypes, configuration);
 
-        expect((builtinTypes['T1'] as any).abstract).toBeTruthy();
-        expect((builtinTypes['T1'] as any).color).toEqual('white');
-        expect((builtinTypes['T1'] as any).fields['aField']).toBeDefined();
-        expect((builtinTypes['T1'] as any).fields['bField']).toBeDefined();
+        expect((builtinTypes['T1-1'] as any).abstract).toBeTruthy();
+        expect((builtinTypes['T1-1'] as any).color).toEqual('white');
+        expect((builtinTypes['T1-1'] as any).fields['aField']).toBeDefined();
+        expect((builtinTypes['T1-1'] as any).fields['bField']).toBeDefined();
     });
 
 
@@ -422,14 +422,14 @@ describe('Preprocessing', () => {
             }
         } as any;
 
-        Preprocessing.mergeBuiltinAndRegisteredTypes(builtinTypes, configuration);
+        Preprocessing.mergeTheTypes(builtinTypes, configuration);
 
         const appConfiguration = { types: builtinTypes };
         Preprocessing.addExtraFields(appConfiguration as any, { 'identifier': {} as FieldDefinition });
 
-        expect(appConfiguration.types['T1'].fields['aField']).toBeDefined();
-        expect(appConfiguration.types['T1'].fields['bField']).toBeDefined();
-        expect(appConfiguration.types['T1'].fields['identifier']).toBeDefined();
+        expect(appConfiguration.types['T1-1'].fields['aField']).toBeDefined();
+        expect(appConfiguration.types['T1-1'].fields['bField']).toBeDefined();
+        expect(appConfiguration.types['T1-1'].fields['identifier']).toBeDefined();
     });
 
 
@@ -450,7 +450,7 @@ describe('Preprocessing', () => {
             relations: []
         };
 
-        Preprocessing.mergeBuiltinAndRegisteredTypes({}, configuration.types);
+        Preprocessing.mergeTheTypes({}, configuration.types);
         Preprocessing.addExtraFields(configuration, { 'identifier': {} as FieldDefinition });
 
         expect(configuration.types['T1'].fields['aField']).toBeDefined();
@@ -492,7 +492,7 @@ describe('Preprocessing', () => {
 
         configuration = { identifier: 'test', types: { T1: t1 }, relations: [r1]};
 
-        Preprocessing.mergeBuiltinAndRegisteredTypes({}, configuration.types);
+        Preprocessing.mergeTheTypes({}, configuration.types);
         Preprocessing.addExtraFields(configuration, {});
         Preprocessing.addExtraRelations(configuration, [r2]);
 
