@@ -26,6 +26,7 @@ describe('Preprocessing', () => {
             parent: 'x',
             description: { 'de': '' },
             createdBy: '',
+            creationDate: '',
             color: 'white',
             fields: {
                 'aField': {}
@@ -72,6 +73,27 @@ describe('Preprocessing', () => {
     });
     */
 
+    it('mergeTypes - validate type properties - missing description', () => {
+
+        const builtInTypes = {} as any;
+
+        const registeredTypes1 = {
+            'B:0': {
+                extends: 'B',
+                fields: {}
+            }
+        } as any;
+
+        try {
+            Preprocessing.mergeTypes(builtInTypes,
+                registeredTypes1,
+                {}, [], [], ['B', 'B:0']);
+        } catch (expected) {
+            expect(expected[0]).toEqual('type has no description')
+        }
+    });
+
+
     it('mergeTypes - error type contains deprecated valuelist field', () => {
 
         const builtInTypes = {} as any;
@@ -81,7 +103,8 @@ describe('Preprocessing', () => {
                 extends: 'B',
                 fields: {
                     aField: { valuelist: [] }
-                }
+                },
+                creationDate: '', createdBy: '', description: {}
             }
         } as any;
 
@@ -108,7 +131,8 @@ describe('Preprocessing', () => {
         const registeredTypes1 = {
             'B:0': {
                 extends: 'B',
-                fields: {}
+                fields: {},
+                creationDate: '', createdBy: '', description: {}
             }
         } as any;
 
@@ -135,7 +159,8 @@ describe('Preprocessing', () => {
                 extends: 'A',
                 fields: {
                     field2: {}
-                }
+                },
+                creationDate: '', createdBy: '', description: {}
             }
         } as any;
 
@@ -171,7 +196,8 @@ describe('Preprocessing', () => {
         const registeredTypes1 = {
             'B': {
                 parent: 'A',
-                fields: {}
+                fields: {},
+                creationDate: '', createdBy: '', description: {}
             }
         } as any;
 
@@ -199,7 +225,7 @@ describe('Preprocessing', () => {
                 fields: {
                     field1: { inputType: 'text' },
                     field2: { inputType: 'text' }
-                }}
+                }, creationDate: '', createdBy: '', description: {} }
         } as any;
 
         const result = Preprocessing.mergeTypes(builtInTypes, registeredTypes1, {}, [], [], {'A:1': {hidden: []}});
@@ -226,7 +252,8 @@ describe('Preprocessing', () => {
                 fields: {
                     field1: { inputType: 'text' },
                     field2: { inputType: 'text' }
-                }}
+                },
+                creationDate: '', createdBy: '', description: {} }
         } as any;
 
         const result = Preprocessing.mergeTypes(builtInTypes, {}, fieldsJson, [], [], {'A:1': {hidden: []}});
@@ -244,7 +271,7 @@ describe('Preprocessing', () => {
         } as any;
 
         const registeredTypes1 = {
-            A: { fields: {} }
+            A: { fields: {}, creationDate: '', createdBy: '', description: {} }
         } as any;
 
         try {
