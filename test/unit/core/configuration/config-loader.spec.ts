@@ -49,11 +49,11 @@ describe('ConfigLoader', () => {
     it('mix in common fields', async done => {
 
         Object.assign(registeredTypes1, {
-            'B:0': { parent: 'A', commons: ['processor'] },
+            'B:0': { parent: 'A', commons: ['processor'], fields: {}},
         });
 
         applyConfig(
-            undefined,
+            {},
             {
                 types: {
                     B: { label: 'B_', fields: { processor: { label: 'Bearbeiter/Bearbeiterin', description: "abc" }} },
@@ -89,7 +89,7 @@ describe('ConfigLoader', () => {
     it('translate common fields', async done => {
 
         Object.assign(registeredTypes1, {
-            'B:0': { parent: 'A', commons: ['processor'] },
+            'B:0': { parent: 'A', commons: ['processor'], fields: {} },
         });
 
         applyConfig(
@@ -132,10 +132,10 @@ describe('ConfigLoader', () => {
     it('mix existing externally configured with internal inherits relation', async done => { // TODO check if it can be removed since external defintions of relations are now forbidden
 
         Object.assign(registeredTypes1, {
-            'A1:0': { parent: 'A' },
-            'A2:0': { parent: 'A' },
-            'B1:0': { parent: 'B' },
-            'B2:0': { parent: 'B' }
+            'A1:0': { parent: 'A', fields: {} },
+            'A2:0': { parent: 'A', fields: {} },
+            'B1:0': { parent: 'B', fields: {} },
+            'B2:0': { parent: 'B', fields: {} }
         });
 
         applyConfig(
@@ -188,7 +188,7 @@ describe('ConfigLoader', () => {
 
     it('preprocess - convert sameOperation to sameMainTypeResource', async done => {
 
-        Object.assign(registeredTypes1, { 'A:0': { parent: 'T' }, 'B:0': { parent: 'T' }});
+        Object.assign(registeredTypes1, { 'A:0': { parent: 'T', fields: {} }, 'B:0': { parent: 'T', fields: {} }});
 
         applyConfig(
             undefined,
@@ -219,9 +219,9 @@ describe('ConfigLoader', () => {
     it('preprocess - apply language confs', async done => {
 
         Object.assign(registeredTypes1, {
-            'A:0': { parent: 'Parent' },
-            'B:0': { parent: 'Parent' },
-            'C:0': { parent: 'Parent' }
+            'A:0': { parent: 'Parent', fields: {} },
+            'B:0': { parent: 'Parent', fields: {} },
+            'C:0': { parent: 'Parent', fields: {} }
         });
 
         applyConfig({}, {

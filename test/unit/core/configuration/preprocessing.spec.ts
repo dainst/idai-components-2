@@ -72,6 +72,29 @@ describe('Preprocessing', () => {
     });
     */
 
+    it('mergeTypes - error type contains deprecated valuelist field', () => {
+
+        const builtInTypes = {} as any;
+
+        const registeredTypes1 = {
+            'B:0': {
+                extends: 'B',
+                fields: {
+                    aField: { valuelist: [] }
+                }
+            }
+        } as any;
+
+        try {
+            Preprocessing.mergeTypes(builtInTypes,
+                registeredTypes1,
+                {}, [], [], ['B', 'B:0']);
+        } catch (expected) {
+            expect(expected).toEqual(['type field with extra keys', ['valuelist']])
+        }
+    });
+
+
     it('mergeTypes - duplication in selection', () => {
 
         const builtInTypes = {
@@ -217,11 +240,11 @@ describe('Preprocessing', () => {
     it('preprocessing1 - fail - should not override already defined type', () => {
 
         const builtInTypes = {
-            A: {}
+            A: { fields: {} }
         } as any;
 
         const registeredTypes1 = {
-            A: {}
+            A: { fields: {} }
         } as any;
 
         try {

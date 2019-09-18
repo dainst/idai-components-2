@@ -6,7 +6,7 @@ import {clone, compose, empty, filter, flow, forEach, is, isDefined, isNot,
     map, on, subtract, to, duplicates, zip, flatten, keysAndValues} from 'tsfun';
 import {ConfigurationErrors} from './configuration-errors';
 import {ConfigurationDefinition} from './configuration-definition';
-import {RegisteredTypeDefinitions} from "./registered-type-definition";
+import {RegisteredTypeDefinition, RegisteredTypeDefinitions} from './registered-type-definition';
 import {BuiltinTypeDefinitions} from "./builtin-type-definition";
 
 
@@ -46,6 +46,7 @@ export module Preprocessing {
                                selectedTypes: any) {
 
         // TODO validate the types and valuelists structurally (assertIsValid)
+        assertTypesAndValuelistsStructurallyValid({...registeredTypes1, ...registeredTypes2});
         assertMergePreconditionsMet(builtInTypes, registeredTypes1, registeredTypes2, nonExtendableTypes, Object.keys(selectedTypes));
 
         eraseAllNonSelectedTypetrees(builtInTypes, registeredTypes1, registeredTypes2, Object.keys(selectedTypes));
@@ -61,6 +62,12 @@ export module Preprocessing {
         replaceCommonFields(mergedTypes, commonFields);
         deleteHiddenFields(mergedTypes, selectedTypes);
         return mergedTypes;
+    }
+
+
+    function assertTypesAndValuelistsStructurallyValid(types: RegisteredTypeDefinitions) {
+
+        Object.values(types).forEach(RegisteredTypeDefinition.assertIsValid);
     }
 
 
