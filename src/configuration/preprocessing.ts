@@ -375,7 +375,7 @@ export module Preprocessing {
 
             configuration.relations
                 .filter(on('name')(extraRelation))
-                .forEach(relation => {
+                .forEach(relation => { // TODO use update function
                     relation.domain = subtract(extraRelation.domain)(relation.domain)
                 });
             configuration.relations = configuration.relations.filter(isNot(on('domain', empty)));
