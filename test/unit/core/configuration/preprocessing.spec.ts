@@ -3,16 +3,11 @@ import {TypeDefinition} from '../../../../src/configuration/type-definition'
 import {RelationDefinition} from '../../../../src/configuration/relation-definition'
 import {UnorderedConfigurationDefinition} from '../../../../src/configuration/unordered-configuration-definition';
 import {FieldDefinition} from '../../../../src/configuration/field-definition';
-import {ConfigurationErrors} from '../../../../src/configuration/configuration-errors';
-import {
-    BuiltinTypeDefinition,
-    BuiltinTypeDefinitions
-} from "../../../../src/configuration/builtin-type-definition";
+import {BuiltinTypeDefinition} from "../../../../src/configuration/builtin-type-definition";
 import {
     LibraryTypeDefinition,
     LibraryTypeDefinitions,
 } from "../../../../src/configuration/library-type-definition";
-import {CustomTypeDefinitions} from "../../../../src/configuration/custom-type-definition";
 
 /**
  * @author Daniel de Oliveira

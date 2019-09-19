@@ -4,7 +4,7 @@ import {
 } from "../../../../src/configuration/library-type-definition";
 import {BuiltinTypeDefinitions} from "../../../../src/configuration/builtin-type-definition";
 import {CustomTypeDefinitions} from "../../../../src/configuration/custom-type-definition";
-import {mergeTypes} from "../../../../src/configuration/merge-processor";
+import {mergeTypes} from "../../../../src/configuration/merge-types";
 import {ConfigurationErrors} from "../../../../src/configuration/configuration-errors";
 
 describe('mergeTypes', () => {
@@ -32,46 +32,6 @@ describe('mergeTypes', () => {
                 'T1': t1
             } as LibraryTypeDefinitions
         } as any;
-    });
-
-
-    xit('mergeTypes - validate extension - cannot set both parent and extends in custom conf', () => {
-
-        const builtInTypes: BuiltinTypeDefinitions = {};
-        const registeredTypes: LibraryTypeDefinitions = {};
-        const customTypes: CustomTypeDefinitions = {
-            A: { extends: 'a', parent: 'b', fields: {} }
-        };
-
-        try {
-            mergeTypes(
-                builtInTypes,
-                registeredTypes,
-                customTypes,
-                [], [], []);
-        } catch (expected) {
-            expect(expected[0]).toEqual('extends and parent cannot be set at the same time')
-        }
-    });
-
-
-    xit('mergeTypes - validate extension - either custom or extends must be est', () => {
-
-        const builtInTypes: BuiltinTypeDefinitions = {};
-        const registeredTypes: LibraryTypeDefinitions = {};
-        const customTypes: CustomTypeDefinitions = {
-            A: { fields: {} }
-        };
-
-        try {
-            mergeTypes(
-                builtInTypes,
-                registeredTypes,
-                customTypes,
-                [], [], []);
-        } catch (expected) {
-            expect(expected[0]).toEqual('either extends or parent must be set')
-        }
     });
 
 

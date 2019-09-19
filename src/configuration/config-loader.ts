@@ -10,7 +10,7 @@ import {PrePreprocessConfigurationValidator} from './pre-preprocess-configuratio
 import {ConfigurationDefinition} from './configuration-definition';
 import {BuiltinTypeDefinitions} from "./builtin-type-definition";
 import {LibraryTypeDefinitions} from "./library-type-definition";
-import {mergeTypes} from "./merge-processor";
+import {mergeTypes} from "./merge-types";
 
 const nonExtendableTypes: string[] = ['Operation', 'Place'];
 
