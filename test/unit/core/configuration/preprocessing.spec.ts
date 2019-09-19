@@ -142,22 +142,24 @@ describe('Preprocessing', () => {
 
     it('mergeTypes - error type contains deprecated valuelist field', () => {
 
-        const builtInTypes = {} as any;
+        const builtInTypes: BuiltinTypeDefinitions = {
+            "A": { fields: {} }
+        };
 
-        const registeredTypes1 = {
+        const libraryTypes: LibraryTypeDefinitions = {
             'B:0': {
-                extends: 'B',
+                parent: 'A',
                 fields: {
                     aField: { valuelist: [] }
-                },
+                } as any,
                 creationDate: '', createdBy: '', description: {}
-            }
-        } as any;
+            },
+        };
 
         try {
             Preprocessing.mergeTypes(builtInTypes,
-                registeredTypes1,
-                {}, [], [], ['B', 'B:0']);
+                libraryTypes,
+                {}, [], [], ['A', 'B:0']);
         } catch (expected) {
             expect(expected).toEqual(['type field with extra keys', ['valuelist']])
         }

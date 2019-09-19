@@ -48,7 +48,7 @@ export module Preprocessing {
                                commonFields: any, // TODO merge common fields incrementally
                                selectedTypes: any) {
 
-        assertTypesAndValuelistsStructurallyValid(registeredTypes, customTypes);
+        assertTypesAndValuelistsStructurallyValid(Object.keys(builtInTypes), registeredTypes, customTypes);
         assertMergePreconditionsMet(builtInTypes, registeredTypes, customTypes, nonExtendableTypes, Object.keys(selectedTypes));
 
         const mergedTypes = mergeBuiltInWithLibraryTypes(builtInTypes, registeredTypes);
@@ -64,9 +64,13 @@ export module Preprocessing {
 
 
     function assertTypesAndValuelistsStructurallyValid(
-        registeredTypes: LibraryTypeDefinitions, customTypes: CustomTypeDefinitions) {
+        builtInTypes: string[],
+        registeredTypes: LibraryTypeDefinitions,
+        customTypes: CustomTypeDefinitions) {
 
-        Object.values(registeredTypes).forEach(LibraryTypeDefinition.assertIsValid);
+        const assertLibraryTypeValid = LibraryTypeDefinition.makeAssertIsValid(builtInTypes);
+
+        keysAndValues(registeredTypes).forEach(assertLibraryTypeValid);
         Object.values(customTypes).forEach(CustomTypeDefinition.assertIsValid);
     }
 

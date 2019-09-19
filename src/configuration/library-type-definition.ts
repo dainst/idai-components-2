@@ -1,4 +1,5 @@
 import {assertFieldsAreValid} from "./util";
+import {BuiltinTypeDefinitions} from "./builtin-type-definition";
 
 /**
  * TypeDefinition, as used in TypeRegistry
@@ -8,12 +9,8 @@ import {assertFieldsAreValid} from "./util";
 export interface LibraryTypeDefinition {
 
     color?: string,
-
-
     parent?: string,
     typeFamily?: string;
-
-
     description: {[language: string]: string},
     createdBy: string,
     creationDate: string;
@@ -35,17 +32,23 @@ export type LibraryFieldDefinitions = { [fieldName: string]: LibraryFieldDefinit
 
 
 export module LibraryTypeDefinition {
-    
-    export function assertIsValid(type: LibraryTypeDefinition) {
 
-        if (!type.description) throw ['type has no description', JSON.stringify(type)];
-        if (type.creationDate === undefined) throw ['type has no creationDate', JSON.stringify(type)];
-        if (type.createdBy === undefined) throw ['type has no createdBy', JSON.stringify(type)];
+    export function makeAssertIsValid(builtinTypes: string[]) {
 
-        //if (type.extends && type.parent) throw ['extends and parent cannot be set at the same time'];
-        //if (!type.extends && !type.parent) throw ['either extends or parent must be set'];
+        return function assertIsValid([typeName, type]: [string, LibraryTypeDefinition]) {
 
-        if (!type.fields) throw ['type has not fields', type];
-        assertFieldsAreValid(type.fields);
+            if (!type.description) throw ['type has no description', typeName];
+            if (type.creationDate === undefined) throw ['type has no creationDate', typeName];
+            if (type.createdBy === undefined) throw ['type has no createdBy', typeName];
+
+            if (!type.typeFamily) {
+                if (!type.parent) throw ['parent not set']; // TODO test and make proper error, make uuid part of err msg
+            } else {
+                if (!builtinTypes.includes(type.typeFamily) && !type.parent) throw ['parent not set', typeName];
+            }
+
+            if (!type.fields) throw ['type has not fields', typeName];
+            assertFieldsAreValid(type.fields);
+        }
     }
 }
