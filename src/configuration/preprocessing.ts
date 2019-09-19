@@ -56,6 +56,7 @@ export module Preprocessing {
         mergeTheTypes1(mergedTypes, registeredTypes);
         mergeTheTypes(mergedTypes, customTypes as any);
         eraseUnusedTypes(mergedTypes, Object.keys(selectedTypes));
+        // console.log("mergedTypes", mergedTypes);
 
         renameTypesInCustom(mergedTypes);
 
@@ -98,7 +99,7 @@ export module Preprocessing {
                                          selectedTypes: string[]) {
 
         const inter = duplicates(flatten([Object.keys(builtInTypes), Object.keys(registeredTypes), Object.keys(customTypes)]));
-        if (inter.length > 0) throw [ConfigurationErrors.DUPLICATE_TYPE_DEFINITION, inter[0]];
+        // if (inter.length > 0) throw [ConfigurationErrors.DUPLICATE_TYPE_DEFINITION, inter[0]];
 
         // at this point we know that we have either a parent or an extend in registeredTypes
         validateParentsOnTypes(builtInTypes, {...registeredTypes, ...customTypes}, nonExtendableTypes);
@@ -443,13 +444,12 @@ export module Preprocessing {
 
 
     export function mergeTheTypes1(builtInTypes: BuiltinTypeDefinitions,
-                                   registeredTypes: LibraryTypeDefinitions) {
+                                   libraryTypes: LibraryTypeDefinitions) {
 
-        const pairs = keysAndValues(registeredTypes);
+        const pairs = keysAndValues(libraryTypes);
 
         forEach(([typeName, type]: any) => {
             if (builtInTypes[type.typeFamily]) {
-
                 const newMergedType: any = jsonClone(builtInTypes[type.typeFamily]);
 
                 merge(newMergedType, type);
@@ -463,22 +463,22 @@ export module Preprocessing {
     }
 
 
-    export function mergeTheTypes(builtInTypes: BuiltinTypeDefinitions,
-                                  registeredTypes: LibraryTypeDefinitions) {
+    export function mergeTheTypes(typeDefs: any,
+                                  customTypes: CustomTypeDefinitions) {
 
-        const pairs = keysAndValues(registeredTypes);
+        const pairs = keysAndValues(customTypes);
 
         forEach(([typeName, type]: any) => {
-            if (type.extends) {
+            if (typeDefs[typeName]) {
 
-                const newMergedType: any = jsonClone(builtInTypes[type.extends]);
-
+                const newMergedType: any = jsonClone(typeDefs[typeName]);
                 merge(newMergedType, type);
                 merge(newMergedType.fields, type.fields);
 
-                builtInTypes[typeName] = newMergedType;
+                typeDefs[typeName] = newMergedType;
             } else {
-                builtInTypes[typeName] = type;
+                // TODO here we can validate that it must have a parent field
+                typeDefs[typeName] = type;
             }
         })(pairs);
     }
@@ -507,7 +507,7 @@ export module Preprocessing {
 
         flow(types,
             Object.keys,
-            forEach((name: string) => { if (!name.includes(':')) throw [ConfigurationErrors.MISSING_REGISTRY_ID, name]}),
+            // forEach((name: string) => { if (!name.includes(':')) throw [ConfigurationErrors.MISSING_REGISTRY_ID, name]}),
             map(lookup(types)),
             map(to('parent')),
             filter(isDefined),

@@ -11,7 +11,7 @@ import {CustomTypeDefinitions} from "../../../../src/configuration/custom-type-d
  */
 describe('ConfigLoader', () => {
 
-    let registeredTypes = {} as ConfigurationDefinition;
+    let libraryTypes = {} as ConfigurationDefinition;
     let configLoader: ConfigLoader;
     let configReader;
 
@@ -24,7 +24,7 @@ describe('ConfigLoader', () => {
         selectionConfiguration = {}) {
 
         configReader.read.and.returnValues(
-            Promise.resolve(registeredTypes),
+            Promise.resolve(libraryTypes),
             Promise.resolve(customFieldsConfiguration),
             Promise.resolve(languageConfiguration),
             Promise.resolve(customLanguageConfiguration),
@@ -38,7 +38,7 @@ describe('ConfigLoader', () => {
 
     beforeEach(() => {
 
-        registeredTypes = {} as ConfigurationDefinition;
+        libraryTypes = {} as ConfigurationDefinition;
 
         configReader = jasmine.createSpyObj('confRead', ['read']);
         applyConfig();
@@ -49,7 +49,7 @@ describe('ConfigLoader', () => {
 
     it('mix in common fields', async done => {
 
-        Object.assign(registeredTypes, {
+        Object.assign(libraryTypes, {
             'B:0': { parent: 'A', commons: ['processor'], fields: {}, creationDate: '', createdBy: '', description: {} },
         });
 
@@ -89,7 +89,7 @@ describe('ConfigLoader', () => {
 
     it('translate common fields', async done => {
 
-        Object.assign(registeredTypes, {
+        Object.assign(libraryTypes, {
             'B:0': { parent: 'A', commons: ['processor'], fields: {}, creationDate: '', createdBy: '', description: {}  },
         });
 
@@ -132,7 +132,7 @@ describe('ConfigLoader', () => {
 
     it('mix existing externally configured with internal inherits relation', async done => { // TODO check if it can be removed since external defintions of relations are now forbidden
 
-        Object.assign(registeredTypes, {
+        Object.assign(libraryTypes, {
             'A1:0': { parent: 'A', fields: {}, creationDate: '', createdBy: '', description: {} },
             'A2:0': { parent: 'A', fields: {}, creationDate: '', createdBy: '', description: {} },
             'B1:0': { parent: 'B', fields: {}, creationDate: '', createdBy: '', description: {} },
@@ -189,7 +189,7 @@ describe('ConfigLoader', () => {
 
     it('preprocess - convert sameOperation to sameMainTypeResource', async done => {
 
-        Object.assign(registeredTypes,
+        Object.assign(libraryTypes,
             { 'A:0': { parent: 'T', fields: {}, creationDate: '', createdBy: '', description: {}  },
                 'B:0': { parent: 'T', fields: {}, creationDate: '', createdBy: '', description: {}  }});
 
@@ -221,7 +221,7 @@ describe('ConfigLoader', () => {
 
     it('preprocess - apply language confs', async done => {
 
-        Object.assign(registeredTypes, {
+        Object.assign(libraryTypes, {
             'A:0': { parent: 'Parent', fields: {}, creationDate: '', createdBy: '', description: {} },
             'B:0': { parent: 'Parent', fields: {}, creationDate: '', createdBy: '', description: {} },
             'C:0': { parent: 'Parent', fields: {}, creationDate: '', createdBy: '', description: {}  }
@@ -257,7 +257,6 @@ describe('ConfigLoader', () => {
             done();
         }
 
-
         expect(pconf.getTypesList()[1].label).toEqual('A_');
         expect(pconf.getTypesList()[2].label).toEqual('B__');
         expect(pconf.getTypesList()[3].label).toEqual('C'); // took name as label
@@ -270,26 +269,36 @@ describe('ConfigLoader', () => {
 
     it('preprocess - apply custom fields configuration', async done => {
 
-        Object.assign(registeredTypes, {
-            'A:0': { parent: 'F', fields:
-                    { fieldA1: { inputType: 'unsignedInt' } }, creationDate: '', createdBy: '', description: {}  },
-            'B:0': { parent: 'G', fields:
-                    { fieldB1: { inputType: 'input' } }, creationDate: '', createdBy: '', description: {}  }
+        Object.assign(libraryTypes, {
+            'A:0': {
+                typeFamily: 'A',
+                parent: 'F',
+                fields: { fieldA1: { inputType: 'unsignedInt' } },
+                creationDate: '',
+                createdBy: '',
+                description: {}
+                },
+            'B:0': {
+                typeFamily: 'B',
+                parent: 'G',
+                fields: { fieldB1: { inputType: 'input' } },
+                creationDate: '',
+                createdBy: '',
+                description: {}
+            }
         });
 
-        const customFieldsConfiguration: CustomTypeDefinitions = {
-            'A:1': { extends: 'A:0', fields:
-                    { fieldA1: { inputType: 'unsignedFloat' } } },
-            'B:1': { extends: 'B:0', fields:
-                    { fieldB2: { inputType: 'boolean' } } }
+        const customTypes: CustomTypeDefinitions = {
+            'A:0': { fields: { fieldA1: { inputType: 'unsignedFloat' } } },
+            'B:0': { fields: { fieldB2: { inputType: 'boolean' } } }
         };
 
         applyConfig(
-            customFieldsConfiguration,
+            customTypes,
             {},
             {},
             {},
-            {'A:1': {}, 'B:1': {}, 'F': {}, 'G': {} });
+            {'A:0': {}, 'B:0': {}, 'F': {}, 'G': {} });
 
         let pconf;
         try {
@@ -317,7 +326,7 @@ describe('ConfigLoader', () => {
 
     it('preprocess - apply custom fields configuration - add subtypes', async done => {
 
-        Object.assign(registeredTypes, {
+        Object.assign(libraryTypes, {
             'Find:0': { extends: "Find", fields:
                     { fieldA1: { inputType: 'unsignedInt' } }, creationDate: '', createdBy: '', description: {} }
         });
@@ -355,7 +364,7 @@ describe('ConfigLoader', () => {
     // TODO reenable
     xit('preprocess - apply custom fields configuration - add subtypes - no parent assigned', async done => {
 
-        Object.assign(registeredTypes, {
+        Object.assign(libraryTypes, {
             'Find:0': { fields:
                     { fieldA1: { inputType: 'unsignedInt' } }, creationDate: '', createdBy: '', description: {} }
         });
@@ -391,7 +400,7 @@ describe('ConfigLoader', () => {
     // TODO reenable
     xit('preprocess - apply custom fields configuration - add subtypes - parent not defined', async done => {
 
-        Object.assign(registeredTypes, {});
+        Object.assign(libraryTypes, {});
 
         const customFieldsConfiguration = {
             'B:0': { parent: 'Find', fields:
@@ -423,7 +432,7 @@ describe('ConfigLoader', () => {
 
     xit('preprocess - apply custom fields configuration - add subtypes - parent no top level type', async done => {
 
-        Object.assign(registeredTypes, {
+        Object.assign(libraryTypes, {
             'Find:0': { parent: 'SuperFind', fields: { fieldA1: { inputType: 'unsignedInt' } } }
         });
 
@@ -450,7 +459,7 @@ describe('ConfigLoader', () => {
 
     xit('preprocess - apply custom fields configuration - add subtypes - parent must not come from custom config', async done => {
 
-        Object.assign(registeredTypes, {
+        Object.assign(libraryTypes, {
             TopFind: { fields: { fieldA1: { inputType: 'unsignedInt' } }, creationDate: '', createdBy: '', description: {} }
         });
 
@@ -479,7 +488,7 @@ describe('ConfigLoader', () => {
     // TODO reenable
     xit('preprocess - apply custom fields configuration - add subtypes - non extendable types not allowed', async done => {
 
-        Object.assign(registeredTypes, {});
+        Object.assign(libraryTypes, {});
 
         const customFieldsConfiguration = {
             'Extension:0': { parent: 'Place', fields: { fieldC1: { inputType: 'boolean'}}, creationDate: '', createdBy: '', description: {} }
@@ -504,7 +513,7 @@ describe('ConfigLoader', () => {
 
     it('apply order configuration', async done => {
 
-        Object.assign(registeredTypes, {
+        Object.assign(libraryTypes, {
             'B:0': { parent: 'Parent', fields: { fieldB2: {}, fieldB3: {}, fieldB1: {} }, creationDate: '', createdBy: '', description: {} },
             'C:0': { parent: 'Parent', fields: { fieldC1: {}, fieldC2: {} }, creationDate: '', createdBy: '', description: {} },
             'A:0': { parent: 'Parent', fields: { fieldA2: {}, fieldA1: {} }, creationDate: '', createdBy: '', description: {} }
@@ -553,7 +562,7 @@ describe('ConfigLoader', () => {
     it('add types and fields only once even if they are mentioned multiple times in order configuration',
         async done => {
 
-        Object.assign(registeredTypes, {
+        Object.assign(libraryTypes, {
             'A:0': { parent: 'Parent', fields: { fieldA2: {}, fieldA1: {} }, creationDate: '', createdBy: '', description: {}  }
         });
 
@@ -587,7 +596,7 @@ describe('ConfigLoader', () => {
 
     xit('apply hidden configurations', async done => { // TODO review if deletion of hidden fields is ok now, apparently we did it with visible here
 
-        Object.assign(registeredTypes, {
+        Object.assign(libraryTypes, {
             'A:0': { extends: 'A', fields: { fieldA1: {}, fieldA2: {}, fieldA3: {}  }, creationDate: '', createdBy: '', description: {}  }
         });
 
@@ -628,7 +637,7 @@ describe('ConfigLoader', () => {
 
     xit('apply hidden and order configuration', async done => {
 
-        Object.assign(registeredTypes, {
+        Object.assign(libraryTypes, {
             'A:0': { extends: 'A', fields: { fieldA1: {}, fieldA3: {}, fieldA2: {} }, creationDate: '', createdBy: '', description: {}  }
         });
 

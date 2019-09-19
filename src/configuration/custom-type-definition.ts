@@ -40,8 +40,8 @@ export module CustomTypeDefinition {
 
     export function assertIsValid(type:CustomTypeDefinition) {
         // TODO test that it only has valid fields
-        if (type.extends && type.parent) throw ['extends and parent cannot be set at the same time'];
-        if (!type.extends && !type.parent) throw ['either extends or parent must be set'];
+        // if (type.extends && type.parent) throw ['extends and parent cannot be set at the same time'];
+        // if (!type.extends && !type.parent) throw ['either extends or parent must be set'];
 
         if (!type.fields) throw ['type has not fields', type];
         assertFieldsAreValid(type.fields);

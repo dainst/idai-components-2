@@ -11,7 +11,7 @@ export interface LibraryTypeDefinition {
 
 
     parent?: string,
-    typeFamily: string;
+    typeFamily?: string;
 
 
     description: {[language: string]: string},
