@@ -38,7 +38,8 @@ export module Preprocessing {
      * @throws [DUPLICATE_TYPE_DEFINITION, typeName]
      * @throws [INVALID_CONFIG_NO_PARENT_ASSIGNED, typeName]
      * @throws [MISSING_REGISTRY_ID, typeName]
-     * @throws [DUPLICATION_IN_SELECTION, pureTypeName]
+     * @throws [DUPLICATION_IN_SELECTION, typeName]
+     * @throws [MUST_HAVE_PARENT, typeName]
      */
     export function mergeTypes(builtInTypes: BuiltinTypeDefinitions,
                                registeredTypes: LibraryTypeDefinitions,
@@ -50,10 +51,7 @@ export module Preprocessing {
         assertTypesAndValuelistsStructurallyValid(registeredTypes, customTypes);
         assertMergePreconditionsMet(builtInTypes, registeredTypes, customTypes, nonExtendableTypes, Object.keys(selectedTypes));
 
-
-        const mergedTypes: any = {...builtInTypes} as any;
-
-        mergeTheTypes1(mergedTypes, registeredTypes);
+        const mergedTypes = mergeBuiltInWithLibraryTypes(builtInTypes, registeredTypes);
         mergeTheTypes(mergedTypes, customTypes as any);
         eraseUnusedTypes(mergedTypes, Object.keys(selectedTypes));
         // console.log("mergedTypes", mergedTypes);
@@ -443,23 +441,26 @@ export module Preprocessing {
     }
 
 
-    export function mergeTheTypes1(builtInTypes: BuiltinTypeDefinitions,
-                                   libraryTypes: LibraryTypeDefinitions) {
+    export function mergeBuiltInWithLibraryTypes(builtInTypes: BuiltinTypeDefinitions,
+                                                 libraryTypes: LibraryTypeDefinitions) {
 
-        const pairs = keysAndValues(libraryTypes);
+        const types: any = {...builtInTypes};
+        const libraryTypeKVs = keysAndValues(libraryTypes);
 
-        forEach(([typeName, type]: any) => {
-            if (builtInTypes[type.typeFamily]) {
-                const newMergedType: any = jsonClone(builtInTypes[type.typeFamily]);
+        forEach(([libraryTypeName, libraryType]: any) => {
+            if (builtInTypes[libraryType.typeFamily]) {
+                const newMergedType: any = jsonClone(builtInTypes[libraryType.typeFamily]);
 
-                merge(newMergedType, type);
-                merge(newMergedType.fields, type.fields);
+                merge(newMergedType, libraryType);
+                merge(newMergedType.fields, libraryType.fields);
 
-                builtInTypes[typeName] = newMergedType;
+                types[libraryTypeName] = newMergedType;
             } else {
-                builtInTypes[typeName] = type;
+                if (!libraryType.parent) throw [ConfigurationErrors.MUST_HAVE_PARENT, libraryTypeName];
+                types[libraryTypeName] = libraryType;
             }
-        })(pairs);
+        })(libraryTypeKVs);
+        return types;
     }
 
 

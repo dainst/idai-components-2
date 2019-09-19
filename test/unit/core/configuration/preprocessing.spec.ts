@@ -164,26 +164,26 @@ describe('Preprocessing', () => {
     });
 
 
-    it('mergeTypes - duplication in selection', () => {
+    it('mergeTypes - duplication in selection', () => { // TODO review
 
         const builtInTypes = {
             B: {
                 fields: {
-                    field1: {group: 'stem'}
+                    field1: { group: 'stem' }
                 }
             }
         } as any;
 
-        const registeredTypes1 = {
+        const typeLibrary = {
             'B:0': {
-                extends: 'B',
+                typeFamily: 'B',
                 fields: {},
                 creationDate: '', createdBy: '', description: {}
             }
         } as any;
 
         try {
-            Preprocessing.mergeTypes(builtInTypes, registeredTypes1, {}, [], [], ['B', 'B:0']);
+            Preprocessing.mergeTypes(builtInTypes, typeLibrary, {}, [], [], ['B:0']);
         } catch (expected) {
             expect(expected).toEqual([ConfigurationErrors.DUPLICATION_IN_SELECTION, 'B'])
         }

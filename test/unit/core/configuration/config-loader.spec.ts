@@ -327,13 +327,20 @@ describe('ConfigLoader', () => {
     it('preprocess - apply custom fields configuration - add subtypes', async done => {
 
         Object.assign(libraryTypes, {
-            'Find:0': { extends: "Find", fields:
-                    { fieldA1: { inputType: 'unsignedInt' } }, creationDate: '', createdBy: '', description: {} }
+            'Find:0': {
+                typeFamily: "Find",
+                fields: { fieldA1: { inputType: 'unsignedInt' } },
+                creationDate: '',
+                createdBy: '',
+                description: {}
+            }
         });
 
         const customTypes: CustomTypeDefinitions = {
-            'B:0': { parent: 'Find', fields:
-                    { fieldC1: { inputType: 'boolean'}}}
+            'B:0': {
+                parent: 'Find',
+                fields: { fieldC1: { inputType: 'boolean'}}
+            }
         };
 
         applyConfig(
