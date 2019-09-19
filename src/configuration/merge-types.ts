@@ -1,7 +1,7 @@
 import {BuiltinTypeDefinitions} from "./builtin-type-definition";
 import {LibraryTypeDefinition, LibraryTypeDefinitions} from "./library-type-definition";
 import {CustomTypeDefinition, CustomTypeDefinitions} from "./custom-type-definition";
-import {clone, duplicates, filter, flatten, flow, forEach, is, isDefined,
+import {clone, filter, flow, forEach, is, isDefined,
     jsonClone, keysAndValues, lookup, map, to} from "tsfun";
 import {ConfigurationErrors} from "./configuration-errors";
 import {pureName} from "./preprocessing";
@@ -9,8 +9,8 @@ import {pureName} from "./preprocessing";
 
 
 /**
- * TODO merge common fields incrementally
  * TODO throw DUPLICATION_IN_SELECTION if more than one of type family selected
+ * TODO merge common fields incrementally
  *
  * @author Daniel de Oliveira
  * @author Thomas Kleinke
@@ -116,7 +116,7 @@ function renameTypesInCustom(builtInTypes: BuiltinTypeDefinitions) {
 
 
 function validateParentsOnTypes(builtinTypes: BuiltinTypeDefinitions,
-                                types: any, // TODO type  properly
+                                types: any,
                                 nonExtendableTypes: string[]) {
 
     flow(types,
