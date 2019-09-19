@@ -368,14 +368,18 @@ describe('ConfigLoader', () => {
     });
 
 
-    // TODO reenable
-    xit('preprocess - apply custom fields configuration - add subtypes - parent not defined', async done => {
+    it('preprocess - apply custom fields configuration - add subtypes - parent not defined', async done => {
 
         Object.assign(libraryTypes, {});
 
         const customFieldsConfiguration = {
-            'B:0': { parent: 'Find', fields:
-                    { fieldC1: { inputType: 'boolean'}}, creationDate: '', createdBy: '', description: {} }
+            'B:0': {
+                parent: 'Find',
+                fields: { fieldC1: { inputType: 'boolean'}},
+                creationDate: '',
+                createdBy: '',
+                description: {}
+            }
         };
 
         applyConfig(
