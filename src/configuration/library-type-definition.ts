@@ -5,25 +5,25 @@ import {assertFieldsAreValid} from "./util";
  *
  * @author Daniel de Oliveira
  */
-export interface RegisteredTypeDefinition {
+export interface LibraryTypeDefinition {
 
     color?: string,
 
-    // one of these is necessary
+
     parent?: string,
-    extends?: string;
+    typeFamily: string;
 
 
     description: {[language: string]: string},
     createdBy: string,
     creationDate: string;
-    fields: RegisteredFieldDefinitions;
+    fields: LibraryFieldDefinitions;
 }
 
-export type RegisteredTypeDefinitions = {[typeName: string]: RegisteredTypeDefinition };
+export type LibraryTypeDefinitions = {[typeName: string]: LibraryTypeDefinition };
 
 
-export interface RegisteredFieldDefinition {
+export interface LibraryFieldDefinition {
 
     valuelistId?: string;
     inputType?: string;
@@ -31,19 +31,19 @@ export interface RegisteredFieldDefinition {
 }
 
 
-export type RegisteredFieldDefinitions = { [fieldName: string]: RegisteredFieldDefinition };
+export type LibraryFieldDefinitions = { [fieldName: string]: LibraryFieldDefinition };
 
 
-export module RegisteredTypeDefinition {
+export module LibraryTypeDefinition {
     
-    export function assertIsValid(type: RegisteredTypeDefinition) {
+    export function assertIsValid(type: LibraryTypeDefinition) {
 
         if (!type.description) throw ['type has no description', JSON.stringify(type)];
         if (type.creationDate === undefined) throw ['type has no creationDate', JSON.stringify(type)];
         if (type.createdBy === undefined) throw ['type has no createdBy', JSON.stringify(type)];
 
-        if (type.extends && type.parent) throw ['extends and parent cannot be set at the same time'];
-        if (!type.extends && !type.parent) throw ['either extends or parent must be set'];
+        //if (type.extends && type.parent) throw ['extends and parent cannot be set at the same time'];
+        //if (!type.extends && !type.parent) throw ['either extends or parent must be set'];
 
         if (!type.fields) throw ['type has not fields', type];
         assertFieldsAreValid(type.fields);

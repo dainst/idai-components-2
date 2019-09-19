@@ -58,7 +58,7 @@ export {IdaiWidgetsModule} from './src/widgets/idai-widgets.module';
 export {TypeIconComponent} from './src/widgets/type-icon';
 
 export {pureName} from './src/configuration/preprocessing';
-export {RegisteredTypeDefinition} from './src/configuration/registered-type-definition';
-export {RegisteredTypeDefinitions} from './src/configuration/registered-type-definition';
+export {LibraryTypeDefinition} from './src/configuration/library-type-definition';
+export {LibraryTypeDefinitions} from './src/configuration/library-type-definition';
 export {BuiltinTypeDefinition} from './src/configuration/builtin-type-definition';
 export {BuiltinTypeDefinitions} from './src/configuration/builtin-type-definition';

@@ -1,6 +1,6 @@
 import {intersection, subtract} from 'tsfun';
 import {RelationDefinition} from './relation-definition';
-import {RegisteredTypeDefinitions} from "./registered-type-definition";
+import {LibraryTypeDefinitions} from "./library-type-definition";
 
 /**
  * Used to validate to configuration in the form it comes from the user, i.e.
@@ -19,7 +19,7 @@ export class PrePreprocessConfigurationValidator {
      * This is to reduce the necessity to have different configurations which have to be
      * tracked, when the only thing they differ in is the visitiliy/editability settings.
      */
-    public go(typeDefinitions: RegisteredTypeDefinitions): Array<Array<string>> {
+    public go(typeDefinitions: LibraryTypeDefinitions): Array<Array<string>> {
 
         if (!typeDefinitions.types) return [];
 
@@ -41,7 +41,7 @@ export class PrePreprocessConfigurationValidator {
     }
 
 
-    private static checkForExtraneousFieldsInTypes(registeredTypes: RegisteredTypeDefinitions): Array<Array<string>> {
+    private static checkForExtraneousFieldsInTypes(registeredTypes: LibraryTypeDefinitions): Array<Array<string>> {
 
         const allowedFields = ['inputType', 'name', 'valuelist', 'valuelistId', 'positionValues'];
 

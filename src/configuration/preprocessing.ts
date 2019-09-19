@@ -6,7 +6,7 @@ import {clone, compose, empty, filter, flow, forEach, is, isDefined, isNot,
     map, on, subtract, to, duplicates, flatten, keysAndValues, lookup} from 'tsfun';
 import {ConfigurationErrors} from './configuration-errors';
 import {ConfigurationDefinition} from './configuration-definition';
-import {RegisteredTypeDefinition, RegisteredTypeDefinitions} from './registered-type-definition';
+import {LibraryTypeDefinition, LibraryTypeDefinitions} from './library-type-definition';
 import {BuiltinTypeDefinitions} from "./builtin-type-definition";
 import {CustomTypeDefinition, CustomTypeDefinitions} from "./custom-type-definition";
 import {jsonClone} from "tsfun/src/objectstruct";
@@ -41,7 +41,7 @@ export module Preprocessing {
      * @throws [DUPLICATION_IN_SELECTION, pureTypeName]
      */
     export function mergeTypes(builtInTypes: BuiltinTypeDefinitions,
-                               registeredTypes: RegisteredTypeDefinitions,
+                               registeredTypes: LibraryTypeDefinitions,
                                customTypes: CustomTypeDefinitions,
                                nonExtendableTypes: any,
                                commonFields: any, // TODO merge common fields incrementally
@@ -53,13 +53,11 @@ export module Preprocessing {
 
         const mergedTypes: any = {...builtInTypes} as any;
 
-        mergeTheTypes(mergedTypes, registeredTypes);
+        mergeTheTypes1(mergedTypes, registeredTypes);
         mergeTheTypes(mergedTypes, customTypes as any);
         eraseUnusedTypes(mergedTypes, Object.keys(selectedTypes));
 
         renameTypesInCustom(mergedTypes);
-        // renameTypesInCustom(customTypes);
-        // applyCustom(mergedTypes, customTypes);
 
         replaceCommonFields(mergedTypes, commonFields);
         hideFields(mergedTypes, selectedTypes);
@@ -68,9 +66,9 @@ export module Preprocessing {
 
 
     function assertTypesAndValuelistsStructurallyValid(
-        registeredTypes: RegisteredTypeDefinitions, customTypes: CustomTypeDefinitions) {
+        registeredTypes: LibraryTypeDefinitions, customTypes: CustomTypeDefinitions) {
 
-        Object.values(registeredTypes).forEach(RegisteredTypeDefinition.assertIsValid);
+        Object.values(registeredTypes).forEach(LibraryTypeDefinition.assertIsValid);
         Object.values(customTypes).forEach(CustomTypeDefinition.assertIsValid);
     }
 
@@ -94,7 +92,7 @@ export module Preprocessing {
 
 
     function assertMergePreconditionsMet(builtInTypes: BuiltinTypeDefinitions,
-                                         registeredTypes: RegisteredTypeDefinitions,
+                                         registeredTypes: LibraryTypeDefinitions,
                                          customTypes: CustomTypeDefinitions,
                                          nonExtendableTypes: any,
                                          selectedTypes: string[]) {
@@ -180,23 +178,6 @@ export module Preprocessing {
                 delete (builtInTypes[confTypeName] as any)['commons'];
             }
         }
-    }
-
-
-    export function applyCustom(builtinType: BuiltinTypeDefinitions,
-                                customType: CustomTypeDefinitions) {
-
-        // Object.keys(customType).forEach(customTypeName => {
-        //
-        //     const typeName = pureName(typeName_);
-            //
-            // if (builtinType[customTypeName]) {
-            //     addCustomFields(builtinType, typeName, customType[typeName].fields);
-            //     addCustomCommons(builtinType, typeName, (customType[typeName] as any)['commons'])
-            // } else {
-            //     builtinType[typeName] = customType[typeName];
-            // }
-        // });
     }
 
 
@@ -461,8 +442,29 @@ export module Preprocessing {
     }
 
 
+    export function mergeTheTypes1(builtInTypes: BuiltinTypeDefinitions,
+                                   registeredTypes: LibraryTypeDefinitions) {
+
+        const pairs = keysAndValues(registeredTypes);
+
+        forEach(([typeName, type]: any) => {
+            if (builtInTypes[type.typeFamily]) {
+
+                const newMergedType: any = jsonClone(builtInTypes[type.typeFamily]);
+
+                merge(newMergedType, type);
+                merge(newMergedType.fields, type.fields);
+
+                builtInTypes[typeName] = newMergedType;
+            } else {
+                builtInTypes[typeName] = type;
+            }
+        })(pairs);
+    }
+
+
     export function mergeTheTypes(builtInTypes: BuiltinTypeDefinitions,
-                                  registeredTypes: RegisteredTypeDefinitions) {
+                                  registeredTypes: LibraryTypeDefinitions) {
 
         const pairs = keysAndValues(registeredTypes);
 
@@ -499,46 +501,9 @@ export module Preprocessing {
     }
 
 
-    function addCustomFields(builtInTypes: BuiltinTypeDefinitions,
-                             typeName: string,
-                             fields: any) {
-
-        if (!fields) return;
-
-        Object.keys(fields).forEach(fieldName => {
-            const field: any = { name: fieldName };
-            Object.assign(field, fields[fieldName]);
-
-            const group: string|undefined = builtInTypes[typeName].fields[fieldName]
-                ? builtInTypes[typeName].fields[fieldName]['group']
-                : undefined;
-
-            builtInTypes[typeName].fields[fieldName] = field;
-
-            // TODO hack; there are some fields we want to 'merge' in general
-            if (group) builtInTypes[typeName].fields[fieldName]['group'] = group;
-        });
-    }
-
-
-    function addCustomCommons(builtInTypes: BuiltinTypeDefinitions, typeName: string,
-                              commons: string[]|undefined) {
-
-        if (!commons) return;
-
-        if (!(builtInTypes[typeName] as any)['commons']) {
-            (builtInTypes[typeName] as any)['commons'] = commons;
-        } else {
-            (builtInTypes[typeName] as any)['commons']
-                = (builtInTypes[typeName] as any)['commons'].concat(commons);
-        }
-    }
-
-
-
     function validateParentsOnTypes(builtinTypes: BuiltinTypeDefinitions,
-                                 types: any, // TODO type  properly
-                                 nonExtendableTypes: string[]) {
+                                    types: any, // TODO type  properly
+                                    nonExtendableTypes: string[]) {
 
         flow(types,
             Object.keys,
