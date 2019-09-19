@@ -15,7 +15,7 @@ import {pureName} from "./preprocessing";
  * @author Daniel de Oliveira
  * @author Thomas Kleinke
  *
- * Merges the core, Fields.json and custom fields config
+ * Merges the builtin, library and custom types
  *
  * @param builtInTypes
  * @param registeredTypes
@@ -25,7 +25,6 @@ import {pureName} from "./preprocessing";
  * @param selectedTypes
  *
  * ConfigurationErrors
- * @throws [INVALID_CONFIG_NO_PARENT_ASSIGNED, typeName]
  * @throws [MISSING_REGISTRY_ID, typeName]
  * @throws [DUPLICATION_IN_SELECTION, typeName]
  * @throws [MUST_HAVE_PARENT, typeName]

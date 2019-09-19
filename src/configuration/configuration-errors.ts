@@ -13,7 +13,6 @@ export class ConfigurationErrors {
 
     public static VALIDATION_ERROR_INVALIDINPUTTYPE = 'config/error/validationerrorinvalidinputtype';
 
-    public static INVALID_CONFIG_NO_PARENT_ASSIGNED = 'config/fields/custom/noparentassigned';
     public static INVALID_CONFIG_PARENT_NOT_DEFINED = 'config/fields/custom/parentnotdefined';
     public static INVALID_CONFIG_PARENT_NOT_TOP_LEVEL = 'config/fields/custom/parentnotatopleveltype';
     public static NOT_AN_EXTENDABLE_TYPE = 'config/fields/custom/notanextendabletype';

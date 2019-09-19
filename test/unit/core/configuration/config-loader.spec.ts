@@ -369,42 +369,6 @@ describe('ConfigLoader', () => {
 
 
     // TODO reenable
-    xit('preprocess - apply custom fields configuration - add subtypes - no parent assigned', async done => {
-
-        Object.assign(libraryTypes, {
-            'Find:0': { fields:
-                    { fieldA1: { inputType: 'unsignedInt' } }, creationDate: '', createdBy: '', description: {} }
-        });
-
-        const customTypes: CustomTypeDefinitions = {
-            'B:0': { fields:
-                    { fieldC1: { inputType: 'boolean'}} }
-        };
-
-        applyConfig(
-            customTypes,
-            {},
-            {},
-            {},
-            { 'Find:0': {}, 'B:0': {} }
-        );
-
-        try {
-            await configLoader.go('', {}, { 'Find': { fields: {} }},[], {},
-                new PrePreprocessConfigurationValidator(), new ConfigurationValidator(),
-                undefined, 'de'
-            );
-
-            fail();
-        } catch(err) {
-            expect(err).toEqual([[ConfigurationErrors.INVALID_CONFIG_NO_PARENT_ASSIGNED, 'B:0']]);
-        } finally {
-            done();
-        }
-    });
-
-
-    // TODO reenable
     xit('preprocess - apply custom fields configuration - add subtypes - parent not defined', async done => {
 
         Object.assign(libraryTypes, {});
