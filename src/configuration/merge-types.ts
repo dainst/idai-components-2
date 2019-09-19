@@ -29,7 +29,6 @@ import {ConfigurationErrors} from "./configuration-errors";
  * @param selectedTypes
  *
  * @see ConfigurationErrors
- * @throws [MISSING_REGISTRY_ID, typeName]
  * @throws [DUPLICATION_IN_SELECTION, typeName]
  * @throws [MUST_HAVE_PARENT, typeName]
  * @throws [MISSING_PROPERTY, propertyName, typeName]
@@ -118,7 +117,6 @@ function validateParentsOnTypes(builtinTypes: BuiltinTypeDefinitions,
 
     flow(types,
         Object.keys,
-        // forEach((name: string) => { if (!name.includes(':')) throw [ConfigurationErrors.MISSING_REGISTRY_ID, name]}),
         map(lookup(types)),
         map(to('parent')),
         filter(isDefined),

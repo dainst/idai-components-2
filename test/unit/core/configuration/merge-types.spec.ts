@@ -126,33 +126,6 @@ describe('mergeTypes', () => {
     });
 
 
-    it('mergeTypes - missing registry id', () => {
-
-        const builtInTypes: BuiltinTypeDefinitions = {
-            A: {
-                fields: {
-                    field1: {group: 'stem'}
-                }
-            }
-        };
-
-        const registeredTypes: LibraryTypeDefinitions = {
-            'B': {
-                typeFamily: 'B',
-                parent: 'A',
-                fields: {},
-                creationDate: '', createdBy: '', description: {}
-            }
-        };
-
-        try {
-            mergeTypes(builtInTypes, registeredTypes, {}, [], [], []);
-        } catch (expected) {
-            expect(expected).toEqual([ConfigurationErrors.MISSING_REGISTRY_ID, 'B'])
-        }
-    });
-
-
     it('mergeTypes - merge libraryType with builtIn', () => {
 
         const builtInTypes: BuiltinTypeDefinitions = {
@@ -169,10 +142,13 @@ describe('mergeTypes', () => {
                 fields: {
                     field1: { inputType: 'text' },
                     field2: { inputType: 'text' }
-                }, creationDate: "", createdBy: "", description: {} }
+                },
+                creationDate: "",
+                createdBy: "",
+                description: {} }
         };
 
-        const result = mergeTypes(builtInTypes, libraryTypes, {}, [], [], {'A:1': {hidden: []}});
+        const result = mergeTypes(builtInTypes, libraryTypes, {}, [], [], {'A:1': { hidden: [] }});
 
         expect(result['A'].fields['field1'].inputType).toBe('text');
         expect(result['A'].fields['field1'].group).toBe('stem');
