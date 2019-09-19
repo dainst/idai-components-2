@@ -96,8 +96,6 @@ export class ConfigLoader {
                              customConfigurationName: string|undefined,
                              locale: string): Promise<ConfigurationDefinition> {
 
-        const customHiddenConfigurationPath = configDirPath + '/Hidden-'
-            + (customConfigurationName ? customConfigurationName : 'Custom') + '.json';
         const languageConfigurationPath = configDirPath + '/Language.' + locale + '.json';
         const orderConfigurationPath = configDirPath + '/Order.json';
         const searchConfigurationPath = configDirPath + '/Search.json';
@@ -108,8 +106,6 @@ export class ConfigLoader {
             + '/Selection-' + (customConfigurationName ? customConfigurationName : 'Default') + '.json';
 
         let registeredTypes2;
-        let hiddenConfiguration: any;
-        let customHiddenConfiguration: any;
         let languageConfiguration: any;
         let customLanguageConfiguration: any;
         let searchConfiguration: any;
