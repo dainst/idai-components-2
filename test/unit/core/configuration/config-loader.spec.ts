@@ -456,13 +456,17 @@ describe('ConfigLoader', () => {
     });
 
 
-    // TODO reenable
-    xit('preprocess - apply custom fields configuration - add subtypes - non extendable types not allowed', async done => {
+    it('preprocess - apply custom fields configuration - add subtypes - non extendable types not allowed', async done => {
 
         Object.assign(libraryTypes, {});
 
         const customFieldsConfiguration = {
-            'Extension:0': { parent: 'Place', fields: { fieldC1: { inputType: 'boolean'}}, creationDate: '', createdBy: '', description: {} }
+            'Extension:0': {
+                parent: 'Place',
+                fields: { fieldC1: { inputType: 'boolean'}},
+                creationDate: '',
+                createdBy: '',
+                description: {} }
         };
 
         applyConfig(customFieldsConfiguration);

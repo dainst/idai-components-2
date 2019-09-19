@@ -6,7 +6,6 @@ import {clone, filter, flow, forEach, is, isDefined, reduce,
 import {ConfigurationErrors} from "./configuration-errors";
 
 
-
 /**
  * TODO throw DUPLICATION_IN_SELECTION if more than one of type family selected
  * TODO merge common fields incrementally
@@ -14,7 +13,12 @@ import {ConfigurationErrors} from "./configuration-errors";
  * @author Daniel de Oliveira
  * @author Thomas Kleinke
  *
- * Merges the builtin, library and custom types
+ * Does
+ * - merge the builtin, library and custom types
+ *
+ * Does not
+ * - mix in parent type
+ * - mix in language, order, search
  *
  * @param builtInTypes
  * @param libraryTypes
@@ -23,7 +27,7 @@ import {ConfigurationErrors} from "./configuration-errors";
  * @param commonFields
  * @param selectedTypes
  *
- * ConfigurationErrors
+ * @see ConfigurationErrors
  * @throws [MISSING_REGISTRY_ID, typeName]
  * @throws [DUPLICATION_IN_SELECTION, typeName]
  * @throws [MUST_HAVE_PARENT, typeName]
