@@ -155,7 +155,7 @@ describe('mergeTypes', () => {
     });
 
 
-    it('mergeTypes - merge registeredTypes with builtIns', () => {
+    it('mergeTypes - merge libraryType with builtIn', () => {
 
         const builtInTypes: BuiltinTypeDefinitions = {
             A: {
@@ -165,7 +165,7 @@ describe('mergeTypes', () => {
             }
         };
 
-        const registeredTypes: LibraryTypeDefinitions = {
+        const libraryTypes: LibraryTypeDefinitions = {
             'A:1': {
                 typeFamily: 'A',
                 fields: {
@@ -174,7 +174,7 @@ describe('mergeTypes', () => {
                 }, creationDate: "", createdBy: "", description: {} }
         };
 
-        const result = mergeTypes(builtInTypes, registeredTypes, {}, [], [], {'A:1': {hidden: []}});
+        const result = mergeTypes(builtInTypes, libraryTypes, {}, [], [], {'A:1': {hidden: []}});
 
         expect(result['A'].fields['field1'].inputType).toBe('text');
         expect(result['A'].fields['field1'].group).toBe('stem');
@@ -206,124 +206,6 @@ describe('mergeTypes', () => {
         expect(result['A'].fields['field1'].inputType).toBe('text');
         expect(result['A'].fields['field1'].group).toBe('stem');
         expect(result['A'].fields['field2'].inputType).toBe('text');
-    });
-
-
-    xit('should add extra type', () => {
-
-        const builtInTypes = {
-            T2: {
-                fields: {
-                    bField: {}
-                }
-            } as BuiltinTypeDefinition
-        };
-
-        // Preprocessing.mergeTheTypes(builtInTypes, configuration.types);
-        expect(builtInTypes['T2'].fields['bField']).toBeDefined();
-    });
-
-
-    xit('should add an extra field to an extra type', () => {
-
-        let builtinTypes = {
-            T2: {
-                fields: {
-                    bField: {}
-                }
-            } as BuiltinTypeDefinition
-        };
-
-        // Preprocessing.mergeTheTypes(builtinTypes, configuration.types);
-        builtinTypes = { types: builtinTypes } as any;
-
-        Preprocessing.addExtraFields(builtinTypes as any, { identifier: {} as FieldDefinition });
-
-        expect((builtinTypes as any).types['T2'].fields['identifier']).toBeDefined();
-        expect((builtinTypes as any).types['T2'].fields['bField']).toBeDefined();
-    });
-
-
-    xit('merge fields of built in type with libary type', () => {
-
-        const builtinTypes = {
-            T1: {
-                abstract: true,
-                fields: {
-                    bField: {}
-                }
-            } as BuiltinTypeDefinition
-        };
-
-        const configuration: LibraryTypeDefinitions = {
-            T1: {
-                color: 'white',
-                fields: {aField: {}},
-                description: {},
-                creationDate: "",
-                createdBy: ""
-            }
-        };
-
-        // Preprocessing.mergeTheTypes(builtinTypes, configuration);
-
-        expect((builtinTypes['T1'] as any).abstract).toBeTruthy();
-        expect((builtinTypes['T1'] as any).color).toEqual('white');
-        expect((builtinTypes['T1'] as any).fields['aField']).toBeDefined();
-        expect((builtinTypes['T1'] as any).fields['bField']).toBeDefined();
-    });
-
-
-    xit('merge fields of extra type with existing type and add extra field', () => {
-
-        const builtinTypes = {
-            T1: {
-                fields: {
-                    bField: {}
-                }
-            } as BuiltinTypeDefinition
-        };
-
-        const configuration = {
-            'T1': {
-                color: 'white',
-                fields: {aField: {}}
-            }
-        } as any;
-
-        // Preprocessing.mergeTheTypes(builtinTypes, configuration);
-
-        const appConfiguration = { types: builtinTypes };
-        Preprocessing.addExtraFields(appConfiguration as any, { 'identifier': {} as FieldDefinition });
-
-        expect(appConfiguration.types['T1'].fields['aField']).toBeDefined();
-        expect(appConfiguration.types['T1'].fields['bField']).toBeDefined();
-        expect(appConfiguration.types['T1'].fields['identifier']).toBeDefined();
-    });
-
-
-    xit('should not add extra fields to subtypes', () => {
-
-        const t: TypeDefinition = {
-            parent: 'SuperT',
-            fields: {
-                aField: {}
-            }
-        } as TypeDefinition;
-
-        configuration = {
-            identifier: 'test',
-            types: {
-                T1: t
-            },
-            relations: []
-        };
-
-        // Preprocessing.mergeTheTypes({}, configuration.types);
-        Preprocessing.addExtraFields(configuration, { 'identifier': {} as FieldDefinition });
-
-        expect(configuration.types['T1'].fields['aField']).toBeDefined();
-        expect(configuration.types['T1'].fields['identifier']).toBeUndefined();
     });
 
 
