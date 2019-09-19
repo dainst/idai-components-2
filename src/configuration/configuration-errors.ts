@@ -24,4 +24,7 @@ export class ConfigurationErrors {
     public static DUPLICATION_IN_SELECTION = 'configuration/error/duplicationinselection';
     public static MUST_HAVE_PARENT = 'configuration/error/musthaveparent';
     public static MUST_HAVE_TYPE_FAMILY = 'configuration/error/musthavetypefamily';
+
+    // Preprocessing - structural errors
+    public static MISSING_PROPERTY = 'configuration/error/missingproperty';
 }

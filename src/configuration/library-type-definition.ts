@@ -1,8 +1,9 @@
 import {assertFieldsAreValid} from "./util";
-import {BuiltinTypeDefinitions} from "./builtin-type-definition";
+import {ConfigurationErrors} from "./configuration-errors";
+
 
 /**
- * TypeDefinition, as used in TypeRegistry
+ * TypeDefinition, as used in TypeLibrary
  *
  * @author Daniel de Oliveira
  */
@@ -37,17 +38,17 @@ export module LibraryTypeDefinition {
 
         return function assertIsValid([typeName, type]: [string, LibraryTypeDefinition]) {
 
-            if (!type.description) throw ['type has no description', typeName];
-            if (type.creationDate === undefined) throw ['type has no creationDate', typeName];
-            if (type.createdBy === undefined) throw ['type has no createdBy', typeName];
+            if (!type.description) throw [ConfigurationErrors.MISSING_PROPERTY, 'description', typeName];
+            if (type.creationDate === undefined) throw [ConfigurationErrors.MISSING_PROPERTY, 'creationDate', typeName];
+            if (type.createdBy === undefined) throw [ConfigurationErrors.MISSING_PROPERTY, 'createdBy', typeName];
 
             if (!type.typeFamily) {
-                if (!type.parent) throw ['parent not set']; // TODO test and make proper error, make uuid part of err msg
+                if (!type.parent) throw [ConfigurationErrors.MISSING_PROPERTY, 'parent', typeName];
             } else {
-                if (!builtinTypes.includes(type.typeFamily) && !type.parent) throw ['parent not set', typeName];
+                if (!builtinTypes.includes(type.typeFamily) && !type.parent) throw [ConfigurationErrors.MISSING_PROPERTY, 'parent', typeName];
             }
 
-            if (!type.fields) throw ['type has not fields', typeName];
+            if (!type.fields) throw [ConfigurationErrors.MISSING_PROPERTY, 'creationDate', typeName];
             assertFieldsAreValid(type.fields);
         }
     }

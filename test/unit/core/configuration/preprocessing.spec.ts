@@ -135,7 +135,7 @@ describe('Preprocessing', () => {
                 registeredTypes1,
                 {}, [], [], ['B', 'B:0']);
         } catch (expected) {
-            expect(expected[0]).toEqual('type has no description')
+            expect(expected).toEqual([ConfigurationErrors.MISSING_PROPERTY, 'description', 'B:0'])
         }
     });
 

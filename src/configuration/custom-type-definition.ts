@@ -1,5 +1,6 @@
 import {cond, empty, flow, forEach, identity, includedIn, isNot, map, remove} from "tsfun";
 import {assertFieldsAreValid} from "./util";
+import {ConfigurationErrors} from "./configuration-errors";
 
 /**
  * TypeDefinition, as provided by users.
@@ -9,15 +10,8 @@ import {assertFieldsAreValid} from "./util";
 export interface CustomTypeDefinition {
 
     color?: string,
-
-    // a custom type either either extends a registered type
     extends?: string;
-    // or it is a new type, which must be subtyped to a built-in type
     parent?: string,
-
-    // TODO validate the given rule
-
-
     fields: CustomFieldDefinitions;
 }
 
@@ -38,12 +32,17 @@ export type CustomTypeDefinitions = {[typeName: string]: CustomTypeDefinition };
 
 export module CustomTypeDefinition {
 
-    export function assertIsValid(type:CustomTypeDefinition) {
-        // TODO test that it only has valid fields
-        // if (type.extends && type.parent) throw ['extends and parent cannot be set at the same time'];
-        // if (!type.extends && !type.parent) throw ['either extends or parent must be set'];
+    export function makeAssertIsValid(builtinTypes: string[], libraryTypes: string[]) {
 
-        if (!type.fields) throw ['type has not fields', type];
-        assertFieldsAreValid(type.fields);
+        return function assertIsValid([typeName, type]: [string, CustomTypeDefinition]) {
+
+            if (!builtinTypes.includes(typeName) && !libraryTypes.includes(typeName)) {
+                if (!type.parent) throw [ConfigurationErrors.MISSING_PROPERTY, 'parent', typeName];
+            }
+
+            if (!type.fields) throw [ConfigurationErrors.MISSING_PROPERTY, 'fields', type];
+            assertFieldsAreValid(type.fields);
+        }
     }
+
 }

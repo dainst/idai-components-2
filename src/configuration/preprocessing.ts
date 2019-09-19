@@ -40,6 +40,7 @@ export module Preprocessing {
      * @throws [MISSING_REGISTRY_ID, typeName]
      * @throws [DUPLICATION_IN_SELECTION, typeName]
      * @throws [MUST_HAVE_PARENT, typeName]
+     * @throws [MISSING_PROPERTY, propertyName, typeName]
      */
     export function mergeTypes(builtInTypes: BuiltinTypeDefinitions,
                                registeredTypes: LibraryTypeDefinitions,
@@ -65,13 +66,14 @@ export module Preprocessing {
 
     function assertTypesAndValuelistsStructurallyValid(
         builtInTypes: string[],
-        registeredTypes: LibraryTypeDefinitions,
+        libraryTypes: LibraryTypeDefinitions,
         customTypes: CustomTypeDefinitions) {
 
         const assertLibraryTypeValid = LibraryTypeDefinition.makeAssertIsValid(builtInTypes);
+        const assertCustomTypeValid = CustomTypeDefinition.makeAssertIsValid(builtInTypes, Object.keys(libraryTypes));
 
-        keysAndValues(registeredTypes).forEach(assertLibraryTypeValid);
-        Object.values(customTypes).forEach(CustomTypeDefinition.assertIsValid);
+        keysAndValues(libraryTypes).forEach(assertLibraryTypeValid);
+        keysAndValues(customTypes).forEach(assertCustomTypeValid);
     }
 
 

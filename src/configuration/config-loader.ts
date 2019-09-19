@@ -77,7 +77,7 @@ export class ConfigLoader {
 
     private async readConfiguration(configDirPath: string): Promise<any> {
 
-        const appConfigurationPath = configDirPath + '/TypeLibrary.json';
+        const appConfigurationPath = configDirPath + '/Library/Types.json';
 
         try {
             return await this.configReader.read(appConfigurationPath);
@@ -96,10 +96,10 @@ export class ConfigLoader {
                              customConfigurationName: string|undefined,
                              locale: string): Promise<ConfigurationDefinition> {
 
-        const languageConfigurationPath = configDirPath + '/Language.' + locale + '.json';
+        const languageConfigurationPath = configDirPath + '/Library/Language.' + locale + '.json';
         const orderConfigurationPath = configDirPath + '/Order.json';
         const searchConfigurationPath = configDirPath + '/Search.json';
-        const valuelistsConfigurationPath = configDirPath + '/ValuelistLibrary.json';
+        const valuelistsConfigurationPath = configDirPath + '/Library/Valuelists.json';
         const customConfigPath = configDirPath
             + '/Fields-' + (customConfigurationName ? customConfigurationName : 'Custom') + '.json';
         const selectionConfigPath = configDirPath
