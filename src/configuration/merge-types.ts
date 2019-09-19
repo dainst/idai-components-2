@@ -15,6 +15,7 @@ import {ConfigurationErrors} from "./configuration-errors";
  *
  * Does
  * - merge the builtin, library and custom types
+ * - replace common fields
  *
  * Does not
  * - mix in parent type
@@ -47,10 +48,10 @@ export function mergeTypes(builtInTypes: BuiltinTypeDefinitions,
     mergeTheTypes(mergedTypes, customTypes as any);
 
     eraseUnusedTypes(mergedTypes, Object.keys(selectedTypes));
-    const typesByFamilyNames: any = toTypesByFamilyNames(mergedTypes);
+    hideFields(mergedTypes, selectedTypes);
 
+    const typesByFamilyNames: any = toTypesByFamilyNames(mergedTypes);
     replaceCommonFields(typesByFamilyNames, commonFields);
-    hideFields(typesByFamilyNames, selectedTypes);
     return typesByFamilyNames;
 }
 
@@ -93,6 +94,7 @@ function hideFields(mergedTypes: any, selectedTypes: any) {
                 if ((builtInType as any)['fields']) Object.keys((builtInType as any)['fields']).forEach(fn => {
                     if ((selectedType as any)['hidden'] && (selectedType as any)['hidden'].includes(fn)) {
                         (builtInType as any)['fields'][fn].visible = false;
+                        (builtInType as any)['fields'][fn].editable = false;
                     }
                 })
             }

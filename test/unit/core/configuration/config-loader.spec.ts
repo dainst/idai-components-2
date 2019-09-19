@@ -518,10 +518,10 @@ describe('ConfigLoader', () => {
     });
 
 
-    xit('apply hidden configurations', async done => { // TODO review if deletion of hidden fields is ok now, apparently we did it with visible here
+    it('apply hidden', async done => {
 
         Object.assign(libraryTypes, {
-            'A:0': { extends: 'A', fields: { fieldA1: {}, fieldA2: {}, fieldA3: {}  }, creationDate: '', createdBy: '', description: {}  }
+            'A:0': { typeFamily: 'A', fields: { fieldA1: {}, fieldA2: {}, fieldA3: {}  }, creationDate: '', createdBy: '', description: {}  }
         });
 
         applyConfig({},
@@ -532,7 +532,7 @@ describe('ConfigLoader', () => {
                 'A': ['fieldA2']
             },
             {},
-            { 'A:0': {} });
+            { 'A:0': { hidden: ['fieldA1', 'fieldA2'] } });
 
         let pconf;
         try {
