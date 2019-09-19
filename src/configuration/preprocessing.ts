@@ -445,21 +445,24 @@ export module Preprocessing {
                                                  libraryTypes: LibraryTypeDefinitions) {
 
         const types: any = {...builtInTypes};
-        const libraryTypeKVs = keysAndValues(libraryTypes);
 
-        forEach(([libraryTypeName, libraryType]: any) => {
-            if (builtInTypes[libraryType.typeFamily]) {
-                const newMergedType: any = jsonClone(builtInTypes[libraryType.typeFamily]);
+        flow<any>(
+            libraryTypes,
+            keysAndValues,
+            forEach(([libraryTypeName, libraryType]: any) => {
+                if (builtInTypes[libraryType.typeFamily]) {
+                    const newMergedType: any = jsonClone(builtInTypes[libraryType.typeFamily]);
 
-                merge(newMergedType, libraryType);
-                merge(newMergedType.fields, libraryType.fields);
+                    merge(newMergedType, libraryType);
+                    merge(newMergedType.fields, libraryType.fields);
 
-                types[libraryTypeName] = newMergedType;
-            } else {
-                if (!libraryType.parent) throw [ConfigurationErrors.MUST_HAVE_PARENT, libraryTypeName];
-                types[libraryTypeName] = libraryType;
-            }
-        })(libraryTypeKVs);
+                    types[libraryTypeName] = newMergedType;
+                } else {
+                    if (!libraryType.parent) throw [ConfigurationErrors.MUST_HAVE_PARENT, libraryTypeName];
+                    types[libraryTypeName] = libraryType;
+                }
+            }));
+
         return types;
     }
 
