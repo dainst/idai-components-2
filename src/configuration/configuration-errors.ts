@@ -19,7 +19,6 @@ export class ConfigurationErrors {
     public static NOT_AN_EXTENDABLE_TYPE = 'config/fields/custom/notanextendabletype';
 
     // Preprocessing
-    public static DUPLICATE_TYPE_DEFINITION = 'configuration/error/duplicatetypedefinition';
     public static MISSING_REGISTRY_ID = 'configuration/error/missing_registry_id';
     public static DUPLICATION_IN_SELECTION = 'configuration/error/duplicationinselection';
     public static MUST_HAVE_PARENT = 'configuration/error/musthaveparent';

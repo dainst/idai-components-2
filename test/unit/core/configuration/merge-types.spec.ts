@@ -82,32 +82,6 @@ describe('mergeTypes', () => {
     });
 
 
-    it('mergeTypes - duplication in selection', () => { // TODO review
-
-        const builtInTypes = {
-            B: {
-                fields: {
-                    field1: { group: 'stem' }
-                }
-            }
-        } as any;
-
-        const typeLibrary = {
-            'B:0': {
-                typeFamily: 'B',
-                fields: {},
-                creationDate: '', createdBy: '', description: {}
-            }
-        } as any;
-
-        try {
-            mergeTypes(builtInTypes, typeLibrary, {}, [], [], ['B:0']);
-        } catch (expected) {
-            expect(expected).toEqual([ConfigurationErrors.DUPLICATION_IN_SELECTION, 'B'])
-        }
-    });
-
-
     it('mergeTypes - hide fields', () => {
 
         const builtInTypes = {

@@ -1,25 +1,17 @@
 import {BuiltinTypeDefinitions} from "./builtin-type-definition";
 import {LibraryTypeDefinition, LibraryTypeDefinitions} from "./library-type-definition";
 import {CustomTypeDefinition, CustomTypeDefinitions} from "./custom-type-definition";
-import {
-    clone,
-    duplicates,
-    filter,
-    flatten,
-    flow,
-    forEach, is,
-    isDefined, jsonClone,
-    keysAndValues,
-    lookup,
-    map,
-    to
-} from "tsfun";
+import {clone, duplicates, filter, flatten, flow, forEach, is, isDefined,
+    jsonClone, keysAndValues, lookup, map, to} from "tsfun";
 import {ConfigurationErrors} from "./configuration-errors";
 import {pureName} from "./preprocessing";
 
 
 
 /**
+ * TODO merge common fields incrementally
+ * TODO throw DUPLICATION_IN_SELECTION if more than one of type family selected
+ *
  * @author Daniel de Oliveira
  * @author Thomas Kleinke
  *
@@ -33,7 +25,6 @@ import {pureName} from "./preprocessing";
  * @param selectedTypes
  *
  * ConfigurationErrors
- * @throws [DUPLICATE_TYPE_DEFINITION, typeName]
  * @throws [INVALID_CONFIG_NO_PARENT_ASSIGNED, typeName]
  * @throws [MISSING_REGISTRY_ID, typeName]
  * @throws [DUPLICATION_IN_SELECTION, typeName]
@@ -44,7 +35,7 @@ export function mergeTypes(builtInTypes: BuiltinTypeDefinitions,
                            registeredTypes: LibraryTypeDefinitions,
                            customTypes: CustomTypeDefinitions,
                            nonExtendableTypes: any,
-                           commonFields: any, // TODO merge common fields incrementally
+                           commonFields: any,
                            selectedTypes: any) {
 
     assertTypesAndValuelistsStructurallyValid(Object.keys(builtInTypes), registeredTypes, customTypes);
@@ -99,14 +90,8 @@ function assertMergePreconditionsMet(builtInTypes: BuiltinTypeDefinitions,
                                      nonExtendableTypes: any,
                                      selectedTypes: string[]) {
 
-    const inter = duplicates(flatten([Object.keys(builtInTypes), Object.keys(registeredTypes), Object.keys(customTypes)]));
-    // if (inter.length > 0) throw [ConfigurationErrors.DUPLICATE_TYPE_DEFINITION, inter[0]];
-
     // at this point we know that we have either a parent or an extend in registeredTypes
     validateParentsOnTypes(builtInTypes, {...registeredTypes, ...customTypes}, nonExtendableTypes);
-
-    const selectionDuplicates = duplicates(selectedTypes.map(pureName));
-    if (selectionDuplicates.length > 0) throw [ConfigurationErrors.DUPLICATION_IN_SELECTION, selectionDuplicates[0]];
 }
 
 

@@ -62,9 +62,6 @@ export module Preprocessing {
     }
 
 
-
-
-
     export function applyLanguage(configuration: UnorderedConfigurationDefinition, language: any) {
 
         if (configuration.types) {
