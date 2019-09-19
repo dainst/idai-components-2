@@ -405,61 +405,6 @@ describe('ConfigLoader', () => {
     });
 
 
-    xit('preprocess - apply custom fields configuration - add subtypes - parent no top level type', async done => {
-
-        Object.assign(libraryTypes, {
-            'Find:0': { parent: 'SuperFind', fields: { fieldA1: { inputType: 'unsignedInt' } } }
-        });
-
-        const secondLevelTypes = {
-            C: { parent: 'SuperFind', fields: { fieldC1: { inputType: 'boolean'}}}
-        };
-
-        applyConfig(secondLevelTypes);
-
-        try {
-            await configLoader.go('', {}, { SuperFind: { fields: { fieldA1: { inputType: 'unsignedInt' } } }},[], {},
-                new PrePreprocessConfigurationValidator(), new ConfigurationValidator(),
-                undefined, 'de'
-            );
-
-            fail();
-        } catch(err) {
-            expect(err).toEqual([[ConfigurationErrors.INVALID_CONFIG_PARENT_NOT_TOP_LEVEL]]);
-        } finally {
-            done();
-        }
-    });
-
-
-    xit('preprocess - apply custom fields configuration - add subtypes - parent must not come from custom config', async done => {
-
-        Object.assign(libraryTypes, {
-            TopFind: { fields: { fieldA1: { inputType: 'unsignedInt' } }, creationDate: '', createdBy: '', description: {} }
-        });
-
-        const customFieldsConfiguration = {
-            Find: { parent: 'SuperFind', fields: { fieldA1: { inputType: 'unsignedInt' } }, creationDate: '', createdBy: '', description: {} },
-            C: { parent: 'Find', fields: { fieldC1: { inputType: 'boolean'}}, creationDate: '', createdBy: '', description: {} }
-        };
-
-        applyConfig(customFieldsConfiguration);
-
-        try {
-            await configLoader.go('', {}, {},[], {},
-                new PrePreprocessConfigurationValidator(), new ConfigurationValidator(),
-                undefined, 'de'
-            );
-            fail();
-
-        } catch(err) {
-            expect(err).toEqual([[ConfigurationErrors.INVALID_CONFIG_PARENT_NOT_DEFINED]]);
-        } finally {
-            done();
-        }
-    });
-
-
     it('preprocess - apply custom fields configuration - add subtypes - non extendable types not allowed', async done => {
 
         Object.assign(libraryTypes, {});
