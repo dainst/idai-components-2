@@ -101,7 +101,7 @@ export class ConfigLoader {
         const languageConfigurationPath = configDirPath + '/Language.' + locale + '.json';
         const orderConfigurationPath = configDirPath + '/Order.json';
         const searchConfigurationPath = configDirPath + '/Search.json';
-        const valuelistsConfigurationPath = configDirPath + '/Valuelists.json';
+        const valuelistsConfigurationPath = configDirPath + '/ValuelistLibrary.json';
         const customConfigPath = configDirPath
             + '/Fields-' + (customConfigurationName ? customConfigurationName : 'Custom') + '.json';
         const selectionConfigPath = configDirPath

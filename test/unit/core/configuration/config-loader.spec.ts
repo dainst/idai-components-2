@@ -3,7 +3,7 @@ import {ConfigLoader} from '../../../../src/configuration/config-loader';
 import {PrePreprocessConfigurationValidator} from '../../../../src/configuration/pre-preprocess-configuration-validator';
 import {ConfigurationValidator} from '../../../../src/configuration/configuration-validator';
 import {ConfigurationErrors} from '../../../../src/configuration/configuration-errors';
-import {CustomTypeDefinitions} from "../../../../src/configuration/custom-type-definition";
+import {CustomTypeDefinitions} from '../../../../src/configuration/custom-type-definition';
 
 /**
  * @author Daniel de Oliveira
@@ -57,7 +57,7 @@ describe('ConfigLoader', () => {
             {},
             {
                 types: {
-                    B: { label: 'B_', fields: { processor: { label: 'Bearbeiter/Bearbeiterin', description: "abc" }} },
+                    B: { label: 'B_', fields: { processor: { label: 'Bearbeiter/Bearbeiterin', description: 'abc' }} },
                 }, relations: {},
             },
             {},
@@ -97,7 +97,7 @@ describe('ConfigLoader', () => {
             undefined,
             {
                 commons: {
-                    processor: { label: 'Bearbeiter/Bearbeiterin', description: "abc" }
+                    processor: { label: 'Bearbeiter/Bearbeiterin', description: 'abc' }
                 },
                 types: {},
                 relations: {}
@@ -120,7 +120,7 @@ describe('ConfigLoader', () => {
                 'de'
             );
         } catch(err) {
-            console.log("err",err);
+            console.log('err',err);
             fail(err);
             done();
         }
@@ -328,7 +328,7 @@ describe('ConfigLoader', () => {
 
         Object.assign(libraryTypes, {
             'Find:0': {
-                typeFamily: "Find",
+                typeFamily: 'Find',
                 fields: { fieldA1: { inputType: 'unsignedInt' } },
                 creationDate: '',
                 createdBy: '',
@@ -339,7 +339,7 @@ describe('ConfigLoader', () => {
         const customTypes: CustomTypeDefinitions = {
             'B:0': {
                 parent: 'Find',
-                fields: { fieldC1: { inputType: 'boolean'}}
+                fields: { fieldC1: { inputType: 'boolean'} }
             }
         };
 

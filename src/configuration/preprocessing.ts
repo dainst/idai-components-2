@@ -54,7 +54,6 @@ export module Preprocessing {
         const mergedTypes = mergeBuiltInWithLibraryTypes(builtInTypes, registeredTypes);
         mergeTheTypes(mergedTypes, customTypes as any);
         eraseUnusedTypes(mergedTypes, Object.keys(selectedTypes));
-        // console.log("mergedTypes", mergedTypes);
 
         renameTypesInCustom(mergedTypes);
 
@@ -472,17 +471,17 @@ export module Preprocessing {
 
         const pairs = keysAndValues(customTypes);
 
-        forEach(([typeName, type]: any) => {
-            if (typeDefs[typeName]) {
+        forEach(([customTypeName, customType]: any) => {
+            if (typeDefs[customTypeName]) {
 
-                const newMergedType: any = jsonClone(typeDefs[typeName]);
-                merge(newMergedType, type);
-                merge(newMergedType.fields, type.fields);
+                const newMergedType: any = jsonClone(typeDefs[customTypeName]);
+                merge(newMergedType, customType);
+                merge(newMergedType.fields, customType.fields);
 
-                typeDefs[typeName] = newMergedType;
+                typeDefs[customTypeName] = newMergedType;
             } else {
-                // TODO here we can validate that it must have a parent field
-                typeDefs[typeName] = type;
+                if (!customType.parent) throw [ConfigurationErrors.MUST_HAVE_PARENT, customTypeName];
+                typeDefs[customTypeName] = customType;
             }
         })(pairs);
     }
