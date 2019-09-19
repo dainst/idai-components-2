@@ -57,7 +57,6 @@ export {FieldMarker} from './src/map/field-marker';
 export {IdaiWidgetsModule} from './src/widgets/idai-widgets.module';
 export {TypeIconComponent} from './src/widgets/type-icon';
 
-export {pureName} from './src/configuration/preprocessing';
 export {LibraryTypeDefinition} from './src/configuration/library-type-definition';
 export {LibraryTypeDefinitions} from './src/configuration/library-type-definition';
 export {BuiltinTypeDefinition} from './src/configuration/builtin-type-definition';

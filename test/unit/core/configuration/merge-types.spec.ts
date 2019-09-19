@@ -89,38 +89,36 @@ describe('mergeTypes', () => {
     });
 
 
-    it('mergeTypes - hide fields', () => {
+    it('hide fields', () => {
 
-        const builtInTypes = {
+        const builtInTypes: BuiltinTypeDefinitions = {
             A: {
                 fields: {
                     field1: {}
                 }
             }
-        } as any;
+        };
 
-        const registeredTypes1 = {
-            'A:0': {
+        const libraryTypes: LibraryTypeDefinitions = {
+            A: {
                 typeFamily: 'A',
                 fields: {
                     field2: {}
                 },
                 creationDate: '', createdBy: '', description: {}
             }
-        } as any;
+        };
 
         const result = mergeTypes(
             builtInTypes,
-            registeredTypes1,
+            libraryTypes,
             {},
             [],
             [],
             {
-
-                'A:0': {
+                'A': {
                     hidden: ['field1']
                 }
-
             });
 
         expect(result['A']['fields']['field1'].visible).toBe(false);

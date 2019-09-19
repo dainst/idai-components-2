@@ -130,13 +130,13 @@ describe('ConfigLoader', () => {
     });
 
 
-    it('mix existing externally configured with internal inherits relation', async done => { // TODO check if it can be removed since external defintions of relations are now forbidden
+    it('mix existing externally configured with internal inherits relation', async done => {
 
         Object.assign(libraryTypes, {
-            'A1:0': { parent: 'A', fields: {}, creationDate: '', createdBy: '', description: {} },
-            'A2:0': { parent: 'A', fields: {}, creationDate: '', createdBy: '', description: {} },
-            'B1:0': { parent: 'B', fields: {}, creationDate: '', createdBy: '', description: {} },
-            'B2:0': { parent: 'B', fields: {}, creationDate: '', createdBy: '', description: {} }
+            'A1': { typeFamily: 'A1', parent: 'A', fields: {}, creationDate: '', createdBy: '', description: {} },
+            'A2': { typeFamily: 'A2', parent: 'A', fields: {}, creationDate: '', createdBy: '', description: {} },
+            'B1': { typeFamily: 'B1', parent: 'B', fields: {}, creationDate: '', createdBy: '', description: {} },
+            'B2': { typeFamily: 'B2', parent: 'B', fields: {}, creationDate: '', createdBy: '', description: {} }
         });
 
         applyConfig(
@@ -144,7 +144,7 @@ describe('ConfigLoader', () => {
             {},
             {},
             {},
-            { 'A1:0': {}, 'A2:0': {}, 'B1:0': {}, 'B2:0': {}, 'A': {}, 'B': {}, 'C': {}, 'D': {} });
+            { 'A1': {}, 'A2': {}, 'B1': {}, 'B2': {}, 'A': {}, 'B': {}, 'C': {}, 'D': {} });
 
         let pconf;
 
@@ -189,16 +189,16 @@ describe('ConfigLoader', () => {
 
     it('preprocess - convert sameOperation to sameMainTypeResource', async done => {
 
-        Object.assign(libraryTypes,
-            { 'A:0': { parent: 'T', fields: {}, creationDate: '', createdBy: '', description: {}  },
-                'B:0': { parent: 'T', fields: {}, creationDate: '', createdBy: '', description: {}  }});
+        Object.assign(libraryTypes, {
+            'A': { typeFamily: 'A', parent: 'T', fields: {}, creationDate: '', createdBy: '', description: {}  },
+            'B': { typeFamily: 'B', parent: 'T', fields: {}, creationDate: '', createdBy: '', description: {}  }});
 
         applyConfig(
             undefined,
             {},
             {},
             {},
-            { 'A:0': {}, 'B:0': {}, 'T': {}});
+            { 'A': {}, 'B': {}, 'T': {}});
 
         let pconf;
         try {
@@ -222,9 +222,9 @@ describe('ConfigLoader', () => {
     it('preprocess - apply language confs', async done => {
 
         Object.assign(libraryTypes, {
-            'A:0': { parent: 'Parent', fields: {}, creationDate: '', createdBy: '', description: {} },
-            'B:0': { parent: 'Parent', fields: {}, creationDate: '', createdBy: '', description: {} },
-            'C:0': { parent: 'Parent', fields: {}, creationDate: '', createdBy: '', description: {}  }
+            'A': { typeFamily: 'A', parent: 'Parent', fields: {}, creationDate: '', createdBy: '', description: {} },
+            'B': { typeFamily: 'B', parent: 'Parent', fields: {}, creationDate: '', createdBy: '', description: {} },
+            'C': { typeFamily: 'C', parent: 'Parent', fields: {}, creationDate: '', createdBy: '', description: {}  }
         });
 
         applyConfig({}, {
@@ -241,7 +241,7 @@ describe('ConfigLoader', () => {
                 }
             },
             {},
-            { 'A:0': {}, 'B:0': {}, 'C:0': {}, 'Parent': {} });
+            { 'A': {}, 'B': {}, 'C': {}, 'Parent': {} });
 
         let pconf;
         try {
@@ -270,7 +270,7 @@ describe('ConfigLoader', () => {
     it('preprocess - apply custom fields configuration', async done => {
 
         Object.assign(libraryTypes, {
-            'A:0': {
+            'A': {
                 typeFamily: 'A',
                 parent: 'F',
                 fields: { fieldA1: { inputType: 'unsignedInt' } },
@@ -278,7 +278,7 @@ describe('ConfigLoader', () => {
                 createdBy: '',
                 description: {}
                 },
-            'B:0': {
+            'B': {
                 typeFamily: 'B',
                 parent: 'G',
                 fields: { fieldB1: { inputType: 'input' } },
@@ -289,8 +289,8 @@ describe('ConfigLoader', () => {
         });
 
         const customTypes: CustomTypeDefinitions = {
-            'A:0': { fields: { fieldA1: { inputType: 'unsignedFloat' } } },
-            'B:0': { fields: { fieldB2: { inputType: 'boolean' } } }
+            'A': { fields: { fieldA1: { inputType: 'unsignedFloat' } } },
+            'B': { fields: { fieldB2: { inputType: 'boolean' } } }
         };
 
         applyConfig(
@@ -298,7 +298,7 @@ describe('ConfigLoader', () => {
             {},
             {},
             {},
-            {'A:0': {}, 'B:0': {}, 'F': {}, 'G': {} });
+            {'A': {}, 'B': {}, 'F': {}, 'G': {} });
 
         let pconf;
         try {
@@ -485,9 +485,9 @@ describe('ConfigLoader', () => {
     it('apply order configuration', async done => {
 
         Object.assign(libraryTypes, {
-            'B:0': { parent: 'Parent', fields: { fieldB2: {}, fieldB3: {}, fieldB1: {} }, creationDate: '', createdBy: '', description: {} },
-            'C:0': { parent: 'Parent', fields: { fieldC1: {}, fieldC2: {} }, creationDate: '', createdBy: '', description: {} },
-            'A:0': { parent: 'Parent', fields: { fieldA2: {}, fieldA1: {} }, creationDate: '', createdBy: '', description: {} }
+            'B': { typeFamily: 'B', parent: 'Parent', fields: { fieldB2: {}, fieldB3: {}, fieldB1: {} }, creationDate: '', createdBy: '', description: {} },
+            'C': { typeFamily: 'C', parent: 'Parent', fields: { fieldC1: {}, fieldC2: {} }, creationDate: '', createdBy: '', description: {} },
+            'A': { typeFamily: 'A', parent: 'Parent', fields: { fieldA2: {}, fieldA1: {} }, creationDate: '', createdBy: '', description: {} }
         });
 
         applyConfig({}, {}, {},
@@ -502,7 +502,7 @@ describe('ConfigLoader', () => {
                     'D': ['fieldD1', 'fieldD2']
                 }
             },
-            { 'A:0': {}, 'B:0': {}, 'C:0': {}, 'Parent': {} });
+            { 'A': {}, 'B': {}, 'C': {}, 'Parent': {} });
 
         let pconf;
         try {
@@ -534,7 +534,7 @@ describe('ConfigLoader', () => {
         async done => {
 
         Object.assign(libraryTypes, {
-            'A:0': { parent: 'Parent', fields: { fieldA2: {}, fieldA1: {} }, creationDate: '', createdBy: '', description: {}  }
+            'A': { typeFamily: 'A', parent: 'Parent', fields: { fieldA2: {}, fieldA1: {} }, creationDate: '', createdBy: '', description: {}  }
         });
 
         applyConfig({}, {}, {}, {
@@ -543,7 +543,7 @@ describe('ConfigLoader', () => {
                     'A': ['fieldA1', 'fieldA2', 'fieldA1']
                 }
             },
-            { 'A:0': {}, 'Parent': {} });
+            { 'A': {}, 'Parent': {} });
 
         let pconf;
         try {

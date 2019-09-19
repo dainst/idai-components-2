@@ -6,12 +6,6 @@ import {compose, empty, filter, flow, forEach, isDefined, isNot, map, on, subtra
 import {ConfigurationDefinition} from './configuration-definition';
 
 
-export function pureName(s: string) { // TODO remove
-
-    return  s.includes(':') ? s.substr(0, s.indexOf(':')) : s;
-}
-
-
 /**
  * @author Daniel de Oliveira
  * @author Thomas Kleinke
@@ -34,8 +28,8 @@ export module Preprocessing {
         addExtraRelations(appConfiguration, relations);
         addExtraFields(appConfiguration, defaultFields);
 
-        applyLanguage(appConfiguration, languageConfiguration); // TODO test it
-        applyLanguage(appConfiguration, customLanguageConfiguration); // TODO test it
+        applyLanguage(appConfiguration, languageConfiguration);
+        applyLanguage(appConfiguration, customLanguageConfiguration);
 
         applySearchConfiguration(appConfiguration, searchConfiguration);
 
@@ -196,7 +190,6 @@ export module Preprocessing {
                 _addExtraFields(typeDefinition, extraFields)
             }
 
-            // TODO Check if this is really the right place to do this
             for (let fieldName of Object.keys(typeDefinition.fields)) {
                 const fieldDefinition = typeDefinition.fields[fieldName];
 
@@ -297,7 +290,7 @@ export module Preprocessing {
     }
 
 
-    function addExtraFieldsOrder(appConfiguration: UnorderedConfigurationDefinition, // TODO remove
+    function addExtraFieldsOrder(appConfiguration: UnorderedConfigurationDefinition,
             orderConfiguration: any) {
 
         if (!orderConfiguration.fields) orderConfiguration.fields = {};

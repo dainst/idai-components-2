@@ -1,10 +1,9 @@
 import {BuiltinTypeDefinitions} from "./builtin-type-definition";
 import {LibraryTypeDefinition, LibraryTypeDefinitions} from "./library-type-definition";
 import {CustomTypeDefinition, CustomTypeDefinitions} from "./custom-type-definition";
-import {clone, filter, flow, forEach, is, isDefined,
+import {clone, filter, flow, forEach, is, isDefined, reduce,
     jsonClone, keysAndValues, lookup, map, to} from "tsfun";
 import {ConfigurationErrors} from "./configuration-errors";
-import {pureName} from "./preprocessing";
 
 
 
@@ -18,7 +17,7 @@ import {pureName} from "./preprocessing";
  * Merges the builtin, library and custom types
  *
  * @param builtInTypes
- * @param registeredTypes
+ * @param libraryTypes
  * @param customTypes
  * @param nonExtendableTypes
  * @param commonFields
@@ -31,24 +30,39 @@ import {pureName} from "./preprocessing";
  * @throws [MISSING_PROPERTY, propertyName, typeName]
  */
 export function mergeTypes(builtInTypes: BuiltinTypeDefinitions,
-                           registeredTypes: LibraryTypeDefinitions,
+                           libraryTypes: LibraryTypeDefinitions,
                            customTypes: CustomTypeDefinitions,
                            nonExtendableTypes: any,
                            commonFields: any,
                            selectedTypes: any) {
 
-    assertTypesAndValuelistsStructurallyValid(Object.keys(builtInTypes), registeredTypes, customTypes);
-    assertMergePreconditionsMet(builtInTypes, registeredTypes, customTypes, nonExtendableTypes, Object.keys(selectedTypes));
+    assertTypesAndValuelistsStructurallyValid(Object.keys(builtInTypes), libraryTypes, customTypes);
+    validateParentsOnTypes(builtInTypes, {...libraryTypes, ...customTypes}, nonExtendableTypes);
 
-    const mergedTypes = mergeBuiltInWithLibraryTypes(builtInTypes, registeredTypes);
+    const mergedTypes = mergeBuiltInWithLibraryTypes(builtInTypes, libraryTypes);
     mergeTheTypes(mergedTypes, customTypes as any);
+
     eraseUnusedTypes(mergedTypes, Object.keys(selectedTypes));
+    const typesByFamilyNames: any = toTypesByFamilyNames(mergedTypes);
 
-    renameTypesInCustom(mergedTypes);
+    replaceCommonFields(typesByFamilyNames, commonFields);
+    hideFields(typesByFamilyNames, selectedTypes);
+    return typesByFamilyNames;
+}
 
-    replaceCommonFields(mergedTypes, commonFields);
-    hideFields(mergedTypes, selectedTypes);
-    return mergedTypes;
+
+function toTypesByFamilyNames(mergedTypes: any) {
+
+    return reduce(
+        (acc: any, [mergedTypeName, mergedType]: any) => {
+            if (mergedType.typeFamily) {
+                acc[mergedType.typeFamily] = mergedType;
+            } else {
+                acc[mergedTypeName] = mergedType;
+            }
+            return acc;
+        }
+        , {})(keysAndValues(mergedTypes) as any);
 }
 
 
@@ -70,7 +84,7 @@ function hideFields(mergedTypes: any, selectedTypes: any) {
     keysAndValues(mergedTypes).forEach(([builtInTypeName, builtInType]) => {
 
         keysAndValues(selectedTypes).forEach(([selectedTypeName, selectedType]) => {
-            if (pureName(selectedTypeName) === pureName(builtInTypeName)) {
+            if (selectedTypeName === builtInTypeName) {
 
                 if ((builtInType as any)['fields']) Object.keys((builtInType as any)['fields']).forEach(fn => {
                     if ((selectedType as any)['hidden'] && (selectedType as any)['hidden'].includes(fn)) {
@@ -83,34 +97,12 @@ function hideFields(mergedTypes: any, selectedTypes: any) {
 }
 
 
-function assertMergePreconditionsMet(builtInTypes: BuiltinTypeDefinitions,
-                                     registeredTypes: LibraryTypeDefinitions,
-                                     customTypes: CustomTypeDefinitions,
-                                     nonExtendableTypes: any,
-                                     selectedTypes: string[]) {
-
-    // at this point we know that we have either a parent or an extend in registeredTypes
-    validateParentsOnTypes(builtInTypes, {...registeredTypes, ...customTypes}, nonExtendableTypes);
-}
-
-
 function eraseUnusedTypes(builtInTypes: any,
                           selectedTypes: string[]) {
 
     Object.keys(builtInTypes).forEach(typeName => {
         if (!selectedTypes.includes(typeName)) delete builtInTypes[typeName];
     });
-}
-
-
-function renameTypesInCustom(builtInTypes: BuiltinTypeDefinitions) {
-
-    for (let [k, v] of keysAndValues(builtInTypes)) {
-        const pureName_ = pureName(k);
-        if (pureName_ === k) continue;
-        (builtInTypes as any)[pureName_] = v;
-        delete builtInTypes[k];
-    }
 }
 
 
@@ -137,23 +129,6 @@ function validateParentsOnTypes(builtinTypes: BuiltinTypeDefinitions,
 }
 
 
-function validateNotTopLevel(builtinTypeDefinitions: BuiltinTypeDefinitions,
-                             customConfiguration: any) {
-
-    Object.keys(customConfiguration).forEach(typeName => {
-
-        const pureTypeName = pureName(typeName);
-
-        if (!builtinTypeDefinitions[pureTypeName]) {
-
-            if ((builtinTypeDefinitions[customConfiguration[typeName].parent] as any).parent) {
-                throw [ConfigurationErrors.INVALID_CONFIG_PARENT_NOT_TOP_LEVEL];
-            }
-        }
-    });
-}
-
-
 function replaceCommonFields(builtInTypes: BuiltinTypeDefinitions, commonFields: any) {
 
     if (!builtInTypes) return;
@@ -173,27 +148,6 @@ function replaceCommonFields(builtInTypes: BuiltinTypeDefinitions, commonFields:
             delete (builtInTypes[confTypeName] as any)['commons'];
         }
     }
-}
-
-
-function mergeTheTypes(typeDefs: any,
-                              customTypes: CustomTypeDefinitions) {
-
-    const pairs = keysAndValues(customTypes);
-
-    forEach(([customTypeName, customType]: any) => {
-        if (typeDefs[customTypeName]) {
-
-            const newMergedType: any = jsonClone(typeDefs[customTypeName]);
-            merge(newMergedType, customType);
-            merge(newMergedType.fields, customType.fields);
-
-            typeDefs[customTypeName] = newMergedType;
-        } else {
-            if (!customType.parent) throw [ConfigurationErrors.MUST_HAVE_PARENT, customTypeName];
-            typeDefs[customTypeName] = customType;
-        }
-    })(pairs);
 }
 
 
@@ -250,4 +204,25 @@ function mergeBuiltInWithLibraryTypes(builtInTypes: BuiltinTypeDefinitions,
         }));
 
     return types;
+}
+
+
+function mergeTheTypes(typeDefs: any,
+                       customTypes: CustomTypeDefinitions) {
+
+    const pairs = keysAndValues(customTypes);
+
+    forEach(([customTypeName, customType]: any) => {
+        if (typeDefs[customTypeName]) {
+
+            const newMergedType: any = jsonClone(typeDefs[customTypeName]);
+            merge(newMergedType, customType);
+            merge(newMergedType.fields, customType.fields);
+
+            typeDefs[customTypeName] = newMergedType;
+        } else {
+            if (!customType.parent) throw [ConfigurationErrors.MUST_HAVE_PARENT, customTypeName];
+            typeDefs[customTypeName] = customType;
+        }
+    })(pairs);
 }
