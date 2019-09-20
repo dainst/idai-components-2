@@ -7,7 +7,7 @@ import {ConfigurationErrors} from "./configuration-errors";
 
 
 /**
- * TODO merge parent fields into type fields at the end of the method
+ * TODO merge parent fields into type fields at the end of the method (to make things easier, maybe process language conf before)
  * TODO throw DUPLICATION_IN_SELECTION if more than one of type family selected
  * TODO merge common fields incrementally
  *
