@@ -38,17 +38,17 @@ export module LibraryTypeDefinition {
 
         return function assertIsValid([typeName, type]: [string, LibraryTypeDefinition]) {
 
-            if (!type.description) throw [ConfigurationErrors.MISSING_PROPERTY, 'description', typeName];
-            if (type.creationDate === undefined) throw [ConfigurationErrors.MISSING_PROPERTY, 'creationDate', typeName];
-            if (type.createdBy === undefined) throw [ConfigurationErrors.MISSING_PROPERTY, 'createdBy', typeName];
+            if (!type.description) throw [ConfigurationErrors.MISSING_TYPE_PROPERTY, 'description', typeName];
+            if (type.creationDate === undefined) throw [ConfigurationErrors.MISSING_TYPE_PROPERTY, 'creationDate', typeName];
+            if (type.createdBy === undefined) throw [ConfigurationErrors.MISSING_TYPE_PROPERTY, 'createdBy', typeName];
 
             if (!type.typeFamily) {
-                if (!type.parent) throw [ConfigurationErrors.MISSING_PROPERTY, 'parent', typeName];
+                if (!type.parent) throw [ConfigurationErrors.MISSING_TYPE_PROPERTY, 'parent', typeName];
             } else {
-                if (!builtinTypes.includes(type.typeFamily) && !type.parent) throw [ConfigurationErrors.MISSING_PROPERTY, 'parent', typeName];
+                if (!builtinTypes.includes(type.typeFamily) && !type.parent) throw [ConfigurationErrors.MISSING_TYPE_PROPERTY, 'parent', typeName];
             }
 
-            if (!type.fields) throw [ConfigurationErrors.MISSING_PROPERTY, 'creationDate', typeName];
+            if (!type.fields) throw [ConfigurationErrors.MISSING_TYPE_PROPERTY, 'creationDate', typeName];
             assertFieldsAreValid(type.fields);
         }
     }

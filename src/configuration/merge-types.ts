@@ -35,7 +35,8 @@ import {FieldDefinition} from './field-definition';
  * @see ConfigurationErrors
  * @throws [DUPLICATION_IN_SELECTION, typeName]
  * @throws [MUST_HAVE_PARENT, typeName]
- * @throws [MISSING_PROPERTY, propertyName, typeName]
+ * @throws [MISSING_TYPE_PROPERTY, propertyName, typeName]
+ * @throws [MISSING_FIELD_PROPERTY, propertyName, typeName, fieldName]
  */
 export function mergeTypes(builtInTypes: BuiltinTypeDefinitions,
                            libraryTypes: LibraryTypeDefinitions,
@@ -49,6 +50,8 @@ export function mergeTypes(builtInTypes: BuiltinTypeDefinitions,
     validateParentsOnTypes(builtInTypes, {...libraryTypes, ...customTypes}, nonExtendableTypes);
 
     const mergedTypes = mergeBuiltInWithLibraryTypes(builtInTypes, libraryTypes);
+    validateFields(mergedTypes);
+    // TODO do not allow to overwrite input type of field of builtIn type
     mergeTheTypes(mergedTypes, customTypes as any);
 
     // TODO validate that each field has an inputType
@@ -62,6 +65,16 @@ export function mergeTypes(builtInTypes: BuiltinTypeDefinitions,
     replaceCommonFields(typesByFamilyNames, commonFields);
     addExtraFields(typesByFamilyNames, extraFields);
     return typesByFamilyNames;
+}
+
+
+function validateFields(types: any) {
+
+    keysAndValues(types).forEach(([typeName, type]: any) => {
+        keysAndValues(type.fields).forEach(([fieldName, field]:any) => {
+            if (!field.inputType) throw [ConfigurationErrors.MISSING_FIELD_PROPERTY, 'inputType', typeName, fieldName]
+        })
+    });
 }
 
 

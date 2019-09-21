@@ -37,10 +37,10 @@ export module CustomTypeDefinition {
         return function assertIsValid([typeName, type]: [string, CustomTypeDefinition]) {
 
             if (!builtinTypes.includes(typeName) && !libraryTypes.includes(typeName)) {
-                if (!type.parent) throw [ConfigurationErrors.MISSING_PROPERTY, 'parent', typeName];
+                if (!type.parent) throw [ConfigurationErrors.MISSING_TYPE_PROPERTY, 'parent', typeName];
             }
 
-            if (!type.fields) throw [ConfigurationErrors.MISSING_PROPERTY, 'fields', type];
+            if (!type.fields) throw [ConfigurationErrors.MISSING_TYPE_PROPERTY, 'fields', type];
             assertFieldsAreValid(type.fields);
         }
     }

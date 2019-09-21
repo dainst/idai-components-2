@@ -1,14 +1,13 @@
 import {
     LibraryTypeDefinition,
     LibraryTypeDefinitions
-} from "../../../../src/configuration/library-type-definition";
-import {BuiltinTypeDefinitions} from "../../../../src/configuration/builtin-type-definition";
-import {CustomTypeDefinitions} from "../../../../src/configuration/custom-type-definition";
-import {mergeTypes} from "../../../../src/configuration/merge-types";
-import {ConfigurationErrors} from "../../../../src/configuration/configuration-errors";
-import {Preprocessing} from "../../../../src/configuration/preprocessing";
-import {RelationDefinition} from "../../../../src/configuration/relation-definition";
-import {TypeDefinition} from "../../../../src/configuration/type-definition";
+} from '../../../../src/configuration/library-type-definition';
+import {BuiltinTypeDefinitions} from '../../../../src/configuration/builtin-type-definition';
+import {CustomTypeDefinitions} from '../../../../src/configuration/custom-type-definition';
+import {mergeTypes} from '../../../../src/configuration/merge-types';
+import {ConfigurationErrors} from '../../../../src/configuration/configuration-errors';
+import {Preprocessing} from '../../../../src/configuration/preprocessing';
+import {RelationDefinition} from '../../../../src/configuration/relation-definition';
 
 
 describe('mergeTypes', () => {
@@ -39,12 +38,83 @@ describe('mergeTypes', () => {
     });
 
 
+    it('field property validation - missing input type in field of builtInType type - extension of supertype', () => {
+
+        const builtInTypes: BuiltinTypeDefinitions = {
+            A: { fields: {} }
+        };
+
+        const libraryTypes: LibraryTypeDefinitions = {
+            'A:0': {
+                typeFamily: 'A',
+                fields: { aField: {} } as any,
+                creationDate: '', createdBy: '', description: {}
+            },
+        };
+
+        try {
+            mergeTypes(builtInTypes,
+                libraryTypes,
+                {}, [], [], {}, {});
+        } catch (expected) {
+            expect(expected).toEqual([ConfigurationErrors.MISSING_FIELD_PROPERTY, 'inputType', 'A:0', 'aField'])
+        }
+    });
+
+
+    it('field property validation  - extension of supertype - inputType inherited from builtIn', () => {
+
+        const builtInTypes: BuiltinTypeDefinitions = {
+            A: { fields: { aField: { inputType: 'input' } } }
+        };
+
+        const libraryTypes: LibraryTypeDefinitions = {
+            'A:0': {
+                typeFamily: 'A',
+                fields: { aField: {} } as any,
+                creationDate: '', createdBy: '', description: {}
+            },
+        };
+
+        const result = mergeTypes(
+            builtInTypes,
+            libraryTypes,
+                {'A:0': { hidden: [], fields: {} }}, [], [], {}, {});
+
+        expect(result['A'].fields['aField'].inputType).toBe('input');
+    });
+
+
+    it('field property validation - missing input type in field of library type - new subtype', () => {
+
+        const builtInTypes: BuiltinTypeDefinitions = {
+            A: { fields: {} }
+        };
+
+        const libraryTypes: LibraryTypeDefinitions = {
+            'B:0': {
+                parent: 'A',
+                fields: { bField: {}} as any,
+                creationDate: '', createdBy: '', description: {}
+            },
+        };
+
+        try {
+            mergeTypes(builtInTypes,
+                libraryTypes,
+                {}, [], [], {}, {});
+        } catch (expected) {
+            expect(expected).toEqual([ConfigurationErrors.MISSING_FIELD_PROPERTY, 'inputType', 'B:0', 'bField'])
+        }
+    });
+
+
     it('apply valuelistConfiguration', () => {
 
         const builtInTypes: BuiltinTypeDefinitions = {
             A: {
                 fields: {
-                    field1: {}
+                    field1: { inputType: 'input' }
                 }
             }
         };
@@ -57,8 +127,8 @@ describe('mergeTypes', () => {
                         inputType: 'dropdown',
                         valuelistId: '123'
                     },
-                    a2: {},
-                    a3: {}},
+                    a2: { inputType: 'input' },
+                    a3: { inputType: 'input' }},
                 creationDate: '',
                 createdBy: '',
                 description: {}
@@ -92,7 +162,7 @@ describe('mergeTypes', () => {
                 registeredTypes1,
                 {}, [], [], {}, {});
         } catch (expected) {
-            expect(expected).toEqual([ConfigurationErrors.MISSING_PROPERTY, 'description', 'B:0'])
+            expect(expected).toEqual([ConfigurationErrors.MISSING_TYPE_PROPERTY, 'description', 'B:0'])
         }
     });
 
@@ -128,7 +198,7 @@ describe('mergeTypes', () => {
         const builtInTypes: BuiltinTypeDefinitions = {
             A: {
                 fields: {
-                    field1: {}
+                    field1: { inputType: 'input' }
                 }
             }
         };
@@ -137,7 +207,7 @@ describe('mergeTypes', () => {
             A: {
                 typeFamily: 'A',
                 fields: {
-                    field2: {}
+                    field2: { inputType: 'input' }
                 },
                 creationDate: '', createdBy: '', description: {}
             }
@@ -167,7 +237,7 @@ describe('mergeTypes', () => {
         const builtInTypes: BuiltinTypeDefinitions = {
             A: {
                 fields: {
-                    field1: { group: 'stem' }
+                    field1: { inputType: 'text', group: 'stem' }
                 }
             }
         };
@@ -198,7 +268,7 @@ describe('mergeTypes', () => {
         const builtInTypes: BuiltinTypeDefinitions = {
             A: {
                 fields: {
-                    field1: { group: 'stem' }
+                    field1: { inputType: 'text', group: 'stem' }
                 }
             }
         };

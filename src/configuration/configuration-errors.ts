@@ -23,5 +23,6 @@ export class ConfigurationErrors {
     public static MUST_HAVE_TYPE_FAMILY = 'configuration/error/musthavetypefamily';
 
     // Preprocessing - structural errors
-    public static MISSING_PROPERTY = 'configuration/error/missingproperty';
+    public static MISSING_TYPE_PROPERTY = 'configuration/error/missingTypeProperty';
+    public static MISSING_FIELD_PROPERTY = 'configuration/error/missingFieldProperty';
 }

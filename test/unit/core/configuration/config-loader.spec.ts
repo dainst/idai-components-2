@@ -435,9 +435,34 @@ describe('ConfigLoader', () => {
     it('apply order configuration', async done => {
 
         Object.assign(libraryTypes, {
-            'B': { typeFamily: 'B', parent: 'Parent', fields: { fieldB2: {}, fieldB3: {}, fieldB1: {} }, creationDate: '', createdBy: '', description: {} },
-            'C': { typeFamily: 'C', parent: 'Parent', fields: { fieldC1: {}, fieldC2: {} }, creationDate: '', createdBy: '', description: {} },
-            'A': { typeFamily: 'A', parent: 'Parent', fields: { fieldA2: {}, fieldA1: {} }, creationDate: '', createdBy: '', description: {} }
+            'B': {
+                typeFamily: 'B',
+                parent: 'Parent',
+                fields: {
+                    fieldB2: { inputType: 'input' },
+                    fieldB3: { inputType: 'input' },
+                    fieldB1: { inputType: 'input' }
+                    },
+                creationDate: '', createdBy: '', description: {}
+                },
+            'C': {
+                typeFamily: 'C',
+                parent: 'Parent',
+                fields: {
+                    fieldC1: { inputType: 'input' },
+                    fieldC2: { inputType: 'input' }
+                    },
+                creationDate: '', createdBy: '', description: {}
+                },
+            'A': {
+                typeFamily: 'A',
+                parent: 'Parent',
+                fields: {
+                    fieldA2: { inputType: 'input' },
+                    fieldA1: { inputType: 'input' }
+                    },
+                creationDate: '', createdBy: '', description: {}
+            }
         });
 
         applyConfig(
@@ -484,7 +509,15 @@ describe('ConfigLoader', () => {
         async done => {
 
         Object.assign(libraryTypes, {
-            'A': { typeFamily: 'A', parent: 'Parent', fields: { fieldA2: {}, fieldA1: {} }, creationDate: '', createdBy: '', description: {}  }
+            A: {
+                typeFamily: 'A',
+                parent: 'Parent',
+                fields: {
+                    fieldA2: { inputType: 'input' },
+                    fieldA1: { inputType: 'input' }
+                    },
+                creationDate: '', createdBy: '', description: {}
+            }
         });
 
         applyConfig({ 'A': { fields: {} }, 'Parent': { fields: {} } },
@@ -517,7 +550,14 @@ describe('ConfigLoader', () => {
     it('apply hidden', async done => {
 
         Object.assign(libraryTypes, {
-            'A:0': { typeFamily: 'A', fields: { fieldA1: {}, fieldA2: {}, fieldA3: {}  }, creationDate: '', createdBy: '', description: {}  }
+            'A:0': {
+                typeFamily: 'A',
+                fields: {
+                    fieldA1: { inputType: 'input' },
+                    fieldA2: { inputType: 'input' },
+                    fieldA3: { inputType: 'input' }
+                    },
+                creationDate: '', createdBy: '', description: {}  }
         });
 
         applyConfig({ 'A:0': { fields: {}, hidden: ['fieldA1', 'fieldA2'] } },
