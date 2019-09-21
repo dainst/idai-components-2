@@ -323,9 +323,9 @@ describe('mergeTypes', () => {
         };
 
         const customTypes: CustomTypeDefinitions = {
-            'A': {
+            A: {
                 fields: {
-                    field1: { inputType: 'text' },
+                    field1: { },
                     field2: { inputType: 'text' }
                 }
             }
@@ -337,6 +337,45 @@ describe('mergeTypes', () => {
         expect(result['A'].fields['field1'].inputType).toBe('text');
         expect(result['A'].fields['field1'].group).toBe('stem');
         expect(result['A'].fields['field2'].inputType).toBe('text');
+    });
+
+
+    it('mergeTypes - merge custom types with library types', () => {
+
+        const builtInTypes: BuiltinTypeDefinitions = {
+            A: {
+                fields: {
+                    field1: { inputType: 'text', group: 'stem' }
+                }
+            }
+        };
+
+        const libraryTypes: LibraryTypeDefinitions = {
+            'A:0': {
+                typeFamily: 'A',
+                fields: {
+                    field2: { inputType: 'text' }
+                },
+                creationDate: '',
+                createdBy: '',
+                description: {} }
+        };
+
+        const customTypes: CustomTypeDefinitions = {
+            'A:0': {
+                fields: {
+                    field2: { },
+                    field3: { inputType: 'text' }
+                }
+            }
+        };
+
+        const result = mergeTypes(builtInTypes, libraryTypes, customTypes,
+            [], [], {}, {});
+
+        expect(result['A'].fields['field1'].inputType).toBe('text');
+        expect(result['A'].fields['field2'].inputType).toBe('text');
+        expect(result['A'].fields['field3'].inputType).toBe('text');
     });
 
 

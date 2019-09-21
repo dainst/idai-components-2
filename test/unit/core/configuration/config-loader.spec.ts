@@ -194,10 +194,7 @@ describe('ConfigLoader', () => {
             'B': { typeFamily: 'B', parent: 'T', fields: {}, creationDate: '', createdBy: '', description: {}  }});
 
         applyConfig(
-            { 'A': { fields: {} }, 'B': { fields: {} }, 'T': { fields: {} }}),
-            {},
-            {},
-            {};
+            { 'A': { fields: {} }, 'B': { fields: {} }, 'T': { fields: {} }});
 
         let pconf;
         try {
@@ -287,7 +284,7 @@ describe('ConfigLoader', () => {
         });
 
         const customTypes: CustomTypeDefinitions = {
-            'A': { fields: { fieldA1: { inputType: 'unsignedFloat' } } },
+            'A': { fields: { fieldA1: { } } },
             'B': { fields: { fieldB2: { inputType: 'boolean' } } },
             'F': { fields: {} },
             'G': { fields: {} }
@@ -308,7 +305,7 @@ describe('ConfigLoader', () => {
             );
 
             expect(pconf.getTypesList()[2].fields.find(field => field.name == 'fieldA1')
-                .inputType).toEqual('unsignedFloat');
+                .inputType).toEqual('unsignedInt');
             expect(pconf.getTypesList()[3].fields.find(field => field.name == 'fieldB1')
                 .inputType).toEqual('input');
             expect(pconf.getTypesList()[3].fields.find(field => field.name == 'fieldB2')

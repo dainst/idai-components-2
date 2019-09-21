@@ -9,6 +9,7 @@ import {FieldDefinition} from './field-definition';
 
 
 // TODO make a ts type for errors
+// TODO use terms resources-db and config-db. add the config-db and store the Config-(project).json files there
 
 /**
  * TODO merge parent fields into type fields at the end of the method (to make things easier, maybe process language conf before)
@@ -300,17 +301,43 @@ function mergeBuiltInWithLibraryTypes(builtInTypes: BuiltinTypeDefinitions,
 }
 
 
+/**
+ * TODO can be taken out as soon as custom fields get stored separately in resources db
+ *
+ * @param customTypeName
+ * @param customType
+ * @param extendedType
+ */
+function issueWarningOnFieldTypeChanges(customTypeName: string, customType: any, extendedType: any) {
+
+    keysAndValues(customType.fields).forEach(([customTypeFieldName, customTypeField]: any) => {
+
+        const existingField = extendedType.fields[customTypeFieldName];
+
+        if (existingField
+            && existingField.inputType
+            && customTypeField.inputType
+            && customTypeField.inputType !== existingField.inputType) {
+
+            console.warn('change of input type detected', customTypeName, customTypeFieldName);
+        }
+    });
+}
+
 function mergeTheTypes(typeDefs: any,
                        customTypes: CustomTypeDefinitions) {
 
     const pairs = keysAndValues(customTypes);
 
     forEach(([customTypeName, customType]: any) => {
-        if (typeDefs[customTypeName]) {
 
-            const newMergedType: any = jsonClone(typeDefs[customTypeName]);
+        const extendedType = typeDefs[customTypeName];
+
+        if (extendedType) {
+            issueWarningOnFieldTypeChanges(customTypeName, customType, extendedType);
+
+            const newMergedType: any = jsonClone(extendedType);
             merge(newMergedType, customType);
-            // TODO log a warning if field inputType gets changed
             merge(newMergedType.fields, customType.fields);
 
             typeDefs[customTypeName] = newMergedType;
