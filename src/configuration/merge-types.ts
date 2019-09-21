@@ -1,13 +1,11 @@
-import {BuiltinTypeDefinitions} from "./builtin-type-definition";
-import {LibraryTypeDefinition, LibraryTypeDefinitions} from "./library-type-definition";
-import {CustomTypeDefinition, CustomTypeDefinitions} from "./custom-type-definition";
-import {
-    clone, filter, flow, forEach, is, isDefined, reduce,
-    jsonClone, keysAndValues, lookup, map, to, compose, on
-} from "tsfun";
-import {ConfigurationErrors} from "./configuration-errors";
-import {TypeDefinition} from "./type-definition";
-import {FieldDefinition} from "./field-definition";
+import {BuiltinTypeDefinitions} from './builtin-type-definition';
+import {LibraryTypeDefinition, LibraryTypeDefinitions} from './library-type-definition';
+import {CustomTypeDefinition, CustomTypeDefinitions} from './custom-type-definition';
+import {clone, compose, filter, flow, forEach, is, isDefined,
+    jsonClone, keysAndValues, lookup, map, on, reduce, to} from 'tsfun';
+import {ConfigurationErrors} from './configuration-errors';
+import {TypeDefinition} from './type-definition';
+import {FieldDefinition} from './field-definition';
 
 
 /**
@@ -33,6 +31,7 @@ import {FieldDefinition} from "./field-definition";
  * @param commonFields
  * @param selectedTypes
  * @param valuelistsConfiguration
+ * @param extraFields
  *
  * @see ConfigurationErrors
  * @throws [DUPLICATION_IN_SELECTION, typeName]
@@ -45,7 +44,8 @@ export function mergeTypes(builtInTypes: BuiltinTypeDefinitions,
                            nonExtendableTypes: any,
                            commonFields: any,
                            selectedTypes: any,
-                           valuelistsConfiguration: any) {
+                           valuelistsConfiguration: any,
+                           extraFields: any) {
 
     assertTypesAndValuelistsStructurallyValid(Object.keys(builtInTypes), libraryTypes, customTypes);
     validateParentsOnTypes(builtInTypes, {...libraryTypes, ...customTypes}, nonExtendableTypes);
@@ -59,7 +59,47 @@ export function mergeTypes(builtInTypes: BuiltinTypeDefinitions,
     const typesByFamilyNames: any = toTypesByFamilyNames(mergedTypes);
     applyValuelistsConfiguration(typesByFamilyNames, valuelistsConfiguration);
     replaceCommonFields(typesByFamilyNames, commonFields);
+    addExtraFields(typesByFamilyNames, extraFields);
     return typesByFamilyNames;
+}
+
+
+function addExtraFields(configuration: any,
+                        extraFields: {[fieldName: string]: FieldDefinition }) {
+
+    for (let typeName of Object.keys(configuration)) {
+        const typeDefinition = configuration[typeName];
+
+        if (!typeDefinition.fields) typeDefinition.fields = {};
+
+        if (typeDefinition.parent == undefined) {
+            _addExtraFields(typeDefinition, extraFields)
+        }
+
+        for (let fieldName of Object.keys(typeDefinition.fields)) {
+            const fieldDefinition = typeDefinition.fields[fieldName];
+
+            if (fieldDefinition.editable == undefined) fieldDefinition.editable = true;
+            if (fieldDefinition.visible == undefined) fieldDefinition.visible = true;
+        }
+    }
+}
+
+
+function _addExtraFields(typeDefinition: TypeDefinition,
+                         extraFields: {[fieldName: string]: FieldDefinition }) {
+
+    for (let extraFieldName of Object.keys(extraFields)) {
+        let fieldAlreadyPresent = false;
+
+        for (let fieldName of Object.keys(typeDefinition.fields)) {
+            if (fieldName === extraFieldName) fieldAlreadyPresent = true;
+        }
+
+        if (!fieldAlreadyPresent) {
+            typeDefinition.fields[extraFieldName] = Object.assign({}, extraFields[extraFieldName]);
+        }
+    }
 }
 
 

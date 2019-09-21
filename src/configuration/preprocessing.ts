@@ -18,14 +18,10 @@ export module Preprocessing {
                                 customLanguageConfiguration: any,
                                 searchConfiguration: any,
                                 orderConfiguration: any,
-                                extraFields: any,
-                                relations: any,
-                                defaultFields: any) {
+                                relations: any) {
 
         appConfiguration.relations = [];
-        addExtraFields(appConfiguration, extraFields);
         addExtraRelations(appConfiguration, relations);
-        addExtraFields(appConfiguration, defaultFields);
 
         applyLanguage(appConfiguration, languageConfiguration);
         applyLanguage(appConfiguration, customLanguageConfiguration);
@@ -156,28 +152,6 @@ export module Preprocessing {
     }
 
 
-    export function addExtraFields(configuration: UnorderedConfigurationDefinition,
-                                   extraFields: {[fieldName: string]: FieldDefinition }) {
-
-        for (let typeName of Object.keys(configuration.types)) {
-            const typeDefinition = configuration.types[typeName];
-
-            if (!typeDefinition.fields) typeDefinition.fields = {};
-
-            if (typeDefinition.parent == undefined) {
-                _addExtraFields(typeDefinition, extraFields)
-            }
-
-            for (let fieldName of Object.keys(typeDefinition.fields)) {
-                const fieldDefinition = typeDefinition.fields[fieldName];
-
-                if (fieldDefinition.editable == undefined) fieldDefinition.editable = true;
-                if (fieldDefinition.visible == undefined) fieldDefinition.visible = true;
-            }
-        }
-    }
-
-
     export function addExtraRelations(configuration: UnorderedConfigurationDefinition,
                                       extraRelations: Array<RelationDefinition>) {
 
@@ -246,23 +220,6 @@ export module Preprocessing {
         for (let typeName of Object.keys(configuration.types)) {
             if (extraRelation[opposite].indexOf(typeName) == -1) {
                 extraRelation[itemSet].push(typeName);
-            }
-        }
-    }
-
-
-    function _addExtraFields(typeDefinition: TypeDefinition,
-                             extraFields: {[fieldName: string]: FieldDefinition }) {
-
-        for (let extraFieldName of Object.keys(extraFields)) {
-            let fieldAlreadyPresent = false;
-
-            for (let fieldName of Object.keys(typeDefinition.fields)) {
-                if (fieldName === extraFieldName) fieldAlreadyPresent = true;
-            }
-
-            if (!fieldAlreadyPresent) {
-                typeDefinition.fields[extraFieldName] = Object.assign({}, extraFields[extraFieldName]);
             }
         }
     }
