@@ -227,23 +227,28 @@ export class AppConfigurator {
         Image: {
             fields: {
                 height: {
+                    inputType: 'input', // TODO review
                     editable: false,
                     label: this.i18n({ id: 'configuration.image.height', value: 'Höhe' })
                 },
                 width: {
+                    inputType: 'input', // TODO review
                     editable: false,
                     label: this.i18n({ id: 'configuration.image.width', value: 'Breite' })
                 },
                 originalFilename: {
+                    inputType: 'input', // TODO review
                     visible: false,
                     editable: false
                 },
                 // TODO Delete the fields 'filename' and 'hasFilename' as soon as existing data has been migrated.
                 filename: {
+                    inputType: 'input', // TODO review
                     visible: false,
                     editable: false
                 },
                 georeference: {
+                    inputType: 'input', // TODO review
                     visible: false,
                     editable: false
                 }
@@ -253,6 +258,7 @@ export class AppConfigurator {
             label: this.i18n({ id: 'configuration.project', value: 'Projekt' }),
             fields: {
                 'identifier': {
+                    inputType: 'input', // TODO review
                     editable: false
                 },
                 'coordinateReferenceSystem': {
