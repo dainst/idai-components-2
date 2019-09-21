@@ -38,6 +38,28 @@ describe('mergeTypes', () => {
     });
 
 
+    it('field property validation - missing input type in field of entirely new custom type', () => {
+
+        const builtInTypes: BuiltinTypeDefinitions = { A: { fields: {} }};
+        const libraryTypes: LibraryTypeDefinitions = {};
+        const customTypes: CustomTypeDefinitions = { 'C': { parent: 'A', fields: { cField: {}} }};
+
+        try {
+            mergeTypes(
+                builtInTypes,
+                libraryTypes,
+                customTypes,
+                [],
+                [],
+                {},
+                {});
+            fail();
+        } catch (expected) {
+            expect(expected).toEqual([ConfigurationErrors.MISSING_FIELD_PROPERTY, 'inputType', 'C', 'cField'])
+        }
+    });
+
+
     it('field property validation - missing input type in field of builtInType type - extension of supertype', () => {
 
         const builtInTypes: BuiltinTypeDefinitions = {

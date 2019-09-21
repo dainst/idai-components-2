@@ -315,7 +315,11 @@ function mergeTheTypes(typeDefs: any,
             typeDefs[customTypeName] = newMergedType;
         } else {
             if (!customType.parent) throw [ConfigurationErrors.MUST_HAVE_PARENT, customTypeName];
-            // TODO for custom types, all types must have an inputType property
+
+            keysAndValues(customType.fields).forEach(([fieldName, field]: any) => {
+                if (!field.inputType) throw [ConfigurationErrors.MISSING_FIELD_PROPERTY, 'inputType', customTypeName, fieldName];
+            });
+
             typeDefs[customTypeName] = customType;
         }
     })(pairs);
