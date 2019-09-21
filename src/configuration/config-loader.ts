@@ -142,7 +142,8 @@ export class ConfigLoader {
                 registeredTypes2,
                 nonExtendableTypes,
                 commonFields,
-                selectionConfiguration);
+                selectionConfiguration,
+                valuelistsConfiguration);
         } catch (msgWithParams) {
             throw [msgWithParams];
         }
@@ -153,7 +154,6 @@ export class ConfigLoader {
                 languageConfiguration,
                 customLanguageConfiguration,
                 searchConfiguration,
-                valuelistsConfiguration,
                 orderConfiguration,
                 extraFields,
                 relations,

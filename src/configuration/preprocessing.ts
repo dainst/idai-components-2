@@ -17,7 +17,6 @@ export module Preprocessing {
                                 languageConfiguration: any,
                                 customLanguageConfiguration: any,
                                 searchConfiguration: any,
-                                valuelistsConfiguration: any,
                                 orderConfiguration: any,
                                 extraFields: any,
                                 relations: any,
@@ -32,8 +31,6 @@ export module Preprocessing {
         applyLanguage(appConfiguration, customLanguageConfiguration);
 
         applySearchConfiguration(appConfiguration, searchConfiguration);
-
-        applyValuelistsConfiguration(appConfiguration.types, valuelistsConfiguration);
         addExtraFieldsOrder(appConfiguration, orderConfiguration);
 
         return {
@@ -116,25 +113,6 @@ export module Preprocessing {
             applySearchConfigurationForType(searchConfiguration, type, typeName, 'constraint',
                 'constraintIndexed');
         });
-    }
-
-
-    export function applyValuelistsConfiguration(types: { [typeName: string]: TypeDefinition },
-                                                 valuelistsConfiguration: {[id: string]: {values: string[]}}) {
-
-        const processFields = compose(
-            Object.values,
-            filter(on('valuelistId', isDefined)),
-            forEach((fd: FieldDefinition) => (fd as any)['valuelist']
-                = Object.keys(valuelistsConfiguration[
-                    (fd as any)['valuelistId']
-                ].values)));
-
-        flow(types,
-            Object.values,
-            filter(isDefined),
-            map(to('fields')),
-            forEach(processFields));
     }
 
 

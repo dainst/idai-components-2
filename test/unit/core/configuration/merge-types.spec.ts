@@ -2,17 +2,14 @@ import {
     LibraryTypeDefinition,
     LibraryTypeDefinitions
 } from "../../../../src/configuration/library-type-definition";
-import {
-    BuiltinTypeDefinition,
-    BuiltinTypeDefinitions
-} from "../../../../src/configuration/builtin-type-definition";
+import {BuiltinTypeDefinitions} from "../../../../src/configuration/builtin-type-definition";
 import {CustomTypeDefinitions} from "../../../../src/configuration/custom-type-definition";
 import {mergeTypes} from "../../../../src/configuration/merge-types";
 import {ConfigurationErrors} from "../../../../src/configuration/configuration-errors";
 import {Preprocessing} from "../../../../src/configuration/preprocessing";
-import {FieldDefinition} from "../../../../src/configuration/field-definition";
-import {TypeDefinition} from "../../../../src/configuration/type-definition";
 import {RelationDefinition} from "../../../../src/configuration/relation-definition";
+import {TypeDefinition} from "../../../../src/configuration/type-definition";
+
 
 describe('mergeTypes', () => {
 
@@ -42,6 +39,43 @@ describe('mergeTypes', () => {
     });
 
 
+    it('apply valuelistConfiguration', () => {
+
+        const builtInTypes: BuiltinTypeDefinitions = {
+            A: {
+                fields: {
+                    field1: {}
+                }
+            }
+        };
+
+        const libraryTypes: LibraryTypeDefinitions  = {
+            'A:0': {
+                typeFamily: 'A',
+                fields: {
+                    a1: {
+                        inputType: 'dropdown',
+                        valuelistId: '123'
+                    },
+                    a2: {},
+                    a3: {}},
+                creationDate: '',
+                createdBy: '',
+                description: {}
+            }
+        };
+
+        const valuelistsConfiguration = {
+            '123': { values: { 'one': {}, 'two': {}, 'three': {} }}
+        };
+
+        const result = mergeTypes(builtInTypes,
+            libraryTypes,
+            {}, [], [], {'A:0':{}}, valuelistsConfiguration);
+        expect(result['A'].fields['a1'].valuelist).toEqual(['one', 'two', 'three']);
+    });
+
+
     it('mergeTypes - validate type properties - missing description', () => {
 
         const builtInTypes = {} as any;
@@ -56,7 +90,7 @@ describe('mergeTypes', () => {
         try {
             mergeTypes(builtInTypes,
                 registeredTypes1,
-                {}, [], [], ['B', 'B:0']);
+                {}, [], [], {}, {});
         } catch (expected) {
             expect(expected).toEqual([ConfigurationErrors.MISSING_PROPERTY, 'description', 'B:0'])
         }
@@ -82,7 +116,7 @@ describe('mergeTypes', () => {
         try {
             mergeTypes(builtInTypes,
                 libraryTypes,
-                {}, [], [], ['A', 'B:0']);
+                {}, [], [], {}, {});
         } catch (expected) {
             expect(expected).toEqual(['type field with extra keys', ['valuelist']])
         }
@@ -119,7 +153,8 @@ describe('mergeTypes', () => {
                 'A': {
                     hidden: ['field1']
                 }
-            });
+            },
+            {});
 
         expect(result['A']['fields']['field1'].visible).toBe(false);
         expect(result['A']['fields']['field2'].visible).not.toBeDefined();
@@ -148,7 +183,7 @@ describe('mergeTypes', () => {
                 description: {} }
         };
 
-        const result = mergeTypes(builtInTypes, libraryTypes, {}, [], [], {'A:1': { hidden: [] }});
+        const result = mergeTypes(builtInTypes, libraryTypes, {}, [], [], {'A:1': { hidden: [] }}, {});
 
         expect(result['A'].fields['field1'].inputType).toBe('text');
         expect(result['A'].fields['field1'].group).toBe('stem');
@@ -175,7 +210,7 @@ describe('mergeTypes', () => {
             }
         };
 
-        const result = mergeTypes(builtInTypes, {}, customTypes, [], [], {'A': {hidden: []}});
+        const result = mergeTypes(builtInTypes, {}, customTypes, [], [], {'A': {hidden: []}}, {});
 
         expect(result['A'].fields['field1'].inputType).toBe('text');
         expect(result['A'].fields['field1'].group).toBe('stem');

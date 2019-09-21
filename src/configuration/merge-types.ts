@@ -1,9 +1,13 @@
 import {BuiltinTypeDefinitions} from "./builtin-type-definition";
 import {LibraryTypeDefinition, LibraryTypeDefinitions} from "./library-type-definition";
 import {CustomTypeDefinition, CustomTypeDefinitions} from "./custom-type-definition";
-import {clone, filter, flow, forEach, is, isDefined, reduce,
-    jsonClone, keysAndValues, lookup, map, to} from "tsfun";
+import {
+    clone, filter, flow, forEach, is, isDefined, reduce,
+    jsonClone, keysAndValues, lookup, map, to, compose, on
+} from "tsfun";
 import {ConfigurationErrors} from "./configuration-errors";
+import {TypeDefinition} from "./type-definition";
+import {FieldDefinition} from "./field-definition";
 
 
 /**
@@ -28,6 +32,7 @@ import {ConfigurationErrors} from "./configuration-errors";
  * @param nonExtendableTypes
  * @param commonFields
  * @param selectedTypes
+ * @param valuelistsConfiguration
  *
  * @see ConfigurationErrors
  * @throws [DUPLICATION_IN_SELECTION, typeName]
@@ -39,7 +44,8 @@ export function mergeTypes(builtInTypes: BuiltinTypeDefinitions,
                            customTypes: CustomTypeDefinitions,
                            nonExtendableTypes: any,
                            commonFields: any,
-                           selectedTypes: any) {
+                           selectedTypes: any,
+                           valuelistsConfiguration: any) {
 
     assertTypesAndValuelistsStructurallyValid(Object.keys(builtInTypes), libraryTypes, customTypes);
     validateParentsOnTypes(builtInTypes, {...libraryTypes, ...customTypes}, nonExtendableTypes);
@@ -51,8 +57,28 @@ export function mergeTypes(builtInTypes: BuiltinTypeDefinitions,
     hideFields(mergedTypes, selectedTypes);
 
     const typesByFamilyNames: any = toTypesByFamilyNames(mergedTypes);
+    applyValuelistsConfiguration(typesByFamilyNames, valuelistsConfiguration);
     replaceCommonFields(typesByFamilyNames, commonFields);
     return typesByFamilyNames;
+}
+
+
+function applyValuelistsConfiguration(types: { [typeName: string]: TypeDefinition },
+                                      valuelistsConfiguration: {[id: string]: {values: string[]}}) {
+
+    const processFields = compose(
+        Object.values,
+        filter(on('valuelistId', isDefined)),
+        forEach((fd: FieldDefinition) => (fd as any)['valuelist']
+            = Object.keys(valuelistsConfiguration[
+            (fd as any)['valuelistId']
+            ].values)));
+
+    flow(types,
+        Object.values,
+        filter(isDefined),
+        map(to('fields')),
+        forEach(processFields));
 }
 
 

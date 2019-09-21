@@ -317,34 +317,6 @@ describe('Preprocessing', () => {
     });
 
 
-    it('apply valuelistConfiguration', () => {
-
-        configuration = {
-            identifier: 'test',
-            types: {
-                A: { fields: {
-                    a1: {
-                        inputType: 'dropdown',
-                        valuelistId: '123'
-                    },
-                    a2: {},
-                    a3: {}
-                } } as TypeDefinition
-            },
-            relations: []
-        };
-
-        const valuelistsConfiguration = {
-            '123': { values: { 'one': {}, 'two': {}, 'three': {} }}
-        };
-
-        // TODO delete valuelistId afterwards
-        Preprocessing.applyValuelistsConfiguration(configuration.types, valuelistsConfiguration as any);
-        expect(configuration.types['A'].fields['a1'].valuelist).toEqual(['one', 'two', 'three']);
-        //console.log(JSON.stringify(configuration));
-    });
-
-
     /*
     it('applyCustom - merge group field into overwritten field', () => {
 
