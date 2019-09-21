@@ -37,6 +37,7 @@ import {FieldDefinition} from './field-definition';
  * @throws [MUST_HAVE_PARENT, typeName]
  * @throws [MISSING_TYPE_PROPERTY, propertyName, typeName]
  * @throws [MISSING_FIELD_PROPERTY, propertyName, typeName, fieldName]
+ * @throws [MUST_NOT_SET_INPUT_TYPE, typeName, fieldName]
  */
 export function mergeTypes(builtInTypes: BuiltinTypeDefinitions,
                            libraryTypes: LibraryTypeDefinitions,
@@ -251,7 +252,6 @@ function merge(target: any, source: any) {
             target[sourceFieldName] = source[sourceFieldName];
         } else {
 
-            // TODO hack; later we want only valuelistId to be changable
             if (source[sourceFieldName]['inputType']) {
                 target[sourceFieldName]['inputType'] = source[sourceFieldName]['inputType'];
             }
@@ -267,7 +267,7 @@ function merge(target: any, source: any) {
 
 
 function mergeBuiltInWithLibraryTypes(builtInTypes: BuiltinTypeDefinitions,
-                                             libraryTypes: LibraryTypeDefinitions) {
+                                      libraryTypes: LibraryTypeDefinitions) {
 
     const types: any = {...builtInTypes};
 
@@ -279,6 +279,13 @@ function mergeBuiltInWithLibraryTypes(builtInTypes: BuiltinTypeDefinitions,
                 const newMergedType: any = jsonClone(builtInTypes[libraryType.typeFamily]);
 
                 merge(newMergedType, libraryType);
+
+                keysAndValues(libraryType.fields).forEach(([libraryTypeFieldName, libraryTypeField]: any) => {
+
+                    if (builtInTypes[libraryType.typeFamily].fields[libraryTypeFieldName] && libraryTypeField['inputType']) {
+                        throw [ConfigurationErrors.MUST_NOT_SET_INPUT_TYPE, libraryTypeName, libraryTypeFieldName];
+                    }
+                });
                 merge(newMergedType.fields, libraryType.fields);
 
                 types[libraryTypeName] = newMergedType;

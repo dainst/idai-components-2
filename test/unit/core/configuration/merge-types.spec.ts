@@ -56,6 +56,7 @@ describe('mergeTypes', () => {
             mergeTypes(builtInTypes,
                 libraryTypes,
                 {}, [], [], {}, {});
+            fail();
         } catch (expected) {
             expect(expected).toEqual([ConfigurationErrors.MISSING_FIELD_PROPERTY, 'inputType', 'A:0', 'aField'])
         }
@@ -103,8 +104,34 @@ describe('mergeTypes', () => {
             mergeTypes(builtInTypes,
                 libraryTypes,
                 {}, [], [], {}, {});
+            fail();
         } catch (expected) {
             expect(expected).toEqual([ConfigurationErrors.MISSING_FIELD_PROPERTY, 'inputType', 'B:0', 'bField'])
+        }
+    });
+
+
+    it('field property validation - must not set field type on inherited field', () => {
+
+        const builtInTypes: BuiltinTypeDefinitions = {
+            A: { fields: { aField: { inputType: 'input' }} }
+        };
+
+        const libraryTypes: LibraryTypeDefinitions = {
+            'A:0': {
+                typeFamily: 'A',
+                fields: { aField: { inputType: 'input' }} as any,
+                creationDate: '', createdBy: '', description: {}
+            },
+        };
+
+        try {
+            mergeTypes(builtInTypes,
+                libraryTypes,
+                {}, [], [], {}, {});
+            fail();
+        } catch (expected) {
+            expect(expected).toEqual([ConfigurationErrors.MUST_NOT_SET_INPUT_TYPE, 'A:0', 'aField'])
         }
     });
 
@@ -246,7 +273,7 @@ describe('mergeTypes', () => {
             'A:1': {
                 typeFamily: 'A',
                 fields: {
-                    field1: { inputType: 'text' },
+                    field1: {},
                     field2: { inputType: 'text' }
                 },
                 creationDate: "",
