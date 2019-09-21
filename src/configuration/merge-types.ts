@@ -52,7 +52,6 @@ export function mergeTypes(builtInTypes: BuiltinTypeDefinitions,
 
     const mergedTypes = mergeBuiltInWithLibraryTypes(builtInTypes, libraryTypes);
     validateFields(mergedTypes);
-    // TODO do not allow to overwrite input type of field of builtIn type
     mergeTheTypes(mergedTypes, customTypes as any);
 
     // TODO validate that each field has an inputType
