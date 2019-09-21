@@ -14,6 +14,7 @@ import {FieldDefinition} from './field-definition';
  * TODO merge parent fields into type fields at the end of the method (to make things easier, maybe process language conf before)
  * TODO throw DUPLICATION_IN_SELECTION if more than one of type family selected
  * TODO merge common fields incrementally
+ * TODO make sure group gets not re-set
  *
  * @author Daniel de Oliveira
  * @author Thomas Kleinke
