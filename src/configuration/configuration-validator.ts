@@ -38,13 +38,7 @@ export class ConfigurationValidator {
         const fieldError = ConfigurationValidator.validateFieldDefinitions(configuration.types);
         if (fieldError.length) msgs = msgs.concat(fieldError);
 
-        return msgs.concat(this.custom(configuration));
-    }
-
-
-    protected custom(configuration: ConfigurationDefinition): any[] {
-
-        return [];
+        return msgs;
     }
 
 
@@ -95,7 +89,6 @@ export class ConfigurationValidator {
 
     private static missingParentType = (type: TypeDefinition) =>
         [ConfigurationErrors.INVALID_CONFIG_MISSINGPARENTTYPE, type.parent];
-
 
     private static duplicateType = (type: TypeDefinition) =>
         [ConfigurationErrors.INVALID_CONFIG_DUPLICATETYPE, type.type];
