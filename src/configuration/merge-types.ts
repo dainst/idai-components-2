@@ -276,21 +276,21 @@ function mergeBuiltInWithLibraryTypes(builtInTypes: BuiltinTypeDefinitions,
         libraryTypes,
         keysAndValues,
         forEach(([libraryTypeName, libraryType]: any) => {
-            if (builtInTypes[libraryType.typeFamily]) {
-                const newMergedType: any = jsonClone(builtInTypes[libraryType.typeFamily]);
 
+            const extendedBuiltInType = builtInTypes[libraryType.typeFamily];
+            if (extendedBuiltInType) {
+
+                const newMergedType: any = jsonClone(extendedBuiltInType);
                 merge(newMergedType, libraryType);
-
                 keysAndValues(libraryType.fields).forEach(([libraryTypeFieldName, libraryTypeField]: any) => {
-
-                    if (builtInTypes[libraryType.typeFamily].fields[libraryTypeFieldName] && libraryTypeField['inputType']) {
+                    if (extendedBuiltInType.fields[libraryTypeFieldName] && libraryTypeField['inputType']) {
                         throw [ConfigurationErrors.MUST_NOT_SET_INPUT_TYPE, libraryTypeName, libraryTypeFieldName];
                     }
                 });
                 merge(newMergedType.fields, libraryType.fields);
-
                 types[libraryTypeName] = newMergedType;
             } else {
+
                 if (!libraryType.parent) throw [ConfigurationErrors.MUST_HAVE_PARENT, libraryTypeName];
                 types[libraryTypeName] = libraryType;
             }
