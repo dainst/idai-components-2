@@ -23,21 +23,7 @@ export class PrePreprocessConfigurationValidator {
 
         if (!typeDefinitions.types) return [];
 
-        return PrePreprocessConfigurationValidator.checkForForbiddenTopLevelFields(typeDefinitions)
-            .concat(PrePreprocessConfigurationValidator.checkForExtraneousFieldsInTypes(typeDefinitions));
-    }
-
-
-    private static checkForForbiddenTopLevelFields(appConfiguration: any): Array<Array<string>> {
-
-        // const allowedFields = ['identifier', 'types'];
-        //
-        // const result = Object.keys(appConfiguration).find(isNot(includedIn(allowedFields)));
-        //
-        // return result
-        //     ? [['relations cannot be defined via external configuration']]
-        //     : [];
-        return [];
+        return PrePreprocessConfigurationValidator.checkForExtraneousFieldsInTypes(typeDefinitions);
     }
 
 
