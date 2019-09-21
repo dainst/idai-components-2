@@ -51,6 +51,9 @@ export function mergeTypes(builtInTypes: BuiltinTypeDefinitions,
     const mergedTypes = mergeBuiltInWithLibraryTypes(builtInTypes, libraryTypes);
     mergeTheTypes(mergedTypes, customTypes as any);
 
+    // TODO validate that each field has an inputType
+    // TODO make sure that valuelistIds are provided for certain inputTypes
+
     eraseUnusedTypes(mergedTypes, Object.keys(customTypes));
     hideFields(mergedTypes, customTypes);
 
