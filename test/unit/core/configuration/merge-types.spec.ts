@@ -12,31 +12,6 @@ import {RelationDefinition} from '../../../../src/configuration/relation-definit
 
 describe('mergeTypes', () => {
 
-    let configuration;
-    let t1: LibraryTypeDefinition;
-
-    beforeEach(() => {
-
-        t1 = {
-            typeFamily: 'x1',
-            parent: 'x',
-            description: { 'de': '' },
-            createdBy: '',
-            creationDate: '',
-            color: 'white',
-            fields: {
-                'aField': {}
-            }
-        } as LibraryTypeDefinition;
-
-        configuration = {
-            identifier: 'test',
-            types: {
-                'T1': t1
-            } as LibraryTypeDefinitions
-        } as any;
-    });
-
 
     it('field property validation - missing input type in field of entirely new custom type', () => {
 
@@ -382,6 +357,18 @@ describe('mergeTypes', () => {
     // there was a bug where relation was not added if one of the same name but with a different domain was configured
     xit('add an extra relation to an existing relation', () => {
 
+        const t1 = {
+            typeFamily: 'x1',
+            parent: 'x',
+            description: { 'de': '' },
+            createdBy: '',
+            creationDate: '',
+            color: 'white',
+            fields: {
+                'aField': {}
+            }
+        } as LibraryTypeDefinition;
+
         const r1: RelationDefinition = {
             name: 'R',
             domain: ['domainA'],
@@ -394,7 +381,7 @@ describe('mergeTypes', () => {
             range : ['rangeA']
         };
 
-        configuration = { identifier: 'test', types: { T1: t1 }, relations: [r1]};
+        const configuration = { identifier: 'test', types: { T1: t1 }, relations: [r1]} as any;
 
         //Preprocessing.mergeTheTypes({}, configuration.types);
         //Preprocessing.addExtraFields(configuration, {});
