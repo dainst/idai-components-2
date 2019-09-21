@@ -10,7 +10,7 @@ import {ConfigurationErrors} from "./configuration-errors";
 export interface CustomTypeDefinition {
 
     color?: string,
-    extends?: string;
+    hidden?: string[];
     parent?: string,
     fields: CustomFieldDefinitions;
 }

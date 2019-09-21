@@ -20,8 +20,7 @@ describe('ConfigLoader', () => {
         customFieldsConfiguration = {},
         languageConfiguration = {},
         customLanguageConfiguration = {},
-        orderConfiguration = {},
-        selectionConfiguration = {}) {
+        orderConfiguration = {}) {
 
         configReader.read.and.returnValues(
             Promise.resolve(libraryTypes),
@@ -31,7 +30,6 @@ describe('ConfigLoader', () => {
             Promise.resolve({}),
             Promise.resolve({}),
             Promise.resolve(orderConfiguration),
-            Promise.resolve(selectionConfiguration)
         );
     }
 
@@ -54,15 +52,14 @@ describe('ConfigLoader', () => {
         });
 
         applyConfig(
-            {},
+            { 'A': { fields: {} }, 'B:0': { fields: {} } },
             {
                 types: {
                     B: { label: 'B_', fields: { processor: { label: 'Bearbeiter/Bearbeiterin', description: 'abc' }} },
                 }, relations: {},
             },
             {},
-            {},
-            { 'A': {}, 'B:0': {} });
+            {});
 
         let pconf;
         try {
@@ -94,7 +91,7 @@ describe('ConfigLoader', () => {
         });
 
         applyConfig(
-            undefined,
+            { 'B:0': { fields: {} }, 'A': { fields: {} } },
             {
                 commons: {
                     processor: { label: 'Bearbeiter/Bearbeiterin', description: 'abc' }
@@ -103,8 +100,7 @@ describe('ConfigLoader', () => {
                 relations: {}
             },
             {},
-            {},
-            { 'B:0': {}, 'A': {} });
+            {});
 
         let pconf;
         try {
@@ -140,11 +136,19 @@ describe('ConfigLoader', () => {
         });
 
         applyConfig(
-            undefined,
+            {
+                'A1': { fields: {} },
+                'A2': { fields: {} },
+                'B1': { fields: {} },
+                'B2': { fields: {} },
+                'A': { fields: {} },
+                'B': { fields: {} },
+                'C': { fields: {} },
+                'D': { fields: {} }
+                },
             {},
             {},
-            {},
-            { 'A1': {}, 'A2': {}, 'B1': {}, 'B2': {}, 'A': {}, 'B': {}, 'C': {}, 'D': {} });
+            {});
 
         let pconf;
 
@@ -194,11 +198,10 @@ describe('ConfigLoader', () => {
             'B': { typeFamily: 'B', parent: 'T', fields: {}, creationDate: '', createdBy: '', description: {}  }});
 
         applyConfig(
-            undefined,
+            { 'A': { fields: {} }, 'B': { fields: {} }, 'T': { fields: {} }}),
             {},
             {},
-            {},
-            { 'A': {}, 'B': {}, 'T': {}});
+            {};
 
         let pconf;
         try {
@@ -227,7 +230,9 @@ describe('ConfigLoader', () => {
             'C': { typeFamily: 'C', parent: 'Parent', fields: {}, creationDate: '', createdBy: '', description: {}  }
         });
 
-        applyConfig({}, {
+        applyConfig(
+            { 'A': { fields: {} }, 'B': { fields: {} }, 'C': { fields: {} }, 'Parent': { fields: {} } },
+            {
             types: {
                 A: { label: 'A_' },
                 B: { label: 'B_' }
@@ -240,8 +245,7 @@ describe('ConfigLoader', () => {
                     B: { label: 'B__' }
                 }
             },
-            {},
-            { 'A': {}, 'B': {}, 'C': {}, 'Parent': {} });
+            {});
 
         let pconf;
         try {
@@ -290,15 +294,16 @@ describe('ConfigLoader', () => {
 
         const customTypes: CustomTypeDefinitions = {
             'A': { fields: { fieldA1: { inputType: 'unsignedFloat' } } },
-            'B': { fields: { fieldB2: { inputType: 'boolean' } } }
+            'B': { fields: { fieldB2: { inputType: 'boolean' } } },
+            'F': { fields: {} },
+            'G': { fields: {} }
         };
 
         applyConfig(
             customTypes,
             {},
             {},
-            {},
-            {'A': {}, 'B': {}, 'F': {}, 'G': {} });
+            {});
 
         let pconf;
         try {
@@ -340,15 +345,15 @@ describe('ConfigLoader', () => {
             'B:0': {
                 parent: 'Find',
                 fields: { fieldC1: { inputType: 'boolean'} }
-            }
+            },
+            'Find:0': { fields: {} }
         };
 
         applyConfig(
             customTypes,
             {},
             {},
-            {},
-            { 'Find:0': {}, 'B:0': {} });
+            {});
 
         let pconf;
         try {
@@ -386,8 +391,7 @@ describe('ConfigLoader', () => {
             customFieldsConfiguration,
             {},
             {},
-            {},
-            { 'B:0': {}, 'Find': {} }
+            {}
         );
 
         try {
@@ -443,7 +447,9 @@ describe('ConfigLoader', () => {
             'A': { typeFamily: 'A', parent: 'Parent', fields: { fieldA2: {}, fieldA1: {} }, creationDate: '', createdBy: '', description: {} }
         });
 
-        applyConfig({}, {}, {},
+        applyConfig(
+            { 'A': { fields: {} }, 'B': { fields: {} }, 'C': { fields: {} }, 'Parent': { fields: {} } },
+            {}, {},
              {
                 types: ['A', 'B', 'C'],
                 fields: {
@@ -454,8 +460,7 @@ describe('ConfigLoader', () => {
                     // Ignore fields defined in Order.json but not in configuration silently
                     'D': ['fieldD1', 'fieldD2']
                 }
-            },
-            { 'A': {}, 'B': {}, 'C': {}, 'Parent': {} });
+            });
 
         let pconf;
         try {
@@ -490,13 +495,13 @@ describe('ConfigLoader', () => {
             'A': { typeFamily: 'A', parent: 'Parent', fields: { fieldA2: {}, fieldA1: {} }, creationDate: '', createdBy: '', description: {}  }
         });
 
-        applyConfig({}, {}, {}, {
+        applyConfig({ 'A': { fields: {} }, 'Parent': { fields: {} } },
+            {}, {}, {
                 types: ['A', 'A'],
                 fields: {
                     'A': ['fieldA1', 'fieldA2', 'fieldA1']
                 }
-            },
-            { 'A': {}, 'Parent': {} });
+            });
 
         let pconf;
         try {
@@ -524,15 +529,14 @@ describe('ConfigLoader', () => {
             'A:0': { typeFamily: 'A', fields: { fieldA1: {}, fieldA2: {}, fieldA3: {}  }, creationDate: '', createdBy: '', description: {}  }
         });
 
-        applyConfig({},
+        applyConfig({ 'A:0': { fields: {}, hidden: ['fieldA1', 'fieldA2'] } },
             {
                 'A': ['fieldA1']
             },
             {
                 'A': ['fieldA2']
             },
-            {},
-            { 'A:0': { hidden: ['fieldA1', 'fieldA2'] } });
+            {});
 
         let pconf;
         try {

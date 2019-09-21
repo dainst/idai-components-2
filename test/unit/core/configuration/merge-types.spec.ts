@@ -71,7 +71,7 @@ describe('mergeTypes', () => {
 
         const result = mergeTypes(builtInTypes,
             libraryTypes,
-            {}, [], [], {'A:0':{}}, valuelistsConfiguration, {});
+            {'A:0':{ fields: {}}}, [], [], valuelistsConfiguration, {});
         expect(result['A'].fields['a1'].valuelist).toEqual(['one', 'two', 'three']);
     });
 
@@ -90,7 +90,7 @@ describe('mergeTypes', () => {
         try {
             mergeTypes(builtInTypes,
                 registeredTypes1,
-                {}, [], [], {}, {}, {});
+                {}, [], [], {}, {});
         } catch (expected) {
             expect(expected).toEqual([ConfigurationErrors.MISSING_PROPERTY, 'description', 'B:0'])
         }
@@ -116,7 +116,7 @@ describe('mergeTypes', () => {
         try {
             mergeTypes(builtInTypes,
                 libraryTypes,
-                {}, [], [], {}, {}, {});
+                {}, [], [], {}, {});
         } catch (expected) {
             expect(expected).toEqual(['type field with extra keys', ['valuelist']])
         }
@@ -146,14 +146,14 @@ describe('mergeTypes', () => {
         const result = mergeTypes(
             builtInTypes,
             libraryTypes,
-            {},
-            [],
-            [],
             {
                 'A': {
+                    fields: {},
                     hidden: ['field1']
                 }
             },
+            [],
+            [],
             {},
             {});
 
@@ -184,7 +184,8 @@ describe('mergeTypes', () => {
                 description: {} }
         };
 
-        const result = mergeTypes(builtInTypes, libraryTypes, {}, [], [], {'A:1': { hidden: [] }}, {}, {});
+        const result = mergeTypes(builtInTypes, libraryTypes, {'A:1': { hidden: [], fields: {} }},
+            [], [], {}, {});
 
         expect(result['A'].fields['field1'].inputType).toBe('text');
         expect(result['A'].fields['field1'].group).toBe('stem');
@@ -211,7 +212,8 @@ describe('mergeTypes', () => {
             }
         };
 
-        const result = mergeTypes(builtInTypes, {}, customTypes, [], [], {'A': {hidden: []}}, {}, {});
+        const result = mergeTypes(builtInTypes, {}, customTypes,
+            [], [], {}, {});
 
         expect(result['A'].fields['field1'].inputType).toBe('text');
         expect(result['A'].fields['field1'].group).toBe('stem');

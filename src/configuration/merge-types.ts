@@ -29,7 +29,6 @@ import {FieldDefinition} from './field-definition';
  * @param customTypes
  * @param nonExtendableTypes
  * @param commonFields
- * @param selectedTypes
  * @param valuelistsConfiguration
  * @param extraFields
  *
@@ -43,7 +42,6 @@ export function mergeTypes(builtInTypes: BuiltinTypeDefinitions,
                            customTypes: CustomTypeDefinitions,
                            nonExtendableTypes: any,
                            commonFields: any,
-                           selectedTypes: any,
                            valuelistsConfiguration: any,
                            extraFields: any) {
 
@@ -53,8 +51,8 @@ export function mergeTypes(builtInTypes: BuiltinTypeDefinitions,
     const mergedTypes = mergeBuiltInWithLibraryTypes(builtInTypes, libraryTypes);
     mergeTheTypes(mergedTypes, customTypes as any);
 
-    eraseUnusedTypes(mergedTypes, Object.keys(selectedTypes));
-    hideFields(mergedTypes, selectedTypes);
+    eraseUnusedTypes(mergedTypes, Object.keys(customTypes));
+    hideFields(mergedTypes, customTypes);
 
     const typesByFamilyNames: any = toTypesByFamilyNames(mergedTypes);
     applyValuelistsConfiguration(typesByFamilyNames, valuelistsConfiguration);
