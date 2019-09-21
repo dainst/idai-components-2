@@ -89,7 +89,7 @@ export class ConfigLoader {
 
 
     private async preprocess(configDirPath: string,
-                             registeredTypes1: LibraryTypeDefinitions,
+                             libraryTypes: LibraryTypeDefinitions,
                              commonFields: any,
                              builtinTypes: BuiltinTypeDefinitions,
                              relations: Array<RelationDefinition>,
@@ -106,7 +106,7 @@ export class ConfigLoader {
         const selectionConfigPath = configDirPath
             + '/Selection-' + (customConfigurationName ? customConfigurationName : 'Default') + '.json';
 
-        let registeredTypes2;
+        let customTypes;
         let languageConfiguration: any;
         let customLanguageConfiguration: any;
         let searchConfiguration: any;
@@ -115,7 +115,7 @@ export class ConfigLoader {
         let selectionConfiguration: any;
 
         try {
-            registeredTypes2 = await this.configReader.read(customConfigPath);
+            customTypes = await this.configReader.read(customConfigPath);
             languageConfiguration = await this.configReader.read(languageConfigurationPath);
             customLanguageConfiguration = await this.configReader.read(configDirPath + '/Language-'
                 + (customConfigurationName
@@ -138,8 +138,8 @@ export class ConfigLoader {
         try {
             typeDefs = mergeTypes(
                 builtinTypes,
-                registeredTypes1,
-                registeredTypes2,
+                libraryTypes,
+                customTypes,
                 nonExtendableTypes,
                 commonFields,
                 selectionConfiguration,
