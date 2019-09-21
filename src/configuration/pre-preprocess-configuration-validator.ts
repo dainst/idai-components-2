@@ -1,8 +1,9 @@
 import {intersection, subtract} from 'tsfun';
 import {RelationDefinition} from './relation-definition';
-import {LibraryTypeDefinitions} from "./library-type-definition";
 
 /**
+ * TODO can we get rid of this?
+ *
  * Used to validate to configuration in the form it comes from the user, i.e.
  * as Configuration.json. This means before the preprocess step has been executed,
  * where additional hardcoded definitions from app configurators may come in.
@@ -10,41 +11,6 @@ import {LibraryTypeDefinitions} from "./library-type-definition";
  * @author Daniel de Oliveira
  */
 export class PrePreprocessConfigurationValidator {
-
-    /**
-     * Starting with 2.1.8 of idai-field we forbid visible and editable
-     * to be configured by the user directly via Configuration.json.
-     * Instead we offer to configure that separately wie Hidden.json.
-     *
-     * This is to reduce the necessity to have different configurations which have to be
-     * tracked, when the only thing they differ in is the visitiliy/editability settings.
-     */
-    public go(typeDefinitions: LibraryTypeDefinitions): Array<Array<string>> {
-
-        if (!typeDefinitions.types) return [];
-
-        return PrePreprocessConfigurationValidator.checkForExtraneousFieldsInTypes(typeDefinitions);
-    }
-
-
-    private static checkForExtraneousFieldsInTypes(registeredTypes: LibraryTypeDefinitions): Array<Array<string>> {
-
-        const allowedFields = ['inputType', 'name', 'valuelist', 'valuelistId', 'positionValues'];
-
-        let errs: string[][] = [];
-        for (let typeName of Object.keys(registeredTypes)) {
-            const type = registeredTypes[typeName];
-
-            if (type.fields) {
-                for (let fieldName of Object.keys(type.fields)) {
-                    const field = type.fields[fieldName];
-                    const diff = subtract(allowedFields)(Object.keys(field));
-                    if (diff.length > 0) errs.push(['field(s) not allowed:', diff] as never);
-                }
-            }
-        }
-        return errs;
-    }
 
 
     private static evaluateRelationDomain(relation: RelationDefinition, appConfiguration: any) {

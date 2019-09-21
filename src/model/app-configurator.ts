@@ -3,7 +3,6 @@ import {I18n} from '@ngx-translate/i18n-polyfill';
 import {ConfigLoader} from '../configuration/config-loader';
 import {ConfigurationValidator} from '../configuration/configuration-validator';
 import {ProjectConfiguration} from '../configuration/project-configuration';
-import {PrePreprocessConfigurationValidator} from '../configuration/pre-preprocess-configuration-validator';
 import {FieldDefinition} from '../configuration/field-definition';
 import {BuiltinTypeDefinition} from "../configuration/builtin-type-definition";
 
@@ -688,7 +687,6 @@ export class AppConfigurator {
             this.defaultTypes,
             this.defaultRelations,
             this.defaultFields,
-            new PrePreprocessConfigurationValidator(),
             new ConfigurationValidator(),
             customConfigurationName,
             locale

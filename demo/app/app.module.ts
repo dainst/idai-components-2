@@ -24,7 +24,6 @@ import {IdaiWidgetsModule} from '../../src/widgets/idai-widgets.module';
 import {ProjectConfiguration} from '../../src/configuration/project-configuration';
 import {ConfigLoader} from '../../src/configuration/config-loader';
 import {ConfigReader} from '../../src/configuration/config-reader';
-import {PrePreprocessConfigurationValidator} from '../../src/configuration/pre-preprocess-configuration-validator';
 import {ConfigurationValidator} from '../../src/configuration/configuration-validator';
 import {IdaiFieldMapModule} from '../../src/map/idai-field-map.module';
 import {FieldDefinition} from '../../src/configuration/field-definition';
@@ -105,7 +104,6 @@ let pconf: any = undefined;
                         'identifier': {} as FieldDefinition,
                         'shortDescription': {} as FieldDefinition
                     },
-                    new PrePreprocessConfigurationValidator(),
                     new ConfigurationValidator(),
                     undefined,
                     'de'

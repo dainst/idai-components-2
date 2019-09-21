@@ -5,23 +5,6 @@ import {PrePreprocessConfigurationValidator} from '../../../../src/configuration
  */
 describe('PrePreprocessConfigurationValidator',() => {
 
-    xit('disallow defining relations', () => {
-
-        const configuration = {
-            identifier: 'Conf',
-            types: {
-                'Image': {}
-            },
-            relations: [{
-                name: 'isRecordedIn',
-                domain: ['Image']
-            }]
-        };
-
-        const result = new PrePreprocessConfigurationValidator().go(configuration.types as any);
-        expect(result[0][0]).toContain('relations cannot be defined via external configuration');
-    });
-
     /*
     it('reject if isRecordedIn defined for image type', () => {
 
@@ -118,16 +101,5 @@ describe('PrePreprocessConfigurationValidator',() => {
     });*/
 
 
-    xit('reject if field not allowed in type', () => {
 
-        const configuration = {
-            identifier: 'Conf',
-            types: {
-                'A': {  fields: { 'a1': { editable: true } } }
-            }
-        };
-
-        const result = new PrePreprocessConfigurationValidator().go(configuration.types as any);
-        expect(result[0][0]).toContain('field(s) not allowed');
-    });
 });

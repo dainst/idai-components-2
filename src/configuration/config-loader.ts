@@ -6,7 +6,6 @@ import {ConfigurationValidator} from './configuration-validator';
 import {ConfigReader} from './config-reader';
 import {RelationDefinition} from './relation-definition';
 import {FieldDefinition} from './field-definition';
-import {PrePreprocessConfigurationValidator} from './pre-preprocess-configuration-validator';
 import {ConfigurationDefinition} from './configuration-definition';
 import {BuiltinTypeDefinitions} from "./builtin-type-definition";
 import {LibraryTypeDefinitions} from "./library-type-definition";
@@ -53,7 +52,6 @@ export class ConfigLoader {
                     builtinTypes: BuiltinTypeDefinitions,
                     relations: Array<RelationDefinition>,
                     extraFields: {[fieldName: string]: FieldDefinition },
-                    prePreprocessConfigurationValidator: PrePreprocessConfigurationValidator,
                     postPreprocessConfigurationValidator: ConfigurationValidator,
                     customConfigurationName: string|undefined,
                     locale: string): Promise<ProjectConfiguration> {
@@ -61,9 +59,6 @@ export class ConfigLoader {
         if (customConfigurationName) console.log('Load custom configuration', customConfigurationName);
 
         const registeredTypes: LibraryTypeDefinitions = await this.readConfiguration(configDirPath);
-
-        const prePreprocessValidationErrors = prePreprocessConfigurationValidator.go(registeredTypes);
-        if (prePreprocessValidationErrors.length > 0) throw prePreprocessValidationErrors;
 
         const appConfiguration = await this.preprocess(
             configDirPath, registeredTypes, commonFields, builtinTypes, relations,

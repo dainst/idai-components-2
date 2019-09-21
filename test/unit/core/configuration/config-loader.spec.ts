@@ -1,6 +1,5 @@
 import {ConfigurationDefinition} from '../../../../src/configuration/configuration-definition';
 import {ConfigLoader} from '../../../../src/configuration/config-loader';
-import {PrePreprocessConfigurationValidator} from '../../../../src/configuration/pre-preprocess-configuration-validator';
 import {ConfigurationValidator} from '../../../../src/configuration/configuration-validator';
 import {ConfigurationErrors} from '../../../../src/configuration/configuration-errors';
 import {CustomTypeDefinitions} from '../../../../src/configuration/custom-type-definition';
@@ -69,7 +68,6 @@ describe('ConfigLoader', () => {
                 { 'A': { fields: {}} },
                 [],
                 {},
-                new PrePreprocessConfigurationValidator(),
                 new ConfigurationValidator(),
                 undefined,
                 'de'
@@ -110,7 +108,6 @@ describe('ConfigLoader', () => {
                 { 'A': { fields: {} }},
                 [],
                 {},
-                new PrePreprocessConfigurationValidator(),
                 new ConfigurationValidator(),
                 undefined,
                 'de'
@@ -173,7 +170,6 @@ describe('ConfigLoader', () => {
                         range: ['B:inherit']
                     }],
                 {},
-                new PrePreprocessConfigurationValidator(),
                 new ConfigurationValidator(),
                 undefined,
                 'de'
@@ -210,7 +206,6 @@ describe('ConfigLoader', () => {
                 {},
                 { T: { fields: {} }},
                 [{ name: 'abc', domain: ['A'], range: ['B'], sameMainTypeResource: false }], {},
-                new PrePreprocessConfigurationValidator(),
                 new ConfigurationValidator(), undefined, 'de');
         } catch(err) {
             fail(err);
@@ -254,7 +249,6 @@ describe('ConfigLoader', () => {
                          { name: 'r1', domain: ['A'], range: ['B']},
                          { name: 'r2', domain: ['A'], range: ['B']}
                     ], {},
-                new PrePreprocessConfigurationValidator(),
                 new ConfigurationValidator(), undefined, 'de');
         } catch(err) {
             fail(err);
@@ -309,7 +303,6 @@ describe('ConfigLoader', () => {
         try {
             pconf = await configLoader.go('', {},
                 { 'F': { fields: {} }, 'G': { fields: {} }},[], {},
-                new PrePreprocessConfigurationValidator(),
                 new ConfigurationValidator(),
                 undefined, 'de'
             );
@@ -358,7 +351,7 @@ describe('ConfigLoader', () => {
         let pconf;
         try {
             pconf = await configLoader.go('', {}, { 'Find': { fields: {} }},[], {},
-                new PrePreprocessConfigurationValidator(), new ConfigurationValidator(),
+                new ConfigurationValidator(),
                 undefined, 'de'
             );
 
@@ -396,7 +389,7 @@ describe('ConfigLoader', () => {
 
         try {
             await configLoader.go('', {}, {},[], {},
-                new PrePreprocessConfigurationValidator(), new ConfigurationValidator(),
+                new ConfigurationValidator(),
                 undefined, 'de'
             );
 
@@ -426,7 +419,7 @@ describe('ConfigLoader', () => {
 
         try {
             await configLoader.go('', {}, { Place: { fields: { fieldA1: { inputType: 'unsignedInt' }}}},[], {},
-                new PrePreprocessConfigurationValidator(), new ConfigurationValidator(),
+                new ConfigurationValidator(),
                 undefined, 'de'
             );
             fail();
@@ -465,7 +458,6 @@ describe('ConfigLoader', () => {
         let pconf;
         try {
             pconf = await configLoader.go('', {},{ Parent: { fields: {} }}, [], {},
-                new PrePreprocessConfigurationValidator(),
                 new ConfigurationValidator(), undefined, 'de'
             );
 
@@ -506,7 +498,6 @@ describe('ConfigLoader', () => {
         let pconf;
         try {
             pconf = await configLoader.go('', {},{ Parent: { fields: {} }}, [], {},
-                new PrePreprocessConfigurationValidator(),
                 new ConfigurationValidator(), undefined, 'de'
             );
 
@@ -541,7 +532,6 @@ describe('ConfigLoader', () => {
         let pconf;
         try {
             pconf = await configLoader.go('', {}, { A: { fields: {} }}, [], {},
-                new PrePreprocessConfigurationValidator(),
                 new ConfigurationValidator(), undefined, 'de'
             );
 
@@ -583,7 +573,6 @@ describe('ConfigLoader', () => {
         let pconf;
         try {
             pconf = await configLoader.go('', {},{ A: { fields: {}}}, [], {},
-                new PrePreprocessConfigurationValidator(),
                 new ConfigurationValidator(), undefined, 'de'
             );
 
