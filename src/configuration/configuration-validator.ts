@@ -10,12 +10,7 @@ import {ConfigurationErrors} from './configuration-errors';
  */
 export class ConfigurationValidator {
 
-    private static VALID_INPUT_TYPES = [
-        'input', 'text', 'dropdown', 'dropdownRange', 'radio', 'checkboxes', 'unsignedInt', 'float',
-        'unsignedFloat', 'dating', 'dimension', 'boolean', 'date'
-    ];
     private static VALUELIST_INPUT_TYPES = ['dropdown', 'radio', 'checkboxes'];
-
 
     /**
      * Searches for missing mandatory types or duplicate types.
@@ -142,9 +137,6 @@ export class ConfigurationValidator {
                 msgs.push([ConfigurationErrors.INVALID_CONFIG_MISSINGFIELDNAME, JSON.stringify(fieldDef)] as never);
             if (!fieldDef.hasOwnProperty('inputType'))
                 fieldDef.inputType = 'input';
-            if (ConfigurationValidator.VALID_INPUT_TYPES.indexOf(fieldDef.inputType) == -1)
-                msgs.push([ConfigurationErrors.VALIDATION_ERROR_INVALIDINPUTTYPE, fieldDef.name,
-                    fieldDef.inputType, ConfigurationValidator.VALID_INPUT_TYPES.join(', ')] as never);
             if (ConfigurationValidator.VALUELIST_INPUT_TYPES.indexOf(fieldDef.inputType) != -1
                     && (!fieldDef.hasOwnProperty('valuelist')
                         || !Array.isArray(fieldDef.valuelist)

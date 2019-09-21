@@ -12,6 +12,33 @@ import {RelationDefinition} from '../../../../src/configuration/relation-definit
 
 describe('mergeTypes', () => {
 
+    it('field property validation - invalid input Type', () => {
+
+        const builtInTypes: BuiltinTypeDefinitions = { A: { fields: {} }};
+        const libraryTypes: LibraryTypeDefinitions = {
+            'A:0': {
+                typeFamily: 'A',
+                fields: { aField: { inputType: 'invalid' }},
+                createdBy: '',
+                creationDate: '',
+                description: {}
+            }};
+
+        try {
+            mergeTypes(
+                builtInTypes,
+                libraryTypes,
+                {},
+                [],
+                [],
+                {},
+                {});
+            fail();
+        } catch (expected) {
+            expect(expected).toEqual([ConfigurationErrors.ILLEGAL_FIELD_TYPE, 'invalid', 'aField'])
+        }
+    });
+
 
     it('field property validation - missing input type in field of entirely new custom type', () => {
 

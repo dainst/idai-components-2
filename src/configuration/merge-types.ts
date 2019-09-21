@@ -16,7 +16,7 @@ import {FieldDefinition} from './field-definition';
  * TODO throw DUPLICATION_IN_SELECTION if more than one of type family selected
  * TODO merge common fields incrementally
  * TODO make sure group gets not re-set
- *
+ * TODO make nonExtendable a property of builtInTypes
  * @author Daniel de Oliveira
  * @author Thomas Kleinke
  *
@@ -42,6 +42,7 @@ import {FieldDefinition} from './field-definition';
  * @throws [MISSING_TYPE_PROPERTY, propertyName, typeName]
  * @throws [MISSING_FIELD_PROPERTY, propertyName, typeName, fieldName]
  * @throws [MUST_NOT_SET_INPUT_TYPE, typeName, fieldName]
+ * @throws [ILLEGAL_FIELD_TYPE, fieldType, fieldName]
  */
 export function mergeTypes(builtInTypes: BuiltinTypeDefinitions,
                            libraryTypes: LibraryTypeDefinitions,
