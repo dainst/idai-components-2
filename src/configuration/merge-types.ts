@@ -54,7 +54,6 @@ export function mergeTypes(builtInTypes: BuiltinTypeDefinitions,
     validateFields(mergedTypes);
     mergeTheTypes(mergedTypes, customTypes as any);
 
-    // TODO validate that each field has an inputType
     // TODO make sure that valuelistIds are provided for certain inputTypes
 
     eraseUnusedTypes(mergedTypes, Object.keys(customTypes));
@@ -308,11 +307,13 @@ function mergeTheTypes(typeDefs: any,
 
             const newMergedType: any = jsonClone(typeDefs[customTypeName]);
             merge(newMergedType, customType);
+            // TODO log a warning if field inputType gets changed
             merge(newMergedType.fields, customType.fields);
 
             typeDefs[customTypeName] = newMergedType;
         } else {
             if (!customType.parent) throw [ConfigurationErrors.MUST_HAVE_PARENT, customTypeName];
+            // TODO for custom types, all types must have an inputType property
             typeDefs[customTypeName] = customType;
         }
     })(pairs);
