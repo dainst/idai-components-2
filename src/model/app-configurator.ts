@@ -205,6 +205,8 @@ export class AppConfigurator {
             fields: {}
         } as BuiltinTypeDefinition,
         Area: {
+            superType: true,
+            userDefinedSubtypesAllowed: true,
             fields: {}
         } as BuiltinTypeDefinition,
         Feature: {
