@@ -1,6 +1,5 @@
-import {cond, empty, flow, forEach, identity, includedIn, isNot, map, remove} from "tsfun";
-import {assertFieldsAreValid} from "./util";
-import {ConfigurationErrors} from "./configuration-errors";
+import {assertFieldsAreValid} from './util';
+import {ConfigurationErrors} from './configuration-errors';
 
 /**
  * TypeDefinition, as provided by users.
@@ -9,6 +8,7 @@ import {ConfigurationErrors} from "./configuration-errors";
  */
 export interface CustomTypeDefinition {
 
+    commons?: string[];
     color?: string,
     hidden?: string[];
     parent?: string,
