@@ -46,6 +46,7 @@ import {FieldDefinition} from './field-definition';
  * @throws [MUST_NOT_SET_INPUT_TYPE, typeName, fieldName]
  * @throws [ILLEGAL_FIELD_TYPE, fieldType, fieldName]
  * @throws [TRYING_TO_SUBTYPE_A_NON_EXTENDABLE_TYPE, superTypeName]
+ * @throws [ILLEGAL_FIELD_PROPERTIES, [properties]]
  */
 export function mergeTypes(builtInTypes: BuiltinTypeDefinitions,
                            libraryTypes: LibraryTypeDefinitions,

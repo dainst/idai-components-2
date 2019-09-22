@@ -28,6 +28,6 @@ export function assertFieldsAreValid(fields: any /* TODO improve on typing */) {
         map(remove(includedIn(VALID_FIELD_KEYS))),
         forEach(
             cond(isNot(empty),
-                (keys: string) => { throw ['type field with extra keys', keys]},
+                (keys: string) => { throw [ConfigurationErrors.ILLEGAL_FIELD_PROPERTIES, keys]},
                 identity))); // TODO replace with nop
 }
