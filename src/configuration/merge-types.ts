@@ -21,6 +21,8 @@ import {FieldDefinition} from './field-definition';
  * TODO review which types are actually allowed to get extended (previously it was only Operation and Place which were explicitely forbidden to get extended), right now it is feature, find, image, area
  * TODO in library types, if parent or typefamily missing, only missing parent gets noted, not that either one of them would do
  *
+ * TODO prevent re-using name of common field
+ *
  * @author Daniel de Oliveira
  * @author Thomas Kleinke
  *
