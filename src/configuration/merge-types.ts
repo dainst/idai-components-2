@@ -18,7 +18,7 @@ import {FieldDefinition} from './field-definition';
  * TODO throw if non existing common field referenced
  * TODO allow hide common via custom
  *
- * TODO review which types are actually allowed to get extended (previously it was only Operation and Place which were explicitely forbidden to get extended)
+ * TODO review which types are actually allowed to get extended (previously it was only Operation and Place which were explicitely forbidden to get extended), right now it is feature, find, image
  * TODO in library types, if parent or typefamily missing, only missing parent gets noted, not that either one of them would do
  *
  * @author Daniel de Oliveira

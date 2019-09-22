@@ -230,6 +230,8 @@ export class AppConfigurator {
             fields: {}
         } as BuiltinTypeDefinition,
         Image: {
+            superType: true,
+            userDefinedSubtypesAllowed: true,
             fields: {
                 height: {
                     inputType: 'input', // TODO review
