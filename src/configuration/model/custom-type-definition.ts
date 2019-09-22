@@ -1,12 +1,13 @@
 import {assertFieldsAreValid} from '../util';
 import {ConfigurationErrors} from '../configuration-errors';
+import {BaseFieldDefinition, BaseTypeDefinition} from "./base-type-definition";
 
 /**
  * TypeDefinition, as provided by users.
  *
  * @author Daniel de Oliveira
  */
-export interface CustomTypeDefinition {
+export interface CustomTypeDefinition extends BaseTypeDefinition {
 
     commons?: string[];
     color?: string,
@@ -19,7 +20,7 @@ export interface CustomTypeDefinition {
 export type CustomFieldDefinitions = { [fieldName: string]: CustomFieldDefinition };
 
 
-export interface CustomFieldDefinition {
+export interface CustomFieldDefinition extends BaseFieldDefinition {
 
     valuelistId?: string;
     inputType?: string;

@@ -1,5 +1,6 @@
 import {assertFieldsAreValid} from "../util";
 import {ConfigurationErrors} from "../configuration-errors";
+import {BaseFieldDefinition, BaseTypeDefinition} from "./base-type-definition";
 
 
 /**
@@ -7,10 +8,10 @@ import {ConfigurationErrors} from "../configuration-errors";
  *
  * @author Daniel de Oliveira
  */
-export interface LibraryTypeDefinition {
+export interface LibraryTypeDefinition extends BaseTypeDefinition {
 
     color?: string,
-    commons?: [string]; // TODO make mandatory
+    commons?: string[]; // TODO make mandatory
     parent?: string,
     typeFamily?: string;
     description: {[language: string]: string},
@@ -22,7 +23,7 @@ export interface LibraryTypeDefinition {
 export type LibraryTypeDefinitions = {[typeName: string]: LibraryTypeDefinition };
 
 
-export interface LibraryFieldDefinition {
+export interface LibraryFieldDefinition extends BaseFieldDefinition {
 
     valuelistId?: string;
     inputType?: string;

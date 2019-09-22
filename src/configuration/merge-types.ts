@@ -1,11 +1,34 @@
-import {BuiltinTypeDefinitions} from './model/builtin-type-definition';
-import {LibraryTypeDefinition, LibraryTypeDefinitions} from './model/library-type-definition';
+import {BuiltinFieldDefinition, BuiltinTypeDefinitions} from './model/builtin-type-definition';
+import {
+    LibraryFieldDefinition,
+    LibraryTypeDefinition,
+    LibraryTypeDefinitions
+} from './model/library-type-definition';
 import {CustomTypeDefinition, CustomTypeDefinitions} from './model/custom-type-definition';
-import {clone, compose, filter, flow, forEach, is, isDefined, isnt, union,
-    jsonClone, keysAndValues, map, on, reduce, to} from 'tsfun';
+import {clone, compose, filter, flow, forEach, is, isDefined, isnt, jsonClone, keysAndValues, map,
+    on, reduce, to, union} from 'tsfun';
 import {ConfigurationErrors} from './configuration-errors';
-import {TypeDefinition} from './model/type-definition';
 import {FieldDefinition} from './model/field-definition';
+import {BaseTypeDefinitions} from "./model/base-type-definition";
+
+
+interface TransientTypeDefinition
+    extends BuiltinFieldDefinition, LibraryTypeDefinition {
+
+    fields: TransientFieldDefinitions;
+}
+
+interface TransientFieldDefinition
+    extends BuiltinFieldDefinition, LibraryFieldDefinition {
+
+    valuelist?: any;
+    visible?: boolean;
+    editable?: boolean;
+}
+
+type TransientTypeDefinitions = { [typeName: string]: TransientTypeDefinition }
+
+type TransientFieldDefinitions = { [fieldName: string]: TransientFieldDefinition };
 
 
 // TODO use terms resources-db and config-db. add the config-db and store the Config-(project).json files there
@@ -61,7 +84,7 @@ export function mergeTypes(builtInTypes: BuiltinTypeDefinitions,
     assertNoCommonFieldInputTypeOrGroupChanges(commonFields, libraryTypes);
     assertNoCommonFieldInputTypeOrGroupChanges(commonFields, customTypes);
 
-    const mergedTypes = mergeBuiltInWithLibraryTypes(builtInTypes, libraryTypes);
+    const mergedTypes: TransientTypeDefinitions = mergeBuiltInWithLibraryTypes(builtInTypes, libraryTypes);
     assertInputTypesAreSet(mergedTypes, commonFields);
     mergeTheTypes(mergedTypes, customTypes as any, commonFields);
 
@@ -70,7 +93,7 @@ export function mergeTypes(builtInTypes: BuiltinTypeDefinitions,
     eraseUnusedTypes(mergedTypes, Object.keys(customTypes));
     hideFields(mergedTypes, customTypes);
 
-    const typesByFamilyNames: any = toTypesByFamilyNames(mergedTypes);
+    const typesByFamilyNames: TransientTypeDefinitions = toTypesByFamilyNames(mergedTypes);
     applyValuelistsConfiguration(typesByFamilyNames, valuelistsConfiguration);
     replaceCommonFields(typesByFamilyNames, commonFields);
     addExtraFields(typesByFamilyNames, extraFields);
@@ -92,7 +115,7 @@ function assertNoCommonFieldInputTypeOrGroupChanges(commonFields: {[fieldName: s
 }
 
 
-function assertInputTypesAreSet(types: any, commonFields: any) {
+function assertInputTypesAreSet(types: TransientTypeDefinitions, commonFields: any) {
 
     iterateOverFieldsOfTypes(types, (typeName, type, fieldName, field) => {
         assertInputTypePresentIfNotCommonType(commonFields, typeName, fieldName, field);
@@ -100,7 +123,8 @@ function assertInputTypesAreSet(types: any, commonFields: any) {
 }
 
 
-function iterateOverFieldsOfTypes(types: any, f: (typeName: string, type: any, fieldName: string, field: any) => void) {
+function iterateOverFieldsOfTypes(types: BaseTypeDefinitions,
+                                  f: (typeName: string, type: any, fieldName: string, field: any) => void) {
 
     keysAndValues(types).forEach(([typeName, type]: any) => {
         keysAndValues(type.fields).forEach(([fieldName, field]: any) => {
@@ -110,7 +134,7 @@ function iterateOverFieldsOfTypes(types: any, f: (typeName: string, type: any, f
 }
 
 
-function addExtraFields(configuration: any,
+function addExtraFields(configuration: TransientTypeDefinitions,
                         extraFields: {[fieldName: string]: FieldDefinition }) {
 
     for (let typeName of Object.keys(configuration)) {
@@ -132,7 +156,7 @@ function addExtraFields(configuration: any,
 }
 
 
-function _addExtraFields(typeDefinition: TypeDefinition,
+function _addExtraFields(typeDefinition: TransientTypeDefinition,
                          extraFields: {[fieldName: string]: FieldDefinition }) {
 
     for (let extraFieldName of Object.keys(extraFields)) {
@@ -149,7 +173,7 @@ function _addExtraFields(typeDefinition: TypeDefinition,
 }
 
 
-function applyValuelistsConfiguration(types: { [typeName: string]: TypeDefinition },
+function applyValuelistsConfiguration(types: TransientTypeDefinitions,
                                       valuelistsConfiguration: {[id: string]: {values: string[]}}) {
 
     const processFields = compose(
@@ -242,16 +266,17 @@ function assertSubtypingIsLegal(builtinTypes: BuiltinTypeDefinitions,
 }
 
 
-function replaceCommonFields(mergedTypes: any, commonFields: {[fieldName: string]: any}) {
+function replaceCommonFields(mergedTypes: TransientTypeDefinitions,
+                             commonFields: {[fieldName: string]: any}) {
 
-    for (let mergedType of (Object.values(mergedTypes) as any)) {
+    for (let mergedType of Object.values(mergedTypes)) {
 
-        if (!mergedType['commons']) continue;
+        if (!mergedType.commons) continue;
 
-        for (let commonFieldName of mergedType['commons']) {
-            mergedType['fields'][commonFieldName] = clone(commonFields[commonFieldName]);
+        for (let commonFieldName of mergedType.commons) {
+            mergedType.fields[commonFieldName] = clone(commonFields[commonFieldName]);
         }
-        delete mergedType['commons'];
+        delete mergedType.commons;
     }
 }
 
@@ -291,7 +316,8 @@ function merge(target: any, source: any) {
 }
 
 
-function mergeFields(target: any, source: any) {
+function mergeFields(target: TransientFieldDefinitions,
+                     source: TransientFieldDefinitions) {
 
     for (let sourceFieldName of Object.keys(source)) {
         let alreadyPresentInTarget = false;
@@ -302,11 +328,11 @@ function mergeFields(target: any, source: any) {
             target[sourceFieldName] = source[sourceFieldName];
         } else {
             // at the moment, this is allowed for custom type fields, see also issueWarningOnFieldTypeChanges
-            if (source[sourceFieldName]['inputType']) {
-                target[sourceFieldName]['inputType'] = source[sourceFieldName]['inputType'];
+            if (source[sourceFieldName].inputType) {
+                target[sourceFieldName].inputType = source[sourceFieldName].inputType;
             }
-            if (source[sourceFieldName]['valuelistId']) {
-                target[sourceFieldName]['valuelistId'] = source[sourceFieldName]['valuelistId'];
+            if (source[sourceFieldName].valuelistId) {
+                target[sourceFieldName].valuelistId = source[sourceFieldName].valuelistId;
             }
         }
     }
@@ -370,7 +396,7 @@ function mergeBuiltInWithLibraryTypes(builtInTypes: BuiltinTypeDefinitions,
 }
 
 
-function mergeTheTypes(typeDefs: any,
+function mergeTheTypes(typeDefs: TransientTypeDefinitions,
                        customTypes: CustomTypeDefinitions,
                        commonFields: any) {
 
