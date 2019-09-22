@@ -218,24 +218,16 @@ function validateParentsOnTypes(builtinTypes: BuiltinTypeDefinitions,
 }
 
 
-function replaceCommonFields(builtInTypes: BuiltinTypeDefinitions, commonFields: any) {
+function replaceCommonFields(mergedTypes: any, commonFields: any) {
 
-    if (!builtInTypes) return;
+    for (let mergedType of Object.values(mergedTypes)) {
 
-    for (let confTypeName of Object.keys(builtInTypes)) {
-        if ((builtInTypes[confTypeName] as any)['commons']) {
-            for (let commonFieldName of ((builtInTypes[confTypeName] as any)['commons'])) {
-                if (!(builtInTypes[confTypeName] as any)['fields']) {
-                    (builtInTypes[confTypeName] as any)['fields'] = {};
-                }
-                (builtInTypes[confTypeName] as any)['fields'][commonFieldName]
-                    = clone(commonFields[commonFieldName]);
+        if (!mergedType['commons']) continue;
 
-                //console.log(commonFields[commonFieldName])
-            }
-
-            delete (builtInTypes[confTypeName] as any)['commons'];
+        for (let commonFieldName of mergedType['commons']) {
+            mergedType['fields'][commonFieldName] = clone(commonFields[commonFieldName]);
         }
+        delete mergedType['commons'];
     }
 }
 
