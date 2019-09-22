@@ -13,10 +13,11 @@ import {FieldDefinition} from './field-definition';
 /**
  * TODO merge parent fields into type fields at the end of the method (to make things easier, maybe process language conf before)
  * TODO throw DUPLICATION_IN_SELECTION if more than one of type family selected
- * TODO throw if non existing common field referenced
- * TODO allow hide common via custom
  *
  * TODO review which types are actually allowed to get extended (previously it was only Operation and Place which were explicitely forbidden to get extended), right now it is feature, find, image, area
+ *
+ * TODO throw if non existing common field referenced
+ * TODO allow hide common via custom
  *
  * @author Daniel de Oliveira
  * @author Thomas Kleinke
