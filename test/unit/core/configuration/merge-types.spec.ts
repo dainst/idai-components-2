@@ -12,6 +12,34 @@ import {RelationDefinition} from '../../../../src/configuration/relation-definit
 
 describe('mergeTypes', () => {
 
+    it('commons - mix in commons in custom type', () => {
+
+        const builtInTypes: BuiltinTypeDefinitions = { A: { fields: {} }};
+        const commonFields = { aCommon: { group: 'stem', inputType: 'input'}};
+        const libraryTypes: LibraryTypeDefinitions = {
+            'A:0': {
+                typeFamily: 'A',
+                commons: ['aCommon'],
+                fields: { },
+                createdBy: '',
+                creationDate: '',
+                description: {}
+            }};
+
+        const result = mergeTypes(
+            builtInTypes,
+            libraryTypes,
+            { 'A:0': { fields: {} } },
+            [],
+            commonFields,
+            {},
+            {});
+
+        expect(result['A'].fields['aCommon']['group']).toBe('stem');
+        expect(result['A'].fields['aCommon']['inputType']).toBe('input');
+    });
+
+
     it('field property validation - invalid input Type', () => {
 
         const builtInTypes: BuiltinTypeDefinitions = { A: { fields: {} }};

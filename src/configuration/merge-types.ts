@@ -48,7 +48,7 @@ export function mergeTypes(builtInTypes: BuiltinTypeDefinitions,
                            libraryTypes: LibraryTypeDefinitions,
                            customTypes: CustomTypeDefinitions,
                            nonExtendableTypes: any,
-                           commonFields: any,
+                           commonFields: {[fieldName: string]: any},
                            valuelistsConfiguration: any,
                            extraFields: any) {
 
@@ -218,7 +218,7 @@ function validateParentsOnTypes(builtinTypes: BuiltinTypeDefinitions,
 }
 
 
-function replaceCommonFields(mergedTypes: any, commonFields: any) {
+function replaceCommonFields(mergedTypes: any, commonFields: {[fieldName: string]: any}) {
 
     for (let mergedType of Object.values(mergedTypes)) {
 

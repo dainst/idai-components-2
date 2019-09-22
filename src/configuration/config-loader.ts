@@ -48,7 +48,7 @@ export class ConfigLoader {
 
 
     public async go(configDirPath: string,
-                    commonFields: any,
+                    commonFields: {[fieldName: string]: any},
                     builtinTypes: BuiltinTypeDefinitions,
                     relations: Array<RelationDefinition>,
                     extraFields: {[fieldName: string]: FieldDefinition },

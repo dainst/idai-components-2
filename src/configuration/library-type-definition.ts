@@ -10,6 +10,7 @@ import {ConfigurationErrors} from "./configuration-errors";
 export interface LibraryTypeDefinition {
 
     color?: string,
+    commons?: [string]; // TODO make mandatory
     parent?: string,
     typeFamily?: string;
     description: {[language: string]: string},
