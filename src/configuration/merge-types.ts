@@ -8,7 +8,6 @@ import {TypeDefinition} from './type-definition';
 import {FieldDefinition} from './field-definition';
 
 
-// TODO make a ts type for errors
 // TODO use terms resources-db and config-db. add the config-db and store the Config-(project).json files there
 
 /**
