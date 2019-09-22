@@ -18,6 +18,7 @@ import {FieldDefinition} from './field-definition';
  * TODO make sure group gets not re-set
  * TODO make nonExtendable a property of builtInTypes
  * TODO throw if non existing common field referenced
+ * TODO allow hide common via custom
  *
  * @author Daniel de Oliveira
  * @author Thomas Kleinke
