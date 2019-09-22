@@ -179,10 +179,8 @@ function applyValuelistsConfiguration(types: TransientTypeDefinitions,
     const processFields = compose(
         Object.values,
         filter(on('valuelistId', isDefined)),
-        forEach((fd: FieldDefinition) => (fd as any)['valuelist']
-            = Object.keys(valuelistsConfiguration[
-            (fd as any)['valuelistId']
-            ].values)));
+        forEach((fd: TransientFieldDefinition) => fd.valuelist
+            = Object.keys(valuelistsConfiguration[fd.valuelistId as string].values)));
 
     flow(types,
         Object.values,
@@ -192,18 +190,18 @@ function applyValuelistsConfiguration(types: TransientTypeDefinitions,
 }
 
 
-function toTypesByFamilyNames(mergedTypes: any) {
+function toTypesByFamilyNames(transientTypes: TransientTypeDefinitions): TransientTypeDefinitions {
 
     return reduce(
-        (acc: any, [mergedTypeName, mergedType]: any) => {
-            if (mergedType.typeFamily) {
-                acc[mergedType.typeFamily] = mergedType;
+        (acc: any, [transientTypeName, transientType]) => {
+            if (transientType.typeFamily) {
+                acc[transientType.typeFamily] = transientType;
             } else {
-                acc[mergedTypeName] = mergedType;
+                acc[transientTypeName] = transientType;
             }
             return acc;
         }
-        , {})(keysAndValues(mergedTypes) as any);
+        , {})(keysAndValues(transientTypes));
 }
 
 
