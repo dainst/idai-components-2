@@ -300,9 +300,10 @@ function mergeFields(target: any, source: any) {
         if (!alreadyPresentInTarget) {
             target[sourceFieldName] = source[sourceFieldName];
         } else {
-            // if (source[sourceFieldName]['inputType']) { // TODO this should never happen (with library types)
-            //     target[sourceFieldName]['inputType'] = source[sourceFieldName]['inputType'];
-            // }
+            // at the moment, this is allowed for custom type fields, see also issueWarningOnFieldTypeChanges
+            if (source[sourceFieldName]['inputType']) {
+                target[sourceFieldName]['inputType'] = source[sourceFieldName]['inputType'];
+            }
             if (source[sourceFieldName]['valuelistId']) {
                 target[sourceFieldName]['valuelistId'] = source[sourceFieldName]['valuelistId'];
             }
