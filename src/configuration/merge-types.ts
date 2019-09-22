@@ -281,23 +281,28 @@ function merge(target: any, source: any) {
 
     for (let sourceFieldName of Object.keys(source)) {
         if (sourceFieldName === 'fields') continue;
-
         let alreadyPresentInTarget = false;
-
         for (let targetFieldName of Object.keys(target)) {
             if (targetFieldName === sourceFieldName) alreadyPresentInTarget = true;
         }
+        if (!alreadyPresentInTarget) target[sourceFieldName] = source[sourceFieldName];
+    }
+}
 
+
+function mergeFields(target: any, source: any) {
+
+    for (let sourceFieldName of Object.keys(source)) {
+        let alreadyPresentInTarget = false;
+        for (let targetFieldName of Object.keys(target)) {
+            if (targetFieldName === sourceFieldName) alreadyPresentInTarget = true;
+        }
         if (!alreadyPresentInTarget) {
             target[sourceFieldName] = source[sourceFieldName];
         } else {
-
-            if (source[sourceFieldName]['inputType']) {
-                target[sourceFieldName]['inputType'] = source[sourceFieldName]['inputType'];
-            }
-            if (source[sourceFieldName]['valuelist']) {
-                target[sourceFieldName]['valuelist'] = source[sourceFieldName]['valuelist'];
-            }
+            // if (source[sourceFieldName]['inputType']) { // TODO this should never happen (with library types)
+            //     target[sourceFieldName]['inputType'] = source[sourceFieldName]['inputType'];
+            // }
             if (source[sourceFieldName]['valuelistId']) {
                 target[sourceFieldName]['valuelistId'] = source[sourceFieldName]['valuelistId'];
             }
@@ -350,7 +355,7 @@ function mergeBuiltInWithLibraryTypes(builtInTypes: BuiltinTypeDefinitions,
                         throw [ConfigurationErrors.MUST_NOT_SET_INPUT_TYPE, libraryTypeName, libraryTypeFieldName];
                     }
                 });
-                merge(newMergedType.fields, libraryType.fields);
+                mergeFields(newMergedType.fields, libraryType.fields);
                 types[libraryTypeName] = newMergedType;
             } else {
 
@@ -378,7 +383,7 @@ function mergeTheTypes(typeDefs: any,
 
             const newMergedType: any = jsonClone(extendedType);
             mergePropertiesOfType(newMergedType, customType);
-            merge(newMergedType.fields, customType.fields);
+            mergeFields(newMergedType.fields, customType.fields);
 
             typeDefs[customTypeName] = newMergedType;
         } else {
