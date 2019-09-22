@@ -17,7 +17,6 @@ import {FieldDefinition} from './field-definition';
  * TODO allow hide common via custom
  *
  * TODO review which types are actually allowed to get extended (previously it was only Operation and Place which were explicitely forbidden to get extended), right now it is feature, find, image, area
- * TODO in library types, if parent or typefamily missing, only missing parent gets noted, not that either one of them would do
  *
  * @author Daniel de Oliveira
  * @author Thomas Kleinke
@@ -41,6 +40,7 @@ import {FieldDefinition} from './field-definition';
  * @throws [DUPLICATION_IN_SELECTION, typeName]
  * @throws [MUST_HAVE_PARENT, typeName]
  * @throws [MISSING_TYPE_PROPERTY, propertyName, typeName]
+ * @throws [PARENT_OR_TYPE_FAMILY_MUST_BE_SET, typeName]
  * @throws [MISSING_FIELD_PROPERTY, propertyName, typeName, fieldName]
  * @throws [MUST_NOT_SET_INPUT_TYPE, typeName, fieldName]
  * @throws [ILLEGAL_FIELD_TYPE, fieldType, fieldName]

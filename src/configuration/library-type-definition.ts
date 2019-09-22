@@ -44,7 +44,7 @@ export module LibraryTypeDefinition {
             if (type.createdBy === undefined) throw [ConfigurationErrors.MISSING_TYPE_PROPERTY, 'createdBy', typeName];
 
             if (!type.typeFamily) {
-                if (!type.parent) throw [ConfigurationErrors.MISSING_TYPE_PROPERTY, 'parent', typeName];
+                if (!type.parent) throw [ConfigurationErrors.PARENT_OR_TYPE_FAMILY_MUST_BE_SET, typeName];
             } else {
                 if (!builtinTypes.includes(type.typeFamily) && !type.parent) throw [ConfigurationErrors.MISSING_TYPE_PROPERTY, 'parent', typeName];
             }

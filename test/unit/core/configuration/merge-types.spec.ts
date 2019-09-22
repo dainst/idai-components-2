@@ -412,7 +412,7 @@ describe('mergeTypes', () => {
     });
 
 
-    it('validate type properties - missing description', () => {
+    it('missing description', () => {
 
         const builtInTypes = {} as any;
 
@@ -429,6 +429,49 @@ describe('mergeTypes', () => {
                 {}, {}, {}, {});
         } catch (expected) {
             expect(expected).toEqual([ConfigurationErrors.MISSING_TYPE_PROPERTY, 'description', 'B:0'])
+        }
+    });
+
+
+    it('missing typeFamily or parent in library type', () => {
+
+        const builtInTypes = {} as any;
+
+        const libraryTypes: LibraryTypeDefinitions = {
+            'B:0': {
+                fields: {},
+                createdBy: "",
+                creationDate: "",
+                description: {}
+            }
+        };
+
+        try {
+            mergeTypes(builtInTypes,
+                libraryTypes,
+                {}, {}, {}, {});
+        } catch (expected) {
+            expect(expected).toEqual([ConfigurationErrors.PARENT_OR_TYPE_FAMILY_MUST_BE_SET, 'B:0'])
+        }
+    });
+
+
+    it('missing parent in custom type', () => {
+
+        const customTypes: CustomTypeDefinitions = {
+            'B:0': { fields: {} }
+        };
+
+        try {
+            mergeTypes(
+                {},
+                {},
+                customTypes,
+                {},
+                {},
+                {});
+        } catch (expected) {
+            expect(expected).toEqual([ConfigurationErrors.MISSING_TYPE_PROPERTY, 'parent', 'B:0'])
         }
     });
 
