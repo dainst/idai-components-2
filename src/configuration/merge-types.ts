@@ -2,7 +2,7 @@ import {BuiltinTypeDefinitions} from './builtin-type-definition';
 import {LibraryTypeDefinition, LibraryTypeDefinitions} from './library-type-definition';
 import {CustomTypeDefinition, CustomTypeDefinitions} from './custom-type-definition';
 import {clone, compose, filter, flow, forEach, is, isDefined, isnt, union,
-    jsonClone, keysAndValues, lookup, map, on, reduce, to} from 'tsfun';
+    jsonClone, keysAndValues, map, on, reduce, to} from 'tsfun';
 import {ConfigurationErrors} from './configuration-errors';
 import {TypeDefinition} from './type-definition';
 import {FieldDefinition} from './field-definition';
@@ -20,8 +20,6 @@ import {FieldDefinition} from './field-definition';
  *
  * TODO review which types are actually allowed to get extended (previously it was only Operation and Place which were explicitely forbidden to get extended), right now it is feature, find, image, area
  * TODO in library types, if parent or typefamily missing, only missing parent gets noted, not that either one of them would do
- *
- * TODO prevent re-using name of common field
  *
  * @author Daniel de Oliveira
  * @author Thomas Kleinke
@@ -58,11 +56,13 @@ export function mergeTypes(builtInTypes: BuiltinTypeDefinitions,
                            extraFields: any) {
 
     assertTypesAndValuelistsStructurallyValid(Object.keys(builtInTypes), libraryTypes, customTypes);
-    validateParentsOnTypes(builtInTypes, libraryTypes);
-    validateParentsOnTypes(builtInTypes, customTypes);
+    assertSubtypingIsLegal(builtInTypes, libraryTypes);
+    assertSubtypingIsLegal(builtInTypes, customTypes);
+    assertNoCommonFieldInputTypeChanges(commonFields, libraryTypes);
+    assertNoCommonFieldInputTypeChanges(commonFields, customTypes);
 
     const mergedTypes = mergeBuiltInWithLibraryTypes(builtInTypes, libraryTypes);
-    validateFields(mergedTypes);
+    assertInputTypesAreSet(mergedTypes);
     mergeTheTypes(mergedTypes, customTypes as any);
 
     // TODO make sure that valuelistIds are provided for certain inputTypes
@@ -78,7 +78,19 @@ export function mergeTypes(builtInTypes: BuiltinTypeDefinitions,
 }
 
 
-function validateFields(types: any) {
+function assertNoCommonFieldInputTypeChanges(commonFields: {[fieldName: string]: any}, types: any) {
+
+    const commonFieldNames = Object.keys(commonFields);
+
+    keysAndValues(types).forEach(([typeName, type]: any) => {
+        Object.keys(type.fields).forEach((fieldName: any) => {
+            if (commonFieldNames.includes(fieldName)) throw [ConfigurationErrors.MUST_NOT_SET_INPUT_TYPE, typeName, fieldName];
+        })
+    })
+}
+
+
+function assertInputTypesAreSet(types: any) {
 
     keysAndValues(types).forEach(([typeName, type]: any) => {
         keysAndValues(type.fields).forEach(([fieldName, field]:any) => {
@@ -202,7 +214,7 @@ function eraseUnusedTypes(builtInTypes: any,
 }
 
 
-function validateParentsOnTypes(builtinTypes: BuiltinTypeDefinitions,
+function assertSubtypingIsLegal(builtinTypes: BuiltinTypeDefinitions,
                                 types: any) {
 
     flow(types,

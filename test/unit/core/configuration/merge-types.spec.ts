@@ -40,6 +40,57 @@ describe('mergeTypes', () => {
     });
 
 
+    it('commons - cannot set type of common in libary types', () => {
+
+        const builtInTypes: BuiltinTypeDefinitions = { A: { fields: {} }};
+        const commonFields = { aCommon: { group: 'stem', inputType: 'input'}};
+        const libraryTypes: LibraryTypeDefinitions = {
+            'A:0': {
+                typeFamily: 'A',
+                fields: { aCommon: { inputType: 'input' } },
+                createdBy: '',
+                creationDate: '',
+                description: {}
+            }};
+
+        try {
+            mergeTypes(
+                builtInTypes,
+                libraryTypes,
+                { 'A:0': { fields: {} } },
+                commonFields,
+                {},
+                {});
+            fail();
+        } catch (expected) {
+            expect(expected).toEqual([ConfigurationErrors.MUST_NOT_SET_INPUT_TYPE, 'A:0', 'aCommon']);
+        }
+    });
+
+
+    it('commons - cannot set type of common in libary types', () => {
+
+        const builtInTypes: BuiltinTypeDefinitions = { A: { fields: {} }};
+        const commonFields = { aCommon: { group: 'stem', inputType: 'input'}};
+        const customTypes: CustomTypeDefinitions = {
+            'A': { fields: { aCommon: { inputType: 'text' }}}
+        };
+
+        try {
+            mergeTypes(
+                builtInTypes,
+                {},
+                customTypes,
+                commonFields,
+                {},
+                {});
+            fail();
+        } catch (expected) {
+            expect(expected).toEqual([ConfigurationErrors.MUST_NOT_SET_INPUT_TYPE, 'A', 'aCommon']);
+        }
+    });
+
+
     it('commons - mix in commons in library type', () => {
 
         const builtInTypes: BuiltinTypeDefinitions = { A: { fields: {} }};
