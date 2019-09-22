@@ -64,6 +64,44 @@ describe('mergeTypes', () => {
     });
 
 
+    it('commons - add together commons from library and custom type', () => {
+
+        const builtInTypes: BuiltinTypeDefinitions = { A: { fields: {} }};
+        const commonFields = {
+            aCommon: { group: 'stem', inputType: 'input'},
+            bCommon: { group: 'stem', inputType: 'input'}
+        };
+        const libraryTypes: LibraryTypeDefinitions = {
+            'A:0': {
+                typeFamily: 'A',
+                commons: ['aCommon'],
+                fields: { },
+                createdBy: '',
+                creationDate: '',
+                description: {}
+            }};
+        const customTypes: CustomTypeDefinitions = {
+            'A:0': {
+                commons: ['bCommon'],
+                fields: { }
+            }};
+
+        const result = mergeTypes(
+            builtInTypes,
+            libraryTypes,
+            customTypes,
+            [],
+            commonFields,
+            {},
+            {});
+
+        expect(result['A'].fields['aCommon']['group']).toBe('stem');
+        expect(result['A'].fields['aCommon']['inputType']).toBe('input');
+        expect(result['A'].fields['bCommon']['group']).toBe('stem');
+        expect(result['A'].fields['bCommon']['inputType']).toBe('input');
+    });
+
+
     it('field property validation - invalid input Type', () => {
 
         const builtInTypes: BuiltinTypeDefinitions = { A: { fields: {} }};

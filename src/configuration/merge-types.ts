@@ -1,7 +1,7 @@
 import {BuiltinTypeDefinitions} from './builtin-type-definition';
 import {LibraryTypeDefinition, LibraryTypeDefinitions} from './library-type-definition';
 import {CustomTypeDefinition, CustomTypeDefinitions} from './custom-type-definition';
-import {clone, compose, filter, flow, forEach, is, isDefined,
+import {clone, compose, filter, flow, forEach, is, isDefined, isnt, union,
     jsonClone, keysAndValues, lookup, map, on, reduce, to} from 'tsfun';
 import {ConfigurationErrors} from './configuration-errors';
 import {TypeDefinition} from './type-definition';
@@ -17,6 +17,8 @@ import {FieldDefinition} from './field-definition';
  * TODO merge common fields incrementally
  * TODO make sure group gets not re-set
  * TODO make nonExtendable a property of builtInTypes
+ * TODO throw if non existing common field referenced
+ *
  * @author Daniel de Oliveira
  * @author Thomas Kleinke
  *
@@ -232,6 +234,28 @@ function replaceCommonFields(mergedTypes: any, commonFields: {[fieldName: string
 }
 
 
+/**
+ * excluding fields
+ *
+ * @param target
+ * @param source
+ */
+function mergePropertiesOfType(target: any, source: any) {
+
+    if (source['commons']) {
+        target['commons'] = union([target['commons'] ? target['commons'] : [], source['commons']]);
+    }
+
+    Object.keys(source)
+        .filter(isnt('fields'))
+        .forEach(sourceTypeProp => {
+            if (!Object.keys(target).includes(sourceTypeProp)) {
+                target[sourceTypeProp] = source[sourceTypeProp];
+            }
+        });
+}
+
+
 function merge(target: any, source: any) {
 
     for (let sourceFieldName of Object.keys(source)) {
@@ -317,6 +341,7 @@ function issueWarningOnFieldTypeChanges(customTypeName: string, customType: any,
     });
 }
 
+
 function mergeTheTypes(typeDefs: any,
                        customTypes: CustomTypeDefinitions) {
 
@@ -330,7 +355,7 @@ function mergeTheTypes(typeDefs: any,
             issueWarningOnFieldTypeChanges(customTypeName, customType, extendedType);
 
             const newMergedType: any = jsonClone(extendedType);
-            merge(newMergedType, customType);
+            mergePropertiesOfType(newMergedType, customType);
             merge(newMergedType.fields, customType.fields);
 
             typeDefs[customTypeName] = newMergedType;
