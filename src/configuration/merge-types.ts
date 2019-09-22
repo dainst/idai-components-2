@@ -63,7 +63,7 @@ export function mergeTypes(builtInTypes: BuiltinTypeDefinitions,
 
     const mergedTypes = mergeBuiltInWithLibraryTypes(builtInTypes, libraryTypes);
     assertInputTypesAreSet(mergedTypes);
-    mergeTheTypes(mergedTypes, customTypes as any);
+    mergeTheTypes(mergedTypes, customTypes as any, commonFields);
 
     // TODO make sure that valuelistIds are provided for certain inputTypes
 
@@ -358,7 +358,8 @@ function mergeBuiltInWithLibraryTypes(builtInTypes: BuiltinTypeDefinitions,
 
 
 function mergeTheTypes(typeDefs: any,
-                       customTypes: CustomTypeDefinitions) {
+                       customTypes: CustomTypeDefinitions,
+                       commonFields: any) {
 
     const pairs = keysAndValues(customTypes);
 
@@ -378,7 +379,9 @@ function mergeTheTypes(typeDefs: any,
             if (!customType.parent) throw [ConfigurationErrors.MUST_HAVE_PARENT, customTypeName];
 
             keysAndValues(customType.fields).forEach(([fieldName, field]: any) => {
-                if (!field.inputType) throw [ConfigurationErrors.MISSING_FIELD_PROPERTY, 'inputType', customTypeName, fieldName];
+                if (!field.inputType && !Object.keys(commonFields).includes(fieldName)) {
+                    throw [ConfigurationErrors.MISSING_FIELD_PROPERTY, 'inputType', customTypeName, fieldName];
+                }
             });
 
             typeDefs[customTypeName] = customType;
