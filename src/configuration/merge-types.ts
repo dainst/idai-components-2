@@ -19,6 +19,8 @@ import {FieldDefinition} from './field-definition';
  * TODO throw if non existing common field referenced
  * TODO allow hide common via custom
  *
+ * TODO review which types are actually allowed to get extended
+ *
  * @author Daniel de Oliveira
  * @author Thomas Kleinke
  *
