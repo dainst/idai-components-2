@@ -93,11 +93,13 @@ function assertNoCommonFieldInputTypeOrGroupChanges(commonFields: {[fieldName: s
 }
 
 
-function assertInputTypesAreSet(types: any) {
+function assertInputTypesAreSet(types: any, commonFields: any) {
 
     keysAndValues(types).forEach(([typeName, type]: any) => {
         keysAndValues(type.fields).forEach(([fieldName, field]:any) => { // TODO extract the iterating pattern into separate function
-            if (!field.inputType) throw [ConfigurationErrors.MISSING_FIELD_PROPERTY, 'inputType', typeName, fieldName]
+            if (!field.inputType && Object.keys(commonFields).includes(fieldName)) { // TODO remove duplicated code (see MISSING FIELD PROP)
+                throw [ConfigurationErrors.MISSING_FIELD_PROPERTY, 'inputType', typeName, fieldName];
+            }
         })
     });
 }
