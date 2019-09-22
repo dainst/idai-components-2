@@ -81,24 +81,32 @@ function assertNoCommonFieldInputTypeOrGroupChanges(commonFields: {[fieldName: s
 
     const commonFieldNames = Object.keys(commonFields);
 
-    keysAndValues(types).forEach(([typeName, type]: any) => {
-        keysAndValues(type.fields).forEach(([fieldName, field]: any) => {
-            if (commonFieldNames.includes(fieldName)) {
-                if (field.inputType) throw [ConfigurationErrors.MUST_NOT_SET_INPUT_TYPE, typeName, fieldName];
-                if (field.group) throw [ConfigurationErrors.MUST_NOT_SET_INPUT_TYPE, typeName, fieldName]; // TODO test, and make error more generic
-            }
-        })
-    })
+    iterateOverFieldsOfTypes(types, (typeName, type, fieldName, field) => {
+
+        if (commonFieldNames.includes(fieldName)) {
+            if (field.inputType) throw [ConfigurationErrors.MUST_NOT_SET_INPUT_TYPE, typeName, fieldName];
+            if (field.group) throw [ConfigurationErrors.MUST_NOT_SET_INPUT_TYPE, typeName, fieldName]; // TODO test, and make error more generic
+        }
+    });
 }
 
 
 function assertInputTypesAreSet(types: any, commonFields: any) {
 
+    iterateOverFieldsOfTypes(types, (typeName, type, fieldName, field) => {
+
+        if (!field.inputType && !Object.keys(commonFields).includes(fieldName)) { // TODO remove duplicated code (see MISSING FIELD PROP)
+            throw [ConfigurationErrors.MISSING_FIELD_PROPERTY, 'inputType', typeName, fieldName];
+        }
+    });
+}
+
+
+function iterateOverFieldsOfTypes(types: any, f: (typeName: string, type: any, fieldName: string, field: any) => void) {
+
     keysAndValues(types).forEach(([typeName, type]: any) => {
-        keysAndValues(type.fields).forEach(([fieldName, field]:any) => { // TODO extract the iterating pattern into separate function
-            if (!field.inputType && !Object.keys(commonFields).includes(fieldName)) { // TODO remove duplicated code (see MISSING FIELD PROP)
-                throw [ConfigurationErrors.MISSING_FIELD_PROPERTY, 'inputType', typeName, fieldName];
-            }
+        keysAndValues(type.fields).forEach(([fieldName, field]: any) => {
+            f(typeName, type, fieldName, field);
         })
     });
 }
