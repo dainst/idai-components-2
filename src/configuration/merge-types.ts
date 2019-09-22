@@ -13,7 +13,6 @@ import {FieldDefinition} from './field-definition';
 /**
  * TODO merge parent fields into type fields at the end of the method (to make things easier, maybe process language conf before)
  * TODO throw DUPLICATION_IN_SELECTION if more than one of type family selected
- * TODO make sure group gets not re-set
  * TODO throw if non existing common field referenced
  * TODO allow hide common via custom
  *
