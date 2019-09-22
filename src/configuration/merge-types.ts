@@ -62,7 +62,7 @@ export function mergeTypes(builtInTypes: BuiltinTypeDefinitions,
     assertNoCommonFieldInputTypeOrGroupChanges(commonFields, customTypes);
 
     const mergedTypes = mergeBuiltInWithLibraryTypes(builtInTypes, libraryTypes);
-    assertInputTypesAreSet(mergedTypes);
+    assertInputTypesAreSet(mergedTypes, commonFields);
     mergeTheTypes(mergedTypes, customTypes as any, commonFields);
 
     // TODO make sure that valuelistIds are provided for certain inputTypes
@@ -97,7 +97,7 @@ function assertInputTypesAreSet(types: any, commonFields: any) {
 
     keysAndValues(types).forEach(([typeName, type]: any) => {
         keysAndValues(type.fields).forEach(([fieldName, field]:any) => { // TODO extract the iterating pattern into separate function
-            if (!field.inputType && Object.keys(commonFields).includes(fieldName)) { // TODO remove duplicated code (see MISSING FIELD PROP)
+            if (!field.inputType && !Object.keys(commonFields).includes(fieldName)) { // TODO remove duplicated code (see MISSING FIELD PROP)
                 throw [ConfigurationErrors.MISSING_FIELD_PROPERTY, 'inputType', typeName, fieldName];
             }
         })
