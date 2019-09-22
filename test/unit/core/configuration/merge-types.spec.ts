@@ -13,6 +13,38 @@ import {RelationDefinition} from '../../../../src/configuration/model/relation-d
 describe('mergeTypes', () => {
 
 
+    it('type families - divergent input type', () => {
+
+        const builtinTypes: BuiltinTypeDefinitions = { A: { fields: {}}};
+        const libraryTypes: LibraryTypeDefinitions = {
+            'A:0': {
+                typeFamily: 'A',
+                fields: { aField: { inputType: 'text' }},
+                createdBy: '',
+                creationDate: '',
+                description: {}
+            },
+            'A:1': {
+                typeFamily: 'A',
+                fields: { aField: { inputType: 'input' }},
+                createdBy: '',
+                creationDate: '',
+                description: {}
+            }
+        };
+
+        try {
+            mergeTypes(
+                builtinTypes,
+                libraryTypes);
+            fail();
+        } catch (expected) {
+            expect(expected).toEqual([ConfigurationErrors.INCONSISTENT_TYPE_FAMILY,
+                'A', 'divergentInputType', 'aField']);
+        }
+    });
+
+
     it('subtypes - user defined subtype not allowed', () => {
 
         const builtInTypes: BuiltinTypeDefinitions = { A: { fields: {} }};
@@ -333,7 +365,7 @@ describe('mergeTypes', () => {
 
         const libraryTypes: LibraryTypeDefinitions = {
             'B:0': {
-                parent: 'A',
+                parent: 'A', // TODO here a typeFamily should be necessary
                 fields: { bField: {}} as any,
                 creationDate: '', createdBy: '', description: {}
             },

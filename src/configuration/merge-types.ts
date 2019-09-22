@@ -1,9 +1,6 @@
 import {BuiltinFieldDefinition, BuiltinTypeDefinitions} from './model/builtin-type-definition';
-import {
-    LibraryFieldDefinition,
-    LibraryTypeDefinition,
-    LibraryTypeDefinitions
-} from './model/library-type-definition';
+import {LibraryFieldDefinition, LibraryTypeDefinition,
+    LibraryTypeDefinitions} from './model/library-type-definition';
 import {CustomTypeDefinition, CustomTypeDefinitions} from './model/custom-type-definition';
 import {clone, compose, filter, flow, forEach, is, isDefined, isnt, jsonClone, keysAndValues, map,
     on, reduce, to, union} from 'tsfun';
@@ -70,19 +67,21 @@ type TransientFieldDefinitions = { [fieldName: string]: TransientFieldDefinition
  * @throws [ILLEGAL_FIELD_TYPE, fieldType, fieldName]
  * @throws [TRYING_TO_SUBTYPE_A_NON_EXTENDABLE_TYPE, superTypeName]
  * @throws [ILLEGAL_FIELD_PROPERTIES, [properties]]
+ * @throws [INCONSISTENT_TYPE_FAMILY, typeFamilyName, reason (, fieldName)]
  */
-export function mergeTypes(builtInTypes: BuiltinTypeDefinitions,
-                           libraryTypes: LibraryTypeDefinitions,
-                           customTypes: CustomTypeDefinitions,
-                           commonFields: {[fieldName: string]: any},
-                           valuelistsConfiguration: {[valueListName: string]: any},
-                           extraFields: {[extraFieldName: string]: any}) {
+export function mergeTypes(builtInTypes: BuiltinTypeDefinitions = {},
+                           libraryTypes: LibraryTypeDefinitions = {},
+                           customTypes: CustomTypeDefinitions = {},
+                           commonFields: {[fieldName: string]: any} = {},
+                           valuelistsConfiguration: {[valueListName: string]: any} = {},
+                           extraFields: {[extraFieldName: string]: any} = {}) {
 
     assertTypesAndValuelistsStructurallyValid(Object.keys(builtInTypes), libraryTypes, customTypes);
     assertSubtypingIsLegal(builtInTypes, libraryTypes);
     assertSubtypingIsLegal(builtInTypes, customTypes);
     assertNoCommonFieldInputTypeOrGroupChanges(commonFields, libraryTypes);
     assertNoCommonFieldInputTypeOrGroupChanges(commonFields, customTypes);
+    assertTypeFamiliesConsistent(libraryTypes);
 
     const mergedTypes: TransientTypeDefinitions = mergeBuiltInWithLibraryTypes(builtInTypes, libraryTypes);
     assertInputTypesAreSet(mergedTypes, commonFields);
@@ -98,6 +97,39 @@ export function mergeTypes(builtInTypes: BuiltinTypeDefinitions,
     replaceCommonFields(typesByFamilyNames, commonFields);
     addExtraFields(typesByFamilyNames, extraFields);
     return typesByFamilyNames;
+}
+
+
+function assertTypeFamiliesConsistent(libraryTypes: LibraryTypeDefinitions) {
+
+    type InputType = string;
+    const collected: { [typeFamilyName: string]: { [fieldName: string]: InputType }} = {};
+
+    Object.values(libraryTypes).forEach((libraryType: any) => {
+
+        const typeFamily = libraryType['typeFamily'];
+
+        if (typeFamily // TODO see below
+            && !collected[typeFamily]) collected[typeFamily] = {};
+
+        keysAndValues(libraryType.fields).forEach(([fieldName, field]: any) => {
+
+            if (!typeFamily) return; // TODO remove, see also test: field property validation - missing input type in field of library type - new subtype
+            const inputType = field['inputType'];
+
+            if (collected[typeFamily][fieldName]) {
+                if (collected[typeFamily][fieldName] !== inputType) {
+                    throw [
+                        ConfigurationErrors.INCONSISTENT_TYPE_FAMILY,
+                        typeFamily,
+                        'divergentInputType',
+                        fieldName];
+                }
+            } else {
+                collected[typeFamily][fieldName] = inputType;
+            }
+        });
+    });
 }
 
 

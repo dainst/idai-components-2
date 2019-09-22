@@ -27,4 +27,5 @@ export module ConfigurationErrors {
     export const ILLEGAL_FIELD_TYPE = 'configuration/mergeTypes/illegalFieldType'; // field input type? TODO
     export const ILLEGAL_FIELD_PROPERTIES = 'configuration/mergeTypes/illegalFieldProperties';
     export const TRYING_TO_SUBTYPE_A_NON_EXTENDABLE_TYPE = 'config/fields/custom/tryingToSubtypeANonExtendableType';
+    export const INCONSISTENT_TYPE_FAMILY = 'config/fields/custom/inconsistentTypeFamily';
 }
