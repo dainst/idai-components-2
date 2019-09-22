@@ -4,11 +4,11 @@ import {ProjectConfiguration} from './project-configuration';
 import {Preprocessing} from './preprocessing';
 import {ConfigurationValidator} from './configuration-validator';
 import {ConfigReader} from './config-reader';
-import {RelationDefinition} from './relation-definition';
-import {FieldDefinition} from './field-definition';
+import {RelationDefinition} from './model/relation-definition';
+import {FieldDefinition} from './model/field-definition';
 import {ConfigurationDefinition} from './configuration-definition';
-import {BuiltinTypeDefinitions} from "./builtin-type-definition";
-import {LibraryTypeDefinitions} from "./library-type-definition";
+import {BuiltinTypeDefinitions} from "./model/builtin-type-definition";
+import {LibraryTypeDefinitions} from "./model/library-type-definition";
 import {mergeTypes} from "./merge-types";
 
 

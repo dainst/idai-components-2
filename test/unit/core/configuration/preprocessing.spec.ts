@@ -1,12 +1,12 @@
 import {Preprocessing} from '../../../../src/configuration/preprocessing';
-import {TypeDefinition} from '../../../../src/configuration/type-definition'
-import {RelationDefinition} from '../../../../src/configuration/relation-definition'
-import {UnorderedConfigurationDefinition} from '../../../../src/configuration/unordered-configuration-definition';
-import {FieldDefinition} from '../../../../src/configuration/field-definition';
+import {TypeDefinition} from '../../../../src/configuration/model/type-definition'
+import {RelationDefinition} from '../../../../src/configuration/model/relation-definition'
+import {UnorderedConfigurationDefinition} from '../../../../src/configuration/model/unordered-configuration-definition';
+import {FieldDefinition} from '../../../../src/configuration/model/field-definition';
 import {
     LibraryTypeDefinition,
     LibraryTypeDefinitions,
-} from "../../../../src/configuration/library-type-definition";
+} from "../../../../src/configuration/model/library-type-definition";
 
 /**
  * @author Daniel de Oliveira

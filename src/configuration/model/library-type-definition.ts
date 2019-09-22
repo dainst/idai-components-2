@@ -1,5 +1,5 @@
-import {assertFieldsAreValid} from "./util";
-import {ConfigurationErrors} from "./configuration-errors";
+import {assertFieldsAreValid} from "../util";
+import {ConfigurationErrors} from "../configuration-errors";
 
 
 /**

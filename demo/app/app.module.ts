@@ -26,8 +26,8 @@ import {ConfigLoader} from '../../src/configuration/config-loader';
 import {ConfigReader} from '../../src/configuration/config-reader';
 import {ConfigurationValidator} from '../../src/configuration/configuration-validator';
 import {IdaiFieldMapModule} from '../../src/map/idai-field-map.module';
-import {FieldDefinition} from '../../src/configuration/field-definition';
-import {BuiltinTypeDefinition} from "../../src/configuration/builtin-type-definition";
+import {FieldDefinition} from '../../src/configuration/model/field-definition';
+import {BuiltinTypeDefinition} from "../../src/configuration/model/builtin-type-definition";
 
 let pconf: any = undefined;
 

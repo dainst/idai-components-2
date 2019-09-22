@@ -1,5 +1,5 @@
 import {intersection, subtract} from 'tsfun';
-import {RelationDefinition} from './relation-definition';
+import {RelationDefinition} from './model/relation-definition';
 
 /**
  * TODO can we get rid of this?

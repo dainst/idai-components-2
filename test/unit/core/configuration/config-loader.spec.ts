@@ -2,7 +2,7 @@ import {ConfigurationDefinition} from '../../../../src/configuration/configurati
 import {ConfigLoader} from '../../../../src/configuration/config-loader';
 import {ConfigurationValidator} from '../../../../src/configuration/configuration-validator';
 import {ConfigurationErrors} from '../../../../src/configuration/configuration-errors';
-import {CustomTypeDefinitions} from '../../../../src/configuration/custom-type-definition';
+import {CustomTypeDefinitions} from '../../../../src/configuration/model/custom-type-definition';
 
 /**
  * @author Daniel de Oliveira

@@ -16,11 +16,11 @@ export {DatastoreErrors} from './src/datastore/datastore-errors';
 
 export {ConfigLoader} from './src/configuration/config-loader';
 export {ConfigReader} from './src/configuration/config-reader';
-export {FieldDefinition} from './src/configuration/field-definition';
-export {IdaiType} from './src/configuration/idai-type';
+export {FieldDefinition} from './src/configuration/model/field-definition';
+export {IdaiType} from './src/configuration/model/idai-type';
 export {ProjectConfiguration} from './src/configuration/project-configuration';
-export {TypeDefinition} from './src/configuration/type-definition';
-export {RelationDefinition} from './src/configuration/relation-definition';
+export {TypeDefinition} from './src/configuration/model/type-definition';
+export {RelationDefinition} from './src/configuration/model/relation-definition';
 export {ConfigurationValidator} from './src/configuration/configuration-validator';
 export {Preprocessing} from './src/configuration/preprocessing';
 
@@ -57,7 +57,7 @@ export {FieldMarker} from './src/map/field-marker';
 export {IdaiWidgetsModule} from './src/widgets/idai-widgets.module';
 export {TypeIconComponent} from './src/widgets/type-icon';
 
-export {LibraryTypeDefinition} from './src/configuration/library-type-definition';
-export {LibraryTypeDefinitions} from './src/configuration/library-type-definition';
-export {BuiltinTypeDefinition} from './src/configuration/builtin-type-definition';
-export {BuiltinTypeDefinitions} from './src/configuration/builtin-type-definition';
+export {LibraryTypeDefinition} from './src/configuration/model/library-type-definition';
+export {LibraryTypeDefinitions} from './src/configuration/model/library-type-definition';
+export {BuiltinTypeDefinition} from './src/configuration/model/builtin-type-definition';
+export {BuiltinTypeDefinitions} from './src/configuration/model/builtin-type-definition';

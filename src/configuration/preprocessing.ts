@@ -1,7 +1,7 @@
-import {FieldDefinition} from './field-definition';
-import {TypeDefinition} from './type-definition';
-import {RelationDefinition} from './relation-definition';
-import {UnorderedConfigurationDefinition} from './unordered-configuration-definition';
+import {FieldDefinition} from './model/field-definition';
+import {TypeDefinition} from './model/type-definition';
+import {RelationDefinition} from './model/relation-definition';
+import {UnorderedConfigurationDefinition} from './model/unordered-configuration-definition';
 import {compose, empty, filter, flow, forEach, isDefined, isNot, map, on, subtract, to} from 'tsfun';
 import {ConfigurationDefinition} from './configuration-definition';
 

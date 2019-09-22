@@ -1,13 +1,13 @@
 import {
     LibraryTypeDefinition,
     LibraryTypeDefinitions
-} from '../../../../src/configuration/library-type-definition';
-import {BuiltinTypeDefinitions} from '../../../../src/configuration/builtin-type-definition';
-import {CustomTypeDefinitions} from '../../../../src/configuration/custom-type-definition';
+} from '../../../../src/configuration/model/library-type-definition';
+import {BuiltinTypeDefinitions} from '../../../../src/configuration/model/builtin-type-definition';
+import {CustomTypeDefinitions} from '../../../../src/configuration/model/custom-type-definition';
 import {mergeTypes} from '../../../../src/configuration/merge-types';
 import {ConfigurationErrors} from '../../../../src/configuration/configuration-errors';
 import {Preprocessing} from '../../../../src/configuration/preprocessing';
-import {RelationDefinition} from '../../../../src/configuration/relation-definition';
+import {RelationDefinition} from '../../../../src/configuration/model/relation-definition';
 
 
 describe('mergeTypes', () => {

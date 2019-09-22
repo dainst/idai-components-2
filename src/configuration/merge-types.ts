@@ -1,11 +1,11 @@
-import {BuiltinTypeDefinitions} from './builtin-type-definition';
-import {LibraryTypeDefinition, LibraryTypeDefinitions} from './library-type-definition';
-import {CustomTypeDefinition, CustomTypeDefinitions} from './custom-type-definition';
+import {BuiltinTypeDefinitions} from './model/builtin-type-definition';
+import {LibraryTypeDefinition, LibraryTypeDefinitions} from './model/library-type-definition';
+import {CustomTypeDefinition, CustomTypeDefinitions} from './model/custom-type-definition';
 import {clone, compose, filter, flow, forEach, is, isDefined, isnt, union,
     jsonClone, keysAndValues, map, on, reduce, to} from 'tsfun';
 import {ConfigurationErrors} from './configuration-errors';
-import {TypeDefinition} from './type-definition';
-import {FieldDefinition} from './field-definition';
+import {TypeDefinition} from './model/type-definition';
+import {FieldDefinition} from './model/field-definition';
 
 
 // TODO use terms resources-db and config-db. add the config-db and store the Config-(project).json files there

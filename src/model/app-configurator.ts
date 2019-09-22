@@ -3,8 +3,8 @@ import {I18n} from '@ngx-translate/i18n-polyfill';
 import {ConfigLoader} from '../configuration/config-loader';
 import {ConfigurationValidator} from '../configuration/configuration-validator';
 import {ProjectConfiguration} from '../configuration/project-configuration';
-import {FieldDefinition} from '../configuration/field-definition';
-import {BuiltinTypeDefinition} from "../configuration/builtin-type-definition";
+import {FieldDefinition} from '../configuration/model/field-definition';
+import {BuiltinTypeDefinition} from "../configuration/model/builtin-type-definition";
 
 
 @Injectable()

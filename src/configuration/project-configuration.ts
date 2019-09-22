@@ -1,7 +1,7 @@
 import {MDInternal} from '../messages/md-internal';
-import {IdaiType} from './idai-type';
-import {FieldDefinition} from './field-definition';
-import {RelationDefinition} from './relation-definition';
+import {IdaiType} from './model/idai-type';
+import {FieldDefinition} from './model/field-definition';
+import {RelationDefinition} from './model/relation-definition';
 import {ConfigurationDefinition} from './configuration-definition';
 
 
