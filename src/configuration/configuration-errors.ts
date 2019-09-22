@@ -15,7 +15,6 @@ export class ConfigurationErrors { // TODO convert to module
 
     public static INVALID_CONFIG_PARENT_NOT_DEFINED = 'config/fields/custom/parentnotdefined';
     public static INVALID_CONFIG_PARENT_NOT_TOP_LEVEL = 'config/fields/custom/parentnotatopleveltype';
-    public static NOT_AN_EXTENDABLE_TYPE = 'config/fields/custom/notanextendabletype';
 
     // mergeTypes
     public static DUPLICATION_IN_SELECTION = 'configuration/mergeTypes/duplicationinselection';
@@ -25,4 +24,5 @@ export class ConfigurationErrors { // TODO convert to module
     public static MISSING_FIELD_PROPERTY = 'configuration/mergeTypes/missingFieldProperty';
     public static MUST_NOT_SET_INPUT_TYPE = 'configuration/mergeTypes/mustNotSetInputType';
     public static ILLEGAL_FIELD_TYPE = 'configuration/mergeTypes/illegalFieldType';
+    public static TRYING_TO_SUBTYPE_A_NON_EXTENDABLE_TYPE = 'config/fields/custom/tryingToSubtypeANonExtendableType';
 }

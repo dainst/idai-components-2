@@ -11,8 +11,6 @@ import {BuiltinTypeDefinitions} from "./builtin-type-definition";
 import {LibraryTypeDefinitions} from "./library-type-definition";
 import {mergeTypes} from "./merge-types";
 
-const nonExtendableTypes: string[] = ['Operation', 'Place'];
-
 
 @Injectable()
 /**
@@ -105,7 +103,6 @@ export class ConfigLoader {
         let searchConfiguration: any;
         let valuelistsConfiguration: any;
         let orderConfiguration: any;
-        let selectionConfiguration: any;
 
         try {
             customTypes = await this.configReader.read(customConfigPath);
@@ -132,7 +129,6 @@ export class ConfigLoader {
                 builtinTypes,
                 libraryTypes,
                 customTypes,
-                nonExtendableTypes,
                 commonFields,
                 valuelistsConfiguration,
                 {...this.defaultFields, ...extraFields});

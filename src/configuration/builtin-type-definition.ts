@@ -5,6 +5,8 @@
  */
 export interface BuiltinTypeDefinition {
 
+    superType?: boolean,
+    userDefinedSubtypesAllowed?: boolean,
     fields: any;
 }
 

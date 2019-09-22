@@ -65,7 +65,7 @@ describe('ConfigLoader', () => {
             pconf = await configLoader.go(
                 'yo',
                 { processor : { inputType: 'input', group: 'stem' }},
-                { 'A': { fields: {}} },
+                { 'A': { fields: {}, userDefinedSubtypesAllowed: true, superType: true } },
                 [],
                 {},
                 new ConfigurationValidator(),
@@ -105,7 +105,7 @@ describe('ConfigLoader', () => {
             pconf = await configLoader.go(
                 'yo',
                 { processor : { inputType: 'input', group: 'stem' }},
-                { 'A': { fields: {} }},
+                { 'A': { fields: {}, superType: true, userDefinedSubtypesAllowed: true }},
                 [],
                 {},
                 new ConfigurationValidator(),
@@ -154,8 +154,8 @@ describe('ConfigLoader', () => {
                 'yo',
                 {},
                 {
-                    'A': { fields: {}},
-                    'B': { fields: {}},
+                    'A': { fields: {}, superType: true, userDefinedSubtypesAllowed: true},
+                    'B': { fields: {}, superType: true, userDefinedSubtypesAllowed: true},
                     'C': { fields: {}},
                     'D': { fields: {}}
                 },
@@ -201,7 +201,7 @@ describe('ConfigLoader', () => {
             pconf = await configLoader.go(
                 'yo',
                 {},
-                { T: { fields: {} }},
+                { T: { fields: {}, superType: true, userDefinedSubtypesAllowed: true }},
                 [{ name: 'abc', domain: ['A'], range: ['B'], sameMainTypeResource: false }], {},
                 new ConfigurationValidator(), undefined, 'de');
         } catch(err) {
@@ -223,7 +223,12 @@ describe('ConfigLoader', () => {
         });
 
         applyConfig(
-            { 'A': { fields: {} }, 'B': { fields: {} }, 'C': { fields: {} }, 'Parent': { fields: {} } },
+            {
+                'A': { fields: {} },
+                'B': { fields: {} },
+                'C': { fields: {} },
+                'Parent': { fields: {} }
+                },
             {
             types: {
                 A: { label: 'A_' },
@@ -242,7 +247,8 @@ describe('ConfigLoader', () => {
         let pconf;
         try {
             pconf = await configLoader.go(
-                'yo', {}, { 'Parent': { fields: {} }},[
+                'yo', {},
+                { 'Parent': { fields: {}, userDefinedSubtypesAllowed: true, superType: true }},[
                          { name: 'r1', domain: ['A'], range: ['B']},
                          { name: 'r2', domain: ['A'], range: ['B']}
                     ], {},
@@ -299,7 +305,9 @@ describe('ConfigLoader', () => {
         let pconf;
         try {
             pconf = await configLoader.go('', {},
-                { 'F': { fields: {} }, 'G': { fields: {} }},[], {},
+                {
+                    'F': { fields: {}, userDefinedSubtypesAllowed: true, superType: true },
+                    'G': { fields: {}, userDefinedSubtypesAllowed: true, superType: true }},[], {},
                 new ConfigurationValidator(),
                 undefined, 'de'
             );
@@ -347,7 +355,8 @@ describe('ConfigLoader', () => {
 
         let pconf;
         try {
-            pconf = await configLoader.go('', {}, { 'Find': { fields: {} }},[], {},
+            pconf = await configLoader.go('', {},
+                { 'Find': { fields: {}, userDefinedSubtypesAllowed: true, superType: true }},[], {},
                 new ConfigurationValidator(),
                 undefined, 'de'
             );
@@ -422,7 +431,7 @@ describe('ConfigLoader', () => {
             fail();
 
         } catch(err) {
-            expect(err).toEqual([[ConfigurationErrors.NOT_AN_EXTENDABLE_TYPE, 'Place']]);
+            expect(err).toEqual([[ConfigurationErrors.TRYING_TO_SUBTYPE_A_NON_EXTENDABLE_TYPE, 'Place']]);
         } finally {
             done();
         }
@@ -479,7 +488,9 @@ describe('ConfigLoader', () => {
 
         let pconf;
         try {
-            pconf = await configLoader.go('', {},{ Parent: { fields: {} }}, [], {},
+            pconf = await configLoader.go('', {},
+                { Parent: { fields: {}, userDefinedSubtypesAllowed: true, superType: true }},
+                [], {},
                 new ConfigurationValidator(), undefined, 'de'
             );
 
@@ -527,7 +538,8 @@ describe('ConfigLoader', () => {
 
         let pconf;
         try {
-            pconf = await configLoader.go('', {},{ Parent: { fields: {} }}, [], {},
+            pconf = await configLoader.go('', {},
+                { Parent: { fields: {}, superType: true, userDefinedSubtypesAllowed: true }}, [], {},
                 new ConfigurationValidator(), undefined, 'de'
             );
 

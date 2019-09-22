@@ -182,8 +182,9 @@ export class AppConfigurator {
             }
         } as BuiltinTypeDefinition,
         Operation: {
-            fields: {},
-            abstract: true
+            superType: true,
+            abstract: true,
+            fields: {}
         } as BuiltinTypeDefinition,
         Building: {
             fields: {},
@@ -207,6 +208,8 @@ export class AppConfigurator {
             fields: {}
         } as BuiltinTypeDefinition,
         Feature: {
+            superType: true,
+            userDefinedSubtypesAllowed: true,
             fields: {
                 period: {
                     inputType: 'dropdownRange',
@@ -219,6 +222,8 @@ export class AppConfigurator {
             }
         } as BuiltinTypeDefinition,
         Find: {
+            superType: true,
+            userDefinedSubtypesAllowed: true,
             fields: {}
         } as BuiltinTypeDefinition,
         Inscription: {

@@ -15,11 +15,11 @@ import {FieldDefinition} from './field-definition';
  * TODO merge parent fields into type fields at the end of the method (to make things easier, maybe process language conf before)
  * TODO throw DUPLICATION_IN_SELECTION if more than one of type family selected
  * TODO make sure group gets not re-set
- * TODO make nonExtendable a property of builtInTypes
  * TODO throw if non existing common field referenced
  * TODO allow hide common via custom
  *
- * TODO review which types are actually allowed to get extended
+ * TODO review which types are actually allowed to get extended (previously it was only Operation and Place which were explicitely forbidden to get extended)
+ * TODO in library types, if parent or typefamily missing, only missing parent gets noted, not that either one of them would do
  *
  * @author Daniel de Oliveira
  * @author Thomas Kleinke
@@ -35,7 +35,6 @@ import {FieldDefinition} from './field-definition';
  * @param builtInTypes
  * @param libraryTypes
  * @param customTypes
- * @param nonExtendableTypes
  * @param commonFields
  * @param valuelistsConfiguration
  * @param extraFields
@@ -47,17 +46,18 @@ import {FieldDefinition} from './field-definition';
  * @throws [MISSING_FIELD_PROPERTY, propertyName, typeName, fieldName]
  * @throws [MUST_NOT_SET_INPUT_TYPE, typeName, fieldName]
  * @throws [ILLEGAL_FIELD_TYPE, fieldType, fieldName]
+ * @throws [TRYING_TO_SUBTYPE_A_NON_EXTENDABLE_TYPE, superTypeName]
  */
 export function mergeTypes(builtInTypes: BuiltinTypeDefinitions,
                            libraryTypes: LibraryTypeDefinitions,
                            customTypes: CustomTypeDefinitions,
-                           nonExtendableTypes: any,
                            commonFields: {[fieldName: string]: any},
                            valuelistsConfiguration: any,
                            extraFields: any) {
 
     assertTypesAndValuelistsStructurallyValid(Object.keys(builtInTypes), libraryTypes, customTypes);
-    validateParentsOnTypes(builtInTypes, {...libraryTypes, ...customTypes}, nonExtendableTypes);
+    validateParentsOnTypes(builtInTypes, libraryTypes);
+    validateParentsOnTypes(builtInTypes, customTypes);
 
     const mergedTypes = mergeBuiltInWithLibraryTypes(builtInTypes, libraryTypes);
     validateFields(mergedTypes);
@@ -201,30 +201,26 @@ function eraseUnusedTypes(builtInTypes: any,
 
 
 function validateParentsOnTypes(builtinTypes: BuiltinTypeDefinitions,
-                                types: any,
-                                nonExtendableTypes: string[]) {
+                                types: any) {
 
     flow(types,
-        Object.keys,
-        map(lookup(types)),
+        Object.values,
         map(to('parent')),
         filter(isDefined),
-        forEach((parent: string) => {
-            if (nonExtendableTypes.includes(parent as string)) {
-                throw [ConfigurationErrors.NOT_AN_EXTENDABLE_TYPE, parent];
-            }
-            return parent;
-        }),
         forEach((parent: any) => {
             const found = Object.keys(builtinTypes).find(is(parent));
             if (!found) throw [ConfigurationErrors.INVALID_CONFIG_PARENT_NOT_DEFINED, parent];
+            const foundBuiltIn = builtinTypes[found];
+            if (!foundBuiltIn.superType || !foundBuiltIn.userDefinedSubtypesAllowed) {
+                throw [ConfigurationErrors.TRYING_TO_SUBTYPE_A_NON_EXTENDABLE_TYPE, parent];
+            }
         }));
 }
 
 
 function replaceCommonFields(mergedTypes: any, commonFields: {[fieldName: string]: any}) {
 
-    for (let mergedType of Object.values(mergedTypes)) {
+    for (let mergedType of (Object.values(mergedTypes) as any)) {
 
         if (!mergedType['commons']) continue;
 
