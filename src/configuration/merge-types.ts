@@ -51,8 +51,8 @@ export function mergeTypes(builtInTypes: BuiltinTypeDefinitions,
                            libraryTypes: LibraryTypeDefinitions,
                            customTypes: CustomTypeDefinitions,
                            commonFields: {[fieldName: string]: any},
-                           valuelistsConfiguration: any,
-                           extraFields: any) {
+                           valuelistsConfiguration: {[valueListName: string]: any},
+                           extraFields: {[extraFieldName: string]: any}) {
 
     assertTypesAndValuelistsStructurallyValid(Object.keys(builtInTypes), libraryTypes, customTypes);
     assertSubtypingIsLegal(builtInTypes, libraryTypes);
@@ -94,10 +94,7 @@ function assertNoCommonFieldInputTypeOrGroupChanges(commonFields: {[fieldName: s
 function assertInputTypesAreSet(types: any, commonFields: any) {
 
     iterateOverFieldsOfTypes(types, (typeName, type, fieldName, field) => {
-
-        if (!field.inputType && !Object.keys(commonFields).includes(fieldName)) { // TODO remove duplicated code (see MISSING FIELD PROP)
-            throw [ConfigurationErrors.MISSING_FIELD_PROPERTY, 'inputType', typeName, fieldName];
-        }
+        assertInputTypePresentIfNotCommonType(commonFields, typeName, fieldName, field);
     });
 }
 
@@ -388,12 +385,18 @@ function mergeTheTypes(typeDefs: any,
             if (!customType.parent) throw [ConfigurationErrors.MUST_HAVE_PARENT, customTypeName];
 
             keysAndValues(customType.fields).forEach(([fieldName, field]: any) => {
-                if (!field.inputType && !Object.keys(commonFields).includes(fieldName)) {
-                    throw [ConfigurationErrors.MISSING_FIELD_PROPERTY, 'inputType', customTypeName, fieldName];
-                }
+                assertInputTypePresentIfNotCommonType(commonFields, customTypeName, fieldName, field);
             });
 
             typeDefs[customTypeName] = customType;
         }
     })(pairs);
+}
+
+// TODO curry (bake in common fields first)
+function assertInputTypePresentIfNotCommonType(commonFields: any, typeName: string, fieldName: string, field: any) {
+
+    if (!field.inputType && !Object.keys(commonFields).includes(fieldName)) {
+        throw [ConfigurationErrors.MISSING_FIELD_PROPERTY, 'inputType', typeName, fieldName];
+    }
 }
