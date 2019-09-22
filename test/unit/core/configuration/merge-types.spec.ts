@@ -68,7 +68,7 @@ describe('mergeTypes', () => {
     });
 
 
-    it('commons - cannot set type of common in libary types', () => {
+    it('commons - cannot set type of common in custom types', () => {
 
         const builtInTypes: BuiltinTypeDefinitions = { A: { fields: {} }};
         const commonFields = { aCommon: { group: 'stem', inputType: 'input'}};

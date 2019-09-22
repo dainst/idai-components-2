@@ -58,8 +58,8 @@ export function mergeTypes(builtInTypes: BuiltinTypeDefinitions,
     assertTypesAndValuelistsStructurallyValid(Object.keys(builtInTypes), libraryTypes, customTypes);
     assertSubtypingIsLegal(builtInTypes, libraryTypes);
     assertSubtypingIsLegal(builtInTypes, customTypes);
-    assertNoCommonFieldInputTypeChanges(commonFields, libraryTypes);
-    assertNoCommonFieldInputTypeChanges(commonFields, customTypes);
+    assertNoCommonFieldInputTypeOrGroupChanges(commonFields, libraryTypes);
+    assertNoCommonFieldInputTypeOrGroupChanges(commonFields, customTypes);
 
     const mergedTypes = mergeBuiltInWithLibraryTypes(builtInTypes, libraryTypes);
     assertInputTypesAreSet(mergedTypes);
@@ -78,13 +78,16 @@ export function mergeTypes(builtInTypes: BuiltinTypeDefinitions,
 }
 
 
-function assertNoCommonFieldInputTypeChanges(commonFields: {[fieldName: string]: any}, types: any) {
+function assertNoCommonFieldInputTypeOrGroupChanges(commonFields: {[fieldName: string]: any}, types: any) {
 
     const commonFieldNames = Object.keys(commonFields);
 
     keysAndValues(types).forEach(([typeName, type]: any) => {
-        Object.keys(type.fields).forEach((fieldName: any) => {
-            if (commonFieldNames.includes(fieldName)) throw [ConfigurationErrors.MUST_NOT_SET_INPUT_TYPE, typeName, fieldName];
+        keysAndValues(type.fields).forEach(([fieldName, field]: any) => {
+            if (commonFieldNames.includes(fieldName)) {
+                if (field.inputType) throw [ConfigurationErrors.MUST_NOT_SET_INPUT_TYPE, typeName, fieldName];
+                if (field.group) throw [ConfigurationErrors.MUST_NOT_SET_INPUT_TYPE, typeName, fieldName]; // TODO test, and make error more generic
+            }
         })
     })
 }
@@ -93,7 +96,7 @@ function assertNoCommonFieldInputTypeChanges(commonFields: {[fieldName: string]:
 function assertInputTypesAreSet(types: any) {
 
     keysAndValues(types).forEach(([typeName, type]: any) => {
-        keysAndValues(type.fields).forEach(([fieldName, field]:any) => {
+        keysAndValues(type.fields).forEach(([fieldName, field]:any) => { // TODO extract the iterating pattern into separate function
             if (!field.inputType) throw [ConfigurationErrors.MISSING_FIELD_PROPERTY, 'inputType', typeName, fieldName]
         })
     });
