@@ -31,8 +31,9 @@ type TransientFieldDefinitions = { [fieldName: string]: TransientFieldDefinition
 // TODO use terms resources-db and config-db. add the config-db and store the Config-(project).json files there
 
 /**
+ * TODO if subtype is selected, supertype gets implicitely selected
+ *
  * TODO merge parent fields into type fields at the end of the method (to make things easier, maybe process language conf before)
- * TODO throw DUPLICATION_IN_SELECTION if more than one of type family selected
  *
  * TODO review which types are actually allowed to get extended (previously it was only Operation and Place which were explicitely forbidden to get extended), right now it is feature, find, image, area
  *
@@ -58,7 +59,7 @@ type TransientFieldDefinitions = { [fieldName: string]: TransientFieldDefinition
  * @param extraFields
  *
  * @see ConfigurationErrors
- * @throws [DUPLICATION_IN_SELECTION, typeName]
+ * @throws [DUPLICATION_IN_SELECTION, typeFamilyName]
  * @throws [MUST_HAVE_PARENT, typeName]
  * @throws [MISSING_TYPE_PROPERTY, propertyName, typeName]
  * @throws [MISSING_FIELD_PROPERTY, propertyName, typeName, fieldName]
@@ -68,8 +69,8 @@ type TransientFieldDefinitions = { [fieldName: string]: TransientFieldDefinition
  * @throws [ILLEGAL_FIELD_PROPERTIES, [properties]]
  * @throws [INCONSISTENT_TYPE_FAMILY, typeFamilyName, reason (, fieldName)]
  */
-export function mergeTypes(builtInTypes: BuiltinTypeDefinitions = {},
-                           libraryTypes: LibraryTypeDefinitions = {},
+export function mergeTypes(builtInTypes: BuiltinTypeDefinitions,
+                           libraryTypes: LibraryTypeDefinitions,
                            customTypes: CustomTypeDefinitions = {},
                            commonFields: {[fieldName: string]: any} = {},
                            valuelistsConfiguration: {[valueListName: string]: any} = {},
@@ -81,6 +82,7 @@ export function mergeTypes(builtInTypes: BuiltinTypeDefinitions = {},
     assertNoCommonFieldInputTypeOrGroupChanges(commonFields, libraryTypes);
     assertNoCommonFieldInputTypeOrGroupChanges(commonFields, customTypes);
     assertTypeFamiliesConsistent(libraryTypes);
+    assertNoDuplicationInSelection(libraryTypes, customTypes);
 
     const mergedTypes: TransientTypeDefinitions = mergeBuiltInWithLibraryTypes(builtInTypes, libraryTypes);
     assertInputTypesAreSet(mergedTypes, commonFields);
@@ -96,6 +98,26 @@ export function mergeTypes(builtInTypes: BuiltinTypeDefinitions = {},
     replaceCommonFields(typesByFamilyNames, commonFields);
     addExtraFields(typesByFamilyNames, extraFields);
     return typesByFamilyNames;
+}
+
+
+function assertNoDuplicationInSelection(libraryTypes: LibraryTypeDefinitions, customTypes: CustomTypeDefinitions) {
+
+    // TODO also check if more than one extension of builtin is present
+
+    const selectedTypeFamilies: string[] = [];
+
+    keysAndValues(customTypes).forEach(([customTypeName, customType]) => {
+
+        // check if extension of library type
+        if (libraryTypes[customTypeName]) {
+            if (selectedTypeFamilies.includes(libraryTypes[customTypeName]['typeFamily'])) {
+                throw [ConfigurationErrors.DUPLICATION_IN_SELECTION, libraryTypes[customTypeName]['typeFamily']];
+            } else {
+                selectedTypeFamilies.push(libraryTypes[customTypeName]['typeFamily']);
+            }
+        }
+    });
 }
 
 

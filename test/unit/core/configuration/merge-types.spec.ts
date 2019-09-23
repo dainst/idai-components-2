@@ -13,6 +13,48 @@ import {RelationDefinition} from '../../../../src/configuration/model/relation-d
 describe('mergeTypes', () => {
 
 
+    it('duplication in selection', () => {
+
+        const builtinTypes: BuiltinTypeDefinitions = { A: { fields: {} }};
+        const libraryTypes: LibraryTypeDefinitions = {
+            'A:0': {
+                typeFamily: 'A',
+                commons: [],
+                fields: {},
+                createdBy: '',
+                creationDate: '',
+                description: {}
+            },
+            'A:1': {
+                typeFamily: 'A',
+                commons: [],
+                fields: {},
+                createdBy: '',
+                creationDate: '',
+                description: {}
+            }
+        };
+        const customTypes: CustomTypeDefinitions = {
+            'A:0': {
+                fields: {}
+            },
+            'A:1': {
+                fields: {}
+            }
+        };
+
+        try {
+            mergeTypes(
+                builtinTypes,
+                libraryTypes,
+                customTypes);
+            fail();
+        } catch (expected) {
+            expect(expected).toEqual([ConfigurationErrors.DUPLICATION_IN_SELECTION, 'A']);
+        }
+    });
+
+
     it('type families - divergent input type', () => {
 
         const builtinTypes: BuiltinTypeDefinitions = { A: { fields: {}}};
