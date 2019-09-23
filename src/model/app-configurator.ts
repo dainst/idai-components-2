@@ -174,13 +174,26 @@ export class AppConfigurator {
     };
 
     private defaultTypes = {
-        Place: {
+        Project: {
+            label: this.i18n({ id: 'configuration.project', value: 'Projekt' }),
             fields: {
-                gazId: {
-                    inputType: 'unsignedInt'
+                'identifier': {
+                    inputType: 'input', // TODO review
+                    editable: false
+                },
+                'coordinateReferenceSystem': {
+                    label: this.i18n({ id: 'configuration.project.crs', value: 'Koordinatenbezugssystem' }),
+                    inputType: 'dropdown',
+                    valuelist: [
+                        'Eigenes Koordinatenbezugssystem',
+                        'EPSG4326 (WGS 84)',
+                        'EPSG3857 (WGS 84 Web Mercator)'
+                    ]
                 }
             }
         } as BuiltinTypeDefinition,
+
+
         Operation: {
             superType: true,
             abstract: true,
@@ -198,10 +211,17 @@ export class AppConfigurator {
             fields: {},
             parent: 'Operation'
         } as BuiltinTypeDefinition,
+
+
+
         Room: {
+            superType: true,
+            userDefinedSubtypesAllowed: true, // TODO rename
             fields: {}
         } as BuiltinTypeDefinition,
         BuildingPart: {
+            superType: true,
+            userDefinedSubtypesAllowed: true,
             fields: {}
         } as BuiltinTypeDefinition,
         Area: {
@@ -228,7 +248,18 @@ export class AppConfigurator {
             userDefinedSubtypesAllowed: true,
             fields: {}
         } as BuiltinTypeDefinition,
+        Place: {
+            superType: true,
+            userDefinedSubtypesAllowed: true,
+            fields: {
+                gazId: {
+                    inputType: 'unsignedInt'
+                }
+            }
+        } as BuiltinTypeDefinition,
         Inscription: {
+            // superType: true,                      TODO review
+            // userDefinedSubtypesAllowed: true,
             fields: {}
         } as BuiltinTypeDefinition,
         Image: {
@@ -263,24 +294,6 @@ export class AppConfigurator {
                 }
             }
         } as BuiltinTypeDefinition,
-        Project: {
-            label: this.i18n({ id: 'configuration.project', value: 'Projekt' }),
-            fields: {
-                'identifier': {
-                    inputType: 'input', // TODO review
-                    editable: false
-                },
-                'coordinateReferenceSystem': {
-                    label: this.i18n({ id: 'configuration.project.crs', value: 'Koordinatenbezugssystem' }),
-                    inputType: 'dropdown',
-                    valuelist: [
-                        'Eigenes Koordinatenbezugssystem',
-                        'EPSG4326 (WGS 84)',
-                        'EPSG3857 (WGS 84 Web Mercator)'
-                    ]
-                }
-            }
-        } as BuiltinTypeDefinition
     };
 
     private defaultFields = {
