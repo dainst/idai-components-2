@@ -139,10 +139,10 @@ describe('ConfigLoader', () => {
     it('mix existing externally configured with internal inherits relation', async done => {
 
         Object.assign(libraryTypes, {
-            'A1': { typeFamily: 'A1', parent: 'A', fields: {}, creationDate: '', createdBy: '', description: {} },
-            'A2': { typeFamily: 'A2', parent: 'A', fields: {}, creationDate: '', createdBy: '', description: {} },
-            'B1': { typeFamily: 'B1', parent: 'B', fields: {}, creationDate: '', createdBy: '', description: {} },
-            'B2': { typeFamily: 'B2', parent: 'B', fields: {}, creationDate: '', createdBy: '', description: {} }
+            'A1': { typeFamily: 'A1', parent: 'A', fields: {}, creationDate: '', createdBy: '', description: {}, commons: [] },
+            'A2': { typeFamily: 'A2', parent: 'A', fields: {}, creationDate: '', createdBy: '', description: {}, commons: [] },
+            'B1': { typeFamily: 'B1', parent: 'B', fields: {}, creationDate: '', createdBy: '', description: {}, commons: [] },
+            'B2': { typeFamily: 'B2', parent: 'B', fields: {}, creationDate: '', createdBy: '', description: {}, commons: [] }
         });
 
         applyConfig(
@@ -203,8 +203,8 @@ describe('ConfigLoader', () => {
     it('preprocess - convert sameOperation to sameMainTypeResource', async done => {
 
         Object.assign(libraryTypes, {
-            'A': { typeFamily: 'A', parent: 'T', fields: {}, creationDate: '', createdBy: '', description: {}  },
-            'B': { typeFamily: 'B', parent: 'T', fields: {}, creationDate: '', createdBy: '', description: {}  }});
+            'A': { typeFamily: 'A', parent: 'T', fields: {}, creationDate: '', createdBy: '', description: {}, commons: []  },
+            'B': { typeFamily: 'B', parent: 'T', fields: {}, creationDate: '', createdBy: '', description: {}, commons: []  }});
 
         applyConfig(
             { 'A': { fields: {} }, 'B': { fields: {} }, 'T': { fields: {} }});
@@ -230,9 +230,9 @@ describe('ConfigLoader', () => {
     it('preprocess - apply language confs', async done => {
 
         Object.assign(libraryTypes, {
-            'A': { typeFamily: 'A', parent: 'Parent', fields: {}, creationDate: '', createdBy: '', description: {} },
-            'B': { typeFamily: 'B', parent: 'Parent', fields: {}, creationDate: '', createdBy: '', description: {} },
-            'C': { typeFamily: 'C', parent: 'Parent', fields: {}, creationDate: '', createdBy: '', description: {}  }
+            'A': { typeFamily: 'A', parent: 'Parent', fields: {}, creationDate: '', createdBy: '', description: {}, commons: [] },
+            'B': { typeFamily: 'B', parent: 'Parent', fields: {}, creationDate: '', createdBy: '', description: {}, commons: [] },
+            'C': { typeFamily: 'C', parent: 'Parent', fields: {}, creationDate: '', createdBy: '', description: {}, commons: []  }
         });
 
         applyConfig(
@@ -286,6 +286,7 @@ describe('ConfigLoader', () => {
         Object.assign(libraryTypes, {
             'A': {
                 typeFamily: 'A',
+                commons: [],
                 parent: 'F',
                 fields: { fieldA1: { inputType: 'unsignedInt' } },
                 creationDate: '',
@@ -294,6 +295,7 @@ describe('ConfigLoader', () => {
                 },
             'B': {
                 typeFamily: 'B',
+                commons: [],
                 parent: 'G',
                 fields: { fieldB1: { inputType: 'input' } },
                 creationDate: '',
@@ -345,6 +347,7 @@ describe('ConfigLoader', () => {
         Object.assign(libraryTypes, {
             'Find:0': {
                 typeFamily: 'Find',
+                commons: [],
                 fields: { fieldA1: { inputType: 'unsignedInt' } },
                 creationDate: '',
                 createdBy: '',
@@ -392,6 +395,7 @@ describe('ConfigLoader', () => {
         const customFieldsConfiguration = {
             'B:0': {
                 parent: 'Find',
+                commons: [],
                 fields: { fieldC1: { inputType: 'boolean'}},
                 creationDate: '',
                 createdBy: '',
@@ -428,6 +432,7 @@ describe('ConfigLoader', () => {
         const customFieldsConfiguration = {
             'Extension:0': {
                 parent: 'Place',
+                commons: [],
                 fields: { fieldC1: { inputType: 'boolean'}},
                 creationDate: '',
                 createdBy: '',
@@ -457,6 +462,7 @@ describe('ConfigLoader', () => {
             'B': {
                 typeFamily: 'B',
                 parent: 'Parent',
+                commons: [],
                 fields: {
                     fieldB2: { inputType: 'input' },
                     fieldB3: { inputType: 'input' },
@@ -466,6 +472,7 @@ describe('ConfigLoader', () => {
                 },
             'C': {
                 typeFamily: 'C',
+                commons: [],
                 parent: 'Parent',
                 fields: {
                     fieldC1: { inputType: 'input' },
@@ -475,6 +482,7 @@ describe('ConfigLoader', () => {
                 },
             'A': {
                 typeFamily: 'A',
+                commons: [],
                 parent: 'Parent',
                 fields: {
                     fieldA2: { inputType: 'input' },
@@ -533,6 +541,7 @@ describe('ConfigLoader', () => {
             A: {
                 typeFamily: 'A',
                 parent: 'Parent',
+                commons: [],
                 fields: {
                     fieldA2: { inputType: 'input' },
                     fieldA1: { inputType: 'input' }
@@ -574,6 +583,7 @@ describe('ConfigLoader', () => {
         Object.assign(libraryTypes, {
             'A:0': {
                 typeFamily: 'A',
+                commons: [],
                 fields: {
                     fieldA1: { inputType: 'input' },
                     fieldA2: { inputType: 'input' },

@@ -19,6 +19,7 @@ describe('mergeTypes', () => {
         const libraryTypes: LibraryTypeDefinitions = {
             'A:0': {
                 typeFamily: 'A',
+                commons: [],
                 fields: { aField: { inputType: 'text' }},
                 createdBy: '',
                 creationDate: '',
@@ -26,6 +27,7 @@ describe('mergeTypes', () => {
             },
             'A:1': {
                 typeFamily: 'A',
+                commons: [],
                 fields: { aField: { inputType: 'input' }},
                 createdBy: '',
                 creationDate: '',
@@ -53,6 +55,7 @@ describe('mergeTypes', () => {
                 typeFamily: 'B',
                 parent: 'A',
                 fields: {},
+                commons: [],
                 createdBy: '',
                 creationDate: '',
                 description: {}
@@ -80,6 +83,7 @@ describe('mergeTypes', () => {
         const libraryTypes: LibraryTypeDefinitions = {
             'A:0': {
                 typeFamily: 'A',
+                commons: [],
                 fields: { aCommon: { inputType: 'input' } },
                 createdBy: '',
                 creationDate: '',
@@ -108,6 +112,7 @@ describe('mergeTypes', () => {
         const libraryTypes: LibraryTypeDefinitions = {
             'A:0': {
                 typeFamily: 'A',
+                commons: [],
                 fields: { aCommon: { group: 'stem' } as any },
                 createdBy: '',
                 creationDate: '',
@@ -270,6 +275,7 @@ describe('mergeTypes', () => {
         const libraryTypes: LibraryTypeDefinitions = {
             'A:0': {
                 typeFamily: 'A',
+                commons: [],
                 fields: { aField: { inputType: 'invalid' }},
                 createdBy: '',
                 creationDate: '',
@@ -321,6 +327,7 @@ describe('mergeTypes', () => {
         const libraryTypes: LibraryTypeDefinitions = {
             'A:0': {
                 typeFamily: 'A',
+                commons: [],
                 fields: { aField: {} } as any,
                 creationDate: '', createdBy: '', description: {}
             },
@@ -346,6 +353,7 @@ describe('mergeTypes', () => {
         const libraryTypes: LibraryTypeDefinitions = {
             'A:0': {
                 typeFamily: 'A',
+                commons: [],
                 fields: { aField: {} } as any,
                 creationDate: '', createdBy: '', description: {}
             },
@@ -370,6 +378,7 @@ describe('mergeTypes', () => {
             'B:0': {
                 typeFamily: 'B',
                 parent: 'A',
+                commons: [],
                 fields: { bField: {}} as any,
                 creationDate: '', createdBy: '', description: {}
             },
@@ -395,6 +404,7 @@ describe('mergeTypes', () => {
         const libraryTypes: LibraryTypeDefinitions = {
             'A:0': {
                 typeFamily: 'A',
+                commons: [],
                 fields: { aField: { inputType: 'input' }} as any,
                 creationDate: '', createdBy: '', description: {}
             },
@@ -424,6 +434,7 @@ describe('mergeTypes', () => {
         const libraryTypes: LibraryTypeDefinitions  = {
             'A:0': {
                 typeFamily: 'A',
+                commons: [],
                 fields: {
                     a1: {
                         inputType: 'dropdown',
@@ -475,6 +486,7 @@ describe('mergeTypes', () => {
         const libraryTypes: LibraryTypeDefinitions = {
             'B:0': {
                 typeFamily: 'B',
+                commons: [],
                 fields: {},
                 createdBy: "",
                 creationDate: "",
@@ -521,6 +533,7 @@ describe('mergeTypes', () => {
         const libraryTypes: LibraryTypeDefinitions = {
             'B:0': {
                 typeFamily: 'B',
+                commons: [],
                 parent: 'A',
                 fields: {
                     aField: { valuelist: [] }
@@ -552,6 +565,7 @@ describe('mergeTypes', () => {
         const libraryTypes: LibraryTypeDefinitions = {
             A: {
                 typeFamily: 'A',
+                commons: [],
                 fields: {
                     field2: { inputType: 'input' }
                 },
@@ -590,6 +604,7 @@ describe('mergeTypes', () => {
         const libraryTypes: LibraryTypeDefinitions = {
             'A:1': {
                 typeFamily: 'A',
+                commons: [],
                 fields: {
                     field1: {},
                     field2: { inputType: 'text' }
@@ -649,6 +664,7 @@ describe('mergeTypes', () => {
         const libraryTypes: LibraryTypeDefinitions = {
             'A:0': {
                 typeFamily: 'A',
+                commons: [],
                 fields: {
                     field2: { inputType: 'text' }
                 },
@@ -680,6 +696,7 @@ describe('mergeTypes', () => {
 
         const t1 = {
             typeFamily: 'x1',
+            commons: [],
             parent: 'x',
             description: { 'de': '' },
             createdBy: '',

@@ -11,7 +11,7 @@ import {BaseFieldDefinition, BaseTypeDefinition} from "./base-type-definition";
 export interface LibraryTypeDefinition extends BaseTypeDefinition {
 
     color?: string,
-    commons?: string[]; // TODO make mandatory
+    commons: string[];
     parent?: string,
     typeFamily: string;
     description: {[language: string]: string},
@@ -44,6 +44,7 @@ export module LibraryTypeDefinition {
             if (type.creationDate === undefined) throw [ConfigurationErrors.MISSING_TYPE_PROPERTY, 'creationDate', typeName];
             if (type.createdBy === undefined) throw [ConfigurationErrors.MISSING_TYPE_PROPERTY, 'createdBy', typeName];
             if (type.typeFamily === undefined) throw [ConfigurationErrors.MISSING_TYPE_PROPERTY, 'typeFamily', typeName];
+            if (type.commons === undefined) throw [ConfigurationErrors.MISSING_TYPE_PROPERTY, 'commons', typeName];
 
             if (!builtinTypes.includes(type.typeFamily) && !type.parent) throw [ConfigurationErrors.MISSING_TYPE_PROPERTY, 'parent', typeName];
 

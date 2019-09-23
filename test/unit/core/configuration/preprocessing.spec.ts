@@ -22,6 +22,7 @@ describe('Preprocessing', () => {
 
         t1 = {
             typeFamily: 'x1',
+            commons: [],
             parent: 'x',
             description: { 'de': '' },
             createdBy: '',
