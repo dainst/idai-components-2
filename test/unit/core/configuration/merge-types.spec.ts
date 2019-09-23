@@ -50,6 +50,7 @@ describe('mergeTypes', () => {
         const builtInTypes: BuiltinTypeDefinitions = { A: { fields: {} }};
         const libraryTypes: LibraryTypeDefinitions = {
             'B:0': {
+                typeFamily: 'B',
                 parent: 'A',
                 fields: {},
                 createdBy: '',
@@ -117,7 +118,9 @@ describe('mergeTypes', () => {
             mergeTypes(
                 builtInTypes,
                 libraryTypes,
-                { 'A:0': { fields: {} } },
+                {
+                    'A:0': { fields: {} }
+                    },
                 commonFields,
                 {},
                 {});
@@ -365,7 +368,8 @@ describe('mergeTypes', () => {
 
         const libraryTypes: LibraryTypeDefinitions = {
             'B:0': {
-                parent: 'A', // TODO here a typeFamily should be necessary
+                typeFamily: 'B',
+                parent: 'A',
                 fields: { bField: {}} as any,
                 creationDate: '', createdBy: '', description: {}
             },
@@ -464,13 +468,13 @@ describe('mergeTypes', () => {
         }
     });
 
-
-    it('missing typeFamily or parent in library type', () => {
+    it('missing parent in library type', () => {
 
         const builtInTypes = {} as any;
 
         const libraryTypes: LibraryTypeDefinitions = {
             'B:0': {
+                typeFamily: 'B',
                 fields: {},
                 createdBy: "",
                 creationDate: "",
@@ -483,7 +487,7 @@ describe('mergeTypes', () => {
                 libraryTypes,
                 {}, {}, {}, {});
         } catch (expected) {
-            expect(expected).toEqual([ConfigurationErrors.PARENT_OR_TYPE_FAMILY_MUST_BE_SET, 'B:0'])
+            expect(expected).toEqual([ConfigurationErrors.MISSING_TYPE_PROPERTY, 'parent', 'B:0'])
         }
     });
 
@@ -516,6 +520,7 @@ describe('mergeTypes', () => {
 
         const libraryTypes: LibraryTypeDefinitions = {
             'B:0': {
+                typeFamily: 'B',
                 parent: 'A',
                 fields: {
                     aField: { valuelist: [] }

@@ -47,7 +47,14 @@ describe('ConfigLoader', () => {
     it('mix in common fields', async done => {
 
         Object.assign(libraryTypes, {
-            'B:0': { parent: 'A', commons: ['processor'], fields: {}, creationDate: '', createdBy: '', description: {} },
+            'B:0': {
+                typeFamily: 'B',
+                parent: 'A',
+                commons: ['processor'],
+                fields: {},
+                creationDate: '',
+                createdBy: '',
+                description: {} },
         });
 
         applyConfig(
@@ -85,7 +92,13 @@ describe('ConfigLoader', () => {
     it('translate common fields', async done => {
 
         Object.assign(libraryTypes, {
-            'B:0': { parent: 'A', commons: ['processor'], fields: {}, creationDate: '', createdBy: '', description: {}  },
+            'B:0': {
+                typeFamily: 'B',
+                parent: 'A',
+                commons: ['processor'],
+                fields: {}, creationDate: '',
+                createdBy: '',
+                description: {}  },
         });
 
         applyConfig(

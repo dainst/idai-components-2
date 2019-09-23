@@ -13,7 +13,7 @@ export interface LibraryTypeDefinition extends BaseTypeDefinition {
     color?: string,
     commons?: string[]; // TODO make mandatory
     parent?: string,
-    typeFamily?: string;
+    typeFamily: string;
     description: {[language: string]: string},
     createdBy: string,
     creationDate: string;
@@ -43,12 +43,9 @@ export module LibraryTypeDefinition {
             if (!type.description) throw [ConfigurationErrors.MISSING_TYPE_PROPERTY, 'description', typeName];
             if (type.creationDate === undefined) throw [ConfigurationErrors.MISSING_TYPE_PROPERTY, 'creationDate', typeName];
             if (type.createdBy === undefined) throw [ConfigurationErrors.MISSING_TYPE_PROPERTY, 'createdBy', typeName];
+            if (type.typeFamily === undefined) throw [ConfigurationErrors.MISSING_TYPE_PROPERTY, 'typeFamily', typeName];
 
-            if (!type.typeFamily) {
-                if (!type.parent) throw [ConfigurationErrors.PARENT_OR_TYPE_FAMILY_MUST_BE_SET, typeName];
-            } else {
-                if (!builtinTypes.includes(type.typeFamily) && !type.parent) throw [ConfigurationErrors.MISSING_TYPE_PROPERTY, 'parent', typeName];
-            }
+            if (!builtinTypes.includes(type.typeFamily) && !type.parent) throw [ConfigurationErrors.MISSING_TYPE_PROPERTY, 'parent', typeName];
 
             if (!type.fields) throw [ConfigurationErrors.MISSING_TYPE_PROPERTY, 'creationDate', typeName];
             assertFieldsAreValid(type.fields);

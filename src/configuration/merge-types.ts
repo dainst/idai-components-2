@@ -61,7 +61,6 @@ type TransientFieldDefinitions = { [fieldName: string]: TransientFieldDefinition
  * @throws [DUPLICATION_IN_SELECTION, typeName]
  * @throws [MUST_HAVE_PARENT, typeName]
  * @throws [MISSING_TYPE_PROPERTY, propertyName, typeName]
- * @throws [PARENT_OR_TYPE_FAMILY_MUST_BE_SET, typeName]
  * @throws [MISSING_FIELD_PROPERTY, propertyName, typeName, fieldName]
  * @throws [MUST_NOT_SET_INPUT_TYPE, typeName, fieldName]
  * @throws [ILLEGAL_FIELD_TYPE, fieldType, fieldName]
@@ -107,14 +106,12 @@ function assertTypeFamiliesConsistent(libraryTypes: LibraryTypeDefinitions) {
 
     Object.values(libraryTypes).forEach((libraryType: any) => {
 
-        const typeFamily = libraryType['typeFamily'];
+        const typeFamily = libraryType.typeFamily;
 
-        if (typeFamily // TODO see below
-            && !collected[typeFamily]) collected[typeFamily] = {};
+        if (!collected[typeFamily]) collected[typeFamily] = {};
 
         keysAndValues(libraryType.fields).forEach(([fieldName, field]: any) => {
 
-            if (!typeFamily) return; // TODO remove, see also test: field property validation - missing input type in field of library type - new subtype
             const inputType = field['inputType'];
 
             if (collected[typeFamily][fieldName]) {
