@@ -81,10 +81,10 @@ export function mergeTypes(builtInTypes: BuiltinTypeDefinitions,
     assertNoCommonFieldInputTypeOrGroupChanges(commonFields, customTypes);
     assertTypeFamiliesConsistent(libraryTypes);
 
-    const mergedTypes: TransientTypeDefinitions = mergeBuiltInWithLibraryTypes(builtInTypes, libraryTypes);
-    assertInputTypesAreSet(mergedTypes, commonFields);
-    assertNoDuplicationInSelection(mergedTypes, customTypes);
-    mergeTheTypes(mergedTypes, customTypes as any, commonFields);
+    const selectableTypes: TransientTypeDefinitions = mergeBuiltInWithLibraryTypes(builtInTypes, libraryTypes);
+    assertInputTypesAreSet(selectableTypes, commonFields);
+    assertNoDuplicationInSelection(selectableTypes, customTypes);
+    const mergedTypes: TransientTypeDefinitions = mergeTheTypes(selectableTypes, customTypes as any, commonFields);
 
     // TODO make sure that valuelistIds are provided for certain inputTypes
 
@@ -436,24 +436,26 @@ function mergeBuiltInWithLibraryTypes(builtInTypes: BuiltinTypeDefinitions,
 }
 
 
-function mergeTheTypes(typeDefs: TransientTypeDefinitions,
+function mergeTheTypes(selectableTypes: TransientTypeDefinitions,
                        customTypes: CustomTypeDefinitions,
                        commonFields: any) {
+
+    const mergedTypes: TransientTypeDefinitions = clone(selectableTypes);
 
     const pairs = keysAndValues(customTypes);
 
     forEach(([customTypeName, customType]: any) => {
 
-        const extendedType = typeDefs[customTypeName];
+        const extendedType = mergedTypes[customTypeName];
 
         if (extendedType) {
             issueWarningOnFieldTypeChanges(customTypeName, customType, extendedType);
 
-            const newMergedType: any = jsonClone(extendedType);
+            const newMergedType: any = clone(extendedType);
             mergePropertiesOfType(newMergedType, customType);
             mergeFields(newMergedType.fields, customType.fields);
 
-            typeDefs[customTypeName] = newMergedType;
+            mergedTypes[customTypeName] = newMergedType;
         } else {
             if (!customType.parent) throw [ConfigurationErrors.MUST_HAVE_PARENT, customTypeName];
 
@@ -461,9 +463,11 @@ function mergeTheTypes(typeDefs: TransientTypeDefinitions,
                 assertInputTypePresentIfNotCommonType(commonFields, customTypeName, fieldName, field);
             });
 
-            typeDefs[customTypeName] = customType;
+            mergedTypes[customTypeName] = customType;
         }
     })(pairs);
+
+    return mergedTypes;
 }
 
 // TODO curry (bake in common fields first)
