@@ -6,7 +6,6 @@ import {clone, compose, filter, flow, forEach, is, isDefined, isnt, jsonClone, k
     on, reduce, to, union} from 'tsfun';
 import {ConfigurationErrors} from './configuration-errors';
 import {FieldDefinition} from './model/field-definition';
-import {BaseTypeDefinitions} from './model/base-type-definition';
 
 
 interface TransientTypeDefinition
@@ -84,11 +83,10 @@ export function mergeTypes(builtInTypes: BuiltinTypeDefinitions,
     const selectableTypes: TransientTypeDefinitions = mergeBuiltInWithLibraryTypes(builtInTypes, libraryTypes);
     assertInputTypesAreSet(selectableTypes, commonFields);
     assertNoDuplicationInSelection(selectableTypes, customTypes);
+
     const mergedTypes: TransientTypeDefinitions = mergeTheTypes(selectableTypes, customTypes as any, commonFields);
-
-    // TODO make sure that valuelistIds are provided for certain inputTypes
-
     eraseUnusedTypes(mergedTypes, Object.keys(customTypes));
+    assertValuelistIdsProvided(mergedTypes);
     hideFields(mergedTypes, customTypes);
 
     const typesByFamilyNames: TransientTypeDefinitions = toTypesByFamilyNames(mergedTypes);
@@ -96,6 +94,18 @@ export function mergeTypes(builtInTypes: BuiltinTypeDefinitions,
     replaceCommonFields(typesByFamilyNames, commonFields);
     addExtraFields(typesByFamilyNames, extraFields);
     return typesByFamilyNames;
+}
+
+
+function assertValuelistIdsProvided(mergedTypes: TransientTypeDefinitions) {
+
+    iterateOverFieldsOfTypes(mergedTypes, (typeName, type, fieldName, field) => {
+        if (['dropdown', 'checkboxes', 'radio'].includes(field.inputType ? field.inputType : '')) {
+            if (!field.valuelistId) {
+                throw [ConfigurationErrors.MISSING_FIELD_PROPERTY, 'valuelistId', typeName, fieldName];
+            }
+        }
+    });
 }
 
 
@@ -167,11 +177,12 @@ function assertInputTypesAreSet(types: TransientTypeDefinitions, commonFields: a
 }
 
 
-function iterateOverFieldsOfTypes(types: BaseTypeDefinitions,
-                                  f: (typeName: string, type: any, fieldName: string, field: any) => void) {
+function iterateOverFieldsOfTypes(types: TransientTypeDefinitions,
+                                  f: (typeName: string, type: TransientTypeDefinition,
+                                      fieldName: string, field: TransientFieldDefinition) => void) {
 
-    keysAndValues(types).forEach(([typeName, type]: any) => {
-        keysAndValues(type.fields).forEach(([fieldName, field]: any) => {
+    keysAndValues(types).forEach(([typeName, type]) => {
+        keysAndValues(type.fields).forEach(([fieldName, field]) => {
             f(typeName, type, fieldName, field);
         })
     });

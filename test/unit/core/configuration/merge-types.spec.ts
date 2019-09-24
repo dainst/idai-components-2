@@ -13,6 +13,60 @@ import {RelationDefinition} from '../../../../src/configuration/model/relation-d
 describe('mergeTypes', () => {
 
 
+    it('valuelistId - nowhere provided - built in type selected', () => {
+
+        const builtInTypes: BuiltinTypeDefinitions = { A: { fields: { aField: { inputType: 'dropdown' }} }};
+        const customTypes: CustomTypeDefinitions = {
+            'A': { fields: { aField: {}}}
+        };
+
+        try {
+            mergeTypes(
+                builtInTypes,
+                {},
+                customTypes,
+                {},
+                {},
+                {});
+            fail();
+        } catch (expected) {
+            expect(expected).toEqual([ConfigurationErrors.MISSING_FIELD_PROPERTY, 'valuelistId', 'A', 'aField']);
+        }
+    });
+
+
+    it('valuelistId - nowhere provided - library type selected', () => {
+
+        const builtInTypes: BuiltinTypeDefinitions = { A: { fields: { aField: { inputType: 'dropdown' }} }};
+        const libraryTypes: LibraryTypeDefinitions = {
+            'A:0': {
+                typeFamily: 'A',
+                commons: [],
+                fields: { aField: {} },
+                createdBy: '',
+                creationDate: '',
+                description: {}
+            },
+        };
+        const customTypes: CustomTypeDefinitions = {
+            'A:0': { fields: { aField: {}}}
+        };
+
+        try {
+            mergeTypes(
+                builtInTypes,
+                libraryTypes,
+                customTypes,
+                {},
+                {},
+                {});
+            fail();
+        } catch (expected) {
+            expect(expected).toEqual([ConfigurationErrors.MISSING_FIELD_PROPERTY, 'valuelistId', 'A:0', 'aField']);
+        }
+    });
+
+
     it('duplication in selection', () => {
 
         const builtinTypes: BuiltinTypeDefinitions = { A: { fields: {} }};
