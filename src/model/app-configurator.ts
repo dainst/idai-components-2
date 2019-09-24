@@ -177,11 +177,11 @@ export class AppConfigurator {
         Project: {
             label: this.i18n({ id: 'configuration.project', value: 'Projekt' }),
             fields: {
-                'identifier': {
-                    inputType: 'input', // TODO review
+                identifier: {
+                    inputType: 'input',
                     editable: false
                 },
-                'coordinateReferenceSystem': {
+                coordinateReferenceSystem: {
                     label: this.i18n({ id: 'configuration.project.crs', value: 'Koordinatenbezugssystem' }),
                     inputType: 'dropdown',
                     valuelist: [
@@ -264,28 +264,25 @@ export class AppConfigurator {
             userDefinedSubtypesAllowed: true,
             fields: {
                 height: {
-                    inputType: 'input', // TODO review
+                    inputType: 'unsignedInt',
                     editable: false,
                     label: this.i18n({ id: 'configuration.image.height', value: 'Höhe' })
                 },
                 width: {
-                    inputType: 'input', // TODO review
+                    inputType: 'unsignedInt',
                     editable: false,
                     label: this.i18n({ id: 'configuration.image.width', value: 'Breite' })
                 },
+                // The originalFilename gets used as an inital resource.identifier
+                // when the image gets uploaded. However, users can change the identifier,
+                // which is why we store the originalFilename separately
                 originalFilename: {
-                    inputType: 'input', // TODO review
-                    visible: false,
-                    editable: false
-                },
-                // TODO Delete the fields 'filename' and 'hasFilename' as soon as existing data has been migrated.
-                filename: {
-                    inputType: 'input', // TODO review
+                    inputType: 'input',
                     visible: false,
                     editable: false
                 },
                 georeference: {
-                    inputType: 'input', // TODO review
+                    inputType: 'input', // there is no input type for georeference, really, so we set it simply to 'input'
                     visible: false,
                     editable: false
                 }
