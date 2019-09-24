@@ -406,34 +406,31 @@ function issueWarningOnFieldTypeChanges(customTypeName: string, customType: any,
 
 
 function mergeBuiltInWithLibraryTypes(builtInTypes: BuiltinTypeDefinitions,
-                                      libraryTypes: LibraryTypeDefinitions) {
+                                      libraryTypes: LibraryTypeDefinitions): TransientTypeDefinitions {
 
     const types: TransientTypeDefinitions = clone(builtInTypes) as unknown as TransientTypeDefinitions;
     keysAndValues(types).forEach(([typeName, type]) => type.typeFamily = typeName);
 
-    flow<any>(
-        libraryTypes,
-        keysAndValues,
-        forEach(([libraryTypeName, libraryType]: any) => {
+    keysAndValues(libraryTypes).forEach(([libraryTypeName, libraryType]: any) => {
 
-            const extendedBuiltInType = builtInTypes[libraryType.typeFamily];
-            if (extendedBuiltInType) {
+        const extendedBuiltInType = builtInTypes[libraryType.typeFamily];
+        if (extendedBuiltInType) {
 
-                const newMergedType: any = jsonClone(extendedBuiltInType);
-                merge(newMergedType, libraryType);
-                keysAndValues(libraryType.fields).forEach(([libraryTypeFieldName, libraryTypeField]: any) => {
-                    if (extendedBuiltInType.fields[libraryTypeFieldName] && libraryTypeField['inputType']) {
-                        throw [ConfigurationErrors.MUST_NOT_SET_INPUT_TYPE, libraryTypeName, libraryTypeFieldName];
-                    }
-                });
-                mergeFields(newMergedType.fields, libraryType.fields);
-                types[libraryTypeName] = newMergedType;
-            } else {
+            const newMergedType: any = jsonClone(extendedBuiltInType);
+            merge(newMergedType, libraryType);
+            keysAndValues(libraryType.fields).forEach(([libraryTypeFieldName, libraryTypeField]) => {
+                if (extendedBuiltInType.fields[libraryTypeFieldName] && (libraryTypeField as any)['inputType']) {
+                    throw [ConfigurationErrors.MUST_NOT_SET_INPUT_TYPE, libraryTypeName, libraryTypeFieldName];
+                }
+            });
+            mergeFields(newMergedType.fields, libraryType.fields);
+            types[libraryTypeName] = newMergedType;
+        } else {
 
-                if (!libraryType.parent) throw [ConfigurationErrors.MUST_HAVE_PARENT, libraryTypeName];
-                types[libraryTypeName] = libraryType;
-            }
-        }));
+            if (!libraryType.parent) throw [ConfigurationErrors.MUST_HAVE_PARENT, libraryTypeName];
+            types[libraryTypeName] = libraryType;
+        }
+    });
 
     return types;
 }
