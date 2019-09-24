@@ -69,6 +69,8 @@ export function mergeTypes(builtInTypes: BuiltinTypeDefinitions,
                            valuelistsConfiguration: {[valueListName: string]: any} = {},
                            extraFields: {[extraFieldName: string]: any} = {}) {
 
+    const assertInputTypePresentIfNotCommonType_ = assertInputTypePresentIfNotCommonType(commonFields);
+
     assertTypesAndValuelistsStructurallyValid(Object.keys(builtInTypes), libraryTypes, customTypes);
     assertSubtypingIsLegal(builtInTypes, libraryTypes);
     assertSubtypingIsLegal(builtInTypes, customTypes);
@@ -77,10 +79,14 @@ export function mergeTypes(builtInTypes: BuiltinTypeDefinitions,
     assertTypeFamiliesConsistent(libraryTypes);
 
     const selectableTypes: TransientTypeDefinitions = mergeBuiltInWithLibraryTypes(builtInTypes, libraryTypes);
-    assertInputTypesAreSet(selectableTypes, commonFields);
+    assertInputTypesAreSet(selectableTypes, assertInputTypePresentIfNotCommonType_);
     assertNoDuplicationInSelection(selectableTypes, customTypes);
 
-    const mergedTypes: TransientTypeDefinitions = mergeTheTypes(selectableTypes, customTypes as any, commonFields);
+    const mergedTypes: TransientTypeDefinitions =
+        mergeTheTypes(
+            selectableTypes,
+            customTypes as any,
+            assertInputTypePresentIfNotCommonType_);
     eraseUnusedTypes(mergedTypes, Object.keys(customTypes));
     assertValuelistIdsProvided(mergedTypes);
     hideFields(mergedTypes, customTypes);
@@ -165,10 +171,10 @@ function assertNoCommonFieldInputTypeOrGroupChanges(commonFields: {[fieldName: s
 }
 
 
-function assertInputTypesAreSet(types: TransientTypeDefinitions, commonFields: any) {
+function assertInputTypesAreSet(types: TransientTypeDefinitions, assertInputTypePresentIfNotCommonType: Function) {
 
     iterateOverFieldsOfTypes(types, (typeName, type, fieldName, field) => {
-        assertInputTypePresentIfNotCommonType(commonFields, typeName, fieldName, field);
+        assertInputTypePresentIfNotCommonType(typeName, fieldName, field);
     });
 }
 
@@ -445,7 +451,7 @@ function mergeBuiltInWithLibraryTypes(builtInTypes: BuiltinTypeDefinitions,
 
 function mergeTheTypes(selectableTypes: TransientTypeDefinitions,
                        customTypes: CustomTypeDefinitions,
-                       commonFields: any) {
+                       assertInputTypePresentIfNotCommonType: Function) {
 
     const mergedTypes: TransientTypeDefinitions = clone(selectableTypes);
 
@@ -467,7 +473,7 @@ function mergeTheTypes(selectableTypes: TransientTypeDefinitions,
             if (!customType.parent) throw [ConfigurationErrors.MUST_HAVE_PARENT, customTypeName];
 
             keysAndValues(customType.fields).forEach(([fieldName, field]: any) => {
-                assertInputTypePresentIfNotCommonType(commonFields, customTypeName, fieldName, field);
+                assertInputTypePresentIfNotCommonType(customTypeName, fieldName, field);
             });
 
             mergedTypes[customTypeName] = customType;
@@ -477,10 +483,13 @@ function mergeTheTypes(selectableTypes: TransientTypeDefinitions,
     return mergedTypes;
 }
 
-// TODO curry (bake in common fields first)
-function assertInputTypePresentIfNotCommonType(commonFields: any, typeName: string, fieldName: string, field: any) {
 
-    if (!field.inputType && !Object.keys(commonFields).includes(fieldName)) {
-        throw [ConfigurationErrors.MISSING_FIELD_PROPERTY, 'inputType', typeName, fieldName];
+function assertInputTypePresentIfNotCommonType(commonFields: any) {
+
+    return (typeName: string, fieldName: string, field: any) => {
+
+        if (!field.inputType && !Object.keys(commonFields).includes(fieldName)) {
+            throw [ConfigurationErrors.MISSING_FIELD_PROPERTY, 'inputType', typeName, fieldName];
+        }
     }
 }
