@@ -9,6 +9,8 @@ import {BaseFieldDefinition, BaseTypeDefinition} from "./base-type-definition";
 
 export interface BuiltinTypeDefinition extends BaseTypeDefinition {
 
+    parent?: string;
+    abstract?: boolean;
     commons?: string[];
     superType?: boolean,
     userDefinedSubtypesAllowed?: boolean,

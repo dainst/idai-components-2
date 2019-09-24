@@ -4,7 +4,7 @@ import {ConfigLoader} from '../configuration/config-loader';
 import {ConfigurationValidator} from '../configuration/configuration-validator';
 import {ProjectConfiguration} from '../configuration/project-configuration';
 import {FieldDefinition} from '../configuration/model/field-definition';
-import {BuiltinTypeDefinition} from "../configuration/model/builtin-type-definition";
+import {BuiltinTypeDefinition, BuiltinTypeDefinitions} from '../configuration/model/builtin-type-definition';
 
 
 @Injectable()
@@ -173,7 +173,7 @@ export class AppConfigurator {
         }
     };
 
-    private defaultTypes = {
+    private builtinTypes: BuiltinTypeDefinitions = {
         Project: {
             label: this.i18n({ id: 'configuration.project', value: 'Projekt' }),
             fields: {
@@ -198,37 +198,48 @@ export class AppConfigurator {
             superType: true,
             abstract: true,
             fields: {}
-        } as BuiltinTypeDefinition,
+        },
         Building: {
             fields: {},
             parent: 'Operation'
-        } as BuiltinTypeDefinition,
+        },
         Survey: {
             fields: {},
             parent: 'Operation'
-        } as BuiltinTypeDefinition,
+        },
         Trench: {
             fields: {},
             parent: 'Operation'
-        } as BuiltinTypeDefinition,
+        },
 
+
+        Place: {
+            fields: {
+                gazId: {
+                    inputType: 'unsignedInt'
+                }
+            }
+        },
+        Inscription: {
+            fields: {}
+        },
 
 
         Room: {
             superType: true,
-            userDefinedSubtypesAllowed: true, // TODO rename
+            userDefinedSubtypesAllowed: true,
             fields: {}
-        } as BuiltinTypeDefinition,
+        },
         BuildingPart: {
             superType: true,
             userDefinedSubtypesAllowed: true,
             fields: {}
-        } as BuiltinTypeDefinition,
+        },
         Area: {
             superType: true,
             userDefinedSubtypesAllowed: true,
             fields: {}
-        } as BuiltinTypeDefinition,
+        },
         Feature: {
             superType: true,
             userDefinedSubtypesAllowed: true,
@@ -242,26 +253,12 @@ export class AppConfigurator {
                     group: 'time'
                 }
             }
-        } as BuiltinTypeDefinition,
+        },
         Find: {
             superType: true,
             userDefinedSubtypesAllowed: true,
             fields: {}
-        } as BuiltinTypeDefinition,
-        Place: {
-            superType: true,
-            userDefinedSubtypesAllowed: true,
-            fields: {
-                gazId: {
-                    inputType: 'unsignedInt'
-                }
-            }
-        } as BuiltinTypeDefinition,
-        Inscription: {
-            // superType: true,                      TODO review
-            // userDefinedSubtypesAllowed: true,
-            fields: {}
-        } as BuiltinTypeDefinition,
+        },
         Image: {
             superType: true,
             userDefinedSubtypesAllowed: true,
@@ -577,7 +574,7 @@ export class AppConfigurator {
 
         if (customConfigurationName === 'Meninx' || customConfigurationName === 'Pergamon') {
 
-            (this.defaultTypes as any)['Other'] = {
+            (this.builtinTypes as any)['Other'] = {
                 color: '#CC6600',
                 parent: 'Feature',
                 fields: {}
@@ -587,11 +584,11 @@ export class AppConfigurator {
 
         if (customConfigurationName === 'Meninx') {
 
-            (this.defaultTypes as any)['Wall_surface'] = {
+            (this.builtinTypes as any)['Wall_surface'] = {
                 color: '#ffff99',
                 fields: {}
             };
-            (this.defaultTypes as any)['Drilling'] = {
+            (this.builtinTypes as any)['Drilling'] = {
                 color: '#08519c',
                 fields: {}
             };
@@ -614,26 +611,26 @@ export class AppConfigurator {
 
         if (customConfigurationName === 'Pergamon') {
 
-            (this.defaultTypes as any)['ProcessUnit'] = {
+            (this.builtinTypes as any)['ProcessUnit'] = {
                 abstract: true,
                 color: '#08306b',
                 fields: {}
             };
-            (this.defaultTypes as any)['Profile'] = {
+            (this.builtinTypes as any)['Profile'] = {
                 color: '#c6dbef',
                 parent: 'ProcessUnit',
                 fields: {}
             };
-            (this.defaultTypes as any)['Sample'] = {
+            (this.builtinTypes as any)['Sample'] = {
                 color: '#9ecae1',
                 parent: 'ProcessUnit',
                 fields: {}
             };
-            (this.defaultTypes as any)['BuildingFloor'] = {
+            (this.builtinTypes as any)['BuildingFloor'] = {
                 color: '#6600cc',
                 fields: {}
             };
-            (this.defaultTypes as any)['SurveyBurial'] = {
+            (this.builtinTypes as any)['SurveyBurial'] = {
                 color: '#45ff95',
                 fields: {}
             };
@@ -712,7 +709,7 @@ export class AppConfigurator {
         return this.configLoader.go(
             configDirPath,
             this.commonFields,
-            this.defaultTypes,
+            this.builtinTypes,
             this.defaultRelations,
             this.defaultFields,
             new ConfigurationValidator(),
