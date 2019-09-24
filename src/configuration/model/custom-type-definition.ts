@@ -1,4 +1,4 @@
-import {assertFieldsAreValid} from '../util';
+import {assertFieldsAreValid} from '../assert-fields-are-valid';
 import {ConfigurationErrors} from '../configuration-errors';
 import {BaseFieldDefinition, BaseTypeDefinition} from "./base-type-definition";
 
