@@ -6,7 +6,7 @@ import {clone, compose, filter, flow, forEach, is, isDefined, isnt, jsonClone, k
     on, reduce, to, union} from 'tsfun';
 import {ConfigurationErrors} from './configuration-errors';
 import {FieldDefinition} from './model/field-definition';
-import {BaseTypeDefinitions} from "./model/base-type-definition";
+import {BaseTypeDefinitions} from './model/base-type-definition';
 
 
 interface TransientTypeDefinition
@@ -80,10 +80,10 @@ export function mergeTypes(builtInTypes: BuiltinTypeDefinitions,
     assertNoCommonFieldInputTypeOrGroupChanges(commonFields, libraryTypes);
     assertNoCommonFieldInputTypeOrGroupChanges(commonFields, customTypes);
     assertTypeFamiliesConsistent(libraryTypes);
-    assertNoDuplicationInSelection(libraryTypes, customTypes);
 
     const mergedTypes: TransientTypeDefinitions = mergeBuiltInWithLibraryTypes(builtInTypes, libraryTypes);
     assertInputTypesAreSet(mergedTypes, commonFields);
+    assertNoDuplicationInSelection(mergedTypes, customTypes);
     mergeTheTypes(mergedTypes, customTypes as any, commonFields);
 
     // TODO make sure that valuelistIds are provided for certain inputTypes
@@ -99,23 +99,18 @@ export function mergeTypes(builtInTypes: BuiltinTypeDefinitions,
 }
 
 
-function assertNoDuplicationInSelection(libraryTypes: LibraryTypeDefinitions, customTypes: CustomTypeDefinitions) {
+function assertNoDuplicationInSelection(mergedTypes: TransientTypeDefinitions, customTypes: CustomTypeDefinitions) {
 
-    // TODO also check if more than one extension of builtin is present
+    Object.keys(customTypes).reduce((selectedTypeFamilies, customTypeName) => {
 
-    const selectedTypeFamilies: string[] = [];
-
-    keysAndValues(customTypes).forEach(([customTypeName, customType]) => {
-
-        // check if extension of library type
-        if (libraryTypes[customTypeName]) {
-            if (selectedTypeFamilies.includes(libraryTypes[customTypeName]['typeFamily'])) {
-                throw [ConfigurationErrors.DUPLICATION_IN_SELECTION, libraryTypes[customTypeName]['typeFamily']];
-            } else {
-                selectedTypeFamilies.push(libraryTypes[customTypeName]['typeFamily']);
-            }
+        const selectedType = mergedTypes[customTypeName];
+        if (!selectedType) return selectedTypeFamilies;
+        if (!selectedTypeFamilies.includes(selectedType.typeFamily)) {
+            return selectedTypeFamilies.concat([selectedType.typeFamily]);
         }
-    });
+        throw [ConfigurationErrors.DUPLICATION_IN_SELECTION, selectedType.typeFamily];
+
+    }, [] as string[]);
 }
 
 
@@ -413,7 +408,8 @@ function issueWarningOnFieldTypeChanges(customTypeName: string, customType: any,
 function mergeBuiltInWithLibraryTypes(builtInTypes: BuiltinTypeDefinitions,
                                       libraryTypes: LibraryTypeDefinitions) {
 
-    const types: any = {...builtInTypes};
+    const types: TransientTypeDefinitions = clone(builtInTypes) as unknown as TransientTypeDefinitions;
+    keysAndValues(types).forEach(([typeName, type]) => type.typeFamily = typeName);
 
     flow<any>(
         libraryTypes,

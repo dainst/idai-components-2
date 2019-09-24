@@ -1,6 +1,6 @@
-import {cond, empty, flow, forEach, identity, includedIn, isNot, map, remove, to, filter, isDefined} from "tsfun";
-import {keysAndValues} from "tsfun/src/objectcoll";
-import {ConfigurationErrors} from "./configuration-errors";
+import {cond, empty, flow, forEach, identity, includedIn, isNot, map, remove, to} from 'tsfun';
+import {keysAndValues} from 'tsfun';
+import {ConfigurationErrors} from './configuration-errors';
 
 const VALID_FIELD_KEYS = ['valuelistId', 'inputType', 'positionValues'];
 
