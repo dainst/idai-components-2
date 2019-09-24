@@ -30,6 +30,8 @@ export interface LibraryFieldDefinition extends BaseFieldDefinition {
     positionValues?: string;
 }
 
+const VALID_FIELD_PROPERTIES = ['valuelistId', 'inputType', 'positionValues'];
+
 
 export type LibraryFieldDefinitions = { [fieldName: string]: LibraryFieldDefinition };
 
@@ -49,7 +51,7 @@ export module LibraryTypeDefinition {
             if (!builtinTypes.includes(type.typeFamily) && !type.parent) throw [ConfigurationErrors.MISSING_TYPE_PROPERTY, 'parent', typeName];
 
             if (!type.fields) throw [ConfigurationErrors.MISSING_TYPE_PROPERTY, 'creationDate', typeName];
-            assertFieldsAreValid(type.fields);
+            assertFieldsAreValid(type.fields, VALID_FIELD_PROPERTIES, 'library');
         }
     }
 }

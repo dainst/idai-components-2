@@ -24,8 +24,11 @@ export interface CustomFieldDefinition extends BaseFieldDefinition {
 
     valuelistId?: string;
     inputType?: string;
-    positionValues?: string; // TODO review
+    positionValues?: string;
 }
+
+
+const VALID_FIELD_PROPERTIES = ['valuelistId', 'inputType', 'positionValues'];
 
 
 export type CustomTypeDefinitions = {[typeName: string]: CustomTypeDefinition };
@@ -42,8 +45,7 @@ export module CustomTypeDefinition {
             }
 
             if (!type.fields) throw [ConfigurationErrors.MISSING_TYPE_PROPERTY, 'fields', type];
-            assertFieldsAreValid(type.fields);
+            assertFieldsAreValid(type.fields, VALID_FIELD_PROPERTIES, 'custom');
         }
     }
-
 }

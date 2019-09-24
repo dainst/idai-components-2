@@ -231,37 +231,6 @@ describe('mergeTypes', () => {
     });
 
 
-    it('commons - cannot set group of common in libary types', () => {
-
-        const builtInTypes: BuiltinTypeDefinitions = { A: { fields: {} }};
-        const commonFields = { aCommon: { group: 'stem', inputType: 'input'}};
-        const libraryTypes: LibraryTypeDefinitions = {
-            'A:0': {
-                typeFamily: 'A',
-                commons: [],
-                fields: { aCommon: { group: 'stem' } as any },
-                createdBy: '',
-                creationDate: '',
-                description: {}
-            }};
-
-        try {
-            mergeTypes(
-                builtInTypes,
-                libraryTypes,
-                {
-                    'A:0': { fields: {} }
-                    },
-                commonFields,
-                {},
-                {});
-            fail();
-        } catch (expected) {
-            expect(expected).toEqual([ConfigurationErrors.ILLEGAL_FIELD_PROPERTIES, ['group']]);
-        }
-    });
-
-
     it('commons - cannot set type of common in custom types', () => {
 
         const builtInTypes: BuiltinTypeDefinitions = { A: { fields: {} }};
@@ -281,29 +250,6 @@ describe('mergeTypes', () => {
             fail();
         } catch (expected) {
             expect(expected).toEqual([ConfigurationErrors.MUST_NOT_SET_INPUT_TYPE, 'A', 'aCommon']);
-        }
-    });
-
-
-    it('commons - cannot set type of common in custom types', () => {
-
-        const builtInTypes: BuiltinTypeDefinitions = { A: { fields: {} }};
-        const commonFields = { aCommon: { group: 'stem', inputType: 'input'}};
-        const customTypes: CustomTypeDefinitions = {
-            'A': { fields: { aCommon: { group: 'stem' } as any}}
-        };
-
-        try {
-            mergeTypes(
-                builtInTypes,
-                {},
-                customTypes,
-                commonFields,
-                {},
-                {});
-            fail();
-        } catch (expected) {
-            expect(expected).toEqual([ConfigurationErrors.ILLEGAL_FIELD_PROPERTIES, ['group']]);
         }
     });
 
@@ -441,7 +387,7 @@ describe('mergeTypes', () => {
                 {});
             fail();
         } catch (expected) {
-            expect(expected).toEqual([ConfigurationErrors.ILLEGAL_FIELD_TYPE, 'invalid', 'aField'])
+            expect(expected).toEqual([ConfigurationErrors.ILLEGAL_FIELD_INPUT_TYPE, 'invalid', 'aField'])
         }
     });
 
@@ -570,6 +516,56 @@ describe('mergeTypes', () => {
     });
 
 
+    it('field property validation - undefined property in library type field', () => {
+
+        const builtInTypes: BuiltinTypeDefinitions = {
+            A: { fields: {} }
+        };
+
+        const libraryTypes: LibraryTypeDefinitions = {
+            'A:0': {
+                typeFamily: 'A',
+                commons: [],
+                fields: { aField: { group: 'a' }} as any,
+                creationDate: '', createdBy: '', description: {}
+            },
+        };
+
+        try {
+            mergeTypes(builtInTypes,
+                libraryTypes,
+                {}, {}, {}, {});
+            fail();
+        } catch (expected) {
+            expect(expected).toEqual([ConfigurationErrors.ILLEGAL_FIELD_PROPERTY, 'library', 'group'])
+        }
+    });
+
+
+    it('field property validation - undefined property in custom type field', () => {
+
+        const builtInTypes: BuiltinTypeDefinitions = {
+            A: { fields: {} }
+        };
+
+        const customTypes: CustomTypeDefinitions = {
+            'A': {
+                fields: { aField: { group: 'a'} as any }
+            }
+        };
+
+        try {
+            mergeTypes(
+                builtInTypes,
+                {},
+                customTypes, {}, {}, {});
+            fail();
+        } catch (expected) {
+            expect(expected).toEqual([ConfigurationErrors.ILLEGAL_FIELD_PROPERTY, 'custom', 'group'])
+        }
+    });
+
+
     it('apply valuelistConfiguration', () => {
 
         const builtInTypes: BuiltinTypeDefinitions = {
@@ -610,18 +606,17 @@ describe('mergeTypes', () => {
 
     it('missing description', () => {
 
-        const builtInTypes = {} as any;
+        const builtinTypes = {};
 
-        const registeredTypes1 = {
+        const libraryTypes: LibraryTypeDefinitions = {
             'B:0': {
-                extends: 'B',
                 fields: {}
             }
         } as any;
 
         try {
-            mergeTypes(builtInTypes,
-                registeredTypes1,
+            mergeTypes(builtinTypes,
+                libraryTypes,
                 {}, {}, {}, {});
         } catch (expected) {
             expect(expected).toEqual([ConfigurationErrors.MISSING_TYPE_PROPERTY, 'description', 'B:0'])
@@ -669,34 +664,6 @@ describe('mergeTypes', () => {
                 {});
         } catch (expected) {
             expect(expected).toEqual([ConfigurationErrors.MISSING_TYPE_PROPERTY, 'parent', 'B:0'])
-        }
-    });
-
-
-    it('error type contains deprecated valuelist field', () => {
-
-        const builtInTypes: BuiltinTypeDefinitions = {
-            "A": { fields: {} }
-        };
-
-        const libraryTypes: LibraryTypeDefinitions = {
-            'B:0': {
-                typeFamily: 'B',
-                commons: [],
-                parent: 'A',
-                fields: {
-                    aField: { valuelist: [] }
-                } as any,
-                creationDate: '', createdBy: '', description: {}
-            },
-        };
-
-        try {
-            mergeTypes(builtInTypes,
-                libraryTypes,
-                {}, {}, {}, {});
-        } catch (expected) {
-            expect(expected).toEqual([ConfigurationErrors.ILLEGAL_FIELD_PROPERTIES, ['valuelist']])
         }
     });
 

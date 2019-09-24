@@ -23,8 +23,8 @@ export module ConfigurationErrors {
     export const MISSING_TYPE_PROPERTY = 'configuration/mergeTypes/missingTypeProperty';
     export const MISSING_FIELD_PROPERTY = 'configuration/mergeTypes/missingFieldProperty';
     export const MUST_NOT_SET_INPUT_TYPE = 'configuration/mergeTypes/mustNotSetInputType';
-    export const ILLEGAL_FIELD_TYPE = 'configuration/mergeTypes/illegalFieldType'; // field input type? TODO
-    export const ILLEGAL_FIELD_PROPERTIES = 'configuration/mergeTypes/illegalFieldProperties';
+    export const ILLEGAL_FIELD_INPUT_TYPE = 'configuration/mergeTypes/illegalFieldType';
+    export const ILLEGAL_FIELD_PROPERTY = 'configuration/mergeTypes/illegalFieldProperty';
     export const TRYING_TO_SUBTYPE_A_NON_EXTENDABLE_TYPE = 'config/fields/custom/tryingToSubtypeANonExtendableType';
     export const INCONSISTENT_TYPE_FAMILY = 'config/fields/custom/inconsistentTypeFamily';
     export const COMMON_FIELD_NOT_PROVIDED = 'config/fields/custom/commonFieldNotProvided';

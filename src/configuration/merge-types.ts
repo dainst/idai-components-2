@@ -8,6 +8,8 @@ import {ConfigurationErrors} from './configuration-errors';
 import {FieldDefinition} from './model/field-definition';
 
 
+type CommonFields = {[fieldName: string]: any};
+
 interface TransientTypeDefinition
     extends BuiltinFieldDefinition, LibraryTypeDefinition {
 
@@ -59,13 +61,14 @@ type TransientFieldDefinitions = { [fieldName: string]: TransientFieldDefinition
  * @throws [ILLEGAL_FIELD_TYPE, fieldType, fieldName]
  * @throws [TRYING_TO_SUBTYPE_A_NON_EXTENDABLE_TYPE, superTypeName]
  * @throws [ILLEGAL_FIELD_PROPERTIES, [properties]]
+ * @throws [ILLEGAL_FIELD_PROPERTY, 'library'|'custom', property]
  * @throws [INCONSISTENT_TYPE_FAMILY, typeFamilyName, reason (, fieldName)]
  * @throws [COMMON_FIELD_NOT_PROVIDED, commonFieldName]
  */
 export function mergeTypes(builtInTypes: BuiltinTypeDefinitions,
                            libraryTypes: LibraryTypeDefinitions,
                            customTypes: CustomTypeDefinitions = {},
-                           commonFields: {[fieldName: string]: any} = {},
+                           commonFields: CommonFields = {},
                            valuelistsConfiguration: {[valueListName: string]: any} = {},
                            extraFields: {[extraFieldName: string]: any} = {}) {
 
@@ -157,15 +160,17 @@ function assertTypeFamiliesConsistent(libraryTypes: LibraryTypeDefinitions) {
 }
 
 
-function assertNoCommonFieldInputTypeOrGroupChanges(commonFields: {[fieldName: string]: any}, types: any) {
+function assertNoCommonFieldInputTypeOrGroupChanges(commonFields: CommonFields,
+                                                    types: LibraryTypeDefinitions|CustomTypeDefinitions) {
 
     const commonFieldNames = Object.keys(commonFields);
 
-    iterateOverFieldsOfTypes(types, (typeName, type, fieldName, field) => {
+    iterateOverFieldsOfTypes(types as any, (typeName, type, fieldName, field) => {
 
         if (commonFieldNames.includes(fieldName)) {
-            if (field.inputType) throw [ConfigurationErrors.MUST_NOT_SET_INPUT_TYPE, typeName, fieldName];
-            if (field.group) throw [ConfigurationErrors.MUST_NOT_SET_INPUT_TYPE, typeName, fieldName]; // TODO test, and make error more generic
+            if (field.inputType) {
+                throw [ConfigurationErrors.MUST_NOT_SET_INPUT_TYPE, typeName, fieldName];
+            }
         }
     });
 }
@@ -322,7 +327,7 @@ function assertSubtypingIsLegal(builtinTypes: BuiltinTypeDefinitions,
 
 
 function replaceCommonFields(mergedTypes: TransientTypeDefinitions,
-                             commonFields: {[fieldName: string]: any}) {
+                             commonFields: CommonFields) {
 
     for (let mergedType of Object.values(mergedTypes)) {
 
