@@ -28,8 +28,6 @@ type TransientTypeDefinitions = { [typeName: string]: TransientTypeDefinition }
 type TransientFieldDefinitions = { [fieldName: string]: TransientFieldDefinition };
 
 
-// TODO use terms resources-db and config-db. add the config-db and store the Config-(project).json files there
-
 /**
  * TODO if subtype is selected, supertype gets implicitely selected
  *
