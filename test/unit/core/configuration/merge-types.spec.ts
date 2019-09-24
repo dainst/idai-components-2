@@ -308,6 +308,29 @@ describe('mergeTypes', () => {
     });
 
 
+    it('commons - common field not provided', () => {
+
+        const builtInTypes: BuiltinTypeDefinitions = { A: { fields: {} }};
+        const commonFields = {};
+        const customTypes: CustomTypeDefinitions = {
+            A: { fields: {}, commons: ['missing']}
+        };
+
+        try {
+            mergeTypes(
+                builtInTypes,
+                {},
+                customTypes,
+                commonFields,
+                {},
+                {});
+            fail();
+        } catch (expected) {
+            expect(expected).toEqual([ConfigurationErrors.COMMON_FIELD_NOT_PROVIDED, 'missing']);
+        }
+    });
+
+
     it('commons - mix in commons in library type', () => {
 
         const builtInTypes: BuiltinTypeDefinitions = { A: { fields: {} }};
@@ -340,7 +363,7 @@ describe('mergeTypes', () => {
         const builtInTypes: BuiltinTypeDefinitions = { A: { fields: {} }};
         const commonFields = { aCommon: { group: 'stem', inputType: 'input'}};
         const customTypes: CustomTypeDefinitions = {
-            'A': {
+            A: {
                 commons: ['aCommon'],
                 fields: { }
             }};

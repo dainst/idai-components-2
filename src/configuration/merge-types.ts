@@ -30,7 +30,6 @@ type TransientFieldDefinitions = { [fieldName: string]: TransientFieldDefinition
 /**
  * TODO if subtype is selected, supertype gets implicitely selected
  * TODO merge parent fields into type fields at the end of the method (to make things easier, maybe process language conf before)
- * TODO throw if non existing common field referenced
  * TODO allow hide common via custom
  *
  * @author Daniel de Oliveira
@@ -61,6 +60,7 @@ type TransientFieldDefinitions = { [fieldName: string]: TransientFieldDefinition
  * @throws [TRYING_TO_SUBTYPE_A_NON_EXTENDABLE_TYPE, superTypeName]
  * @throws [ILLEGAL_FIELD_PROPERTIES, [properties]]
  * @throws [INCONSISTENT_TYPE_FAMILY, typeFamilyName, reason (, fieldName)]
+ * @throws [COMMON_FIELD_NOT_PROVIDED, commonFieldName]
  */
 export function mergeTypes(builtInTypes: BuiltinTypeDefinitions,
                            libraryTypes: LibraryTypeDefinitions,
@@ -329,6 +329,7 @@ function replaceCommonFields(mergedTypes: TransientTypeDefinitions,
         if (!mergedType.commons) continue;
 
         for (let commonFieldName of mergedType.commons) {
+            if (!commonFields[commonFieldName]) throw [ConfigurationErrors.COMMON_FIELD_NOT_PROVIDED, commonFieldName];
             mergedType.fields[commonFieldName] = clone(commonFields[commonFieldName]);
         }
         delete mergedType.commons;
