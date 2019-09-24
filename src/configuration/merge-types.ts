@@ -29,11 +29,7 @@ type TransientFieldDefinitions = { [fieldName: string]: TransientFieldDefinition
 
 /**
  * TODO if subtype is selected, supertype gets implicitely selected
- *
  * TODO merge parent fields into type fields at the end of the method (to make things easier, maybe process language conf before)
- *
- * TODO review which types are actually allowed to get extended (previously it was only Operation and Place which were explicitely forbidden to get extended), right now it is feature, find, image, area
- *
  * TODO throw if non existing common field referenced
  * TODO allow hide common via custom
  *
