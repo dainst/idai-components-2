@@ -11,6 +11,7 @@ export interface ValuelistDefinition {
     creationDate: string;
     constraints?: any; // TODO to be defined
     values: { [key: string]: ValueDefinition }
+    order?: string[]; // optional, default is alphabetical TODO to be implemented, see #11413
 }
 
 
