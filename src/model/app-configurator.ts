@@ -609,6 +609,8 @@ export class AppConfigurator {
         if (customConfigurationName === 'Pergamon') {
 
             (this.builtinTypes as any)['ProcessUnit'] = {
+                superType: true,
+                userDefinedSubtypesAllowed: true,
                 abstract: true,
                 color: '#08306b',
                 fields: {}
