@@ -159,17 +159,7 @@ export class AppConfigurator {
         },
         orientation: {
             inputType: 'dropdown',
-            group: 'position',
-            valuelist: [
-                'N-S',
-                'NNO - SSW',
-                'NNW-SSO',
-                'NO-SW',
-                'NW-SO',
-                'W-O',
-                'WNW-OSO',
-                'WSW-ONO'
-            ]
+            group: 'position'
         }
     };
 
