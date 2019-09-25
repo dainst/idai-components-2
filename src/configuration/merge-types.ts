@@ -77,8 +77,8 @@ export function mergeTypes(builtInTypes: BuiltinTypeDefinitions,
     assertTypesAndValuelistsStructurallyValid(Object.keys(builtInTypes), libraryTypes, customTypes);
     assertSubtypingIsLegal(builtInTypes, libraryTypes);
     assertSubtypingIsLegal(builtInTypes, customTypes);
-    assertNoCommonFieldInputTypeOrGroupChanges(commonFields, libraryTypes);
-    assertNoCommonFieldInputTypeOrGroupChanges(commonFields, customTypes);
+    assertNoCommonFieldInputTypeChanges(commonFields, libraryTypes);
+    assertNoCommonFieldInputTypeChanges(commonFields, customTypes);
     assertTypeFamiliesConsistent(libraryTypes);
 
     const selectableTypes: TransientTypeDefinitions = mergeBuiltInWithLibraryTypes(builtInTypes, libraryTypes);
@@ -160,8 +160,17 @@ function assertTypeFamiliesConsistent(libraryTypes: LibraryTypeDefinitions) {
 }
 
 
-function assertNoCommonFieldInputTypeOrGroupChanges(commonFields: CommonFields,
-                                                    types: LibraryTypeDefinitions|CustomTypeDefinitions) {
+/**
+ * Currently we check for every field of the library types, if
+ * for a field having the name of a common field, the input type differs from
+ * that one defined in the common field, regardless of whether the type actually
+ * uses that common field or not
+ *
+ * @param commonFields
+ * @param types
+ */
+function assertNoCommonFieldInputTypeChanges(commonFields: CommonFields,
+                                             types: LibraryTypeDefinitions|CustomTypeDefinitions) {
 
     const commonFieldNames = Object.keys(commonFields);
 
