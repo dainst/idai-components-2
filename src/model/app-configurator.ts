@@ -183,12 +183,7 @@ export class AppConfigurator {
                 },
                 coordinateReferenceSystem: {
                     label: this.i18n({ id: 'configuration.project.crs', value: 'Koordinatenbezugssystem' }),
-                    inputType: 'dropdown',
-                    valuelist: [
-                        'Eigenes Koordinatenbezugssystem',
-                        'EPSG4326 (WGS 84)',
-                        'EPSG3857 (WGS 84 Web Mercator)'
-                    ]
+                    inputType: 'dropdown'
                 }
             }
         } as BuiltinTypeDefinition,
