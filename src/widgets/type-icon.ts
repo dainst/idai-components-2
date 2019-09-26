@@ -1,5 +1,4 @@
 import {Component, OnChanges, Input} from '@angular/core';
-import {ProjectConfiguration} from '../configuration/project-configuration';
 
 
 @Component({
@@ -23,7 +22,7 @@ export class TypeIconComponent implements OnChanges {
     public pxSize: string;
 
 
-    constructor(private projectConfiguration: ProjectConfiguration) {}
+    constructor(private projectConfiguration: any) {}
 
 
     ngOnChanges() {

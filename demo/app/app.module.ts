@@ -21,13 +21,7 @@ import {MapDemoComponent} from './map-demo.component';
 import {AppComponent} from './app.component';
 import {IdaiMessagesModule} from '../../src/messages/idai-messages.module';
 import {IdaiWidgetsModule} from '../../src/widgets/idai-widgets.module';
-import {ProjectConfiguration} from '../../src/configuration/project-configuration';
-import {ConfigLoader} from '../../src/configuration/config-loader';
-import {ConfigReader} from '../../src/configuration/config-reader';
-import {ConfigurationValidator} from '../../src/configuration/configuration-validator';
 import {IdaiFieldMapModule} from '../../src/map/idai-field-map.module';
-import {FieldDefinition} from '../../src/configuration/model/field-definition';
-import {BuiltinTypeDefinition} from "../../src/configuration/model/builtin-type-definition";
 
 let pconf: any = undefined;
 
@@ -50,70 +44,7 @@ let pconf: any = undefined;
         { provide: LOCALE_ID, useValue: 'de' },
         { provide: TRANSLATIONS, useValue: '' },
         { provide: TRANSLATIONS_FORMAT, useValue: 'xlf' },
-        ConfigReader,
-        ConfigLoader,
-        {
-            provide: APP_INITIALIZER,
-            multi: true,
-            deps: [ConfigLoader],
-            useFactory: (configLoader: ConfigLoader) => () => {
-                return configLoader.go(
-                    'demo/config',
-                    { 'processor': { 'inputType': 'input' }},
-                    { 'Image': { 'fields': { 'dimensions': {} } } as BuiltinTypeDefinition },
-                    [
-                        {
-                            'domain': [
-                                'Section'
-                            ],
-                            'inverse': 'NO-INVERSE',
-                            'name': 'isRecordedIn',
-                            'range': [
-                                'Object'
-                            ]
-                        },
-                        {
-                            'name': 'Belongs to',
-                            'inverse': 'Includes',
-                            'domain': ['Object', 'Object_enhanced', 'Section'],
-                            'range': ['Object', 'Object_enhanced', 'Section']
-                        },
-                        {
-                            'name': 'Includes',
-                            'inverse': 'Belongs to',
-                            'domain': ['Object', 'Object_enhanced', 'Section'],
-                            'range': ['Object', 'Object_enhanced', 'Section']
-                        },
-                        {
-                            'name': 'Found in',
-                            'inverse': 'Find spot of',
-                            'domain': ['Object', 'Object_enhanced'],
-                            'range': ['Section']
-                        },
-                        {
-                            'name': 'Find spot of',
-                            'inverse': 'Found in',
-                            'domain': ['Section'],
-                            'range': ['Object', 'Object_enhanced']
-                        },
-                        { name: 'depicts', domain: ['Image:inherit'], inverse: 'isDepictedBy', visible: false,
-                            editable: false},
-                        { name: 'isDepictedBy', range: ['Image:inherit'], inverse: 'depicts', visible: false,
-                            editable: false}
-                    ],{
-                        'identifier': {} as FieldDefinition,
-                        'shortDescription': {} as FieldDefinition
-                    },
-                    new ConfigurationValidator(),
-                    undefined,
-                    'de'
-                )
-                .then((projectConfiguration: ProjectConfiguration) => pconf = projectConfiguration)
-                .catch((msgsWithParams: any) =>{
-                    console.error(msgsWithParams);
-                });
-            }
-        },
+
         { provide: LocationStrategy, useClass: HashLocationStrategy },
         { provide: Datastore, useClass: MemoryDatastore },
         { provide: MD, useClass: M },
@@ -123,17 +54,6 @@ let pconf: any = undefined;
                 return new Messages(md, 3500);
             },
             deps: [MD]
-        },
-        {
-            provide: ProjectConfiguration,
-            useFactory: () => {
-                if (!pconf) {
-                    console.error('pconf has not yet been provided');
-                    throw 'pconf has not yet been provided';
-                }
-                return pconf;
-            },
-            deps: []
         },
         I18n
     ],
