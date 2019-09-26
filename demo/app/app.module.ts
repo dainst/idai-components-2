@@ -1,5 +1,4 @@
 import {
-    APP_INITIALIZER,
     LOCALE_ID,
     NgModule,
     TRANSLATIONS,
@@ -20,7 +19,6 @@ import {MessagesDemoComponent} from './messages-demo.component';
 import {MapDemoComponent} from './map-demo.component';
 import {AppComponent} from './app.component';
 import {IdaiMessagesModule} from '../../src/messages/idai-messages.module';
-import {IdaiWidgetsModule} from '../../src/widgets/idai-widgets.module';
 import {IdaiFieldMapModule} from '../../src/map/idai-field-map.module';
 
 let pconf: any = undefined;
@@ -31,7 +29,6 @@ let pconf: any = undefined;
         FormsModule,
         HttpClientModule,
         IdaiMessagesModule,
-        IdaiWidgetsModule,
         IdaiFieldMapModule,
         routing
     ],

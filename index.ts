@@ -43,7 +43,4 @@ export {FieldPolygon} from './src/map/field-polygon';
 export {FieldPolyline} from './src/map/field-polyline';
 export {FieldMarker} from './src/map/field-marker';
 
-export {IdaiWidgetsModule} from './src/widgets/idai-widgets.module';
-export {TypeIconComponent} from './src/widgets/type-icon';
-
 export {MDInternal} from './src/messages/md-internal';
