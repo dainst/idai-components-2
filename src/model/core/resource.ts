@@ -13,7 +13,7 @@ export interface Resource extends NewResource {
  */
 export module Resource {
 
-    // TODO unit test
+
     export function getDifferingFields(resource1: Resource, resource2: Resource): string[] {
 
         const differingFieldsNames: string[]
@@ -24,7 +24,6 @@ export module Resource {
     }
 
 
-    // TODO make use includedIn,
     function findDifferingFieldsInResource(resource1: Object, resource2: Object): string[] {
 
         return Object.keys(resource1)
@@ -39,7 +38,6 @@ export module Resource {
         !compare((l)[key], (r)[key]);
 
 
-    // TODO possibly put to tsfun
     const concatIf = (f: (_: string) => boolean) => (acc: string[], val: string) =>
         f(val) ? acc.concat([val as string]) : acc;
 
