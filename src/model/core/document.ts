@@ -45,7 +45,7 @@ export module Document {
 
         return (document: D): D => {
 
-            const result = {...document}; // TODO review
+            const result = {...document};
             result.resource = subtractObj(fields)(document.resource) as Resource;
             return result as D;
         };
@@ -56,7 +56,8 @@ export module Document {
 
         return (document: D): D => {
 
-            const result = {...document}; // TODO review
+            const result = {...document};
+            result.resource = {...document.resource};
             result.resource.relations = subtractObj(relations)(result.resource.relations);
             return result as D;
         };
