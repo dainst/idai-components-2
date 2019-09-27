@@ -1,4 +1,5 @@
-import {unique, arrayEquivalent, flatMap, flow, includedIn, objectEqualBy} from 'tsfun';
+import {unique, arrayEquivalent, flatMap, includedIn, objectEqualBy} from 'tsfun';
+import {Resource} from "./resource";
 
 
 export interface Relations {
@@ -17,6 +18,8 @@ export const relationsEquivalent = (r1: Relations) => (r2: Relations) => {
  * @author Daniel de Oliveira
  */
 export module Relations {
+
+    import concatIf = Resource.concatIf;
 
     export function getAllTargets(relations: Relations, allowedRelations?: string[]): Array<string> {
 
@@ -56,9 +59,4 @@ export module Relations {
 
         return !arrayEquivalent(l[key])(r[key]);
     };
-
-
-    // TODO possibly put to tsfun
-    const concatIf = (f: (_: string) => boolean) => (acc: string[], val: string) =>
-        f(val) ? acc.concat([val as string]) : acc;
 }

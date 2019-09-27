@@ -38,7 +38,7 @@ export module Resource {
         !compare((l)[key], (r)[key]);
 
 
-    const concatIf = (f: (_: string) => boolean) => (acc: string[], val: string) =>
+    export const concatIf = (f: (_: string) => boolean) => (acc: string[], val: string) =>
         f(val) ? acc.concat([val as string]) : acc;
 
 
