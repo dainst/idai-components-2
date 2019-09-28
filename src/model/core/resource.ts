@@ -1,5 +1,6 @@
 import {NewResource} from './new-resource';
-import {unique, isNot, tripleEqual, jsonEqual, arrayEquivalentBy} from 'tsfun';
+import {unique, isNot, tripleEqual, jsonEqual} from 'tsfun';
+import {arrayEquivalentBy} from 'tsfun-core';
 
 
 export interface Resource extends NewResource {

@@ -1,4 +1,5 @@
-import {unique, arrayEquivalent, flatMap, includedIn, objectEqualBy} from 'tsfun';
+import {unique, arrayEquivalent, flatMap, includedIn} from 'tsfun';
+import {objectEqualBy} from 'tsfun-core';
 import {Resource} from "./resource";
 
 
