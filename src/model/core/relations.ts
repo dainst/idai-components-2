@@ -1,4 +1,4 @@
-import {unique, arrayEquivalent, flatMap, includedIn} from 'tsfun';
+import {unique, sameset, flatMap, includedIn} from 'tsfun';
 import {objectEqualBy} from 'tsfun-core';
 import {Resource} from "./resource";
 
@@ -10,7 +10,7 @@ export interface Relations {
 
 export const relationsEquivalent = (r1: Relations) => (r2: Relations) => {
 
-    return objectEqualBy(arrayEquivalent)(r1)(r2);
+    return objectEqualBy(sameset)(r1)(r2);
 };
 
 
@@ -49,15 +49,15 @@ export module Relations {
 
         return Object.keys(relations1)
             .reduce(
-                concatIf(notArrayEquivalentInBoth(relations1, relations2)),
+                concatIf(notBothSameset(relations1, relations2)),
                 []);
     }
 
 
-    const notArrayEquivalentInBoth = (l: any, r: any) => (key: string) => {
+    const notBothSameset = (l: any, r: any) => (key: string) => {
 
         if (!r[key]) return true;
 
-        return !arrayEquivalent(l[key])(r[key]);
+        return !sameset(l[key])(r[key]);
     };
 }
