@@ -1,6 +1,6 @@
 import {NewResource} from './new-resource';
 import {unique, isNot, tripleEqual, jsonEqual} from 'tsfun';
-import {arrayEquivalentBy} from 'tsfun-core';
+import {samesetBy} from 'tsfun-core';
 
 
 export interface Resource extends NewResource {
@@ -54,7 +54,7 @@ export module Resource {
         if (type1 !== type2) return false;
 
         if (type1 === 'array' && type2 === 'array') {
-            return arrayEquivalentBy(jsonEqual)(value1)(value2)
+            return samesetBy(jsonEqual)(value1)(value2)
         }
 
         return jsonEqual(value1)(value2);
