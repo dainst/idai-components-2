@@ -16,10 +16,8 @@ import {MemoryDatastore} from './memory-datastore';
 import {MD} from '../../src/messages/md';
 import {M} from './m';
 import {MessagesDemoComponent} from './messages-demo.component';
-import {MapDemoComponent} from './map-demo.component';
 import {AppComponent} from './app.component';
 import {IdaiMessagesModule} from '../../src/messages/idai-messages.module';
-import {IdaiFieldMapModule} from '../../src/map/idai-field-map.module';
 
 let pconf: any = undefined;
 
@@ -29,13 +27,11 @@ let pconf: any = undefined;
         FormsModule,
         HttpClientModule,
         IdaiMessagesModule,
-        IdaiFieldMapModule,
         routing
     ],
     declarations: [
         AppComponent,
-        MessagesDemoComponent,
-        MapDemoComponent
+        MessagesDemoComponent
     ],
     providers: [
         { provide: LOCALE_ID, useValue: 'de' },
