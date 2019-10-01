@@ -37,10 +37,4 @@ export {ImageGeoreference} from './src/model/image-georeference'
 export {NewImageDocument} from './src/model/new-image-document';
 export {NewImageResource} from './src/model/new-image-resource';
 
-export {IdaiFieldMapModule} from './src/map/idai-field-map.module';
-export {MapComponent} from './src/map/map.component';
-export {FieldPolygon} from './src/map/field-polygon';
-export {FieldPolyline} from './src/map/field-polyline';
-export {FieldMarker} from './src/map/field-marker';
-
 export {MDInternal} from './src/messages/md-internal';
