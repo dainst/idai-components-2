@@ -28,7 +28,7 @@ export interface Query {
     constraints?: { [name: string]: Constraint|string|string[]};
     limit?: number;
     offset?: number;
-    sort?: 'default'|'exact-match-first';
+    sort?: 'default'|'exactMatchFirst';
     id?: string;
 }
 
