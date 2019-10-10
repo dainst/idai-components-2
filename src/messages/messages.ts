@@ -45,7 +45,7 @@ export class Messages {
 
         const template: Message = this.fetchTemplate(key);
         if (!template) {
-            this.addUnknownError('no msg found for key of M with id: "' + key + '"');
+            this.addUnknownError('no msg found for key of M with id: "' + key + '"', msgWithParams);
         } else {
             const message: Message = Messages.buildFromTemplate(template, msgWithParams);
             this.startTimeout(message);
@@ -87,9 +87,11 @@ export class Messages {
     }
 
     
-    private addUnknownError(consoleError: string) {
-        
-        console.error(consoleError);
+    private addUnknownError(consoleError: string, parameters?: string[]) {
+
+        if (parameters && parameters.length > 0) console.error(consoleError, parameters);
+        else console.error(consoleError);
+
         const message = Messages.buildFromTemplate(
             this.fetchTemplate(MDInternal.MESSAGES_ERROR_UNKNOWN_MESSAGE),
             undefined
