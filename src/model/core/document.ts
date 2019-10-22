@@ -1,19 +1,27 @@
-import {Resource} from './resource';
+import {Resource, ResourceId} from './resource';
 import {to} from 'tsfun';
 import {subtractObj} from 'tsfun-extra';
 import {NewDocument} from './new-document';
 import {Action} from './action';
 
 
+export type RevisionId = string;
+
+export type DocumentId = string;
+
+
 export interface Document extends NewDocument {
 
+    _id: DocumentId;
+    _rev?: RevisionId; // we could take out the ? later, too
+    _conflicts?: Array<RevisionId>;
     resource : Resource;
     modified: Array<Action>;
     created: Action;
 }
 
 
-export const toResourceId = (doc: Document) => to('resource.id')(doc);
+export const toResourceId = (doc: Document): ResourceId => to('resource.id')(doc);
 
 
 /**

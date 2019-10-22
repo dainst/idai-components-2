@@ -136,4 +136,4 @@ export const OBJECTS: Document[] = [
         'created': { user: 'Demo', date: new Date() },
         'modified': [ { user: 'Demo', date: new Date() } ]
     }
-];
+] as any;

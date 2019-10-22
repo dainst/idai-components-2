@@ -9,13 +9,14 @@ describe('Document', () => {
     it('removeFields', () => {
 
         const d: Document = {
+            _id: '1',
             resource: {
-                type: "a",
-                id: "1",
+                type: 'a',
+                id: '1',
                 relations: {}
             },
             modified: [],
-            created: {user: "a", date: new Date()}
+            created: {user: 'a', date: new Date()}
         };
 
         expect(d.resource.type).not.toBeUndefined();

@@ -3,9 +3,12 @@ import {unique, isNot, tripleEqual, jsonEqual} from 'tsfun';
 import {samesetBy} from 'tsfun-core';
 
 
+export type ResourceId = string;
+
+
 export interface Resource extends NewResource {
 
-    id: string;
+    id: ResourceId;
 }
 
 /**
