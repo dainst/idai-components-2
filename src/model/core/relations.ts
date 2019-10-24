@@ -4,7 +4,7 @@ import {Resource} from "./resource";
 
 
 export interface Relations {
-    [propName: string]: string[];
+    [propName: string]: string[]|Array<Resource>;
 }
 
 
@@ -31,7 +31,7 @@ export module Relations {
             ? ownKeys.filter(includedIn(allowedRelations))
             : ownKeys;
 
-        return flatMap((prop: string) => relations[prop as string])(usableRelations);
+        return flatMap((prop: string) => relations[prop as string] as any)(usableRelations);
     }
 
 

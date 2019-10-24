@@ -75,7 +75,7 @@ export module Document {
     export function hasRelationTarget(document: Document, relationName: string, targetId: string): boolean {
 
         if (!document.resource.relations[relationName]) return false;
-        return document.resource.relations[relationName].indexOf(targetId) > -1;
+        return document.resource.relations[relationName].indexOf(targetId as any) > -1;
     }
 
 
