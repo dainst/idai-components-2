@@ -8,6 +8,7 @@ export {NewResource} from './src/model/core/new-resource';
 export {Relations} from './src/model/core/relations';
 export {relationsEquivalent} from './src/model/core/relations';
 export {Action} from './src/model/core/action';
+export {RELATIONS} from './src/model/core/resource';
 
 export {Query} from './src/datastore/query';
 export {Constraint} from './src/datastore/constraint';

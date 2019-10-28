@@ -2,8 +2,10 @@ import {NewResource} from './new-resource';
 import {unique, isNot, tripleEqual, jsonEqual} from 'tsfun';
 import {samesetBy} from 'tsfun-core';
 
+export const RELATIONS = 'relations';
 
 export type ResourceId = string;
+
 
 
 export interface Resource extends NewResource {
@@ -16,6 +18,8 @@ export interface Resource extends NewResource {
  * @author Daniel de Oliveira
  */
 export module Resource {
+
+    export const CONSTANT_FIELDS = ['id', 'type', 'identifier', RELATIONS];
 
 
     export function getDifferingFields(resource1: Resource, resource2: Resource): string[] {
