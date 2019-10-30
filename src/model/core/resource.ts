@@ -2,15 +2,12 @@ import {NewResource} from './new-resource';
 import {unique, isNot, tripleEqual, jsonEqual} from 'tsfun';
 import {samesetBy} from 'tsfun-core';
 
-export const RELATIONS = 'relations';
-
-export type ResourceId = string;
 
 
 
 export interface Resource extends NewResource {
 
-    id: ResourceId;
+    id: Resource.Id;
 }
 
 /**
@@ -19,6 +16,8 @@ export interface Resource extends NewResource {
  */
 export module Resource {
 
+    export type Id = string;
+    export const RELATIONS = 'relations';
     export const CONSTANT_FIELDS = ['id', 'type', 'identifier', RELATIONS];
 
 

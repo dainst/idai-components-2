@@ -1,4 +1,4 @@
-import {Resource, ResourceId} from './resource';
+import {Resource} from './resource';
 import {to} from 'tsfun';
 import {subtractObj} from 'tsfun-extra';
 import {NewDocument} from './new-document';
@@ -6,9 +6,7 @@ import {Action} from './action';
 
 
 export type RevisionId = string;
-
 export type DocumentId = string;
-
 
 export interface Document extends NewDocument {
 
@@ -21,13 +19,16 @@ export interface Document extends NewDocument {
 }
 
 
-export const toResourceId = (doc: Document): ResourceId => to('resource.id')(doc);
+export const toResourceId = (doc: Document): Resource.Id => to('resource.id')(doc);
 
 
 /**
  * Companion module
  */
 export module Document {
+
+    export const RESOURCE = 'resource';
+    export const _REV = '_rev';
 
     export function getLastModified(document: Document): Action {
 
