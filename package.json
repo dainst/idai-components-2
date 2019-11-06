@@ -2,7 +2,7 @@
   "name": "idai-components-2",
   "description": "iDAI.components 2",
   "main": "main.js",
-  "version": "1.46.2",
+  "version": "1.46.7",
   "license": "Apache-2.0",
   "scripts": {
     "prebuild": "rimraf css/* && rimraf fonts/*",
@@ -37,9 +37,15 @@
     "reflect-metadata": "0.1.8",
     "rxjs": "6.5.3",
     "systemjs": "0.21.4",
+<<<<<<< HEAD
     "tsfun": "3.4.7",
     "tsfun-extra": "3.4.5",
     "tsfun-core": "3.4.5",
+=======
+    "tsfun": "3.4.3",
+    "tsfun-extra": "3.4.3",
+    "tsfun-core": "3.4.3",
+>>>>>>> 925454c97f9aba021e166b22b95a9e990fbeb518
     "zone.js": "0.8.26"
   },
   "devDependencies": {

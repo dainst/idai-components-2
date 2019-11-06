@@ -1,6 +1,5 @@
 // Model
 export {Document} from './src/model/core/document';
-export {ResourceId} from './src/model/core/resource';
 export {DocumentId, RevisionId, toResourceId} from './src/model/core/document';
 export {NewDocument} from './src/model/core/new-document';
 export {Resource} from './src/model/core/resource';
