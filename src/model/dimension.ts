@@ -12,13 +12,12 @@ export interface Dimension {
 
     // Input values as typed in by the user (in mm/cm/m, defined in inputUnit)
     inputValue: number;
-    inputRangeEndValue: number;
+    inputRangeEndValue?: number;
     inputUnit: 'mm'|'cm'|'m';
 
     measurementPosition?: string;
     measurementComment?: string;
     isImprecise: boolean;
-    isRange: boolean;
 
     label?: string; // Deprecated
 }
@@ -57,7 +56,7 @@ export module Dimension {
 
     export function addNormalizedValues(dimension: Dimension) {
 
-        if (dimension.isRange) {
+        if (dimension.inputRangeEndValue !== undefined) {
             dimension.rangeMin = convertValueFromInputUnitToMicrometre(dimension.inputUnit,
                 dimension.inputValue);
             dimension.rangeMax = convertValueFromInputUnitToMicrometre(dimension.inputUnit,
@@ -76,7 +75,7 @@ export module Dimension {
 
         let label = (dimension.isImprecise ? 'ca. ' : '');
 
-        if (dimension.isRange) {
+        if (dimension.inputRangeEndValue !== undefined) {
             label += transform(dimension.inputValue) + '-'
                 + transform(dimension.inputRangeEndValue);
         } else {

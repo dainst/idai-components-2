@@ -10,10 +10,8 @@ describe('Dimension', () => {
 
         const dim: Dimension = {
             inputValue: 100,
-            inputRangeEndValue: 200,
             inputUnit: 'cm',
-            isImprecise: false,
-            isRange: false
+            isImprecise: false
         };
 
         Dimension.addNormalizedValues(dim);
@@ -23,5 +21,23 @@ describe('Dimension', () => {
         expect(reverted['value']).toBeUndefined();
     });
 
-    // TODO test also for range
+
+    it('translate back to original state - range', () => {
+
+        const dim: Dimension = {
+            inputValue: 100,
+            inputRangeEndValue: 200,
+            inputUnit: 'cm',
+            isImprecise: false
+        };
+
+        Dimension.addNormalizedValues(dim);
+        expect(dim.value).toBeUndefined();
+        expect(dim.rangeMin).not.toBeUndefined();
+        expect(dim.rangeMax).not.toBeUndefined();
+
+        const reverted = Dimension.revert(dim);
+        expect(reverted['rangeMin']).toBeUndefined();
+        expect(reverted['rangeMax']).toBeUndefined();
+    });
 });
