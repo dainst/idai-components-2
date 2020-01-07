@@ -50,7 +50,8 @@ export module Dimension {
         return flow(dimension,
             dissoc('value'),
             dissoc('rangeMin'),
-            dissoc('rangeMax'));
+            dissoc('rangeMax'),
+            dissoc('isRange'));
     }
 
 
