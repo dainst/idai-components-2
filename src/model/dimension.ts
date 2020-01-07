@@ -29,6 +29,13 @@ export interface Dimension {
  */
 export module Dimension {
 
+    /**
+     * Note: There still may be dimension['isRange'] boolean values stored in the database.
+     * These should be handled properly if we're up to changing things here, for example if
+     * we want to make sure only defined fields are present.
+     *
+     * @param dimension
+     */
     export function isValid(dimension: Dimension): boolean {
 
         if (dimension.label) return true;
