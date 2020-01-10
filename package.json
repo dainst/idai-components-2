@@ -37,9 +37,8 @@
     "reflect-metadata": "0.1.8",
     "rxjs": "6.5.3",
     "systemjs": "0.21.4",
-    "tsfun": "3.5.4",
-    "tsfun-extra": "3.5.2",
-    "tsfun-core": "3.5.2",
+    "tsfun": "4.0.8",
+    "tsfun-extra": "4.0.8",
     "zone.js": "0.8.26"
   },
   "devDependencies": {
