@@ -17,17 +17,17 @@
     "url": "git+http://bogusman03.dai-cloud.uni-koeln.de/idai-components-2-builds/build-number/.git"
   },
   "dependencies": {
-    "@angular/animations": "8.2.14",
-    "@angular/common": "8.2.14",
-    "@angular/compiler": "8.2.14",
-    "@angular/core": "8.2.14",
-    "@angular/forms": "8.2.14",
+    "@angular/animations": "9.0.0-rc.9",
+    "@angular/common": "9.0.0-rc.9",
+    "@angular/compiler": "9.0.0-rc.9",
+    "@angular/core": "9.0.0-rc.9",
+    "@angular/forms": "9.0.0-rc.9",
     "@angular/http": "8.0.0-beta.10",
-    "@angular/platform-browser": "8.2.14",
-    "@angular/platform-browser-dynamic": "8.2.14",
-    "@angular/router": "8.2.14",
+    "@angular/platform-browser": "9.0.0-rc.9",
+    "@angular/platform-browser-dynamic": "9.0.0-rc.9",
+    "@angular/router": "9.0.0-rc.9",
     "@mdi/font": "2.5.94",
-    "@ng-bootstrap/ng-bootstrap": "4.0.0",
+    "@ng-bootstrap/ng-bootstrap": "5.2.0",
     "Leaflet.vector-markers": "0.0.6",
     "bootstrap": "4.3.1",
     "es6-promise": "3.1.2",
@@ -39,7 +39,7 @@
     "systemjs": "0.21.4",
     "tsfun": "4.0.12",
     "tsfun-extra": "4.0.12",
-    "zone.js": "0.8.26"
+    "zone.js": "0.9.1"
   },
   "devDependencies": {
     "@ngx-translate/i18n-polyfill": "1.0.0",
