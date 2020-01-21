@@ -39,7 +39,7 @@
     "systemjs": "0.21.4",
     "tsfun": "4.0.12",
     "tsfun-extra": "4.0.12",
-    "zone.js": "0.9.1"
+    "zone.js": "0.10.2"
   },
   "devDependencies": {
     "@ngx-translate/i18n-polyfill": "1.0.0",
