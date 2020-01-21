@@ -17,15 +17,15 @@
     "url": "git+http://bogusman03.dai-cloud.uni-koeln.de/idai-components-2-builds/build-number/.git"
   },
   "dependencies": {
-    "@angular/animations": "8.2.4",
-    "@angular/common": "8.2.4",
-    "@angular/compiler": "8.2.4",
-    "@angular/core": "8.2.4",
-    "@angular/forms": "8.2.4",
+    "@angular/animations": "8.2.14",
+    "@angular/common": "8.2.14",
+    "@angular/compiler": "8.2.14",
+    "@angular/core": "8.2.14",
+    "@angular/forms": "8.2.14",
     "@angular/http": "8.0.0-beta.10",
-    "@angular/platform-browser": "8.2.4",
-    "@angular/platform-browser-dynamic": "8.2.4",
-    "@angular/router": "8.2.4",
+    "@angular/platform-browser": "8.2.14",
+    "@angular/platform-browser-dynamic": "8.2.14",
+    "@angular/router": "8.2.14",
     "@mdi/font": "2.5.94",
     "@ng-bootstrap/ng-bootstrap": "4.0.0",
     "Leaflet.vector-markers": "0.0.6",
@@ -57,6 +57,6 @@
     "jasmine": "2.5.2",
     "jasmine-core": "2.5.2",
     "rimraf": "2.5.4",
-    "typescript": "3.6.2"
+    "typescript": "3.7.5"
   }
 }
