@@ -82,6 +82,6 @@ export module Document {
 
     export function hasRelations(document: Document, relationName: string): boolean {
 
-        return document.resource.relations[relationName] && document.resource.relations[relationName].length > 0;
+        return Resource.hasRelations(document.resource, relationName);
     }
 }

@@ -1,6 +1,7 @@
 import {NewResource} from './new-resource';
 import {unique, isNot, tripleEqual, jsonEqual} from 'tsfun';
 import {samesetBy} from 'tsfun/base';
+import {Document} from './document';
 
 
 
@@ -28,6 +29,12 @@ export module Resource {
             .concat(findDifferingFieldsInResource(resource2, resource1));
 
         return unique(differingFieldsNames);
+    }
+
+
+    export function hasRelations(resource: Resource, relationName: string): boolean {
+
+        return resource.relations[relationName] && resource.relations[relationName].length > 0;
     }
 
 
