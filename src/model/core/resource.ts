@@ -38,6 +38,13 @@ export module Resource {
     }
 
 
+    export function hasRelationTarget(resource: Resource, relationName: string, targetId: string): boolean {
+
+        if (!resource.relations[relationName]) return false;
+        return resource.relations[relationName].indexOf(targetId) > -1;
+    }
+
+
     function findDifferingFieldsInResource(resource1: Object, resource2: Object): string[] {
 
         return Object.keys(resource1)
