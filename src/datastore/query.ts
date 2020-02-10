@@ -25,6 +25,7 @@ export interface Query {
 
     q?: string;
     types?: string[];
+    rankOptions?: any;
     constraints?: { [name: string]: Constraint|string|string[]};
     limit?: number;
     offset?: number;
