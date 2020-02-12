@@ -19,17 +19,18 @@ import {Constraint} from './constraint';
  *   documents, only the first documents are returned.
  * @property offset
  * @property sort
+ * @property sortOption
  * @property id an optional id used to attribute find results to a query
  */
 export interface Query {
 
     q?: string;
     types?: string[];
-    rankOptions?: any;
     constraints?: { [name: string]: Constraint|string|string[]};
     limit?: number;
     offset?: number;
     sort?: 'default'|'exactMatchFirst';
+    sortOptions?: any;
     id?: string;
 }
 
