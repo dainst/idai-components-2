@@ -19,7 +19,6 @@ import {Constraint} from './constraint';
  *   documents, only the first documents are returned.
  * @property offset
  * @property sort
- * @property sortOption
  * @property id an optional id used to attribute find results to a query
  */
 export interface Query {
@@ -29,8 +28,10 @@ export interface Query {
     constraints?: { [name: string]: Constraint|string|string[]};
     limit?: number;
     offset?: number;
-    sort?: 'default'|'exactMatchFirst';
-    sortOptions?: any;
+    sort?: {
+        mode?: 'default'|'exactMatchFirst',
+        matchType?: string
+    };
     id?: string;
 }
 
