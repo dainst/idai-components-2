@@ -1,5 +1,5 @@
 import {set, sameset, flatMap, includedIn} from 'tsfun';
-import {objectEqualBy} from 'tsfun/base';
+import {objectEqualBy} from 'tsfun/by';
 import {Resource} from "./resource";
 
 

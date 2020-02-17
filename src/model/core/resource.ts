@@ -1,7 +1,6 @@
 import {NewResource} from './new-resource';
 import {set, isNot, tripleEqual, jsonEqual} from 'tsfun';
-import {samesetBy} from 'tsfun/base';
-import {Document} from './document';
+import {samesetBy} from 'tsfun/by';
 
 
 
