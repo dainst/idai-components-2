@@ -1,4 +1,4 @@
-import {unique, sameset, flatMap, includedIn} from 'tsfun';
+import {set, sameset, flatMap, includedIn} from 'tsfun';
 import {objectEqualBy} from 'tsfun/base';
 import {Resource} from "./resource";
 
@@ -41,7 +41,7 @@ export module Relations {
             = findDifferingFieldsInRelations(relations1, relations2)
             .concat(findDifferingFieldsInRelations(relations2, relations1));
 
-        return unique(differingRelationNames);
+        return set(differingRelationNames);
     }
 
 

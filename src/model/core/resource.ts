@@ -1,5 +1,5 @@
 import {NewResource} from './new-resource';
-import {unique, isNot, tripleEqual, jsonEqual} from 'tsfun';
+import {set, isNot, tripleEqual, jsonEqual} from 'tsfun';
 import {samesetBy} from 'tsfun/base';
 import {Document} from './document';
 
@@ -28,7 +28,7 @@ export module Resource {
             = findDifferingFieldsInResource(resource1, resource2)
             .concat(findDifferingFieldsInResource(resource2, resource1));
 
-        return unique(differingFieldsNames);
+        return set(differingFieldsNames);
     }
 
 
