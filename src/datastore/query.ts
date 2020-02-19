@@ -20,6 +20,7 @@ import {Constraint} from './constraint';
  * @property offset
  * @property sort
  * @property id an optional id used to attribute find results to a query
+ * @property skipDocuments returns an empty documents array; useful in cases where one only wants the totalCount
  */
 export interface Query {
 
@@ -33,6 +34,7 @@ export interface Query {
         matchType?: string
     };
     id?: string;
+    skipDocuments?: boolean;
 }
 
 
