@@ -1,8 +1,8 @@
 import {Resource} from './resource';
 import {to} from 'tsfun';
-import {subtractObj} from 'tsfun-extra';
 import {NewDocument} from './new-document';
 import {Action} from './action';
+import {subtractObj} from '../../util/utils';
 
 
 export type RevisionId = string;
