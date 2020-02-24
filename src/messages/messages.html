@@ -1,5 +1,5 @@
 <ng-container *ngFor="let message of getActiveMessages(); let index = index">
-    <div *ngIf="!message.hidden" id="message-{{index}}" style="text-align: right;">
+    <div *ngIf="!message.hidden" id="message-{{index}}" class="alert-container">
         <div class="alert alert-{{message.level}}" style="display: inline-block;">
             <button *ngIf="message.level == 'danger' || message.level == 'warning'" type="button" class="close"
                     (click)="closeAlert(message)" aria-label="Close">
