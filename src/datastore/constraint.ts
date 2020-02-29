@@ -1,17 +1,30 @@
+import {clone} from 'tsfun/src/struct';
+
+
 export interface Constraint {
 
     value: string|string[];
-    type: string;   // add | subtract
-    searchRecursively?: boolean;
+    type: 'add'|'subtract';
 }
 
 
-export class Constraint {
+/**
+ * Companion object
+ */
+export module Constraint {
 
-    public static convertTo(constraint: Constraint|string|string[]): Constraint {
+    export function convert(constraint: Constraint|string|string[]): Constraint {
 
         return (Array.isArray(constraint) || typeof(constraint) == 'string')
-            ? { value: constraint, type: 'add', searchRecursively: false }
-            : constraint;
+            ? { value: constraint, type: 'add' }
+            : complete(constraint);
+    }
+
+
+    function complete(constraint_: Constraint) {
+
+        const constraint = clone(constraint_);
+        constraint.type = constraint.type ?? 'add';
+        return constraint;
     }
 }
