@@ -1,7 +1,8 @@
 export interface Constraint {
 
     value: string|string[];
-    subtract?: true
+    subtract?: true;
+    searchRecursively?: true;
 }
 
 
