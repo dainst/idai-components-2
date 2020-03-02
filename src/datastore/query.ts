@@ -14,7 +14,7 @@ import {Constraint} from './constraint';
  *   also match the given search term in the given field exactly.
  *   It is also possible to define negative constraints by using the Constraint interface and
  *   choosing the constraint type 'subtract':
- *   { 'resource.relations.isRecordedIn': { value: 'id1', type: 'subtract' }
+ *   { 'resource.relations.isRecordedIn': { value: 'id1', subtract: true }
  * @property limit the number of documents to be returned. If there are more matching
  *   documents, only the first documents are returned.
  * @property offset
