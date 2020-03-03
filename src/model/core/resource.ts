@@ -17,8 +17,11 @@ export interface Resource extends NewResource {
 export module Resource {
 
     export type Id = string;
+    export const ID = 'id';
+    export const TYPE = 'type';
+    export const IDENTIFIER = 'identifier';
     export const RELATIONS = 'relations';
-    export const CONSTANT_FIELDS = ['id', 'type', 'identifier', RELATIONS];
+    export const CONSTANT_FIELDS = [ID, TYPE, IDENTIFIER, RELATIONS];
 
 
     export function getDifferingFields(resource1: Resource, resource2: Resource): string[] {
