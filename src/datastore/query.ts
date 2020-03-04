@@ -30,7 +30,7 @@ export interface Query {
     limit?: number;
     offset?: number;
     sort?: {
-        mode?: 'default'|'exactMatchFirst',
+        mode?: 'default'|'exactMatchFirst', // TODO remove 'default' value. just assume default if mode undefined
         matchType?: string
     };
     id?: string;
@@ -38,13 +38,14 @@ export interface Query {
 }
 
 
-/**
- * Companion object
- */
-export class Query {
+export module Query {
 
-    public static isEmpty(query: Query) {
+    export const SORT = 'sort';
+    export const SORT_MODE_EXACTMATCHFIRST = 'exactMatchFirst';
+    export const SORT_MATCHTYPE = 'matchType';
 
-        return ((!query.q || query.q == '') && !query.types);
+    export function isEmpty(query: Query) {
+
+        return (!query.q || query.q == '') && !query.types;
     }
 }
