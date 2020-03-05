@@ -14,7 +14,7 @@ import {Constraint} from './constraint';
  *   also match the given search term in the given field exactly.
  *   It is also possible to define negative constraints by using the Constraint interface and
  *   choosing the constraint type 'subtract':
- *   { 'resource.relations.isRecordedIn': { value: 'id1', type: 'subtract' }
+ *   { 'resource.relations.isRecordedIn': { value: 'id1', subtract: true }
  * @property limit the number of documents to be returned. If there are more matching
  *   documents, only the first documents are returned.
  * @property offset
@@ -30,7 +30,7 @@ export interface Query {
     limit?: number;
     offset?: number;
     sort?: {
-        mode?: 'default'|'exactMatchFirst',
+        mode?: 'default'|'exactMatchFirst', // TODO remove 'default' value. just assume default if mode undefined
         matchType?: string
     };
     id?: string;
@@ -38,13 +38,14 @@ export interface Query {
 }
 
 
-/**
- * Companion object
- */
-export class Query {
+export module Query {
 
-    public static isEmpty(query: Query) {
+    export const SORT = 'sort';
+    export const SORT_MODE_EXACTMATCHFIRST = 'exactMatchFirst';
+    export const SORT_MATCHTYPE = 'matchType';
 
-        return ((!query.q || query.q == '') && !query.types);
+    export function isEmpty(query: Query) {
+
+        return (!query.q || query.q == '') && !query.types;
     }
 }

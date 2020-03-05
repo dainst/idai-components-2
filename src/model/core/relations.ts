@@ -10,7 +10,7 @@ export interface Relations {
 
 export const relationsEquivalent = (r1: Relations) => (r2: Relations) => {
 
-    return objectEqualBy(sameset)(r1)(r2);
+    return objectEqualBy(sameset as any)(r1)(r2);
 };
 
 

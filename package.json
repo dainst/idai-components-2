@@ -2,7 +2,7 @@
   "name": "idai-components-2",
   "description": "iDAI.components 2",
   "main": "main.js",
-  "version": "1.46.47",
+  "version": "1.46.49",
   "license": "Apache-2.0",
   "scripts": {
     "prebuild": "rimraf css/* && rimraf fonts/*",
@@ -37,7 +37,7 @@
     "reflect-metadata": "0.1.8",
     "rxjs": "6.5.3",
     "systemjs": "0.21.4",
-    "tsfun": "4.2.21",
+    "tsfun": "4.2.35",
     "zone.js": "0.10.2"
   },
   "devDependencies": {

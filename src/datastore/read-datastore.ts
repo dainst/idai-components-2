@@ -49,3 +49,10 @@ export interface FindResult {
     totalCount: number;
     queryId?: string;
 }
+
+
+export module FindResult {
+
+    export const DOCUMENTS = 'documents';
+    export const TOTALCOUNT = 'totalCount';
+}
