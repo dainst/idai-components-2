@@ -10,3 +10,12 @@ export interface FieldResource extends Resource {
     geometry?: FieldGeometry;
     relations: FieldRelations;
 }
+
+
+export module FieldResource {
+
+    export const IDENTIFIER = 'identifier';
+    export const SHORTDESCRIPTION = 'shortDescription';
+    export const GEOMETRY = 'geometry';
+    export const RELATIONS = 'relations';
+}
