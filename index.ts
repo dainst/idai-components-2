@@ -29,6 +29,7 @@ export {FeatureResource} from './src/model/feature-resource';
 export {FeatureRelations} from './src/model/feature-relations';
 export {Dating, DatingElement, DatingType} from './src/model/dating';
 export {Dimension} from './src/model/dimension';
+export {ValOptionalEndVal} from './src/model/val-optional-end-val';
 
 export {ImageDocument} from './src/model/image-document';
 export {ImageResource} from './src/model/image-resource';

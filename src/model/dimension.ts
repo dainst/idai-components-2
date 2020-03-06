@@ -29,6 +29,17 @@ export interface Dimension {
  */
 export module Dimension {
 
+    export const RANGE = 'range';
+    export const RANGEMIN = 'rangeMin';
+    export const RANGEMAX = 'rangeMax';
+    export const INPUTVALUE = 'inputValue';
+    export const INPUTRANGEENDVALUE = 'inputRangeEndValue';
+    export const INPUTUNIT = 'inputUnit';
+    export const MEASUREMENTPOSITION = 'measurementPosition';
+    export const MEASUREMENTCOMMENT = 'measurementComment';
+    export const ISIMPRECISE = 'isImprecise';
+
+
     /**
      * Note: There still may be dimension['isRange'] boolean values stored in the database.
      * These should be handled properly if we're up to changing things here, for example if
