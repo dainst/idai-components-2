@@ -1,9 +1,9 @@
-import {ObjectCollection, ObjectSet, identity, subtract} from 'tsfun';
+import {Map, identity, subtract} from 'tsfun';
 
 
 /* internal, duplicated from tsfun */
 export const mapProperties = <A, B>(f: (_: A) => B) =>
-    (keys: Array<number|string>, o: ObjectCollection<A>): ObjectCollection<B> =>
+    (keys: Array<number|string>, o: Map<A>): Map<B> =>
         keys.reduce(mapPropertiesReducer(f)(o), {});
 /* internal, duplicated from tsfun */
 const mapPropertiesReducer = <A, B>(f: (_: A) => B) =>
@@ -12,7 +12,7 @@ const mapPropertiesReducer = <A, B>(f: (_: A) => B) =>
 // ------------ @author Daniel de Oliveira -----------------
 
 export const subtractObj = (subtrahend: Array<string | number> | any) =>
-    (o: ObjectSet): ObjectSet => {
+    (o: Map<any>): Map<any> => {
 
         if (Array.isArray(o)) throw new TypeError('invalid argument');
 
