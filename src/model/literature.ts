@@ -10,7 +10,7 @@ export interface Literature {
 
 export module Literature {
 
-    export function getLabel(literature: Literature, getTranslation: (key: string) => string): string {
+    export function generateLabel(literature: Literature, getTranslation: (key: string) => string): string {
 
         return literature.quotation + (literature.zenonId
             ? ' ('
