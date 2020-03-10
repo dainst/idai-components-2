@@ -15,7 +15,7 @@ export module Literature {
         return literature.quotation + (literature.zenonId
             ? ' ('
             + getTranslation('zenonId')
-            + literature.zenonId + ')'
+            + ': ' + literature.zenonId + ')'
             : '');
     }
 }
