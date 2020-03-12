@@ -18,4 +18,10 @@ export module Literature {
             + ': ' + literature.zenonId + ')'
             : '');
     }
+
+
+    export function isValid(literature: Literature): boolean {
+
+        return literature.quotation !== undefined && literature.quotation.length > 0;
+    }
 }
