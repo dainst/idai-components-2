@@ -1,11 +1,12 @@
 import {FeatureRelations} from './feature-relations';
 import {FieldResource} from './field-resource';
 import {Dating} from './dating';
+import {ValOptionalEndVal} from './val-optional-end-val';
 
 
 export interface FeatureResource extends FieldResource {
 
     relations: FeatureRelations;
-    period: string|undefined;
+    period: ValOptionalEndVal<string>|undefined;
     dating: Dating
 }
