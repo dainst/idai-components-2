@@ -6,7 +6,6 @@ import {Dating} from '../../../../src/model/dating';
  */
 describe('DatingUtil', () => {
 
-
     it('translate back to original state', () => {
 
         const dat: Dating = {

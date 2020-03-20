@@ -1,8 +1,9 @@
+import {Resource} from '../../../../src/model/core/resource';
+
+
 /**
  * @author Daniel de Oliveira
  */
-import {Resource} from '../../../../src/model/core/resource';
-
 describe('Resource', () => {
 
     it('compare', () => {

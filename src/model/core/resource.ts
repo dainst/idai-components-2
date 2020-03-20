@@ -1,8 +1,6 @@
-import {NewResource} from './new-resource';
 import {set, isNot, tripleEqual, jsonEqual} from 'tsfun';
 import {samesetBy} from 'tsfun/by';
-
-
+import {NewResource} from './new-resource';
 
 
 export interface Resource extends NewResource {
@@ -18,10 +16,10 @@ export module Resource {
 
     export type Id = string;
     export const ID = 'id';
-    export const TYPE = 'type';
+    export const CATEGORY = 'category';
     export const IDENTIFIER = 'identifier';
     export const RELATIONS = 'relations';
-    export const CONSTANT_FIELDS = [ID, TYPE, IDENTIFIER, RELATIONS];
+    export const CONSTANT_FIELDS = [ID, CATEGORY, IDENTIFIER, RELATIONS];
 
 
     export function getDifferingFields(resource1: Resource, resource2: Resource): string[] {
@@ -53,12 +51,12 @@ export module Resource {
             .filter(isNot(tripleEqual('relations')))
             .reduce(
                 concatIf(notCompareInBoth(resource1, resource2)),
-                [] as string[]);
+                [] as string[]
+            );
     }
 
 
-    const notCompareInBoth = (l: any, r: any) => (key: string) =>
-        !compare((l)[key], (r)[key]);
+    const notCompareInBoth = (l: any, r: any) => (key: string) => !compare((l)[key], (r)[key]);
 
 
     export const concatIf = (f: (_: string) => boolean) => (acc: string[], val: string) =>
@@ -85,7 +83,7 @@ export module Resource {
 
     function getType(value: any): string {
 
-        return typeof value == 'object'
+        return typeof value === 'object'
             ? value instanceof Array
                 ? 'array'
                 : 'object'

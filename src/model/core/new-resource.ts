@@ -3,7 +3,7 @@ import {Relations} from './relations'
 export interface NewResource {
 
     id?: string;
-    type: string;
+    category: string;
     relations: Relations;
     [propName: string]: any;
 }

@@ -1,5 +1,6 @@
 import {Relations} from '../../../../src/model/core/relations';
 
+
 /**
  * @author Daniel de Oliveira
  * @author Thomas Kleinke

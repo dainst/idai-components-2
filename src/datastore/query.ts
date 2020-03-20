@@ -25,7 +25,7 @@ import {Constraint} from './constraint';
 export interface Query {
 
     q?: string;
-    types?: string[];
+    categories?: string[];
     constraints?: { [name: string]: Constraint|string|string[]};
     limit?: number;
     offset?: number;
@@ -46,6 +46,6 @@ export module Query {
 
     export function isEmpty(query: Query) {
 
-        return (!query.q || query.q == '') && !query.types;
+        return (!query.q || query.q == '') && !query.categories;
     }
 }
