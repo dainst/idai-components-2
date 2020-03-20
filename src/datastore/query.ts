@@ -31,7 +31,7 @@ export interface Query {
     offset?: number;
     sort?: {
         mode?: 'default'|'exactMatchFirst', // TODO remove 'default' value. just assume default if mode undefined
-        matchType?: string
+        matchCategory?: string
     };
     id?: string;
     skipDocuments?: boolean;
