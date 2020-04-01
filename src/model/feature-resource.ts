@@ -10,3 +10,10 @@ export interface FeatureResource extends FieldResource {
     period: ValOptionalEndVal<string>|undefined;
     dating: Dating
 }
+
+
+export module FeatureResource {
+
+    export const PERIOD = 'period';
+}
+
