@@ -1,4 +1,4 @@
-import {flow, dissocOn, cond, on, isEmpty, dissoc} from 'tsfun';
+import {flow, dissocOn, cond, on, isEmpty, dissoc, isUndefinedOrEmpty} from 'tsfun';
 
 /**
  * @author Thomas Kleinke
@@ -68,7 +68,7 @@ export module Dating {
     }
 
 
-    const dissocIfEmpty = (path: string) => cond(on(path, isEmpty), dissoc(path));
+    const dissocIfEmpty = (path: string) => cond(on(path, isUndefinedOrEmpty), dissoc(path));
 
     /**
      * @param dating
@@ -81,7 +81,8 @@ export module Dating {
             dissocOn('begin.year'),
             dissocOn('end.year'),
             dissocIfEmpty('begin'),
-            dissocIfEmpty('end'));
+            dissocIfEmpty('end')
+         );
     }
 
 
