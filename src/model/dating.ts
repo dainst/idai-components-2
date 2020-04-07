@@ -1,4 +1,4 @@
-import {flow, dissocOn, cond, on, isEmpty, dissoc, isUndefinedOrEmpty} from 'tsfun';
+import {flow, dissocOn, cond, on, dissoc, isUndefinedOrEmpty} from 'tsfun';
 
 /**
  * @author Thomas Kleinke
