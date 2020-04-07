@@ -30,7 +30,7 @@ export interface Query {
     limit?: number;
     offset?: number;
     sort?: {
-        mode?: 'default'|'exactMatchFirst', // TODO remove 'default' value. just assume default if mode undefined
+        mode?: 'default'|'exactMatchFirst',
         matchCategory?: string
     };
     id?: string;
