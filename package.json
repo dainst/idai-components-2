@@ -36,7 +36,7 @@
     "reflect-metadata": "0.1.8",
     "rxjs": "6.5.3",
     "systemjs": "0.21.4",
-    "tsfun": "4.2.89",
+    "tsfun": "4.2.95",
     "zone.js": "0.10.2"
   },
   "devDependencies": {
@@ -56,6 +56,6 @@
     "jasmine-core": "2.5.2",
     "rimraf": "2.5.4",
     "tslib": "1.11.1",
-    "typescript": "3.7.5"
+    "typescript": "3.8.3"
   }
 }
