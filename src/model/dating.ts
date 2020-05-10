@@ -1,4 +1,6 @@
-import {flow, dissocOn, cond, on, dissoc, isUndefinedOrEmpty} from 'tsfun';
+import {flow, cond, on, isUndefinedOrEmpty} from 'tsfun';
+import {dissoc} from 'tsfun/associative';
+import {dissocOn} from 'tsfun/struct';
 
 /**
  * @author Thomas Kleinke

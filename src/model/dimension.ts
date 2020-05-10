@@ -1,4 +1,5 @@
-import {flow, dissoc} from 'tsfun';
+import {flow} from 'tsfun';
+import {dissoc} from 'tsfun/associative';
 
 /**
  * @author Thomas Kleinke
