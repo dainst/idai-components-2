@@ -6,11 +6,10 @@
   "license": "Apache-2.0",
   "scripts": {
     "prebuild": "rimraf css/* && rimraf fonts/*",
-    "build": "gulp compile && tsc -p tsconfig.json && tsc -p src/tsconfig.json && tsc -p test/tsconfig.json",
+    "build": "tsc -p tsconfig.json && tsc -p src/tsconfig.json && tsc -p test/tsconfig.json",
     "start": "npm run server",
     "test": "npm run jasmine",
-    "jasmine": "jasmine JASMINE_CONFIG_PATH=test/unit/config/jasmine.json",
-    "server": "gulp webserver-watch"
+    "jasmine": "jasmine JASMINE_CONFIG_PATH=test/unit/config/jasmine.json"
   },
   "repository": {
     "type": "git",
@@ -36,7 +35,7 @@
     "reflect-metadata": "0.1.8",
     "rxjs": "6.5.3",
     "systemjs": "0.21.4",
-    "tsfun": "4.2.99",
+    "tsfun": "4.3.0",
     "zone.js": "0.10.2"
   },
   "devDependencies": {
@@ -46,12 +45,6 @@
     "@types/leaflet": "1.0.69",
     "@types/node": "7.0.4",
     "archiver": "1.0.0",
-    "gulp": "3.9.0",
-    "gulp-concat": "2.6.0",
-    "gulp-minify-css": "1.2.3",
-    "gulp-sass": "3.1.0",
-    "gulp-typescript": "3.1.4",
-    "gulp-webserver": "0.9.1",
     "jasmine": "2.5.2",
     "jasmine-core": "2.5.2",
     "rimraf": "2.5.4",
