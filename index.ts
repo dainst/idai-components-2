@@ -14,11 +14,6 @@ export {Datastore} from './src/datastore/datastore';
 export {ReadDatastore, FindResult} from './src/datastore/read-datastore';
 export {DatastoreErrors} from './src/datastore/datastore-errors';
 
-export {IdaiMessagesModule} from './src/messages/idai-messages.module';
-export {Messages} from './src/messages/messages';
-export {Message} from './src/messages/message';
-export {MD} from './src/messages/md';
-
 export {FieldDocument} from './src/model/field-document';
 export {FieldResource} from './src/model/field-resource';
 export {FieldRelations} from './src/model/field-relations';
@@ -38,5 +33,3 @@ export {ImageRelations} from './src/model/image-relations';
 export {ImageGeoreference} from './src/model/image-georeference'
 export {NewImageDocument} from './src/model/new-image-document';
 export {NewImageResource} from './src/model/new-image-resource';
-
-export {MDInternal} from './src/messages/md-internal';
