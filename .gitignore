@@ -14,7 +14,7 @@ test/unit/**/*.js.map
 !test/unit/config/**/*
 index.js
 index.js.map
-./**/*.d.ts
+*.d.ts
 references.js
 references.js.map
 *.DS_Store
