@@ -15,17 +15,15 @@
     "type": "git",
     "url": "git+http://bogusman03.dai-cloud.uni-koeln.de/idai-components-2-builds/build-number/.git"
   },
-  "dependencies": {
-    "tsfun": "4.3.1"
-  },
   "devDependencies": {
     "@types/jasmine": "2.5.41",
     "@types/node": "7.0.4",
     "jasmine": "2.5.2",
     "jasmine-core": "2.5.2",
+    "tsfun": "4.3.3",
     "typescript": "3.8.3"
   },
   "peerDependencies": {
-    "tsfun": "4.3.1"
+    "tsfun": "4.x"
   }
 }
