@@ -1,5 +1,4 @@
-import {flow, cond, on, isUndefinedOrEmpty} from 'tsfun';
-import {dissoc} from 'tsfun/associative';
+import {flow, cond, on, isUndefinedOrEmpty, dissoc} from 'tsfun';
 import {dissoc as dissocOn} from 'tsfun/struct';
 
 /**
@@ -70,7 +69,7 @@ export module Dating {
     }
 
 
-    const dissocIfEmpty = (path: string) => cond(on(path, isUndefinedOrEmpty), dissoc(path));
+    const dissocIfEmpty = (path: string) => cond(on(path, isUndefinedOrEmpty), dissoc(path)) as any /* TODO review any */;
 
     /**
      * @param dating

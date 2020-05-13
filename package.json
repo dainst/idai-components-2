@@ -20,10 +20,7 @@
     "@types/node": "7.0.4",
     "jasmine": "2.5.2",
     "jasmine-core": "2.5.2",
-    "tsfun": "4.3.3",
-    "typescript": "3.8.3"
-  },
-  "peerDependencies": {
-    "tsfun": "4.x"
+    "typescript": "3.8.3",
+    "tsfun": "4.4.1"
   }
 }
