@@ -8,12 +8,6 @@ export {Relations} from './src/model/core/relations';
 export {relationsEquivalent} from './src/model/core/relations';
 export {Action} from './src/model/core/action';
 
-export {Query} from './src/datastore/query';
-export {Constraint} from './src/datastore/constraint';
-export {Datastore} from './src/datastore/datastore';
-export {ReadDatastore, FindResult} from './src/datastore/read-datastore';
-export {DatastoreErrors} from './src/datastore/datastore-errors';
-
 export {FieldDocument} from './src/model/field-document';
 export {FieldResource} from './src/model/field-resource';
 export {FieldRelations} from './src/model/field-relations';
