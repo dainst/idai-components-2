@@ -29,6 +29,8 @@ export interface Dimension {
  */
 export module Dimension {
 
+    export const VALUE = 'value';
+    export const LABEL = 'label';
     export const RANGE = 'range';
     export const RANGEMIN = 'rangeMin';
     export const RANGEMAX = 'rangeMax';
@@ -39,6 +41,9 @@ export module Dimension {
     export const MEASUREMENTCOMMENT = 'measurementComment';
     export const ISIMPRECISE = 'isImprecise';
 
+    const VALID_FIELDS = [VALUE, LABEL, RANGE, RANGEMIN, RANGEMAX,
+        INPUTVALUE, INPUTRANGEENDVALUE, INPUTUNIT, MEASUREMENTPOSITION, MEASUREMENTCOMMENT, ISIMPRECISE];
+
 
     /**
      * Note: There still may be dimension['isRange'] boolean values stored in the database.
@@ -48,6 +53,10 @@ export module Dimension {
      * @param dimension
      */
     export function isValid(dimension: Dimension): boolean {
+
+        for (const fieldName in dimension) {
+            if (!VALID_FIELDS.includes(fieldName)) return false;
+        }
 
         if (dimension.label) return true;
         if (!dimension.inputValue || !dimension.inputUnit) return false;

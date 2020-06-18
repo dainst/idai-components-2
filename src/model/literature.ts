@@ -10,6 +10,11 @@ export interface Literature {
 
 export module Literature {
 
+    export const QUOTATION = 'quotation';
+    export const ZENON_ID = 'zenonId';
+
+    const VALID_FIELDS = [QUOTATION, ZENON_ID];
+
     export function generateLabel(literature: Literature, getTranslation: (key: string) => string): string {
 
         return literature.quotation + (literature.zenonId
@@ -21,6 +26,10 @@ export module Literature {
 
 
     export function isValid(literature: Literature): boolean {
+
+        for (const fieldName in VALID_FIELDS) {
+            if (!VALID_FIELDS.includes(fieldName)) return false;
+        }
 
         return literature.quotation !== undefined && literature.quotation.length > 0;
     }

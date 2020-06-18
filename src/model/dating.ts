@@ -40,7 +40,35 @@ export type DatingType = 'bce'|'ce'|'bp';
  */
 export module Dating {
 
+    export const TYPE = 'type';
+    export const BEGIN = 'begin';
+    export const END = 'end';
+    export const MARGIN = 'margin';
+    export const SOURCE = 'source';
+    export const IS_IMPRECISE = 'isImprecise';
+    export const IS_UNCERTAIN = 'isUncertain';
+    export const LABEL = 'label';
+
+    export const YEAR = 'year';
+    export const INPUT_YEAR = 'inputYear';
+    export const INPUT_TYPE = 'inputType';
+
+    const VALID_FIELDS = [TYPE, BEGIN, END, MARGIN, SOURCE, IS_IMPRECISE, IS_UNCERTAIN, LABEL];
+    const VALID_ELEMENT_FIELDS = [YEAR, INPUT_YEAR, INPUT_TYPE];
+
     export function isValid(dating: Dating): boolean {
+
+        for (const fieldName in dating) {
+            if (!VALID_FIELDS.includes(fieldName)) return false;
+        }
+
+        if (dating.begin) for (const fieldName in dating.begin) {
+            if (!VALID_ELEMENT_FIELDS.includes(fieldName)) return false;
+        }
+
+        if (dating.end) for (const fieldName in dating.end) {
+            if (!VALID_ELEMENT_FIELDS.includes(fieldName)) return false;
+        }
 
         if (dating.label) return true;
         if (!dating.type || !['range', 'exact', 'after', 'before', 'scientific'].includes(dating.type)) {
