@@ -44,6 +44,8 @@ export module Dimension {
     const VALID_FIELDS = [VALUE, LABEL, RANGE, RANGEMIN, RANGEMAX,
         INPUTVALUE, INPUTRANGEENDVALUE, INPUTUNIT, MEASUREMENTPOSITION, MEASUREMENTCOMMENT, ISIMPRECISE];
 
+    const VALID_INPUT_UNITS = ['mm', 'cm', 'm'];
+
 
     /**
      * Note: There still may be dimension['isRange'] boolean values stored in the database.
@@ -60,6 +62,7 @@ export module Dimension {
 
         if (dimension.label) return true;
         if (!dimension.inputValue || !dimension.inputUnit) return false;
+        if (!VALID_INPUT_UNITS.includes(dimension.inputUnit)) return false;
 
         return typeof(dimension.inputValue) === 'number'
             && (!dimension.inputRangeEndValue || typeof(dimension.inputRangeEndValue) === 'number');
