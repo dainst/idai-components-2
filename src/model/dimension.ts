@@ -102,7 +102,8 @@ export module Dimension {
 
     export function generateLabel(dimension: Dimension,
                                   transform: (value: any) => string|null,
-                                  getTranslation: (key: string) => string): string {
+                                  getTranslation: (key: string) => string,
+                                  measurementPositionLabel?: string): string {
 
         let label = (dimension.isImprecise ? 'ca. ' : '');
 
@@ -115,9 +116,9 @@ export module Dimension {
 
         label += ' ' + dimension.inputUnit;
 
-        if (dimension.measurementPosition) {
+        if (measurementPositionLabel) {
             label += ', ' + getTranslation('asMeasuredBy') +  ' '
-                + dimension.measurementPosition;
+                + measurementPositionLabel;
         }
         if (dimension.measurementComment) label += ' (' + dimension.measurementComment + ')';
 
