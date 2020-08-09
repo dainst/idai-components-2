@@ -1,5 +1,4 @@
-import {set, sameset, flatMap, includedIn} from 'tsfun';
-import {objectEqualBy} from 'tsfun/by';
+import {set, sameset, flatMap, includedIn, objectEqual} from 'tsfun';
 import {Resource} from "./resource";
 
 
@@ -10,7 +9,7 @@ export interface Relations {
 
 export const relationsEquivalent = (r1: Relations) => (r2: Relations) => {
 
-    return objectEqualBy(sameset as any)(r1)(r2);
+    return objectEqual(sameset as any, r1)(r2);
 };
 
 
