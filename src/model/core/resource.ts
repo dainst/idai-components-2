@@ -1,5 +1,4 @@
-import {set, isNot, tripleEqual, jsonEqual} from 'tsfun';
-import {samesetBy} from 'tsfun/by';
+import {set, isNot, tripleEqual, jsonEqual, sameset} from 'tsfun';
 import {NewResource} from './new-resource';
 
 
@@ -74,7 +73,7 @@ export module Resource {
         if (type1 !== type2) return false;
 
         if (type1 === 'array' && type2 === 'array') {
-            return samesetBy(jsonEqual)(value1)(value2)
+            return sameset(jsonEqual, value1, value2)
         }
 
         return jsonEqual(value1)(value2);
