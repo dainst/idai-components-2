@@ -19,7 +19,7 @@ export {FeatureRelations} from './src/model/feature-relations';
 export {Dating, DatingElement, DatingType} from './src/model/dating';
 export {Dimension} from './src/model/dimension';
 export {Literature} from './src/model/literature';
-export {ValOptionalEndVal} from './src/model/val-optional-end-val';
+export {OptionalRange} from './src/model/optional-range';
 
 export {ImageDocument} from './src/model/image-document';
 export {ImageResource} from './src/model/image-resource';
