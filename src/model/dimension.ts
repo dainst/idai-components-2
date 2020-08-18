@@ -1,4 +1,4 @@
-import {flow, dissoc} from 'tsfun';
+import {flow, dissoc, isNumber} from 'tsfun';
 
 /**
  * @author Thomas Kleinke
@@ -53,8 +53,9 @@ export module Dimension {
      * we want to make sure only defined fields are present.
      *
      * @param dimension
+     * @param options
      */
-    export function isValid(dimension: Dimension): boolean {
+    export function isValid(dimension: Dimension, options?: any): boolean {
 
         for (const fieldName in dimension) {
             if (!VALID_FIELDS.includes(fieldName)) return false;
@@ -64,8 +65,21 @@ export module Dimension {
         if (!dimension.inputValue || !dimension.inputUnit) return false;
         if (!VALID_INPUT_UNITS.includes(dimension.inputUnit)) return false;
 
-        return typeof(dimension.inputValue) === 'number'
-            && (!dimension.inputRangeEndValue || typeof(dimension.inputRangeEndValue) === 'number');
+        if (!isNumber(dimension.inputValue)) return false;
+
+        if (dimension.inputRangeEndValue !== undefined) {
+
+            if (!isNumber(dimension.inputRangeEndValue)) return false;
+            if (dimension.inputRangeEndValue <= dimension.inputValue) return false;
+        }
+
+        if (!options?.allowNegativeValues) {
+            if (dimension.inputValue < 0) return false;
+            if (dimension.inputRangeEndValue !== undefined
+                && dimension.inputRangeEndValue < 0) return false;
+        }
+
+        return true;
     }
 
 

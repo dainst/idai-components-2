@@ -1,9 +1,6 @@
 import {Dimension} from '../../../../src/model/dimension';
 
 
-/**
- * @author Daniel de Oliveira
- */
 describe('Dimension', () => {
 
     it('translate back to original state', () => {
@@ -39,5 +36,67 @@ describe('Dimension', () => {
         const reverted = Dimension.revert(dim);
         expect(reverted['rangeMin']).toBeUndefined();
         expect(reverted['rangeMax']).toBeUndefined();
+    });
+
+
+    it('isValid', () => {
+
+        const dim: Dimension = {
+            inputValue: 100,
+            inputRangeEndValue: 200,
+            inputUnit: 'cm',
+            isImprecise: false
+        };
+
+        expect(Dimension.isValid(dim)).toBeTruthy();
+    });
+
+
+    it('isValid - not valid', () => {
+
+        const dim: any = {
+            inputRangeEndValue: 200,
+            inputUnit: 'cm',
+            isImprecise: false
+        };
+
+        expect(Dimension.isValid(dim)).toBeFalsy();
+    });
+
+
+    it('isValid - not valid - range order', () => {
+
+        const dim: any = {
+            inputValue: 200,
+            inputRangeEndValue: 100,
+            inputUnit: 'cm',
+            isImprecise: false
+        };
+
+        expect(Dimension.isValid(dim)).toBeFalsy();
+    });
+
+
+    it('isValid - not valid - negative values', () => {
+
+        const dim: any = {
+            inputValue: -200,
+            inputUnit: 'cm',
+            isImprecise: false
+        };
+
+        expect(Dimension.isValid(dim)).toBeFalsy();
+    });
+
+
+    it('isValid - not valid - suppress negative values check', () => {
+
+        const dim: any = {
+            inputValue: -200,
+            inputUnit: 'cm',
+            isImprecise: false
+        };
+
+        expect(Dimension.isValid(dim, { allowNegativeValues: true })).toBeTruthy();
     });
 });

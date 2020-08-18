@@ -25,7 +25,7 @@ export module Literature {
     }
 
 
-    export function isValid(literature: Literature): boolean {
+    export function isValid(literature: Literature, options?: any): boolean {
 
         for (const fieldName in literature) {
             if (!VALID_FIELDS.includes(fieldName)) return false;

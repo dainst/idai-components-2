@@ -56,7 +56,7 @@ export module Dating {
     const VALID_FIELDS = [TYPE, BEGIN, END, MARGIN, SOURCE, IS_IMPRECISE, IS_UNCERTAIN, LABEL];
     const VALID_ELEMENT_FIELDS = [YEAR, INPUT_YEAR, INPUT_TYPE];
 
-    export function isValid(dating: Dating): boolean {
+    export function isValid(dating: Dating, options?: any): boolean {
 
         for (const fieldName in dating) {
             if (!VALID_FIELDS.includes(fieldName)) return false;
