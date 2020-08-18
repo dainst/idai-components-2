@@ -18,7 +18,6 @@ export {FeatureResource} from './src/model/feature-resource';
 export {FeatureRelations} from './src/model/feature-relations';
 export {Dating, DatingElement, DatingType} from './src/model/dating';
 export {Dimension} from './src/model/dimension';
-export {DimensionVerticalExtent} from './src/model/dimension-vertical-extent';
 export {Literature} from './src/model/literature';
 export {OptionalRange} from './src/model/optional-range';
 
