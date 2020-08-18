@@ -41,10 +41,10 @@ export module Dimension {
     export const MEASUREMENTCOMMENT = 'measurementComment';
     export const ISIMPRECISE = 'isImprecise';
 
-    const VALID_FIELDS = [VALUE, LABEL, RANGE, RANGEMIN, RANGEMAX,
+    export const VALID_FIELDS = [VALUE, LABEL, RANGE, RANGEMIN, RANGEMAX,
         INPUTVALUE, INPUTRANGEENDVALUE, INPUTUNIT, MEASUREMENTPOSITION, MEASUREMENTCOMMENT, ISIMPRECISE];
 
-    const VALID_INPUT_UNITS = ['mm', 'cm', 'm'];
+    export const VALID_INPUT_UNITS = ['mm', 'cm', 'm'];
 
 
     /**
