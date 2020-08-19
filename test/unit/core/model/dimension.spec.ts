@@ -77,6 +77,19 @@ describe('Dimension', () => {
     });
 
 
+    it('isValid - not valid - range order - permissive', () => {
+
+        const dim: any = {
+            inputValue: 200,
+            inputRangeEndValue: 100,
+            inputUnit: 'cm',
+            isImprecise: false
+        };
+
+        expect(Dimension.isValid(dim, { permissive: true })).toBeTruthy();
+    });
+
+
     it('isValid - not valid - negative values', () => {
 
         const dim: any = {
@@ -89,7 +102,7 @@ describe('Dimension', () => {
     });
 
 
-    it('isValid - not valid - suppress negative values check', () => {
+    it('isValid - not valid - permissive', () => {
 
         const dim: any = {
             inputValue: -200,
@@ -97,6 +110,6 @@ describe('Dimension', () => {
             isImprecise: false
         };
 
-        expect(Dimension.isValid(dim, { allowNegativeValues: true })).toBeTruthy();
+        expect(Dimension.isValid(dim, { permissive: true })).toBeTruthy();
     });
 });
