@@ -69,13 +69,13 @@ export module Dimension {
 
         if (dimension.inputRangeEndValue !== undefined) {
             if (!isNumber(dimension.inputRangeEndValue)) return false;
+            if (dimension.inputRangeEndValue <= dimension.inputValue) return false;
         }
 
         if (!options?.permissive) {
             if (dimension.inputValue < 0) return false;
             if (dimension.inputRangeEndValue !== undefined) {
                 if (dimension.inputRangeEndValue < 0) return false;
-                if (dimension.inputRangeEndValue <= dimension.inputValue) return false;
             }
         }
 
