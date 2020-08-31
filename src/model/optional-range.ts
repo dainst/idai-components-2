@@ -19,4 +19,13 @@ export module OptionalRange {
         if (keys.length === 2 && (typeof optionalRange[VALUE] !== typeof optionalRange[ENDVALUE])) return false;
         return true;
     }
+
+
+    export function generateLabel(optionalRange: OptionalRange,
+                                  getTranslation: (key: string) => string): string {
+
+        return optionalRange.endValue
+            ? getTranslation('from') + optionalRange.value + getTranslation('to') + optionalRange.endValue
+            : optionalRange.value;
+    }
 }
