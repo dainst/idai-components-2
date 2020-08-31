@@ -7,7 +7,7 @@ import {OptionalRange} from './optional-range';
 export interface FeatureResource extends FieldResource {
 
     relations: FeatureRelations;
-    period: OptionalRange<string>|undefined;
+    period: OptionalRange|undefined;
     dating: Dating
 }
 
