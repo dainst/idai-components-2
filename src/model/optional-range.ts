@@ -1,7 +1,7 @@
-export interface OptionalRange<T> {
+export interface OptionalRange {
 
-    value: T;
-    endValue?: T;
+    value: string;
+    endValue?: string;
 }
 
 
@@ -11,7 +11,7 @@ export module OptionalRange {
     export const ENDVALUE = 'endValue';
 
 
-    export function isValid<T>(optionalRange: OptionalRange<T>): boolean {
+    export function isValid(optionalRange: OptionalRange): boolean {
 
         const keys = Object.keys(optionalRange);
         if (keys.length !== 1 && keys.length !== 2) return false;
