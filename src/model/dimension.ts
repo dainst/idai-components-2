@@ -19,6 +19,7 @@ export interface Dimension {
     measurementComment?: string;
     isImprecise: boolean;
 
+    isRange?: boolean; // Deprecated
     label?: string; // Deprecated
 }
 
@@ -31,7 +32,7 @@ export module Dimension {
 
     export const VALUE = 'value';
     export const LABEL = 'label';
-    export const RANGE = 'range';
+    export const ISRANGE = 'isRange';
     export const RANGEMIN = 'rangeMin';
     export const RANGEMAX = 'rangeMax';
     export const INPUTVALUE = 'inputValue';
@@ -41,7 +42,7 @@ export module Dimension {
     export const MEASUREMENTCOMMENT = 'measurementComment';
     export const ISIMPRECISE = 'isImprecise';
 
-    const VALID_FIELDS = [VALUE, LABEL, RANGE, RANGEMIN, RANGEMAX,
+    const VALID_FIELDS = [VALUE, LABEL, ISRANGE, RANGEMIN, RANGEMAX,
         INPUTVALUE, INPUTRANGEENDVALUE, INPUTUNIT, MEASUREMENTPOSITION, MEASUREMENTCOMMENT, ISIMPRECISE];
 
     const VALID_INPUT_UNITS = ['mm', 'cm', 'm'];
