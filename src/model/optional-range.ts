@@ -23,10 +23,12 @@ export module OptionalRange {
 
 
     export function generateLabel(optionalRange: OptionalRange,
-                                  getTranslation: (key: string) => string): string {
+                                  getTranslation: (key: string) => string,
+                                  getLabel: (object: any) => string): string {
 
         return optionalRange.endValue
-            ? getTranslation('from') + optionalRange.value + getTranslation('to') + optionalRange.endValue
-            : optionalRange.value;
+            ? getTranslation('from') + getLabel(optionalRange.value) + getTranslation('to')
+                + getLabel(optionalRange.endValue)
+            : getLabel(optionalRange.value);
     }
 }
