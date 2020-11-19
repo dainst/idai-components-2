@@ -16,6 +16,7 @@ export interface Document extends NewDocument {
     resource : Resource;
     modified: Array<Action>;
     created: Action;
+    project?: string; // if set, it means that the document belongs to another project
 }
 
 
@@ -27,6 +28,9 @@ export const toResourceId = (doc: Document): Resource.Id => to('resource.id')(do
  */
 export module Document {
 
+    export const CREATED = 'created';
+    export const MODIFIED = 'modified';
+    export const PROJECT = 'project';
     export const RESOURCE = 'resource';
     export const _REV = '_rev';
 
