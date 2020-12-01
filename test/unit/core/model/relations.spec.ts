@@ -54,4 +54,13 @@ describe('Relations', () => {
 
         expect(Relations.getDifferent(rels1, rels2)).toEqual([]);
     });
+
+
+    it('removeEmpty', () => {
+
+        const relations = { 'a': [], 'b': null, 'c': ['value'] };
+        Relations.removeEmpty(relations);
+
+        expect(relations).toEqual({ 'c': ['value'] });
+    });
 });

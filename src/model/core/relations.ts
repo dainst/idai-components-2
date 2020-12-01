@@ -1,5 +1,5 @@
 import {set, sameset, flatMap, includedIn, objectEqual} from 'tsfun';
-import {Resource} from "./resource";
+import {Resource} from './resource';
 
 
 export interface Relations {
@@ -21,6 +21,7 @@ export module Relations {
 
     import concatIf = Resource.concatIf;
 
+
     export function getAllTargets(relations: Relations, allowedRelations?: string[]): Array<string> {
 
         const ownKeys = Object.keys(relations)
@@ -38,18 +39,27 @@ export module Relations {
 
         const differingRelationNames: string[]
             = findDifferingFieldsInRelations(relations1, relations2)
-            .concat(findDifferingFieldsInRelations(relations2, relations1));
+                .concat(findDifferingFieldsInRelations(relations2, relations1));
 
         return set(differingRelationNames);
     }
 
 
-    function findDifferingFieldsInRelations(relations1: Object, relations2: Object):  string[] {
+    export function removeEmpty(relations: Relations) {
+
+        Object.keys(relations)
+            .filter(key => relations[key] === null || relations[key].length === 0)
+            .forEach(key => delete relations[key]);
+    }
+
+
+    function findDifferingFieldsInRelations(relations1: Object, relations2: Object): string[] {
 
         return Object.keys(relations1)
             .reduce(
                 concatIf(notBothSameset(relations1, relations2)),
-                []);
+                []
+            );
     }
 
 
