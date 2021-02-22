@@ -111,6 +111,8 @@ export module Dimension {
         } else {
             dimension.value = convertValueFromInputUnitToMicrometre(dimension.inputUnit,
                 dimension.inputValue);
+            delete(dimension.rangeMin);
+            delete(dimension.rangeMax);
         }
     }
 
