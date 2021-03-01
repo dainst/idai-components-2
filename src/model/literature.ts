@@ -35,7 +35,7 @@ export module Literature {
         }
 
         return literature.quotation + (additionalInformation.length > 0
-            ? '(' + additionalInformation.join(', ') + ')'
+            ? ' (' + additionalInformation.join(', ') + ')'
             : ''
         );
     }
