@@ -20,11 +20,12 @@ export module Literature {
     const VALID_FIELDS = [QUOTATION, ZENON_ID, PAGE, FIGURE];
 
 
-    export function generateLabel(literature: Literature, getTranslation: (key: string) => string): string {
+    export function generateLabel(literature: Literature, getTranslation: (key: string) => string,
+                                  includeZenonId: boolean = true): string {
 
         let additionalInformation: string[] = [];
 
-        if (literature.zenonId) {
+        if (includeZenonId && literature.zenonId) {
             additionalInformation.push(getTranslation('zenonId') + ': ' + literature.zenonId);
         }
         if (literature.page) {
