@@ -1,4 +1,4 @@
-import {flow, dissoc, isNumber} from 'tsfun';
+import {flow, dissoc, isNumber, isObject} from 'tsfun';
 
 /**
  * @author Thomas Kleinke
@@ -48,6 +48,12 @@ export module Dimension {
     const VALID_INPUT_UNITS = ['mm', 'cm', 'm'];
 
 
+    export function isDimension(dimension: any): dimension is Dimension {
+
+        return isObject(dimension) && isValid(dimension, { permissive: true });
+    }
+
+
     /**
      * Note: There still may be dimension['isRange'] boolean values stored in the database.
      * These should be handled properly if we're up to changing things here, for example if
@@ -56,7 +62,7 @@ export module Dimension {
      * @param dimension
      * @param options
      */
-    export function isValid(dimension: Dimension, options?: any): boolean {
+    export function isValid(dimension: Dimension, options?: any) {
 
         for (const fieldName in dimension) {
             if (!VALID_FIELDS.includes(fieldName)) return false;

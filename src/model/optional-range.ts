@@ -1,3 +1,5 @@
+import { isObject } from 'tsfun';
+
 export interface OptionalRange {
 
     value: string;
@@ -9,6 +11,12 @@ export module OptionalRange {
 
     export const VALUE = 'value';
     export const ENDVALUE = 'endValue';
+
+
+    export function isOptionalRange(optionalRange: any): optionalRange is OptionalRange {
+
+        return isObject(optionalRange) && isValid(optionalRange);
+    }
 
 
     export function isValid(optionalRange: OptionalRange): boolean {

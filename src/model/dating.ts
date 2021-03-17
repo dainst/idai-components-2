@@ -1,4 +1,4 @@
-import {flow, cond, on, isUndefinedOrEmpty, dissoc} from 'tsfun';
+import {flow, cond, on, isUndefinedOrEmpty, dissoc, isObject} from 'tsfun';
 import {dissoc as dissocOn} from 'tsfun/struct';
 
 /**
@@ -56,7 +56,14 @@ export module Dating {
     const VALID_FIELDS = [TYPE, BEGIN, END, MARGIN, SOURCE, IS_IMPRECISE, IS_UNCERTAIN, LABEL];
     const VALID_ELEMENT_FIELDS = [YEAR, INPUT_YEAR, INPUT_TYPE];
 
-    export function isValid(dating: Dating, options?: any): boolean {
+
+    export function isDating(dating: any): dating is Dating {
+
+        return isObject(dating) && isValid(dating);
+    }
+
+
+    export function isValid(dating: Dating, options?: any) {
 
         for (const fieldName in dating) {
             if (!VALID_FIELDS.includes(fieldName)) return false;

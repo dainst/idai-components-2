@@ -1,3 +1,5 @@
+import { isObject } from 'tsfun';
+
 /**
  * @author Thomas Kleinke
  */
@@ -20,6 +22,22 @@ export module Literature {
     const VALID_FIELDS = [QUOTATION, ZENON_ID, PAGE, FIGURE];
 
 
+    export function isLiterature(literature: any): literature is Literature {
+
+        return isObject(literature) && isValid(literature);
+    }
+
+
+    export function isValid(literature: Literature, options?: any): boolean {
+
+        for (const fieldName in literature) {
+            if (!VALID_FIELDS.includes(fieldName)) return false;
+        }
+
+        return literature.quotation !== undefined && literature.quotation.length > 0;
+    }
+
+
     export function generateLabel(literature: Literature, getTranslation: (key: string) => string,
                                   includeZenonId: boolean = true): string {
 
@@ -39,15 +57,5 @@ export module Literature {
             ? ' (' + additionalInformation.join(', ') + ')'
             : ''
         );
-    }
-
-
-    export function isValid(literature: Literature, options?: any): boolean {
-
-        for (const fieldName in literature) {
-            if (!VALID_FIELDS.includes(fieldName)) return false;
-        }
-
-        return literature.quotation !== undefined && literature.quotation.length > 0;
     }
 }
