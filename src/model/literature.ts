@@ -22,6 +22,13 @@ export module Literature {
     const VALID_FIELDS = [QUOTATION, ZENON_ID, PAGE, FIGURE];
 
 
+    export interface Translations {
+        'zenonId': string;
+        'page': string;
+        'figure': string;
+    }
+
+
     export function isLiterature(literature: any): literature is Literature {
 
         return isObject(literature) && isValid(literature);
@@ -38,19 +45,20 @@ export module Literature {
     }
 
 
-    export function generateLabel(literature: Literature, getTranslation: (key: string) => string,
+    export function generateLabel(literature: Literature, 
+                                  translations: Literature.Translations,
                                   includeZenonId: boolean = true): string {
 
         let additionalInformation: string[] = [];
 
         if (includeZenonId && literature.zenonId) {
-            additionalInformation.push(getTranslation('zenonId') + ': ' + literature.zenonId);
+            additionalInformation.push(translations['zenonId'] + ': ' + literature.zenonId);
         }
         if (literature.page) {
-            additionalInformation.push(getTranslation('page') + ' ' + literature.page);
+            additionalInformation.push(translations['page'] + ' ' + literature.page);
         }
         if (literature.figure) {
-            additionalInformation.push(getTranslation('figure') + ' ' + literature.figure);
+            additionalInformation.push(translations['figure'] + ' ' + literature.figure);
         }
 
         return literature.quotation + (additionalInformation.length > 0
