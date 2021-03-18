@@ -13,6 +13,9 @@ export module OptionalRange {
     export const ENDVALUE = 'endValue';
 
 
+    export type Translations = 'from'|'to';
+
+
     export function isOptionalRange(optionalRange: any): optionalRange is OptionalRange {
 
         return isObject(optionalRange) && isValid(optionalRange);
@@ -31,7 +34,7 @@ export module OptionalRange {
 
 
     export function generateLabel(optionalRange: OptionalRange,
-                                  getTranslation: (key: string) => string,
+                                  getTranslation: (term: OptionalRange.Translations) => string,
                                   getLabel: (object: any) => string): string {
 
         return optionalRange.endValue

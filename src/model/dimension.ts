@@ -42,9 +42,7 @@ export module Dimension {
     export const MEASUREMENTCOMMENT = 'measurementComment';
     export const ISIMPRECISE = 'isImprecise';
 
-    export interface Translations {
-        'asMeasuredBy': string;
-    }
+    export type Translations = 'asMeasuredBy';
 
     const VALID_FIELDS = [VALUE, LABEL, ISRANGE, RANGEMIN, RANGEMAX,
         INPUTVALUE, INPUTRANGEENDVALUE, INPUTUNIT, MEASUREMENTPOSITION, MEASUREMENTCOMMENT, ISIMPRECISE];
@@ -129,7 +127,7 @@ export module Dimension {
 
     export function generateLabel(dimension: Dimension,
                                   transform: (value: any) => string|null,
-                                  translations: Dimension.Translations,
+                                  getTranslation: (term: Dimension.Translations) => string,
                                   measurementPositionLabel?: string): string {
 
         let label = (dimension.isImprecise ? 'ca. ' : '');
@@ -144,7 +142,7 @@ export module Dimension {
         label += ' ' + dimension.inputUnit;
 
         if (measurementPositionLabel) {
-            label += ', ' + translations['asMeasuredBy'] +  ' '
+            label += ', ' + getTranslation('asMeasuredBy') +  ' '
                 + measurementPositionLabel;
         }
         if (dimension.measurementComment) label += ' (' + dimension.measurementComment + ')';
