@@ -28,19 +28,18 @@ export module Literature {
     export function isLiterature(literature: any): literature is Literature {
 
         if (!isObject(literature)) return false;
+        for (const fieldName in literature) {
+            if (!VALID_FIELDS.includes(fieldName)) return false;
+        }
         if (!isString(literature.quotation)) return false;
         if (literature.zenonId && !isString(literature.zenonId)) return false;
         if (literature.page && !isString(literature.page)) return false;
         if (literature.figure && !isString(literature.figure)) return false;
-        return isValid(literature);
+        return true;
     }
 
 
     export function isValid(literature: Literature, options?: any): boolean {
-
-        for (const fieldName in literature) {
-            if (!VALID_FIELDS.includes(fieldName)) return false;
-        }
 
         return literature.quotation !== undefined && literature.quotation.length > 0;
     }

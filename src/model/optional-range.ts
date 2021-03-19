@@ -21,7 +21,7 @@ export module OptionalRange {
         if (!isObject(optionalRange)) return false;
         if (optionalRange.value && !isString(optionalRange.value)) return false;
         if (optionalRange.endValue && !isString(optionalRange.endValue)) return false;
-        return isValid(optionalRange);
+        return true;
     }
 
 

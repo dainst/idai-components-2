@@ -52,9 +52,14 @@ export module Dimension {
     export function isDimension(dimension: any): dimension is Dimension {
 
         if (!isObject(dimension)) return false;
+        for (const fieldName in dimension) {
+            if (!VALID_FIELDS.includes(fieldName)) return false;
+        }
         if (dimension.measurementPosition && !isString(dimension.measurementPosition)) return false;
         if (dimension.measurementComment && !isString(dimension.measurementComment)) return false;
-        return isValid(dimension, { permissive: true });
+        if (!VALID_INPUT_UNITS.includes(dimension.inputUnit)) return false;
+        if (!isNumber(dimension.inputValue)) return false;
+        return true;
     }
 
 
@@ -68,15 +73,8 @@ export module Dimension {
      */
     export function isValid(dimension: Dimension, options?: any) {
 
-        for (const fieldName in dimension) {
-            if (!VALID_FIELDS.includes(fieldName)) return false;
-        }
-
         if (dimension.label) return true;
         if (!dimension.inputValue || !dimension.inputUnit) return false;
-        if (!VALID_INPUT_UNITS.includes(dimension.inputUnit)) return false;
-
-        if (!isNumber(dimension.inputValue)) return false;
 
         if (dimension.inputRangeEndValue !== undefined) {
             if (!isNumber(dimension.inputRangeEndValue)) return false;
@@ -127,7 +125,8 @@ export module Dimension {
 
     export function generateLabel(dimension: Dimension,
                                   transform: (value: any) => string|null,
-                                  getTranslation: (term: Dimension.Translations) => string): string {
+                                  translateKey: (term: Dimension.Translations) => string,
+                                  translateValue: (term: string) => string): string {
 
         let label = (dimension.isImprecise ? 'ca. ' : '');
 
@@ -141,9 +140,9 @@ export module Dimension {
         label += ' ' + dimension.inputUnit;
 
         if (dimension.measurementPosition) {
-            label += ', ' + getTranslation('asMeasuredBy') +  ' ' + dimension.measurementPosition;
+            label += ', ' + translateKey('asMeasuredBy') +  ' ' + dimension.measurementPosition;
         }
-        if (dimension.measurementComment) label += ' (' + dimension.measurementComment + ')';
+        if (dimension.measurementComment) label += ' (' + translateValue(dimension.measurementComment) + ')';
         return label;
     }
 
