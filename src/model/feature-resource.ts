@@ -4,10 +4,10 @@ import {Dating} from './dating';
 import {OptionalRange} from './optional-range';
 
 
-export interface FeatureResource<T> extends FieldResource {
+export interface FeatureResource extends FieldResource {
 
     relations: FeatureRelations;
-    period: OptionalRange<T>|undefined;
+    period: OptionalRange<string>|undefined;
     dating: Dating
 }
 
