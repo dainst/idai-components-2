@@ -61,11 +61,12 @@ export module Dating {
 
     export function isDating(dating: any): dating is Dating {
 
-        return isObject(dating) && isValid(dating);
+        if (!isObject(dating)) return false;
+        return isValid(dating);
     }
 
 
-    export function isValid(dating: Dating, options?: any) {
+    export function isValid(dating: Dating) {
 
         for (const fieldName in dating) {
             if (!VALID_FIELDS.includes(fieldName)) return false;

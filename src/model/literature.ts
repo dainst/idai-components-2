@@ -1,4 +1,4 @@
-import { isObject } from 'tsfun';
+import { isObject, isString } from 'tsfun';
 
 /**
  * @author Thomas Kleinke
@@ -27,7 +27,12 @@ export module Literature {
 
     export function isLiterature(literature: any): literature is Literature {
 
-        return isObject(literature) && isValid(literature);
+        if (!isObject(literature)) return false;
+        if (!isString(literature.quotation)) return false;
+        if (literature.zenonId && !isString(literature.zenonId)) return false;
+        if (literature.page && !isString(literature.page)) return false;
+        if (literature.figure && !isString(literature.figure)) return false;
+        return isValid(literature);
     }
 
 

@@ -1,4 +1,4 @@
-import {flow, dissoc, isNumber, isObject} from 'tsfun';
+import {flow, dissoc, isNumber, isObject, isString} from 'tsfun';
 
 /**
  * @author Thomas Kleinke
@@ -52,7 +52,10 @@ export module Dimension {
 
     export function isDimension(dimension: any): dimension is Dimension {
 
-        return isObject(dimension) && isValid(dimension, { permissive: true });
+        if (!isObject(dimension)) return false;
+        if (dimension.measurementPosition && !isString(dimension.measurementPosition)) return false;
+        if (dimension.measurementComment && !isString(dimension.measurementComment)) return false;
+        return isValid(dimension, { permissive: true });
     }
 
 
