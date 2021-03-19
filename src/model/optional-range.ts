@@ -39,9 +39,13 @@ export module OptionalRange {
                                   getTranslation: (term: OptionalRange.Translations) => string,
                                   getLabel: (object: any) => string): string {
 
-        return optionalRange.endValue
-            ? getTranslation('from') + getLabel(optionalRange.value) + getTranslation('to')
-                + getLabel(optionalRange.endValue)
-            : getLabel(optionalRange.value);
+        if (isValid(optionalRange)) {
+            return optionalRange.endValue
+                ? getTranslation('from') + getLabel(optionalRange.value) + getTranslation('to')
+                    + getLabel(optionalRange.endValue)
+                : getLabel(optionalRange.value);
+        } else {
+            return JSON.stringify(optionalRange);
+        }
     }
 }

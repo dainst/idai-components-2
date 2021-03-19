@@ -128,23 +128,28 @@ export module Dimension {
                                   translate: (term: Dimension.Translations) => string,
                                   measurementPositionLabel?: string): string {
 
-        let label = (dimension.isImprecise ? 'ca. ' : '');
+        if (isValid(dimension)) {
 
-        if (dimension.inputRangeEndValue !== undefined) {
-            label += transform(dimension.inputValue) + '-'
-                + transform(dimension.inputRangeEndValue);
+            let label = (dimension.isImprecise ? 'ca. ' : '');
+    
+            if (dimension.inputRangeEndValue !== undefined) {
+                label += transform(dimension.inputValue) + '-'
+                    + transform(dimension.inputRangeEndValue);
+            } else {
+                label += transform(dimension.inputValue);
+            }
+    
+            label += ' ' + dimension.inputUnit;
+    
+            if (dimension.measurementPosition) {
+                label += ', ' + translate('asMeasuredBy') +  ' ' 
+                      + measurementPositionLabel;
+            }
+            if (dimension.measurementComment) label += ' (' + dimension.measurementComment + ')';
+            return label;
         } else {
-            label += transform(dimension.inputValue);
+            return JSON.stringify(dimension);
         }
-
-        label += ' ' + dimension.inputUnit;
-
-        if (dimension.measurementPosition) {
-            label += ', ' + translate('asMeasuredBy') +  ' ' 
-                  + measurementPositionLabel;
-        }
-        if (dimension.measurementComment) label += ' (' + dimension.measurementComment + ')';
-        return label;
     }
 
 

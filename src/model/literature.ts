@@ -49,21 +49,26 @@ export module Literature {
                                   getTranslation: (term: Literature.Translations) => string,
                                   includeZenonId: boolean = true): string {
 
-        let additionalInformation: string[] = [];
+        if (!isValid(literature)) {
 
-        if (includeZenonId && literature.zenonId) {
-            additionalInformation.push(getTranslation('zenonId') + ': ' + literature.zenonId);
+            let additionalInformation: string[] = [];
+    
+            if (includeZenonId && literature.zenonId) {
+                additionalInformation.push(getTranslation('zenonId') + ': ' + literature.zenonId);
+            }
+            if (literature.page) {
+                additionalInformation.push(getTranslation('page') + ' ' + literature.page);
+            }
+            if (literature.figure) {
+                additionalInformation.push(getTranslation('figure') + ' ' + literature.figure);
+            }
+    
+            return literature.quotation + (additionalInformation.length > 0
+                ? ' (' + additionalInformation.join(', ') + ')'
+                : ''
+            );
+        } else {
+            return JSON.stringify(literature);
         }
-        if (literature.page) {
-            additionalInformation.push(getTranslation('page') + ' ' + literature.page);
-        }
-        if (literature.figure) {
-            additionalInformation.push(getTranslation('figure') + ' ' + literature.figure);
-        }
-
-        return literature.quotation + (additionalInformation.length > 0
-            ? ' (' + additionalInformation.join(', ') + ')'
-            : ''
-        );
     }
 }
