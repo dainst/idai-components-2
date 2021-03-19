@@ -2,7 +2,9 @@ import {flow, cond, on, isUndefinedOrEmpty, dissoc, isObject} from 'tsfun';
 import {dissoc as dissocOn} from 'tsfun/struct';
 
 /**
+ * @author Sebastian Cuy
  * @author Thomas Kleinke
+ * @author Daniel de Oliveira
  */
 export interface Dating {
 
@@ -34,10 +36,6 @@ export interface DatingElement {
 export type DatingType = 'bce'|'ce'|'bp';
 
 
-/**
- * @author Sebastian Cuy
- * @author Thomas Kleinke
- */
 export module Dating {
 
     export const TYPE = 'type';
@@ -62,28 +60,26 @@ export module Dating {
     export function isDating(dating: any): dating is Dating {
 
         if (!isObject(dating)) return false;
-        return isValid(dating);
+
+        for (const fieldName in dating) {
+            if (!VALID_FIELDS.includes(fieldName)) return false;
+        }
+        if (dating.begin) for (const fieldName in dating.begin) {
+            if (!VALID_ELEMENT_FIELDS.includes(fieldName)) return false;
+        }
+        if (dating.end) for (const fieldName in dating.end) {
+            if (!VALID_ELEMENT_FIELDS.includes(fieldName)) return false;
+        }
+        if (!dating.type || !['range', 'exact', 'after', 'before', 'scientific'].includes(dating.type)) {
+            return false;
+        }
+        return true;
     }
 
 
     export function isValid(dating: Dating) {
 
-        for (const fieldName in dating) {
-            if (!VALID_FIELDS.includes(fieldName)) return false;
-        }
-
-        if (dating.begin) for (const fieldName in dating.begin) {
-            if (!VALID_ELEMENT_FIELDS.includes(fieldName)) return false;
-        }
-
-        if (dating.end) for (const fieldName in dating.end) {
-            if (!VALID_ELEMENT_FIELDS.includes(fieldName)) return false;
-        }
-
         if (dating.label) return true;
-        if (!dating.type || !['range', 'exact', 'after', 'before', 'scientific'].includes(dating.type)) {
-            return false;
-        }
         if (['range', 'after', 'scientific'].includes(dating.type) && !dating.begin) return false;
         if (['range', 'exact', 'before', 'scientific'].includes(dating.type) && !dating.end) return false;
         if (dating.type === 'scientific' && !dating.margin) return false;
@@ -109,11 +105,7 @@ export module Dating {
 
     const dissocIfEmpty = (path: string) => cond(on(path, isUndefinedOrEmpty), dissoc(path)) as any /* TODO review any */;
 
-    /**
-     * @param dating
-     *
-     * @author Daniel de Oliveira
-     */
+
     export function revert(dating: Dating): Dating {
 
         return flow(dating,
@@ -135,32 +127,36 @@ export module Dating {
     export function generateLabel(dating: Dating,
                                   getTranslation: (term: Dating.Translations) => string): string {
 
-        let prefix = '';
-        let year = '';
-        let postfix = '';
+        if (isValid(dating)) {
+            let prefix = '';
+            let year = '';
+            let postfix = '';
 
-        if (dating.type === 'range') {
-            year = generateLabelForDate(dating.begin, getTranslation) + ' – '
-                + generateLabelForDate(dating.end, getTranslation);
+            if (dating.type === 'range') {
+                year = generateLabelForDate(dating.begin, getTranslation) + ' – '
+                    + generateLabelForDate(dating.end, getTranslation);
+            }
+            if (dating.type === 'before' || dating.type == 'exact') {
+                year = generateLabelForDate(dating.end, getTranslation);
+            }
+            if (dating.type === 'after') year = generateLabelForDate(dating.begin, getTranslation);
+            if (dating.type === 'scientific') {
+                year = generateLabelForDate(dating.end, getTranslation);
+                if (dating.margin && dating.margin > 0) year += ' ± ' + dating.margin;
+            }
+
+            if (dating['isImprecise']) prefix = 'ca. ';
+            if (dating['isUncertain']) postfix = ' (?)';
+
+            if (dating.type === 'before') prefix = getTranslation('before')  + ' ' + prefix;
+            if (dating.type === 'after') prefix = getTranslation('after') + ' ' + prefix;
+
+            if (dating['source']) postfix += ' [' + dating['source'] + ']';
+
+            return prefix + year + postfix;
+        } else {
+            return JSON.stringify(dating);
         }
-        if (dating.type === 'before' || dating.type == 'exact') {
-            year = generateLabelForDate(dating.end, getTranslation);
-        }
-        if (dating.type === 'after') year = generateLabelForDate(dating.begin, getTranslation);
-        if (dating.type === 'scientific') {
-            year = generateLabelForDate(dating.end, getTranslation);
-            if (dating.margin && dating.margin > 0) year += ' ± ' + dating.margin;
-        }
-
-        if (dating['isImprecise']) prefix = 'ca. ';
-        if (dating['isUncertain']) postfix = ' (?)';
-
-        if (dating.type === 'before') prefix = getTranslation('before')  + ' ' + prefix;
-        if (dating.type === 'after') prefix = getTranslation('after') + ' ' + prefix;
-
-        if (dating['source']) postfix += ' [' + dating['source'] + ']';
-
-        return prefix + year + postfix;
     }
 
 
