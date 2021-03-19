@@ -1,7 +1,10 @@
 import {flow, dissoc, isNumber, isObject, isString} from 'tsfun';
 
+
 /**
+ * @author Fabian Z.
  * @author Thomas Kleinke
+ * @author Daniel de Oliveira 
  */
 export interface Dimension {
 
@@ -24,10 +27,6 @@ export interface Dimension {
 }
 
 
-/**
- * @author Fabian Z.
- * @author Thomas Kleinke
- */
 export module Dimension {
 
     export const VALUE = 'value';
@@ -97,9 +96,7 @@ export module Dimension {
 
     /**
      * Reverts the dimension back to the state before normalization
-     *
      * @param dimension gets modified in place
-     * @author Daniel de Oliveira
      */
     export function revert(dimension: Dimension) {
 
