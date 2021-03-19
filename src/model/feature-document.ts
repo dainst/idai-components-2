@@ -4,7 +4,7 @@ import {FieldDocument} from './field-document';
 /**
  * @author Daniel de Oliveira
  */
-export interface FeatureDocument extends FieldDocument {
+export interface FeatureDocument<T> extends FieldDocument {
 
-    resource: FeatureResource;
+    resource: FeatureResource<T>;
 }

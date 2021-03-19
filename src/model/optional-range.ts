@@ -1,9 +1,9 @@
-import { isObject, isString } from 'tsfun';
+import { isObject } from 'tsfun';
 
-export interface OptionalRange {
+export interface OptionalRange<T> {
 
-    value: string;
-    endValue?: string;
+    value: T;
+    endValue?: T;
 }
 
 
@@ -16,16 +16,15 @@ export module OptionalRange {
     export type Translations = 'from'|'to';
 
 
-    export function isOptionalRange(optionalRange: any): optionalRange is OptionalRange {
+    export function isOptionalRange<T>(optionalRange: any): optionalRange is OptionalRange<T> {
 
         if (!isObject(optionalRange)) return false;
-        if (optionalRange.value && !isString(optionalRange.value)) return false;
-        if (optionalRange.endValue && !isString(optionalRange.endValue)) return false;
+        if (!Object.keys(optionalRange).includes('value')) return false;
         return true;
     }
 
 
-    export function isValid(optionalRange: OptionalRange): boolean {
+    export function isValid<T>(optionalRange: OptionalRange<T>): boolean {
 
         const keys = Object.keys(optionalRange);
         if (keys.length < 1 || keys.length > 2) return false;
@@ -35,9 +34,9 @@ export module OptionalRange {
     }
 
 
-    export function generateLabel(optionalRange: OptionalRange,
-                                  getTranslation: (term: OptionalRange.Translations) => string,
-                                  getLabel: (object: any) => string): string {
+    export function generateLabel<T>(optionalRange: OptionalRange<T>,
+                                     getTranslation: (term: OptionalRange.Translations) => string,
+                                     getLabel: (t: T) => string): string {
 
         if (isValid(optionalRange)) {
             return optionalRange.endValue
