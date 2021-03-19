@@ -129,6 +129,8 @@ export module Dating {
                                   getTranslation: (term: Dating.Translations) => string): string {
 
         if (isValid(dating)) {
+            if (dating.label) return dating.label; /* TODO backward compatibility; migrate and remove */
+
             let prefix = '';
             let year = '';
             let postfix = '';
