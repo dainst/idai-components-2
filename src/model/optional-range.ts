@@ -20,7 +20,7 @@ export module OptionalRange {
 
         if (!isObject(optionalRange)) return false;
         if (!Object.keys(optionalRange).includes(VALUE)) return false;
-        else if (!isValid(optionalRange.value)) return false;
+        else if (!isTValid(optionalRange.value)) return false;
         if (Object.keys(optionalRange).includes(ENDVALUE) && !isTValid(optionalRange[ENDVALUE])) return false; 
         return true;
     }
