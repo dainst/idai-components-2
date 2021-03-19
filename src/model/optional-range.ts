@@ -1,4 +1,4 @@
-import { isObject } from 'tsfun';
+import { isObject, isString } from 'tsfun';
 
 export interface OptionalRange {
 
@@ -18,7 +18,10 @@ export module OptionalRange {
 
     export function isOptionalRange(optionalRange: any): optionalRange is OptionalRange {
 
-        return isObject(optionalRange) && isValid(optionalRange);
+        if (!isObject(optionalRange)) return false;
+        if (optionalRange.value && !isString(optionalRange.value)) return false;
+        if (optionalRange.endValue && !isString(optionalRange.endValue)) return false;
+        return isValid(optionalRange);
     }
 
 
@@ -28,7 +31,6 @@ export module OptionalRange {
         if (keys.length < 1 || keys.length > 2) return false;
         if (keys.length === 1 && keys[0] !== VALUE) return false;
         if (keys.length === 2 && (!keys.includes(VALUE) || !keys.includes(ENDVALUE))) return false;
-
         return true;
     }
 
