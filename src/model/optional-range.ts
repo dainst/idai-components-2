@@ -16,13 +16,16 @@ export module OptionalRange {
     export type Translations = 'from'|'to';
 
 
-    export function isOptionalRange<T>(optionalRange: any, isTValid: Predicate<T>): optionalRange is OptionalRange<T> {
+    export function buildIsOptionalRange<T>(isTValid: Predicate<T>) {
+    
+        return function isOptionalRange(optionalRange: any): optionalRange is OptionalRange<T> {
 
-        if (!isObject(optionalRange)) return false;
-        if (!Object.keys(optionalRange).includes(VALUE)) return false;
-        else if (!isTValid(optionalRange.value)) return false;
-        if (Object.keys(optionalRange).includes(ENDVALUE) && !isTValid(optionalRange[ENDVALUE])) return false; 
-        return true;
+            if (!isObject(optionalRange)) return false;
+            if (!Object.keys(optionalRange).includes(VALUE)) return false;
+            else if (!isTValid(optionalRange.value)) return false;
+            if (Object.keys(optionalRange).includes(ENDVALUE) && !isTValid(optionalRange[ENDVALUE])) return false; 
+            return true;
+        }
     }
 
 
