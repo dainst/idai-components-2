@@ -1,5 +1,4 @@
 import {flow, cond, on, isUndefinedOrEmpty, dissoc, isObject} from 'tsfun';
-import {dissoc as dissocOn} from 'tsfun/struct';
 
 /**
  * @author Sebastian Cuy
@@ -108,8 +107,8 @@ export module Dating {
     export function revert(dating: Dating): Dating {
 
         return flow(dating,
-            dissocOn('begin.year'),
-            dissocOn('end.year'),
+            dissoc(['begin','year']),
+            dissoc(['end','year']),
             dissocIfEmpty('begin'),
             dissocIfEmpty('end')
          );
