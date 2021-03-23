@@ -60,7 +60,6 @@ export module Dating {
     export function isDating(dating: any): dating is Dating {
 
         if (!isObject(dating)) return false;
-        if (dating.label) return true; /* TODO backward compatibility; migrate and remove */
 
         for (const fieldName in dating) {
             if (!VALID_FIELDS.includes(fieldName)) return false;
@@ -80,7 +79,6 @@ export module Dating {
 
     export function isValid(dating: Dating) {
 
-        if (dating.label) return true; /* TODO backward compatibility; migrate and remove */
         if (['range', 'after', 'scientific'].includes(dating.type) && !dating.begin) return false;
         if (['range', 'exact', 'before', 'scientific'].includes(dating.type) && !dating.end) return false;
         if (dating.type === 'scientific' && !dating.margin) return false;
@@ -129,8 +127,6 @@ export module Dating {
                                   getTranslation: (term: Dating.Translations) => string): string {
 
         if (isValid(dating)) {
-            if (dating.label) return dating.label; /* TODO backward compatibility; migrate and remove */
-
             let prefix = '';
             let year = '';
             let postfix = '';

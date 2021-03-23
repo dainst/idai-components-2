@@ -60,7 +60,6 @@ export module Dimension {
     export function isDimension(dimension: any): dimension is Dimension {
 
         if (!isObject(dimension)) return false;
-        if (dimension.label) return true; /* TODO backward compatibility; migrate and remove */
         for (const fieldName in dimension) {
             if (!VALID_FIELDS.includes(fieldName)) return false;
         }
@@ -82,7 +81,6 @@ export module Dimension {
      */
     export function isValid(dimension: Dimension, options?: any) {
 
-        if (dimension.label) return true; /* TODO backward compatibility; migrate and remove */
         if (!dimension.inputValue || !dimension.inputUnit) return false;
 
         if (dimension.inputRangeEndValue !== undefined) {
@@ -138,8 +136,6 @@ export module Dimension {
                                   measurementPositionLabel?: string): string {
 
         if (isValid(dimension)) {
-            if (dimension.label) return dimension.label; /* TODO backward compatibility; migrate and remove */
-
             let label = (dimension.isImprecise ? 'ca. ' : '');
     
             if (dimension.inputRangeEndValue !== undefined) {
