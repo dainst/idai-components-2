@@ -8,14 +8,6 @@ export {Relations} from './src/model/core/relations';
 export {relationsEquivalent} from './src/model/core/relations';
 export {Action} from './src/model/core/action';
 
-export {FieldDocument} from './src/model/field-document';
-export {FieldResource} from './src/model/field-resource';
-export {FieldRelations} from './src/model/field-relations';
-export {FieldGeometry} from './src/model/field-geometry';
-
-export {FeatureDocument} from './src/model/feature-document';
-export {FeatureResource} from './src/model/feature-resource';
-export {FeatureRelations} from './src/model/feature-relations';
 export {Dating, DatingElement, DatingType} from './src/model/dating';
 export {Dimension} from './src/model/dimension';
 export {Literature} from './src/model/literature';
