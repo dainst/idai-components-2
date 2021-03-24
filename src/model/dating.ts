@@ -56,6 +56,25 @@ export module Dating {
     export type Translations = 'bce'|'ce'|'bp'|'before'|'after';
 
 
+    // This is to replicate behaviour of Dating.isValid before the change
+    // regarding typeguards and valiation
+    export function isValidDating_deprecated(dating: any) {
+        for (const fieldName in dating) {
+            if (!VALID_FIELDS.includes(fieldName)) return false;
+        }
+
+        if (dating.begin) for (const fieldName in dating.begin) {
+            if (!VALID_ELEMENT_FIELDS.includes(fieldName)) return false;
+        }
+
+        if (dating.end) for (const fieldName in dating.end) {
+            if (!VALID_ELEMENT_FIELDS.includes(fieldName)) return false;
+        }
+        if (dating.label) return true;
+        return false;
+    }
+
+
     export function isDating(dating: any): dating is Dating {
 
         if (!isObject(dating)) return false;
