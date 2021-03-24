@@ -3,7 +3,7 @@
   "description": "iDAI.components 2",
   "main": "main.js",
   "types": "index.d.ts",
-  "version": "1.47.57",
+  "version": "1.47.58",
   "license": "Apache-2.0",
   "scripts": {
     "build": "tsc -p tsconfig.json && tsc -p src/tsconfig.json && tsc -p test/tsconfig.json",
