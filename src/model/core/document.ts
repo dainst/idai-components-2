@@ -1,5 +1,5 @@
 import {Resource} from './resource';
-import {filter_a, to} from 'tsfun';
+import {filter, to} from 'tsfun';
 import {NewDocument} from './new-document';
 import {Action} from './action';
 
@@ -58,7 +58,7 @@ export module Document {
         return (document: D): D => {
 
             const result = {...document};
-            result.resource = filter_a(document.resource, 
+            result.resource = filter(document.resource, 
                 (_propertyValue, propertyKey) => !fields.includes(propertyKey)) as Resource;
             return result as D;
         };
@@ -71,7 +71,7 @@ export module Document {
 
             const result = {...document};
             result.resource = {...document.resource};
-            result.resource.relations = filter_a(result.resource.relations,
+            result.resource.relations = filter(result.resource.relations,
                 (_propertyValue, propertyKey) => !relations.includes(propertyKey))
             return result as D;
         };
