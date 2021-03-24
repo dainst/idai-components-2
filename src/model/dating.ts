@@ -58,7 +58,7 @@ export module Dating {
 
     // This is to replicate behaviour of Dating.isValid before the change
     // regarding typeguards and valiation
-    export function isValidDating_deprecated(dating: any) {
+    export function isValid_deprecated(dating: any) {
         for (const fieldName in dating) {
             if (!VALID_FIELDS.includes(fieldName)) return false;
         }

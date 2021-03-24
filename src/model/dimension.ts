@@ -59,7 +59,7 @@ export module Dimension {
 
     // This is to replicate behaviour of Dimension.isValid before the change
     // regarding typeguards and valiation
-    export function isValidDimension_deprecated(dimension: any) {
+    export function isValid_deprecated(dimension: any) {
 
         for (const fieldName in dimension) {
             if (!VALID_FIELDS.includes(fieldName)) return false;
