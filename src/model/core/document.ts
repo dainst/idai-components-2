@@ -1,8 +1,7 @@
 import {Resource} from './resource';
-import {to} from 'tsfun';
+import {filter_a, to} from 'tsfun';
 import {NewDocument} from './new-document';
 import {Action} from './action';
-import {subtractObj} from '../../util/utils';
 
 
 export type RevisionId = string;
@@ -59,7 +58,8 @@ export module Document {
         return (document: D): D => {
 
             const result = {...document};
-            result.resource = subtractObj(fields)(document.resource) as Resource;
+            result.resource = filter_a(document.resource, 
+                (_propertyValue, propertyKey) => !fields.includes(propertyKey)) as Resource;
             return result as D;
         };
     }
@@ -71,7 +71,8 @@ export module Document {
 
             const result = {...document};
             result.resource = {...document.resource};
-            result.resource.relations = subtractObj(relations)(result.resource.relations);
+            result.resource.relations = filter_a(result.resource.relations,
+                (_propertyValue, propertyKey) => !relations.includes(propertyKey))
             return result as D;
         };
     }
