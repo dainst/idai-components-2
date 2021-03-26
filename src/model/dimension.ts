@@ -161,9 +161,9 @@ export module Dimension {
     
             if (dimension.measurementPosition) {
                 label += ', ' + translate('asMeasuredBy') +  ' ' 
-                      + measurementPositionLabel 
+                      + (measurementPositionLabel 
                         ? measurementPositionLabel 
-                        : dimension.measurementPosition;
+                        : dimension.measurementPosition);
             }
             if (dimension.measurementComment) label += ' (' + dimension.measurementComment + ')';
             return label;
