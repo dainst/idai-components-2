@@ -1,6 +1,7 @@
-import {set, isNot, tripleEqual, jsonEqual, sameset} from 'tsfun';
+import {set, isNot, tripleEqual, sameset} from 'tsfun';
 import {NewResource} from './new-resource';
 
+const jsonEqual = (l: any) => (r: any) => JSON.stringify(l) === JSON.stringify(r);
 
 export interface Resource extends NewResource {
 

@@ -20,7 +20,7 @@
     "@types/node": "7.0.4",
     "jasmine": "2.5.2",
     "jasmine-core": "2.5.2",
-    "tsfun": "5.0.0",
+    "tsfun": "5.2.1",
     "typescript": "4.1.5"
   }
 }
